@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import { Button, Layout, Menu, Popover, Space, theme } from 'antd';
 import { useRouter } from 'next/navigation';
-import { menuItems } from '@/utils/constants/ui/menu-items';
+import { useMenuItems } from '@/utils/constants/ui/menu-items';
 import { handleMenuClick } from '@/utils/handlers/menu-handlers';
 import SwitchLanguages from '../common/SwitchLanguages';
 import SwitchLocation from '../common/SwitchLocation';
@@ -13,6 +13,7 @@ import ClientOnly from '../common/ClientOnly';
 import svgs from '@/assets/svgs';
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
+import LanguageHydration from '../common/LanguageHydration';
 
 const { Header, Content, Sider } = Layout;
 
@@ -23,6 +24,7 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const [collapsed, setCollapsed] = useState(false);
     const router = useRouter();
+    const menuItems = useMenuItems();
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -33,6 +35,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
     return (
         <LocationProvider>
+            <LanguageHydration />
             <Layout style={{ minHeight: '100vh' }}>
                 <Sider
                     collapsible

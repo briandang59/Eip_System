@@ -1,0 +1,47 @@
+{
+    "common": {
+        "languages": {
+            "english": "英语",
+            "vietnamese": "越南语",
+            "chinese": "中文"
+        }
+    },
+    "sidebar": {
+        "home": "首页",
+        "hr": {
+            "title": "人力资源",
+            "employees": "员工",
+            "shift_scheduling": "排班",
+            "take_leave": "请假",
+            "work_attendance": "考勤",
+            "overtime": "加班",
+            "base_salary": "基本工资",
+            "social_insurance": "社会保险",
+            "contract": "合同",
+            "workday": "工作日",
+            "statistical_workday": "工作日统计",
+            "utils": "工具",
+            "print_card": "打印卡"
+        },
+        "factory_inspection": {
+            "title": "工厂检查",
+            "workday": "工作日",
+            "statistical_workday": "工作日统计"
+        },
+        "it": {
+            "title": "信息技术",
+            "roles_permissions": "角色和权限",
+            "tracking_log": "跟踪日志"
+        },
+        "others": {
+            "title": "其他",
+            "meeting": "会议"
+        },
+        "settings": {
+            "title": "设置",
+            "user_information": "用户信息",
+            "account_role": "账户角色"
+        },
+        "logout": "退出"
+    }
+}

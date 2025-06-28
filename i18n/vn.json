@@ -1,0 +1,47 @@
+{
+    "common": {
+        "languages": {
+            "english": "Tiếng Anh",
+            "vietnamese": "Tiếng Việt",
+            "chinese": "Tiếng Trung"
+        }
+    },
+    "sidebar": {
+        "home": "Trang chủ",
+        "hr": {
+            "title": "Nhân sự",
+            "employees": "Nhân viên",
+            "shift_scheduling": "Lịch làm việc",
+            "take_leave": "Nghỉ phép",
+            "work_attendance": "Chấm công",
+            "overtime": "Tăng ca",
+            "base_salary": "Lương cơ bản",
+            "social_insurance": "Bảo hiểm xã hội",
+            "contract": "Hợp đồng",
+            "workday": "Ngày công",
+            "statistical_workday": "Thống kê ngày công",
+            "utils": "Tiện ích",
+            "print_card": "In thẻ"
+        },
+        "factory_inspection": {
+            "title": "Kiểm tra nhà máy",
+            "workday": "Ngày công",
+            "statistical_workday": "Thống kê ngày công"
+        },
+        "it": {
+            "title": "CNTT",
+            "roles_permissions": "Vai trò và quyền hạn",
+            "tracking_log": "Nhật ký theo dõi"
+        },
+        "others": {
+            "title": "Khác",
+            "meeting": "Cuộc họp"
+        },
+        "settings": {
+            "title": "Cài đặt",
+            "user_information": "Thông tin người dùng",
+            "account_role": "Vai trò tài khoản"
+        },
+        "logout": "Đăng xuất"
+    }
+}

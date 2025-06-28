@@ -5,6 +5,8 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormInput } from '@/components/forms';
 import { Lock, User } from 'lucide-react';
+import { routes } from '@/utils/constants/routes';
+import { useRouter } from 'next/navigation';
 
 const schema = yup
     .object({
@@ -16,6 +18,7 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 function LoginPage() {
+    const router = useRouter();
     const { control, handleSubmit } = useForm<FormData>({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -26,6 +29,7 @@ function LoginPage() {
 
     const onSubmit = (data: FormData) => {
         console.log(data);
+        router.push(routes.home);
     };
 
     return (

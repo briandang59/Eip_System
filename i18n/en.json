@@ -1,0 +1,47 @@
+{
+    "common": {
+        "languages": {
+            "english": "English",
+            "vietnamese": "Vietnamese",
+            "chinese": "Chinese"
+        }
+    },
+    "sidebar": {
+        "home": "Home",
+        "hr": {
+            "title": "Human Resources",
+            "employees": "Employees",
+            "shift_scheduling": "Shift Scheduling",
+            "take_leave": "Take Leave",
+            "work_attendance": "Work Attendance",
+            "overtime": "Overtime",
+            "base_salary": "Base Salary",
+            "social_insurance": "Social Insurance",
+            "contract": "Contract",
+            "workday": "Workday",
+            "statistical_workday": "Statistical Workday",
+            "utils": "Utils",
+            "print_card": "Print Card"
+        },
+        "factory_inspection": {
+            "title": "Factory Inspection",
+            "workday": "Workday",
+            "statistical_workday": "Statistical Workday"
+        },
+        "it": {
+            "title": "IT",
+            "roles_permissions": "Roles and Permissions",
+            "tracking_log": "Tracking Log"
+        },
+        "others": {
+            "title": "Others",
+            "meeting": "Meeting"
+        },
+        "settings": {
+            "title": "Settings",
+            "user_information": "User Information",
+            "account_role": "Account Role"
+        },
+        "logout": "Logout"
+    }
+}
