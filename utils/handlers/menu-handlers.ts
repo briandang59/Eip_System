@@ -1,6 +1,11 @@
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { routes } from '../constants/routes';
 
+const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = routes.logout;
+};
+
 export const handleMenuClick = (key: string, router: AppRouterInstance) => {
     switch (key) {
         case 'hr/employees':
@@ -61,7 +66,7 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
             router.push(routes.settings.accountRole);
             break;
         case 'logout':
-            router.push(routes.logout);
+            handleLogout();
             break;
         default:
             router.push(routes.home);

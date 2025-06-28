@@ -35,5 +35,5 @@ export const routes = {
         userInformation: '/settings/user-information',
         accountRole: '/settings/account-role',
     },
-    logout: '/logout',
+    logout: '/login',
 };
