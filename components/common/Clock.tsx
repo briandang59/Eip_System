@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from '@/utils/contexts/LocationContext';
 
 const TIMEZONES = {
@@ -19,21 +19,24 @@ function Clock() {
         return () => clearInterval(interval);
     }, []);
 
-    const formatDateTime = (date: Date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
+    const formatDateTime = useMemo(
+        () => (date: Date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
 
-        const timeString = date.toLocaleTimeString('en-US', {
-            timeZone: TIMEZONES[location as keyof typeof TIMEZONES],
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
+            const timeString = date.toLocaleTimeString('en-US', {
+                timeZone: TIMEZONES[location as keyof typeof TIMEZONES],
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            });
 
-        return `${year}-${month}-${day} ${timeString}`;
-    };
+            return `${year}-${month}-${day} ${timeString}`;
+        },
+        [location],
+    );
 
     return <div className="text-base font-medium">{formatDateTime(time)}</div>;
 }

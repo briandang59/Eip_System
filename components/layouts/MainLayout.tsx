@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { clsx } from 'clsx';
-import { Layout, Menu, theme } from 'antd';
+import { Button, Layout, Menu, Popover, Space, theme } from 'antd';
 import { useRouter } from 'next/navigation';
 import { menuItems } from '@/utils/constants/ui/menu-items';
 import { handleMenuClick } from '@/utils/handlers/menu-handlers';
@@ -12,6 +12,7 @@ import { LocationProvider } from '@/utils/contexts/LocationContext';
 import ClientOnly from '../common/ClientOnly';
 import svgs from '@/assets/svgs';
 import Image from 'next/image';
+import { Bell } from 'lucide-react';
 
 const { Header, Content, Sider } = Layout;
 
@@ -89,6 +90,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         <ClientOnly>
                             <div className="flex items-center gap-4">
                                 <Clock />
+                                <Popover content={<div>Content</div>} title="Title" trigger="click">
+                                    <Button
+                                        className="rounded-full bg-gray-100 border-none hover:bg-gray-200"
+                                        type="text"
+                                        size="large"
+                                    >
+                                        <Bell className="w-6 h-6" strokeWidth={1.5} />
+                                    </Button>
+                                </Popover>
                                 <SwitchLocation />
                                 <SwitchLanguages />
                             </div>
