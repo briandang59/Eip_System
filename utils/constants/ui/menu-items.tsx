@@ -1,17 +1,29 @@
 import {
+    BookUser,
     Calendar,
+    CalendarCheck,
     ChartBar,
+    ChartPie,
     Clock,
     Cloud,
+    ContactRound,
+    DollarSign,
     Factory,
+    HardDrive,
     Home,
+    ListCheck,
     LogOut,
+    Presentation,
     Printer,
+    Rocket,
     Server,
     Settings,
     Shield,
+    ShieldUser,
     User,
+    UserRound,
     Users,
+    UserSearch,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -56,7 +68,7 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.hr?.employees || 'Employees',
                     'hr/employees',
-                    <User strokeWidth={1.5} className="w-4 h-4" />,
+                    <BookUser strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.shift_scheduling || 'Shift Scheduling',
@@ -66,7 +78,7 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.hr?.take_leave || 'Take Leave',
                     'hr/take-leave',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <CalendarCheck strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.work_attendance || 'Work Attendance',
@@ -81,32 +93,32 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.hr?.base_salary || 'Base Salary',
                     'hr/base-salary',
-                    <Clock strokeWidth={1.5} className="w-4 h-4" />,
+                    <DollarSign strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.social_insurance || 'Social Insurance',
                     'hr/social-insurance',
-                    <Clock strokeWidth={1.5} className="w-4 h-4" />,
+                    <ShieldUser strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.contract || 'Contract',
                     'hr/contract',
-                    <Clock strokeWidth={1.5} className="w-4 h-4" />,
+                    <ContactRound strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.workday || 'Workday',
                     'hr/workday',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <ListCheck strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.statistical_workday || 'Statistical Workday',
                     'hr/statistical-workday',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <ChartPie strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.utils || 'Utils',
                     'hr/utils',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <Rocket strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.hr?.print_card || 'Print Card',
@@ -123,12 +135,12 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.factory_inspection?.workday || 'Workday',
                     'hr/workday/v1',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <ListCheck strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.factory_inspection?.statistical_workday || 'Statistical Workday',
                     'hr/statistical-workday/v1',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <ChartPie strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),
@@ -152,12 +164,12 @@ export const useMenuItems = (): MenuItem[] => {
         getItem(
             t?.sidebar?.others?.title || 'Others',
             'others',
-            <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+            <HardDrive strokeWidth={1.5} className="w-4 h-4" />,
             [
                 getItem(
                     t?.sidebar?.others?.meeting || 'Meeting',
                     'others/meeting',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
+                    <Presentation strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),
@@ -169,12 +181,12 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.settings?.user_information || 'User Information',
                     'settings/user-information',
-                    <ChartBar strokeWidth={1.5} className="w-4 h-4" />,
+                    <UserSearch strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
                     t?.sidebar?.settings?.account_role || 'Account Role',
                     'settings/account-role',
-                    <ChartBar strokeWidth={1.5} className="w-4 h-4" />,
+                    <UserRound strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),

@@ -16,7 +16,9 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
                 }}
             >
                 <div className="w-full max-w-xl p-4 bg-white rounded-lg shadow-md">
-                    <h1 className="text-2xl font-bold mb-4 text-center">EIP System Management</h1>
+                    <h1 className="text-3xl font-bold mb-4 text-center bg-gradient-to-t from-red-500 to-blue-700 text-transparent bg-clip-text">
+                        EIP System Management
+                    </h1>
                     {children}
                 </div>
             </Content>
