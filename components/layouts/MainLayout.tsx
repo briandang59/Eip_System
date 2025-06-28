@@ -45,15 +45,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     width={300}
                     className="border-r border-gray-200"
                 >
-                    <div
-                        className={clsx(
-                            'p-6 border-b border-gray-200',
-                            collapsed ? 'h-25' : 'block',
-                        )}
-                    >
+                    <div className={clsx('p-6', collapsed ? 'h-25' : 'block')}>
                         <h2
                             className={clsx(
-                                'text-[24px] font-bold bg-gradient-to-t from-red-500 to-blue-700 text-transparent bg-clip-text',
+                                'text-[24px] font-bold bg-gradient-to-b from-green-700 to-blue-700 text-transparent bg-clip-text',
                                 collapsed ? 'hidden' : 'block',
                             )}
                         >
@@ -83,7 +78,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             background: colorBgContainer,
                             height: '100px',
                             borderBottom: '1px solid #e0e0e0',
-                            borderLeft: '1px solid #e0e0e0',
                         }}
                         className="sticky top-0 z-10 flex items-center justify-between"
                     >
@@ -93,7 +87,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         <ClientOnly>
                             <div className="flex items-center gap-4">
                                 <Clock />
-                                <Popover content={<div>Content</div>} title="Title" trigger="click">
+                                <Popover content={<div>Content</div>} trigger="click">
                                     <Button
                                         className="rounded-full bg-gray-100 border-none hover:bg-gray-200"
                                         type="text"
@@ -107,11 +101,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                             </div>
                         </ClientOnly>
                     </Header>
-                    <Content className="p-4">
+                    <Content className="p-2">
                         <div
                             style={{
-                                padding: 24,
-                                minHeight: 360,
+                                padding: 10,
+                                minHeight: 'calc(100vh - 100px)',
                                 background: colorBgContainer,
                                 borderRadius: borderRadiusLG,
                             }}

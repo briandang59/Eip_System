@@ -13,6 +13,7 @@
         "@ant-design/icons": "5.x",
         "@hookform/resolvers": "^5.1.1",
         "antd": "^5.26.2",
+        "antd-style": "^3.7.1",
         "clsx": "^2.1.1",
         "dayjs": "^1.11.13",
         "i18next": "^25.2.1",
@@ -24,6 +25,7 @@
         "react-dom": "^19.0.0",
         "react-hook-form": "^7.59.0",
         "react-i18next": "^15.5.3",
+        "sass": "^1.89.2",
         "yup": "^1.6.1",
         "zustand": "^5.0.6"
     },
