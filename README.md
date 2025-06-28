@@ -30,17 +30,20 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone http://10.2.1.161/briandang/eip-ui-v2.git
 cd eip-ui-v2
 ```
 
 2. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 3. Start the development server:
+
 ```bash
 pnpm dev
 ```

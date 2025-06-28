@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface LocationContextType {
@@ -24,4 +24,4 @@ export function useLocation() {
         throw new Error('useLocation must be used within a LocationProvider');
     }
     return context;
-} 
+}

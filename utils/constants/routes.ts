@@ -1,7 +1,7 @@
 export const routes = {
     home: '/',
     login: '/login',
-    hr:{
+    hr: {
         root: '/hr',
         employees: '/hr/employees',
         shiftScheduling: '/hr/shift-scheduling',
@@ -10,7 +10,7 @@ export const routes = {
         overtime: '/hr/overtime',
         baseSalary: '/hr/base-salary',
         socialInsurance: '/hr/social-insurance',
-        contract: '/hr/contract',   
+        contract: '/hr/contract',
         workday: '/hr/workday',
         statisticalWorkday: '/hr/statistical-workday',
         utils: '/hr/utils',
@@ -18,22 +18,22 @@ export const routes = {
         workdayV1: '/hr/workday/v1',
         statisticalWorkdayV1: '/hr/statistical-workday/v1',
     },
-    factoryInspection:{
+    factoryInspection: {
         root: '/factory-inspection',
     },
-    it:{
+    it: {
         root: '/it',
         rolesAndPermissions: '/it/roles-and-permissions',
         trackingLog: '/it/tracking-log',
     },
-    others:{
+    others: {
         root: '/others',
         meeting: '/others/meeting',
     },
-    settings:{
+    settings: {
         root: '/settings',
         userInformation: '/settings/user-information',
         accountRole: '/settings/account-role',
     },
     logout: '/logout',
-}
+};
