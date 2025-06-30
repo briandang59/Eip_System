@@ -55,7 +55,13 @@
         "login_failed": "登入失敗",
         "login_failed_message": "用戶名或密碼錯誤",
         "login_failed_message_2": "用戶名或密碼錯誤",
-        "login_failed_message_3": "用戶名或密碼錯誤"
+        "login_failed_message_3": "用戶名或密碼錯誤",
+        "old_password": "舊密碼",
+        "new_password": "新密碼",
+        "confirm_password": "確認密碼",
+        "save": "保存",
+        "change_password_success": "更改密碼成功",
+        "change_password_failed": "更改密碼失敗"
     },
     "tracking_log": {
         "title": "追蹤日誌",
@@ -84,6 +90,9 @@
             "tag": "標籤",
             "description": "描述",
             "work_places": "工作地點"
+        },
+        "change_password": {
+            "title": "更改密碼"
         }
     }
 }
