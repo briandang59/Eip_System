@@ -49,7 +49,7 @@ function ChangePasswordForm() {
             } else {
                 toast.error(t.form.change_password_failed);
             }
-        } catch (error) {
+        } catch {
             toast.error(t.form.change_password_failed);
         }
     };
