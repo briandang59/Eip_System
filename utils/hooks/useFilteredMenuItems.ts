@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { useMenuItems } from '@/utils/constants/ui/menu-items';
 import { menuPermissions } from '@/utils/constants/common/menu-permissions';
-import { Roles } from '@/utils/constants/common/roles';
 
 type MenuItem = Required<MenuProps>['items'][number];
 

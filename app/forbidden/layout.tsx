@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../../app/globals.css';
 import { Toaster } from 'sonner';
-import RoleMiddleware from '@/components/common/RoleMiddleware';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -54,7 +53,6 @@ export default function ForbiddenLayout({
                 cz-shortcut-listen="true"
             >
                 <Toaster position="top-right" richColors />
-                <RoleMiddleware />
                 {children}
             </body>
         </html>
