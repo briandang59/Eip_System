@@ -46,6 +46,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     theme="light"
                     width={250}
                     className="border-r border-gray-200"
+                    style={{
+                        position: 'sticky',
+                        top: 0,
+                        height: '100vh',
+                        left: 0,
+                        overflow: 'auto',
+                    }}
                 >
                     <div className={clsx('p-6', collapsed ? 'h-25' : 'block')}>
                         <h2
@@ -73,7 +80,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         onClick={onMenuClick}
                     />
                 </Sider>
-                <Layout className="relative">
+                <Layout>
                     <Header
                         style={{
                             padding: '10px 16px',
