@@ -6,4 +6,5 @@ export const urls = {
     user: 'user',
     account: 'account',
     roles: 'roles',
+    password: 'password',
 };

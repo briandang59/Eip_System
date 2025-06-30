@@ -55,7 +55,13 @@
         "login_failed": "Login failed",
         "login_failed_message": "Invalid username or password",
         "login_failed_message_2": "Invalid username or password",
-        "login_failed_message_3": "Invalid username or password"
+        "login_failed_message_3": "Invalid username or password",
+        "old_password": "Old Password",
+        "new_password": "New Password",
+        "confirm_password": "Confirm Password",
+        "save": "Save",
+        "change_password_success": "Change password successful",
+        "change_password_failed": "Change password failed"
     },
     "tracking_log": {
         "title": "Tracking Log",
@@ -84,6 +90,9 @@
             "tag": "Tag",
             "description": "Description",
             "work_places": "Work Places"
+        },
+        "change_password": {
+            "title": "Change Password"
         }
     }
 }

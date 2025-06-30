@@ -31,6 +31,7 @@ export interface GenericTableProps<T extends object> {
     rowKey: string | keyof T | ((record: T) => string);
     /** Các props gốc khác của antd Table nếu cần */
     scroll?: Parameters<typeof Table>[0]['scroll'];
+    isLoading?: boolean;
 }
 
 export function GenericTable<T extends object>({
@@ -38,6 +39,7 @@ export function GenericTable<T extends object>({
     dataSource,
     rowKey,
     scroll = { x: 'max-content', y: 110 * 5 },
+    isLoading = false,
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 
@@ -49,6 +51,7 @@ export function GenericTable<T extends object>({
             rowKey={rowKey}
             scroll={scroll}
             bordered
+            loading={isLoading}
         />
     );
 }

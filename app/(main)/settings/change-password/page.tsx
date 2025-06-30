@@ -1,7 +1,9 @@
+import ChangePasswordForm from '@/components/forms/ChangePasswordForm';
+
 function ChangePassword() {
     return (
         <div>
-            <h1>Change Password</h1>
+            <ChangePasswordForm />
         </div>
     );
 }

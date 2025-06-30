@@ -55,7 +55,13 @@
         "login_failed": "Đăng nhập thất bại",
         "login_failed_message": "Tên đăng nhập hoặc mật khẩu không chính xác",
         "login_failed_message_2": "Tên đăng nhập hoặc mật khẩu không chính xác",
-        "login_failed_message_3": "Tên đăng nhập hoặc mật khẩu không chính xác"
+        "login_failed_message_3": "Tên đăng nhập hoặc mật khẩu không chính xác",
+        "old_password": "Mật khẩu cũ",
+        "new_password": "Mật khẩu mới",
+        "confirm_password": "Xác nhận mật khẩu",
+        "save": "Lưu",
+        "change_password_success": "Đổi mật khẩu thành công",
+        "change_password_failed": "Đổi mật khẩu thất bại"
     },
     "tracking_log": {
         "title": "Nhật ký theo dõi",
@@ -84,6 +90,9 @@
             "tag": "Tag",
             "description": "Mô tả",
             "work_places": "Nơi làm việc"
+        },
+        "change_password": {
+            "title": "Đổi mật khẩu"
         }
     }
 }
