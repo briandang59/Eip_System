@@ -37,7 +37,7 @@ export function GenericTable<T extends object>({
     columns,
     dataSource,
     rowKey,
-    scroll = { x: 'max-content', y: 55 * 5 },
+    scroll = { x: 'max-content', y: 110 * 5 },
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 

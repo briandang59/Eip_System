@@ -40,7 +40,8 @@
         "settings": {
             "title": "設置",
             "user_information": "用戶資訊",
-            "account_role": "帳戶角色"
+            "account_role": "帳戶角色",
+            "change_password": "更改密碼"
         },
         "logout": "登出"
     },
@@ -73,5 +74,16 @@
         "ascending": "升序",
         "descending": "降序",
         "refresh": "重新整理"
+    },
+    "settings": {
+        "account_role": {
+            "list_roles": "角色列表",
+            "role_name_en": "角色名稱 (EN)",
+            "role_name_vn": "角色名稱 (VN)",
+            "role_name_zh": "角色名稱 (ZH)",
+            "tag": "標籤",
+            "description": "描述",
+            "work_places": "工作地點"
+        }
     }
 }

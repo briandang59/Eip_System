@@ -20,6 +20,7 @@ import {
     Settings,
     Shield,
     ShieldUser,
+    Lock,
     UserRound,
     Users,
     UserSearch,
@@ -54,7 +55,7 @@ export const useMenuItems = (): MenuItem[] => {
             [
                 getItem(
                     'Daily Attendance Statistics',
-                    'users/tom',
+                    '/',
                     <ChartBar strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
@@ -186,6 +187,11 @@ export const useMenuItems = (): MenuItem[] => {
                     t?.sidebar?.settings?.account_role || 'Account Role',
                     'settings/account-role',
                     <UserRound strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+                getItem(
+                    t?.sidebar?.settings?.change_password || 'Change Password',
+                    'settings/change-password',
+                    <Lock strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),

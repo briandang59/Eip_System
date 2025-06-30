@@ -3,7 +3,7 @@ import { Roles } from './roles';
 export const menuPermissions: Record<string, Roles[]> = {
     // Dashboard
     dashboard: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
-    'users/tom': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
+    '/': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
 
     // HR Section
     hr: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
@@ -39,9 +39,46 @@ export const menuPermissions: Record<string, Roles[]> = {
     'others/meeting': [Roles.SUPER_USER, Roles.MEETING_ROOM_USER],
 
     // Settings
-    settings: [Roles.SUPER_USER, Roles.EMPLOYEE],
-    'settings/user-information': [Roles.SUPER_USER, Roles.EMPLOYEE],
-    'settings/account-role': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
+    settings: [
+        Roles.EMPLOYEE,
+        Roles.SYSTEM_ADMINISTRATOR,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+        Roles.PRODUCTIVITY_SUPERVISOR,
+        Roles.MEETING_ROOM_USER,
+        Roles.SUPER_USER,
+        Roles.DEPARTMENT_SCHEDULER,
+    ],
+    'settings/user-information': [
+        Roles.EMPLOYEE,
+        Roles.SYSTEM_ADMINISTRATOR,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+        Roles.PRODUCTIVITY_SUPERVISOR,
+        Roles.MEETING_ROOM_USER,
+        Roles.SUPER_USER,
+        Roles.DEPARTMENT_SCHEDULER,
+    ],
+    'settings/account-role': [
+        Roles.EMPLOYEE,
+        Roles.SYSTEM_ADMINISTRATOR,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+        Roles.PRODUCTIVITY_SUPERVISOR,
+        Roles.MEETING_ROOM_USER,
+        Roles.SUPER_USER,
+        Roles.DEPARTMENT_SCHEDULER,
+    ],
+    'settings/change-password': [
+        Roles.EMPLOYEE,
+        Roles.SYSTEM_ADMINISTRATOR,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+        Roles.PRODUCTIVITY_SUPERVISOR,
+        Roles.MEETING_ROOM_USER,
+        Roles.SUPER_USER,
+        Roles.DEPARTMENT_SCHEDULER,
+    ],
 
     // Logout (available for all)
     logout: Object.values(Roles),

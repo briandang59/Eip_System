@@ -34,6 +34,7 @@ export const routes = {
         root: '/settings',
         userInformation: '/settings/user-information',
         accountRole: '/settings/account-role',
+        changePassword: '/settings/change-password',
     },
     logout: '/login',
 };

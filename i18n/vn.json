@@ -40,7 +40,8 @@
         "settings": {
             "title": "Cài đặt",
             "user_information": "Thông tin người dùng",
-            "account_role": "Vai trò tài khoản"
+            "account_role": "Vai trò tài khoản",
+            "change_password": "Đổi mật khẩu"
         },
         "logout": "Đăng xuất"
     },
@@ -73,5 +74,16 @@
         "ascending": "Tăng dần",
         "descending": "Giảm dần",
         "refresh": "Làm mới"
+    },
+    "settings": {
+        "account_role": {
+            "list_roles": "Danh sách vai trò",
+            "role_name_en": "Tên vai trò (EN)",
+            "role_name_vn": "Tên vai trò (VN)",
+            "role_name_zh": "Tên vai trò (ZH)",
+            "tag": "Tag",
+            "description": "Mô tả",
+            "work_places": "Nơi làm việc"
+        }
     }
 }

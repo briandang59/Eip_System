@@ -50,8 +50,8 @@ export const fetcher = async (url: string, init?: RequestInit) => {
 
     const headers: HeadersInit = {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
+        Accept: '*/*',
+        ...(token && { Authorization: `${token}` }),
         ...(init?.headers || {}),
     };
 

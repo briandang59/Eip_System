@@ -34,6 +34,7 @@ export interface DataType {
     VPSX: string;
     PNTrua: string;
     PNTca: string;
+    G210: string;
 }
 
 export const workdayCols: TableColumnsType<DataType> = [
@@ -119,6 +120,7 @@ export const workdayCols: TableColumnsType<DataType> = [
     { title: 'VS', dataIndex: 'VS', key: 'VS', width: 100 },
     { title: 'GDem', dataIndex: 'GDem', key: 'GDem', width: 100 },
     { title: 'G200', dataIndex: 'G200', key: 'G200', width: 100 },
+    { title: 'G210', dataIndex: 'G210', key: 'G210', width: 100 },
     { title: 'Tcom', dataIndex: 'Tcom', key: 'Tcom', width: 100 },
     { title: 'CTMTCN', dataIndex: 'CTMTCN', key: 'CTMTCN', width: 100 },
     { title: 'VPSX', dataIndex: 'VPSX', key: 'VPSX', width: 100 },

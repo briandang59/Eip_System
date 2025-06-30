@@ -40,7 +40,8 @@
         "settings": {
             "title": "Settings",
             "user_information": "User Information",
-            "account_role": "Account Role"
+            "account_role": "Account Role",
+            "change_password": "Change Password"
         },
         "logout": "Logout"
     },
@@ -73,5 +74,16 @@
         "ascending": "Ascending",
         "descending": "Descending",
         "refresh": "Refresh"
+    },
+    "settings": {
+        "account_role": {
+            "list_roles": "List Roles",
+            "role_name_en": "Role Name (EN)",
+            "role_name_vn": "Role Name (VN)",
+            "role_name_zh": "Role Name (ZH)",
+            "tag": "Tag",
+            "description": "Description",
+            "work_places": "Work Places"
+        }
     }
 }
