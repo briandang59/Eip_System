@@ -42,13 +42,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     collapsed={collapsed}
                     onCollapse={(value) => setCollapsed(value)}
                     theme="light"
-                    width={300}
+                    width={250}
                     className="border-r border-gray-200"
                 >
                     <div className={clsx('p-6', collapsed ? 'h-25' : 'block')}>
                         <h2
                             className={clsx(
-                                'text-[24px] font-bold bg-gradient-to-b from-green-700 to-blue-700 text-transparent bg-clip-text',
+                                'text-[20px] font-bold bg-gradient-to-b from-green-700 to-blue-700 text-transparent bg-clip-text',
                                 collapsed ? 'hidden' : 'block',
                             )}
                         >
@@ -56,7 +56,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         </h2>
                         <h3
                             className={clsx(
-                                'text-[16px] font-medium',
+                                'text-[14px] font-medium',
                                 collapsed ? 'hidden' : 'block',
                             )}
                         >

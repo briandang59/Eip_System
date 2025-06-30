@@ -1,71 +1,7 @@
-'use client';
-import { Button, Form } from 'antd';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormInput } from '@/components/forms';
-import { Lock, User } from 'lucide-react';
-import { routes } from '@/utils/constants/routes';
-import { useRouter } from 'next/navigation';
-
-const schema = yup
-    .object({
-        username: yup.string().required('Username is required'),
-        password: yup.string().required('Password is required'),
-    })
-    .required();
-
-type FormData = yup.InferType<typeof schema>;
+import LoginForm from '@/components/forms/LoginForm';
 
 function LoginPage() {
-    const router = useRouter();
-    const { control, handleSubmit } = useForm<FormData>({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            username: '',
-            password: '',
-        },
-    });
-
-    const onSubmit = (data: FormData) => {
-        console.log(data);
-        router.push(routes.home);
-    };
-
-    return (
-        <Form layout="vertical" className="w-full" onFinish={handleSubmit(onSubmit)}>
-            <FormInput
-                control={control}
-                name="username"
-                label="Username"
-                required
-                placeholder="Enter your username"
-                prefix={<User className="w-4 h-4" />}
-                size="large"
-            />
-            <FormInput
-                control={control}
-                name="password"
-                label="Password"
-                required
-                type="password"
-                placeholder="Enter your password"
-                prefix={<Lock className="w-4 h-4" />}
-                size="large"
-            />
-
-            <Form.Item>
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-600"
-                    size="large"
-                >
-                    Sign in
-                </Button>
-            </Form.Item>
-        </Form>
-    );
+    return <LoginForm />;
 }
 
 export default LoginPage;

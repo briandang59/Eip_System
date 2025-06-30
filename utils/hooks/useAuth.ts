@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { routes } from '../constants/routes';
+import { routes } from '../constants/common/routes';
 
 export const useAuth = (requiredRoles?: string[]) => {
     const router = useRouter();

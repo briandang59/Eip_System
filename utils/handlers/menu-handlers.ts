@@ -1,8 +1,11 @@
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { routes } from '../constants/routes';
+import { routes } from '../constants/common/routes';
+import Cookies from 'js-cookie';
+import { AUTH_COOKIE } from '@/apis/fetcher';
 
 const handleLogout = () => {
     localStorage.clear();
+    Cookies.remove(AUTH_COOKIE);
     window.location.href = routes.logout;
 };
 

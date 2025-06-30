@@ -20,7 +20,6 @@ import {
     Settings,
     Shield,
     ShieldUser,
-    User,
     UserRound,
     Users,
     UserSearch,

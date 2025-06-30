@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { routes } from '../utils/constants/routes';
+import { routes } from '../utils/constants/common/routes';
 
 // Định nghĩa các route cần được bảo vệ và role được phép truy cập
 const protectedRoutes = {

@@ -43,5 +43,17 @@
             "account_role": "Account Role"
         },
         "logout": "Logout"
+    },
+    "form": {
+        "login": {
+            "account": "Account",
+            "password": "Password",
+            "login": "Login"
+        },
+        "login_success": "Login successful",
+        "login_failed": "Login failed",
+        "login_failed_message": "Invalid username or password",
+        "login_failed_message_2": "Invalid username or password",
+        "login_failed_message_3": "Invalid username or password"
     }
 }
