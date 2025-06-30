@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../../app/globals.css';
-import MainLayout from '@/components/layouts/MainLayout';
 import { Toaster } from 'sonner';
+import RoleMiddleware from '@/components/common/RoleMiddleware';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -42,7 +42,7 @@ export const viewport: Viewport = {
     maximumScale: 1,
 };
 
-export default function RootLayout({
+export default function ForbiddenLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
@@ -54,7 +54,8 @@ export default function RootLayout({
                 cz-shortcut-listen="true"
             >
                 <Toaster position="top-right" richColors />
-                <MainLayout>{children}</MainLayout>
+                <RoleMiddleware />
+                {children}
             </body>
         </html>
     );

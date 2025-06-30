@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import { Button, Layout, Menu, Popover, Space, theme } from 'antd';
 import { useRouter } from 'next/navigation';
-import { useMenuItems } from '@/utils/constants/ui/menu-items';
+import { useFilteredMenuItems } from '@/utils/hooks/useFilteredMenuItems';
 import { handleMenuClick } from '@/utils/handlers/menu-handlers';
 import SwitchLanguages from '../common/SwitchLanguages';
 import SwitchLocation from '../common/SwitchLocation';
@@ -26,7 +26,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const [collapsed, setCollapsed] = useState(false);
     const userInfo = getInfomation();
     const router = useRouter();
-    const menuItems = useMenuItems();
+    const menuItems = useFilteredMenuItems();
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -63,14 +63,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         >
                             EIP Huge Bamboo
                         </h2>
-                        <h3
-                            className={clsx(
-                                'text-[14px] font-medium',
-                                collapsed ? 'hidden' : 'block',
-                            )}
-                        >
-                            {userInfo?.fullname} - {userInfo?.card_number}
-                        </h3>
+                        <ClientOnly>
+                            <h3
+                                className={clsx(
+                                    'text-[14px] font-medium',
+                                    collapsed ? 'hidden' : 'block',
+                                )}
+                            >
+                                {userInfo?.fullname} - {userInfo?.card_number}
+                            </h3>
+                        </ClientOnly>
                     </div>
                     <Menu
                         theme="light"

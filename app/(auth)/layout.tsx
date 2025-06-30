@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../../app/globals.css';
 import AuthLayout from '@/components/layouts/AuthLayout';
@@ -36,15 +36,12 @@ export const metadata: Metadata = {
     applicationName: 'EIP System',
     keywords: ['EIP', 'Portal', 'Enterprise'],
     authors: [{ name: 'Your Company Name' }],
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-        maximumScale: 1,
-    },
-    themeColor: [
-        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-        { media: '(prefers-color-scheme: dark)', color: '#000000' },
-    ],
+};
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
 };
 
 export default function AuthLayoutComponent({

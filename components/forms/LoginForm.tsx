@@ -47,7 +47,9 @@ function LoginForm() {
             setIsLoading(true);
             const response = await authService.signin(data as AuthSignInRequest);
             if (response.token) {
+                let roles = response.roles.map((role) => role.tag);
                 Cookies.set(AUTH_COOKIE, response.token);
+                Cookies.set('user-roles', JSON.stringify(roles));
                 localStorage.setItem('user_info', JSON.stringify(response.user_info));
                 localStorage.setItem('roles', JSON.stringify(response.roles));
                 localStorage.setItem('permission_map', JSON.stringify(response.permission_map));
