@@ -51,6 +51,7 @@ function ChangePasswordForm() {
             }
         } catch {
             toast.error(t.form.change_password_failed);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         }
     };
     return (
