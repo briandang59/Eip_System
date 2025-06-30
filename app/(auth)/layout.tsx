@@ -16,8 +16,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: 'Login',
-    description: 'Login to your account',
+    title: {
+        template: '%s | EIP System',
+        default: 'EIP System',
+    },
+    description: 'Enterprise Information Portal System',
+    icons: {
+        icon: [{ url: '/assets/svgs/logo.svg', type: 'image/svg+xml' }],
+        shortcut: [{ url: '/assets/svgs/logo.svg', type: 'image/svg+xml' }],
+        apple: [{ url: '/assets/svgs/logo.svg', type: 'image/svg+xml' }],
+        other: [
+            {
+                rel: 'mask-icon',
+                url: '/assets/svgs/logo.svg',
+            },
+        ],
+    },
+    manifest: '/manifest.json',
+    applicationName: 'EIP System',
+    keywords: ['EIP', 'Portal', 'Enterprise'],
+    authors: [{ name: 'Your Company Name' }],
+    viewport: {
+        width: 'device-width',
+        initialScale: 1,
+        maximumScale: 1,
+    },
+    themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+        { media: '(prefers-color-scheme: dark)', color: '#000000' },
+    ],
 };
 
 export default function AuthLayoutComponent({

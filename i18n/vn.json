@@ -55,5 +55,23 @@
         "login_failed_message": "Tên đăng nhập hoặc mật khẩu không chính xác",
         "login_failed_message_2": "Tên đăng nhập hoặc mật khẩu không chính xác",
         "login_failed_message_3": "Tên đăng nhập hoặc mật khẩu không chính xác"
+    },
+    "tracking_log": {
+        "title": "Nhật ký theo dõi",
+        "description": "Mô tả",
+        "created_at": "Thời gian",
+        "account": "Tài khoản",
+        "user": "Người dùng",
+        "parameters": "Tham số",
+        "response_data": "Dữ liệu phản hồi",
+        "copy": "Sao chép",
+        "copy_success": "Đã sao chép",
+        "copy_failed": "Sao chép thất bại",
+        "error_loading": "Lỗi khi tải nhật ký theo dõi",
+        "status": "Trạng thái",
+        "search_placeholder": "Tìm kiếm",
+        "ascending": "Tăng dần",
+        "descending": "Giảm dần",
+        "refresh": "Làm mới"
     }
 }

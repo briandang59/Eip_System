@@ -55,5 +55,23 @@
         "login_failed_message": "Invalid username or password",
         "login_failed_message_2": "Invalid username or password",
         "login_failed_message_3": "Invalid username or password"
+    },
+    "tracking_log": {
+        "title": "Tracking Log",
+        "description": "Description",
+        "created_at": "Time",
+        "account": "Account",
+        "user": "User",
+        "parameters": "Parameters",
+        "response_data": "Response Data",
+        "copy": "Copy",
+        "copy_success": "Copied successfully",
+        "copy_failed": "Copy failed",
+        "error_loading": "Error loading tracking logs",
+        "status": "Status",
+        "search_placeholder": "Search",
+        "ascending": "Ascending",
+        "descending": "Descending",
+        "refresh": "Refresh"
     }
 }
