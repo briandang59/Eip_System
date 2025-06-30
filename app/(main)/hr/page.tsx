@@ -1,3 +1,4 @@
+'use client';
 import { useAuth } from '@/utils/hooks/useAuth';
 
 export default function HRPage() {

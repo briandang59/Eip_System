@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { routes } from '../constants/common/routes';

@@ -62,8 +62,8 @@ function TrackingLogPage() {
         [],
     );
 
-    const handleDateRangeChange = (dates: any) => {
-        if (dates) {
+    const handleDateRangeChange = (dates: (dayjs.Dayjs | null)[] | null) => {
+        if (dates && dates[0] && dates[1]) {
             setDateRange({
                 start_date: dates[0].format('YYYY-MM-DD'),
                 end_date: dates[1].format('YYYY-MM-DD'),
@@ -84,7 +84,7 @@ function TrackingLogPage() {
         return colors[method] || 'default';
     };
 
-    const handleCopy = async (data: any, type: string, id: number) => {
+    const handleCopy = async (data: unknown, type: string, id: number) => {
         const textToCopy = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
         try {
             await navigator.clipboard.writeText(textToCopy);
@@ -97,7 +97,7 @@ function TrackingLogPage() {
             setTimeout(() => {
                 setCopiedStates((prev) => ({ ...prev, [`${id}-${type}`]: false }));
             }, 2000);
-        } catch (error) {
+        } catch {
             message.error(t.tracking_log.copy_failed);
         }
     };
@@ -110,7 +110,7 @@ function TrackingLogPage() {
         { label: 'PATCH', value: 'PATCH' },
         { label: 'DELETE', value: 'DELETE' },
     ];
-    const renderJsonData = (data: any) => {
+    const renderJsonData = (data: unknown) => {
         if (!data) return null;
         if (typeof data === 'string') {
             try {

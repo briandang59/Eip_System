@@ -2,7 +2,6 @@
 import { Form } from 'antd';
 import { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
-import { FormItemProps } from 'antd/es/form';
 
 interface FormFieldProps {
     label?: string;

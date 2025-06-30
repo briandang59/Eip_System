@@ -47,7 +47,7 @@ function LoginForm() {
             setIsLoading(true);
             const response = await authService.signin(data as AuthSignInRequest);
             if (response.token) {
-                let roles = response.roles.map((role) => role.tag);
+                const roles = response.roles.map((role) => role.tag);
                 Cookies.set(AUTH_COOKIE, response.token);
                 Cookies.set('user-roles', JSON.stringify(roles));
                 localStorage.setItem('user_info', JSON.stringify(response.user_info));
@@ -58,14 +58,15 @@ function LoginForm() {
             } else {
                 toast.error(t.form.login_failed);
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Login error:', error);
-            if (error.status === 401) {
+            const errorObj = error as { status?: number; message?: string };
+            if (errorObj.status === 401) {
                 toast.error(t.form.login_failed_message);
                 setError('account', { message: t.form.login_failed_message });
                 setError('password', { message: t.form.login_failed_message });
-            } else if (error.message) {
-                toast.error(error.message);
+            } else if (errorObj.message) {
+                toast.error(errorObj.message);
             } else {
                 toast.error(t.form.login_failed);
             }

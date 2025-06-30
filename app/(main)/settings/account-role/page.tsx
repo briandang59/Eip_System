@@ -4,7 +4,7 @@ import { GenericTable } from '@/components/common/GenericTable';
 import { RoleType, useRoleCols } from '@/utils/constants/cols/roleCols';
 
 function AccountRole() {
-    const { roles, isLoading, isError, total, mutate } = useRoles();
+    const { roles } = useRoles();
     const cols = useRoleCols();
 
     return (
