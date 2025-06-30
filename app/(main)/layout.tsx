@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../../app/globals.css';
 import MainLayout from '@/components/layouts/MainLayout';
-
+import { Toaster } from 'sonner';
 const geistSans = Geist({
     variable: '--font-geist-sans',
     subsets: ['latin'],
@@ -29,6 +29,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 cz-shortcut-listen="true"
             >
+                <Toaster position="top-right" richColors />
                 <MainLayout>{children}</MainLayout>
             </body>
         </html>

@@ -1,5 +1,5 @@
 'use client';
-import { Button, Form, message } from 'antd';
+import { Button, Form } from 'antd';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { AuthSignInRequest } from '@/types/response/auth';
 import { AUTH_COOKIE } from '@/apis/fetcher';
+import { toast } from 'sonner';
 
 const schema = yup
     .object({
@@ -42,34 +43,33 @@ function LoginForm() {
     });
 
     const onSubmit = async (data: FormData) => {
-        // try {
-        //     setIsLoading(true);
-        //     const response = await authService.signin(data as AuthSignInRequest);
-        //     if (response.token) {
-        //         Cookies.set(AUTH_COOKIE, response.token);
-        //         localStorage.setItem('user_info', JSON.stringify(response.user_info));
-        //         localStorage.setItem('roles', JSON.stringify(response.roles));
-        //         localStorage.setItem('permission_map', JSON.stringify(response.permission_map));
-        //         message.success(t.form.login_success);
-        //         router.push(routes.home);
-        //     } else {
-        //         message.error(t.form.login_failed);
-        //     }
-        // } catch (error: any) {
-        //     console.error('Login error:', error);
-        //     if (error.status === 401) {
-        //         message.error(t.form.login_failed_message);
-        //         setError('account', { message: t.form.login_failed_message });
-        //         setError('password', { message: t.form.login_failed_message });
-        //     } else if (error.message) {
-        //         message.error(error.message);
-        //     } else {
-        //         message.error(t.form.login_failed);
-        //     }
-        // } finally {
-        //     setIsLoading(false);
-        // }
-        message.success(t.form.login_success);
+        try {
+            setIsLoading(true);
+            const response = await authService.signin(data as AuthSignInRequest);
+            if (response.token) {
+                Cookies.set(AUTH_COOKIE, response.token);
+                localStorage.setItem('user_info', JSON.stringify(response.user_info));
+                localStorage.setItem('roles', JSON.stringify(response.roles));
+                localStorage.setItem('permission_map', JSON.stringify(response.permission_map));
+                toast.success(t.form.login_success);
+                router.push(routes.home);
+            } else {
+                toast.error(t.form.login_failed);
+            }
+        } catch (error: any) {
+            console.error('Login error:', error);
+            if (error.status === 401) {
+                toast.error(t.form.login_failed_message);
+                setError('account', { message: t.form.login_failed_message });
+                setError('password', { message: t.form.login_failed_message });
+            } else if (error.message) {
+                toast.error(error.message);
+            } else {
+                toast.error(t.form.login_failed);
+            }
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -78,7 +78,6 @@ function LoginForm() {
                 control={control}
                 name="account"
                 label={t.form.login.account}
-                required
                 placeholder="Enter your username"
                 prefix={<User className="w-4 h-4" />}
                 size="large"
@@ -88,7 +87,6 @@ function LoginForm() {
                 control={control}
                 name="password"
                 label={t.form.login.password}
-                required
                 type="password"
                 placeholder="Enter your password"
                 prefix={<Lock className="w-4 h-4" />}
