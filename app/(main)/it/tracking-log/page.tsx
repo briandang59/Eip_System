@@ -13,7 +13,7 @@ import {
     Select,
 } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
     UserCircle2,
     Globe,
@@ -27,6 +27,7 @@ import {
 import { JsonView, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import debounce from 'lodash/debounce';
 const { RangePicker } = DatePicker;
 const { Text, Title } = Typography;
 
@@ -41,13 +42,24 @@ function TrackingLogPage() {
     const [sort, setSort] = useState<string>('asc');
     const [selectedMethod, setSelectedMethod] = useState<string>('');
     const [copiedStates, setCopiedStates] = useState<Record<string, boolean>>({});
-
-    const { isError, isLoading, trackingLogs, total } = useTrackingLog(
+    const [searchValue, setSearchValue] = useState<string>('');
+    const [isSearching, setIsSearching] = useState(false);
+    const { isError, isLoading, trackingLogs, total, mutate } = useTrackingLog(
         dateRange,
         page,
         pageSize,
         selectedMethod,
         sort,
+        searchValue,
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedSearch = useCallback(
+        debounce((value: string) => {
+            setSearchValue(value);
+            setIsSearching(false);
+        }, 500),
+        [],
     );
 
     const handleDateRangeChange = (dates: any) => {
@@ -115,12 +127,9 @@ function TrackingLogPage() {
         setPage(page);
     };
 
-    const handlePageSizeChange = (pageSize: number) => {
-        setPageSize(pageSize);
-    };
-
     const handleSearch = (value: string) => {
-        console.log(value);
+        setIsSearching(true);
+        debouncedSearch(value);
     };
 
     const handleMethodChange = (value: string) => {
@@ -128,13 +137,7 @@ function TrackingLogPage() {
     };
 
     const handleRefresh = () => {
-        setPage(1);
-        setSelectedMethod('');
-        setSort('asc');
-        setDateRange({
-            start_date: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-            end_date: dayjs().format('YYYY-MM-DD'),
-        });
+        mutate();
     };
 
     if (isError) {
@@ -160,10 +163,10 @@ function TrackingLogPage() {
                     <div className="w-[200px]">
                         <Input.Search
                             placeholder={t.tracking_log.search_placeholder}
+                            allowClear
+                            loading={isSearching}
                             onSearch={handleSearch}
-                            onPressEnter={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                                handleSearch(e.currentTarget.value)
-                            }
+                            onChange={(e) => handleSearch(e.target.value)}
                         />
                     </div>
                     <Select
@@ -184,7 +187,9 @@ function TrackingLogPage() {
                     pageSize={pageSize}
                     current={page}
                     onChange={handlePageChange}
-                    onShowSizeChange={handlePageSizeChange}
+                    onShowSizeChange={(current, size) => {
+                        setPageSize(size);
+                    }}
                 />
             </div>
 
@@ -201,7 +206,9 @@ function TrackingLogPage() {
                             title={
                                 <div className="flex items-center gap-2">
                                     <UserCircle2 className="w-5 h-5" />
-                                    <Text strong>{log.account}</Text>
+                                    <Text strong>
+                                        {log.account} - {log.user}
+                                    </Text>
                                 </div>
                             }
                             extra={<Tag color={getMethodColor(log.method)}>{log.method}</Tag>}

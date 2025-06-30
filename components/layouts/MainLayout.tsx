@@ -14,6 +14,7 @@ import svgs from '@/assets/svgs';
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import LanguageHydration from '../common/LanguageHydration';
+import { getInfomation } from '@/utils/functions/getInfomation';
 
 const { Header, Content, Sider } = Layout;
 
@@ -23,6 +24,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const [collapsed, setCollapsed] = useState(false);
+    const userInfo = getInfomation();
     const router = useRouter();
     const menuItems = useMenuItems();
     const {
@@ -60,7 +62,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                                 collapsed ? 'hidden' : 'block',
                             )}
                         >
-                            Đặng Việt Quang - B25098
+                            {userInfo?.fullname} - {userInfo?.card_number}
                         </h3>
                     </div>
                     <Menu

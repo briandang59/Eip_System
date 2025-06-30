@@ -19,9 +19,10 @@ export const useTrackingLog = (
     pageSize: number = 10,
     method: string = '',
     sort: string = 'asc',
+    search: string = '',
 ) => {
     const queryString = params ? `?${qs.stringify(params)}` : '';
-    const { data, error } = useSWR<BaseResponse<TrackingLogResponse[]>>(
+    const { data, error, mutate } = useSWR<BaseResponse<TrackingLogResponse[]>>(
         `${API_URL}${queryString}`,
         fetcher,
         {
@@ -35,6 +36,15 @@ export const useTrackingLog = (
 
     if (method) {
         filteredData = filteredData.filter((item) => item.method === method);
+    }
+    if (search) {
+        filteredData = filteredData.filter(
+            (item) =>
+                item.account === search ||
+                item.url === search ||
+                item.description === search ||
+                item.user.toLowerCase().includes(search.toLowerCase()),
+        );
     }
     if (sort) {
         filteredData = filteredData.sort((a, b) =>
@@ -50,5 +60,6 @@ export const useTrackingLog = (
         isLoading: !error && !data,
         isError: error,
         total: filteredData.length,
+        mutate,
     };
 };
