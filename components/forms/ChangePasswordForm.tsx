@@ -51,7 +51,6 @@ function ChangePasswordForm() {
             }
         } catch {
             toast.error(t.form.change_password_failed);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         }
     };
     return (
@@ -67,6 +66,7 @@ function ChangePasswordForm() {
                     borderRadius: '10px',
                 }}
             >
+                <h2 className="text-[20px] font-bold">{t.settings.change_password.title}</h2>
                 <FormInput
                     control={control}
                     name="old_password"
