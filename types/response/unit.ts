@@ -1,0 +1,21 @@
+export type UnitType = {
+    id: number;
+    created_at: string;
+    name_en: string;
+    name_zh: string;
+    name_vn: string;
+    type_id: number;
+    staffing_limit: number | null;
+    manager: number | null;
+    parent_unit_id: number | null;
+    code: string;
+    belongs_to_workplace: number[];
+    class_id: number;
+    created_by: number | null;
+    updated_at: string | null;
+    updated_by: number | null;
+    group_code: string | null;
+    category_id: number;
+    support_employee_class: number[];
+    employee_class_id: number;
+};

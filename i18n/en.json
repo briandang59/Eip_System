@@ -94,5 +94,24 @@
         "change_password": {
             "title": "Change Password"
         }
+    },
+    "workday": {
+        "logs": "Logs",
+        "abnormal_process": "Abnormal Process",
+        "take_leave": "Take Leave",
+        "overtime": "Overtime",
+        "work_place": "Work Place",
+        "unit": "Unit",
+        "date": "Date",
+        "export": "Export",
+        "refresh": "Refresh",
+        "try_again": "Try Again",
+        "error_loading": "Error Loading Attendance Data",
+        "error_loading_message": "Unable to load attendance data. Please check your network connection or try again later.",
+        "normal": "Normal",
+        "abnormal": "Abnormal",
+        "action": "Action",
+        "total": "Total",
+        "edit_clock": "Edit Clock"
     }
 }

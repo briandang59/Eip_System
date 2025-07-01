@@ -8,7 +8,7 @@ interface FetcherError extends Error {
     info?: any;
 }
 
-const DEFAULT_TIMEOUT = 30000; // 30 seconds
+const DEFAULT_TIMEOUT = 60000; // 60 seconds
 
 async function handleResponse(response: Response) {
     if (!response.ok) {
@@ -45,7 +45,7 @@ async function handleResponse(response: Response) {
     }
 }
 
-export const fetcher = async (url: string, init?: RequestInit) => {
+export const fetcher = async (url: string, init?: RequestInit, timeout?: number) => {
     const token = typeof window !== 'undefined' ? Cookies.get(AUTH_COOKIE) : null;
 
     const headers: HeadersInit = {
@@ -61,9 +61,11 @@ export const fetcher = async (url: string, init?: RequestInit) => {
         mode: 'cors',
     };
 
+    const requestTimeout = timeout || DEFAULT_TIMEOUT;
+
     try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
+        const timeoutId = setTimeout(() => controller.abort(), requestTimeout);
 
         const response = await fetch(`${baseURL}${url}`, {
             ...config,
@@ -75,7 +77,7 @@ export const fetcher = async (url: string, init?: RequestInit) => {
     } catch (error) {
         if (error instanceof Error) {
             if (error.name === 'AbortError') {
-                throw new Error('Request timeout');
+                throw new Error(`Request timeout (${requestTimeout / 1000}s)`);
             }
             // Log network errors for debugging
             console.error('Network Error:', error);

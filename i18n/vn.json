@@ -94,5 +94,24 @@
         "change_password": {
             "title": "Đổi mật khẩu"
         }
+    },
+    "workday": {
+        "logs": "Nhật ký",
+        "abnormal_process": "Quy trình bất thường",
+        "take_leave": "Nghỉ phép",
+        "overtime": "Tăng ca",
+        "work_place": "Nơi làm việc",
+        "unit": "Đơn vị",
+        "date": "Ngày",
+        "export": "Xuất excel",
+        "refresh": "Làm mới",
+        "try_again": "Thử lại",
+        "error_loading": "Lỗi khi tải dữ liệu chấm công",
+        "error_loading_message": "Không thể tải dữ liệu chấm công. Vui lòng kiểm tra lại kết nối mạng hoặc thử lại sau.",
+        "normal": "Bình thường",
+        "abnormal": "Bất thường",
+        "action": "Hành động",
+        "total": "Tổng",
+        "edit_clock": "Chỉnh sửa chấm công"
     }
 }
