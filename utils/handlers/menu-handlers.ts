@@ -20,9 +20,7 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'hr/take-leave':
             router.push(routes.hr.takeLeave);
             break;
-        case 'hr/work-attendance':
-            router.push(routes.hr.workAttendance);
-            break;
+
         case 'hr/overtime':
             router.push(routes.hr.overtime);
             break;

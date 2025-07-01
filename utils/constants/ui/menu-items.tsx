@@ -81,11 +81,6 @@ export const useMenuItems = (): MenuItem[] => {
                     <CalendarCheck strokeWidth={1.5} className="w-4 h-4" />,
                 ),
                 getItem(
-                    t?.sidebar?.hr?.work_attendance || 'Work Attendance',
-                    'hr/work-attendance',
-                    <Calendar strokeWidth={1.5} className="w-4 h-4" />,
-                ),
-                getItem(
                     t?.sidebar?.hr?.overtime || 'Overtime',
                     'hr/overtime',
                     <Clock strokeWidth={1.5} className="w-4 h-4" />,

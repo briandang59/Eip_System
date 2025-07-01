@@ -38,7 +38,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Card number',
+            title: t.workday.card_number,
             width: 120,
             dataIndex: 'card_number',
             key: 'card_number',
@@ -48,7 +48,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Full name',
+            title: t.workday.fullname,
             dataIndex: 'fullname',
             key: 'fullname',
             width: 150,
@@ -61,7 +61,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Unit',
+            title: t.workday.unit,
             dataIndex: 'unit',
             key: 'unit',
             width: 100,
@@ -74,7 +74,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Shift',
+            title: t.workday.shift,
             dataIndex: 'shift',
             key: 'shift',
             width: 180,
@@ -99,7 +99,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Date',
+            title: t.workday.date,
             dataIndex: 'date',
             key: 'date',
             width: 100,
@@ -115,7 +115,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Week',
+            title: t.workday.week,
             dataIndex: 'week',
             key: 'week',
             width: 100,
@@ -502,7 +502,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             },
         },
         {
-            title: 'Actions',
+            title: t.workday.actions,
             key: 'operation',
             fixed: 'right',
             width: 50,

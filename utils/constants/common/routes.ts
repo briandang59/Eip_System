@@ -6,7 +6,6 @@ export const routes = {
         employees: '/hr/employees',
         shiftScheduling: '/hr/shift-scheduling',
         takeLeave: '/hr/take-leave',
-        workAttendance: '/hr/work-attendance',
         overtime: '/hr/overtime',
         baseSalary: '/hr/base-salary',
         socialInsurance: '/hr/social-insurance',

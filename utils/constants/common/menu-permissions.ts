@@ -10,7 +10,6 @@ export const menuPermissions: Record<string, Roles[]> = {
     'hr/employees': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/shift-scheduling': [Roles.SUPER_USER, Roles.HR_MANAGER],
     'hr/take-leave': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
-    'hr/work-attendance': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/overtime': [Roles.SUPER_USER, Roles.HR_MANAGER],
     'hr/base-salary': [Roles.SUPER_USER, Roles.HR_MANAGER],
     'hr/social-insurance': [Roles.SUPER_USER, Roles.HR_MANAGER],

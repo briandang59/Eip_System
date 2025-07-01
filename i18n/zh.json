@@ -112,6 +112,11 @@
         "abnormal": "異常",
         "action": "操作",
         "total": "總計",
-        "edit_clock": "編輯打卡"
+        "edit_clock": "編輯打卡",
+        "card_number": "卡號",
+        "fullname": "姓名",
+        "shift": "班次",
+        "week": "周",
+        "actions": "操作"
     }
 }

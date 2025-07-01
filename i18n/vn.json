@@ -112,6 +112,11 @@
         "abnormal": "Bất thường",
         "action": "Hành động",
         "total": "Tổng",
-        "edit_clock": "Chỉnh sửa chấm công"
+        "edit_clock": "Chỉnh sửa chấm công",
+        "card_number": "Số thẻ",
+        "fullname": "Họ tên",
+        "shift": "Ca",
+        "week": "Tuần",
+        "actions": "Hành động"
     }
 }

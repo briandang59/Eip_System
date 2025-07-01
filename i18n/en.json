@@ -112,6 +112,11 @@
         "abnormal": "Abnormal",
         "action": "Action",
         "total": "Total",
-        "edit_clock": "Edit Clock"
+        "edit_clock": "Edit Clock",
+        "card_number": "Card Number",
+        "fullname": "Fullname",
+        "shift": "Shift",
+        "week": "Week",
+        "actions": "Actions"
     }
 }
