@@ -347,6 +347,14 @@ function Workday() {
                     rowKey="stt"
                     isLoading={isLoadingAttendance}
                     summary={summaryRow}
+                    pagination={{
+                        defaultPageSize: 100,
+                        pageSizeOptions: ['50', '100', '200', '500'],
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        size: 'default',
+                    }}
                 />
             </div>
         </ClientOnly>

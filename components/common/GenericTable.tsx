@@ -1,6 +1,6 @@
 import React, { JSX } from 'react';
 import { Table } from 'antd';
-import type { TableColumnsType } from 'antd';
+import type { TableColumnsType, TableProps } from 'antd';
 import { createStyles } from 'antd-style';
 
 const useStyle = createStyles(({ css }) => ({
@@ -34,6 +34,8 @@ export interface GenericTableProps<T extends object> {
     isLoading?: boolean;
     /** Summary/footer row for totals */
     summary?: (pageData: readonly T[]) => React.ReactNode;
+    /** Pagination configuration */
+    pagination?: TableProps<T>['pagination'];
 }
 
 export function GenericTable<T extends object>({
@@ -43,6 +45,7 @@ export function GenericTable<T extends object>({
     scroll = { x: 'max-content', y: 110 * 5 },
     isLoading = false,
     summary,
+    pagination,
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 
@@ -56,6 +59,7 @@ export function GenericTable<T extends object>({
             bordered
             loading={isLoading}
             summary={summary}
+            pagination={pagination}
         />
     );
 }

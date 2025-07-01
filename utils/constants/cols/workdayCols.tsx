@@ -1,6 +1,6 @@
 import { Button, Popover, TableColumnsType } from 'antd';
 import { useChangeLanguage } from '@/utils/hooks/useChangeLanguage';
-import { AlertCircle, Calendar, Clock, Eye, Home, Paperclip } from 'lucide-react';
+import { AlertCircle, Calendar, Clock, Eye, Home, Paperclip, Settings } from 'lucide-react';
 import { getDayOfWeek } from '@/utils/functions/getDayOfWeek';
 import { formatTimeHHmm } from '@/utils/functions/formatTimeHHmm';
 import { formatNumber } from '@/utils/functions/formatNumber';
@@ -444,7 +444,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'Actions',
             key: 'operation',
             fixed: 'right',
-            width: 150,
+            width: 50,
             render: () => {
                 return (
                     <Popover
@@ -471,8 +471,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
                         trigger="click"
                     >
                         <Button>
-                            <Eye className="w-4 h-4 text-blue-500" />
-                            <span>{t.workday.action}</span>
+                            <Settings className="w-4 h-4 text-green-700" />
                         </Button>
                     </Popover>
                 );
