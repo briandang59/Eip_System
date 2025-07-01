@@ -4,7 +4,7 @@ import { GenericTable } from '@/components/common/GenericTable';
 import { useWorkdayCols } from '@/utils/constants/cols/workdayCols';
 import { Button, DatePicker, Input, Select, Switch, Alert, Table } from 'antd';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useAttendanceV2 } from '@/apis/useSwr/attendance';
 import { getInfomation } from '@/utils/functions/getInfomation';

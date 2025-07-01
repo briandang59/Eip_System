@@ -2,6 +2,9 @@ import { RoleType, WorkPlaceType } from '@/types/response/roles';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { TableColumnsType } from 'antd';
 
+// Re-export RoleType for use in other components
+export type { RoleType } from '@/types/response/roles';
+
 export const useRoleCols = (): TableColumnsType<RoleType> => {
     const { t } = useTranslationCustom();
 
