@@ -1,72 +1,72 @@
-stages: 
-  - deploy
-  - notify
-  - cleanup
+stages:
+    - deploy
+    - notify
+    - cleanup
 
 variables:
-  BLUE_CONTAINER: "eip-ui-blue"
-  GREEN_CONTAINER: "eip-ui-green"
-  PORT: "3000"
-  IMAGE_TAG: "eip-ui:${CI_COMMIT_SHORT_SHA}"
+    BLUE_CONTAINER: 'eip-ui-blue'
+    GREEN_CONTAINER: 'eip-ui-green'
+    PORT: '3000'
+    IMAGE_TAG: 'eip-ui:${CI_COMMIT_SHORT_SHA}'
 
 deploy:
-  stage: deploy
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-  tags:
-    - docker-prod
-  script:
-    - echo "now deploying"
-    - cd $CI_PROJECT_DIR
-    - sudo docker compose down
-    - sudo docker compose up -d --build
-    - echo "deploy job's done"
+    stage: deploy
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "main"'
+    tags:
+        - docker-prod
+    script:
+        - echo "now deploying"
+        - cd $CI_PROJECT_DIR
+        - sudo docker compose down
+        - sudo docker compose up -d --build --no-cache
+        - echo "deploy job's done"
 
 notify_failure:
-  stage: notify
-  tags:
-    - docker-prod
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-  script:
-    - echo "Deployment failed! Sending notification..."
-    - | 
-      curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
-      -H "Content-Type: application/json" \
-      -d '{
-        "card_number": "T24065", 
-        "message": "eip-api(prod) deploy failed!"
-      }'
-  when: on_failure
-  allow_failure: true
+    stage: notify
+    tags:
+        - docker-prod
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "main"'
+    script:
+        - echo "Deployment failed! Sending notification..."
+        - |
+            curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
+            -H "Content-Type: application/json" \
+            -d '{
+              "card_number": "T24065", 
+              "message": "eip-api(prod) deploy failed!"
+            }'
+    when: on_failure
+    allow_failure: true
 
 notify_success:
-  stage: notify
-  tags:
-    - docker
-  script:
-    - echo "Deployment success! Sending notification..."
-    - |
-      curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
-      -H "Content-Type: application/json" \
-      -d '{
-        "card_number": "T24065",
-        "message": "eip-api(prod) deploy success!"
-      }'
-  when: on_success
-  allow_failure: true
+    stage: notify
+    tags:
+        - docker
+    script:
+        - echo "Deployment success! Sending notification..."
+        - |
+            curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
+            -H "Content-Type: application/json" \
+            -d '{
+              "card_number": "T24065",
+              "message": "eip-api(prod) deploy success!"
+            }'
+    when: on_success
+    allow_failure: true
 
 # 自動清理 Docker Image
 cleanup:
-  stage: cleanup
-  tags:
-    - docker
-  script:
-    - echo "Now cleanup Docker images"
-    - sudo docker container prune -f
-    - sudo docker image prune -af
-    - sudo docker volume prune -f
-    - sudo docker system prune -af --volumes
-    - echo "Clearing Docker images done"
-  when: always
-  allow_failure: true
+    stage: cleanup
+    tags:
+        - docker
+    script:
+        - echo "Now cleanup Docker images"
+        - sudo docker container prune -f
+        - sudo docker image prune -af
+        - sudo docker volume prune -f
+        - sudo docker system prune -af --volumes
+        - echo "Clearing Docker images done"
+    when: always
+    allow_failure: true
