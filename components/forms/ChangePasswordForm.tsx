@@ -74,6 +74,7 @@ function ChangePasswordForm() {
                     placeholder="Enter your username"
                     size="large"
                     type="password"
+                    required
                     error={errors.old_password?.message}
                 />
                 <FormInput
@@ -83,6 +84,7 @@ function ChangePasswordForm() {
                     type="password"
                     placeholder="Enter your password"
                     size="large"
+                    required
                     error={errors.new_password?.message}
                 />
                 <FormInput
@@ -92,6 +94,7 @@ function ChangePasswordForm() {
                     type="password"
                     placeholder="Enter your password"
                     size="large"
+                    required
                     error={errors.new_password?.message}
                 />
                 <Form.Item>

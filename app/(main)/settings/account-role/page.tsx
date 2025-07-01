@@ -15,7 +15,7 @@ function AccountRole() {
             <GenericTable<RoleType>
                 columns={cols}
                 dataSource={roles}
-                rowKey="key"
+                rowKey="id"
                 isLoading={isLoading}
             />
         </div>

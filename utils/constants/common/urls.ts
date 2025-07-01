@@ -7,4 +7,11 @@ export const urls = {
     account: 'account',
     roles: 'roles',
     password: 'password',
+    cache: 'cache',
+    work_place: 'work_place',
+    hr: 'hr',
+    attendance: 'attendance',
+    summary: 'summary',
+    summary_v2: 'summary_v2',
+    dept_unit: 'dept_unit',
 };

@@ -32,6 +32,8 @@ export interface GenericTableProps<T extends object> {
     /** Các props gốc khác của antd Table nếu cần */
     scroll?: Parameters<typeof Table>[0]['scroll'];
     isLoading?: boolean;
+    /** Summary/footer row for totals */
+    summary?: (pageData: readonly T[]) => React.ReactNode;
 }
 
 export function GenericTable<T extends object>({
@@ -40,6 +42,7 @@ export function GenericTable<T extends object>({
     rowKey,
     scroll = { x: 'max-content', y: 110 * 5 },
     isLoading = false,
+    summary,
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 
@@ -52,6 +55,7 @@ export function GenericTable<T extends object>({
             scroll={scroll}
             bordered
             loading={isLoading}
+            summary={summary}
         />
     );
 }

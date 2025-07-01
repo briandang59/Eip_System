@@ -94,5 +94,23 @@
         "change_password": {
             "title": "更改密碼"
         }
+    },
+    "workday": {
+        "logs": "日誌",
+        "abnormal_process": "異常流程",
+        "take_leave": "請假",
+        "overtime": "加班",
+        "work_place": "工作地點",
+        "unit": "單位",
+        "date": "日期",
+        "export": "導出",
+        "refresh": "刷新",
+        "try_again": "重試",
+        "error_loading": "載入考勤數據失敗",
+        "error_loading_message": "無法載入考勤數據。請檢查您的網絡連接或稍後重試。",
+        "normal": "正常",
+        "abnormal": "異常",
+        "action": "操作",
+        "total": "總計"
     }
 }
