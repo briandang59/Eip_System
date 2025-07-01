@@ -63,11 +63,7 @@ export const useAttendanceV2 = (params: params, filterParams: filterParams) => {
     };
 
     const matchesAbnormalStatus = (item: AttendanceV2WithKey): boolean => {
-        return filterParams.is_abnormal !== undefined
-            ? item?.details?.length > 0 &&
-                  item?.details[0]?.attendance?.length > 0 &&
-                  item?.details[0]?.attendance[0]?.is_abnormal === filterParams.is_abnormal
-            : true;
+        return filterParams.is_abnormal !== undefined ? item?.details[0]?.workday?.KP > 0 : true;
     };
 
     const isActiveEmployee = (item: AttendanceV2WithKey): boolean => {

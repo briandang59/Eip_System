@@ -111,6 +111,7 @@
         "normal": "Bình thường",
         "abnormal": "Bất thường",
         "action": "Hành động",
-        "total": "Tổng"
+        "total": "Tổng",
+        "edit_clock": "Chỉnh sửa chấm công"
     }
 }

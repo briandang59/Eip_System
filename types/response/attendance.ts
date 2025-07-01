@@ -14,8 +14,19 @@ export type AttendanceV2Type = {
             name_zh: string;
         };
     };
-    pregnancy: null;
-    has_children: null;
+    pregnancy: {
+        id: number;
+        employee_uuid: string;
+        start_date: string;
+        end_date: string | null;
+        created_at: string;
+    };
+    has_children: {
+        id: number;
+        employee_uuid: string;
+        start_date: string;
+        end_date: string | null;
+    };
     join_company_date1: string;
     employee_class: {
         id: number;

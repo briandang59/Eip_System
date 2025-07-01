@@ -111,6 +111,7 @@
         "normal": "Normal",
         "abnormal": "Abnormal",
         "action": "Action",
-        "total": "Total"
+        "total": "Total",
+        "edit_clock": "Edit Clock"
     }
 }

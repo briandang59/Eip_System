@@ -111,6 +111,7 @@
         "normal": "正常",
         "abnormal": "異常",
         "action": "操作",
-        "total": "總計"
+        "total": "總計",
+        "edit_clock": "編輯打卡"
     }
 }

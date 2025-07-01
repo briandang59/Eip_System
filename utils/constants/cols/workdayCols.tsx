@@ -1,11 +1,23 @@
 import { Button, Popover, TableColumnsType } from 'antd';
 import { useChangeLanguage } from '@/utils/hooks/useChangeLanguage';
-import { AlertCircle, Calendar, Clock, Eye, Home, Paperclip, Settings } from 'lucide-react';
+import {
+    AlertCircle,
+    Baby,
+    Calendar,
+    Clock,
+    ClockAlert,
+    Eye,
+    Home,
+    Paperclip,
+    Settings,
+    Users,
+} from 'lucide-react';
 import { getDayOfWeek } from '@/utils/functions/getDayOfWeek';
 import { formatTimeHHmm } from '@/utils/functions/formatTimeHHmm';
 import { formatNumber } from '@/utils/functions/formatNumber';
 import { AttendanceV2Type } from '@/types/response/attendance';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { CheckInPregnancyOrTakeCareChild } from '@/utils/functions/CheckInPregnancyOrTakeCareChild';
 
 const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
     const unitName = useChangeLanguage(unit.name_en, unit.name_zh, unit.name_vn);
@@ -27,7 +39,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
         },
         {
             title: 'Card number',
-            width: 150,
+            width: 120,
             dataIndex: 'card_number',
             key: 'card_number',
             fixed: 'left',
@@ -52,7 +64,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'Unit',
             dataIndex: 'unit',
             key: 'unit',
-            width: 150,
+            width: 100,
             fixed: 'left',
             sorter: (a, b) => {
                 return a?.unit?.name_en?.localeCompare(b?.unit?.name_en);
@@ -65,7 +77,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'Shift',
             dataIndex: 'shift',
             key: 'shift',
-            width: 200,
+            width: 180,
             fixed: 'left',
             sorter: (a, b) => {
                 return a?.details[0]?.shift?.tag.localeCompare(b?.details[0]?.shift?.tag);
@@ -118,7 +130,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'T1',
             dataIndex: 't1',
             key: 't1',
-            width: 100,
+            width: 70,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.T1?.time?.localeCompare(
                     b?.details[0]?.workday?.T1?.time,
@@ -155,7 +167,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'T2',
             dataIndex: 't2',
             key: 't2',
-            width: 100,
+            width: 70,
             sorter: (a, b) => {
                 return (
                     (a?.details[0]?.workday?.T2?.time || 0) -
@@ -189,18 +201,12 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
                 return null;
             },
         },
-        // { title: 'Log', dataIndex: 'log', key: 'log', width: 150 },
-        // {
-        //     title: 'Abnormal',
-        //     dataIndex: 'abnormal',
-        //     key: 'abnormal',
-        //     width: 150,
-        // },
+
         {
             title: 'GC',
             dataIndex: 'GC',
             key: 'GC',
-            width: 70,
+            width: 50,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.GC - b?.details[0]?.workday?.GC;
             },
@@ -218,7 +224,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'NLE',
             dataIndex: 'NLE',
             key: 'NLE',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.nle - b?.details[0]?.workday?.nle;
             },
@@ -236,7 +242,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: '150',
             dataIndex: '150',
             key: '150',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return (
                     a?.details[0]?.workday?.overtime?.c150 - b?.details[0]?.workday?.overtime?.c150
@@ -256,7 +262,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: '200',
             dataIndex: '200',
             key: '200',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return (
                     a?.details[0]?.workday?.overtime?.c200 - b?.details[0]?.workday?.overtime?.c200
@@ -276,7 +282,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: '300',
             dataIndex: '300',
             key: '300',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return (
                     a?.details[0]?.workday?.overtime?.c300 - b?.details[0]?.workday?.overtime?.c300
@@ -296,7 +302,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'A',
             dataIndex: 'A',
             key: 'A',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return (
                     a?.details[0]?.workday?.leave_hours.A - b?.details[0]?.workday?.leave_hours.A
@@ -316,7 +322,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'KP',
             dataIndex: 'KP',
             key: 'KP',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.KP - b?.details[0]?.workday?.KP;
             },
@@ -334,7 +340,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'B',
             dataIndex: 'B',
             key: 'B',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return (
                     a?.details[0]?.workday?.leave_hours.B - b?.details[0]?.workday?.leave_hours.B
@@ -354,7 +360,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'DT',
             dataIndex: 'DT',
             key: 'DT',
-            width: 80,
+            width: 50,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.DT - b?.details[0]?.workday?.DT;
             },
@@ -372,7 +378,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'G200',
             dataIndex: 'G200',
             key: 'G200',
-            width: 90,
+            width: 60,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.G200 - b?.details[0]?.workday?.G200;
             },
@@ -390,7 +396,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'G210',
             dataIndex: 'G210',
             key: 'G210',
-            width: 80,
+            width: 60,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.G210 - b?.details[0]?.workday?.G210;
             },
@@ -408,7 +414,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'Tcom',
             dataIndex: 'Tcom',
             key: 'Tcom',
-            width: 100,
+            width: 70,
             sorter: (a, b) => {
                 return a?.details[0]?.workday?.Tcom - b?.details[0]?.workday?.Tcom;
             },
@@ -426,18 +432,73 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             title: 'CTMTCN',
             dataIndex: 'CTMTCN',
             key: 'CTMTCN',
-            width: 100,
+            width: 80,
             render: (_, record) => {
-                return <div className="text-nowrap text-center text-red-500 font-medium"></div>;
+                const isPregnant = CheckInPregnancyOrTakeCareChild(
+                    record?.pregnancy?.start_date,
+                    record?.pregnancy?.end_date,
+                    record?.details[0]?.date,
+                );
+                const isTakeCareChild = CheckInPregnancyOrTakeCareChild(
+                    record?.has_children?.start_date,
+                    record?.has_children?.end_date,
+                    record?.details[0]?.date,
+                );
+
+                if (isPregnant) {
+                    return (
+                        <div className="flex items-center justify-center gap-2">
+                            <Users className="w-4 h-4 text-red-500" />{' '}
+                            <p className="text-red-500"> MT</p>
+                        </div>
+                    );
+                }
+                if (isTakeCareChild) {
+                    return (
+                        <div className="flex items-center justify-center gap-2">
+                            <Baby className="w-4 h-4 text-blue-500" />{' '}
+                            <p className="text-blue-500"> CN</p>
+                        </div>
+                    );
+                }
+
+                return <p className="text-center">-</p>;
             },
         },
         {
             title: 'VPSX',
             dataIndex: 'VPSX',
             key: 'VPSX',
-            width: 100,
+            width: 60,
+            sorter: (a, b) => {
+                return a?.details[0]?.employee_class_code?.localeCompare(
+                    b?.details[0]?.employee_class_code,
+                );
+            },
             render: (_, record) => {
-                return <div className="text-nowrap text-center text-yellow-500 font-medium"></div>;
+                return (
+                    <div className="text-nowrap text-center">
+                        {record?.details[0]?.employee_class_code}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'PNTrua',
+            dataIndex: 'PNTrua',
+            key: 'PNTrua',
+            width: 60,
+            render: (_, _record) => {
+                return <div className="text-nowrap text-center">-</div>;
+            },
+        },
+        {
+            title: 'PNTca',
+            dataIndex: 'PNTca',
+            key: 'PNTca',
+            width: 60,
+            render: (_, _record) => {
+                return <div className="text-nowrap text-center">-</div>;
             },
         },
         {
@@ -457,6 +518,10 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
                                 <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
                                     <AlertCircle className="w-4 h-4 text-red-500" />
                                     <span>{t.workday.abnormal_process}</span>
+                                </button>
+                                <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
+                                    <ClockAlert className="w-4 h-4 text-blue-500" />
+                                    <span>{t.workday.edit_clock}</span>
                                 </button>
                                 <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
                                     <Home className="w-4 h-4 text-green-700" />
