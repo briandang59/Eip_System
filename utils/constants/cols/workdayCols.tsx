@@ -17,7 +17,7 @@ import { formatTimeHHmm } from '@/utils/functions/formatTimeHHmm';
 import { formatNumber } from '@/utils/functions/formatNumber';
 import { AttendanceV2Type } from '@/types/response/attendance';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { checkInPregnancyOrTakeCareChild } from '../../../utils/functions/checkInPregnancyOrTakeCareChild';
+import { checkInPregnancyOrTakeCareChild } from '@/utils/functions/checkInPregnancyOrTakeCareChild';
 
 const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
     const unitName = useChangeLanguage(unit.name_en, unit.name_zh, unit.name_vn);
