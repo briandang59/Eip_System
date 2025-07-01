@@ -17,7 +17,7 @@ import { formatTimeHHmm } from '@/utils/functions/formatTimeHHmm';
 import { formatNumber } from '@/utils/functions/formatNumber';
 import { AttendanceV2Type } from '@/types/response/attendance';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { CheckInPregnancyOrTakeCareChild } from '@/utils/functions/CheckInPregnancyOrTakeCareChild';
+import { checkInPregnancyOrTakeCareChild } from '@/utils/functions/checkInPregnancyOrTakeCareChild';
 
 const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
     const unitName = useChangeLanguage(unit.name_en, unit.name_zh, unit.name_vn);
@@ -434,12 +434,12 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             key: 'CTMTCN',
             width: 80,
             render: (_, record) => {
-                const isPregnant = CheckInPregnancyOrTakeCareChild(
+                const isPregnant = checkInPregnancyOrTakeCareChild(
                     record?.pregnancy?.start_date,
                     record?.pregnancy?.end_date,
                     record?.details[0]?.date,
                 );
-                const isTakeCareChild = CheckInPregnancyOrTakeCareChild(
+                const isTakeCareChild = checkInPregnancyOrTakeCareChild(
                     record?.has_children?.start_date,
                     record?.has_children?.end_date,
                     record?.details[0]?.date,

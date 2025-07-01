@@ -1,4 +1,4 @@
-export const CheckInPregnancyOrTakeCareChild = (
+export const checkInPregnancyOrTakeCareChild = (
     start_date: string,
     end_date: string | null,
     record_date: string,
