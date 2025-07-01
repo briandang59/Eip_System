@@ -27,8 +27,9 @@ FROM base AS builder
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+
 # 建構應用程式
-RUN pnpm build
+RUN pnpm run build:clean
 
 # 生產階段
 FROM node:18-alpine AS runner

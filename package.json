@@ -4,7 +4,9 @@
     "private": true,
     "scripts": {
         "dev": "next dev --turbopack -p 8000",
+        "clean": "rm -rf .next out",
         "build": "next build",
+        "build:clean": "pnpm run clean && pnpm run build",
         "start": "next start",
         "lint": "next lint",
         "format": "prettier --write ."
