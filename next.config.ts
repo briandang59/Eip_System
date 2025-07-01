@@ -1,7 +1,12 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-    /* config options here */
+    // Cú pháp mới cho Turbopack (thay vì experimental.turbo)
+    turbopack: {
+        resolveAlias: {
+            '@': './',
+        },
+    },
 };
 
 export default nextConfig;
