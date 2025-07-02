@@ -4,6 +4,7 @@ import '../../app/globals.css';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import ClientOnly from '@/components/common/ClientOnly';
 import { Toaster } from 'sonner';
+import AntdProvider from '@/components/common/AntdProvider';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -54,7 +55,9 @@ export default function AuthLayoutComponent({
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <ClientOnly>
                     <Toaster position="top-right" richColors />
-                    <AuthLayout>{children}</AuthLayout>
+                    <AntdProvider>
+                        <AuthLayout>{children}</AuthLayout>
+                    </AntdProvider>
                 </ClientOnly>
             </body>
         </html>

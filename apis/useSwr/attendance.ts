@@ -203,6 +203,9 @@ export const useAttendanceV2 = (params: params, filterParams?: filterParams) => 
         if (status === 'resign') {
             return statisticalWorkdayResign;
         }
+        if (status === 'all') {
+            return statisticalWorkday;
+        }
         return statisticalWorkday;
     };
 

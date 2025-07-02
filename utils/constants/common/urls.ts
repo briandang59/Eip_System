@@ -14,4 +14,7 @@ export const urls = {
     summary: 'summary',
     summary_v2: 'summary_v2',
     dept_unit: 'dept_unit',
+    organization: 'organization',
+    unit_category: 'unit_category',
+    unit_type: 'unit_type',
 };

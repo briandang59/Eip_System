@@ -127,5 +127,25 @@
             "resign": "Resign",
             "title": "Status"
         }
+    },
+    "utils": {
+        "title": "Utils",
+        "departments": "Departments",
+        "dormitories": "Dormitories",
+        "job_titles": "Job Titles",
+        "nationalities": "Nationalities",
+        "national_holidays": "National Holidays",
+        "shift_types": "Shift Types",
+        "languages": "Languages",
+        "ethnicities": "Ethnicities",
+        "add": "Add",
+        "export": "Export",
+        "refresh": "Refresh",
+        "name": "Name",
+        "code": "Code",
+        "actions": "Actions",
+        "search": "Search",
+        "type": "Type",
+        "category": "Category"
     }
 }

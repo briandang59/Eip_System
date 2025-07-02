@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import '../../app/globals.css';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Toaster } from 'sonner';
+import AntdProvider from '@/components/common/AntdProvider';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -54,7 +55,9 @@ export default function RootLayout({
                 cz-shortcut-listen="true"
             >
                 <Toaster position="top-right" richColors />
-                <MainLayout>{children}</MainLayout>
+                <AntdProvider>
+                    <MainLayout>{children}</MainLayout>
+                </AntdProvider>
             </body>
         </html>
     );

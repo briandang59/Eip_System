@@ -127,5 +127,25 @@
             "resign": "離職",
             "title": "狀態"
         }
+    },
+    "utils": {
+        "title": "工具",
+        "departments": "部門",
+        "dormitories": "宿舍",
+        "job_titles": "職稱",
+        "nationalities": "國籍",
+        "national_holidays": "國定假日",
+        "shift_types": "班次",
+        "languages": "語言",
+        "ethnicities": "民族",
+        "add": "添加",
+        "export": "導出",
+        "refresh": "刷新",
+        "name": "名稱",
+        "code": "代碼",
+        "actions": "操作",
+        "search": "搜索",
+        "type": "類型",
+        "category": "類別"
     }
 }

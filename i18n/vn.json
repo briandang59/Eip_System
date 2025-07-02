@@ -127,5 +127,25 @@
             "resign": "Nghỉ việc",
             "title": "Trạng thái"
         }
+    },
+    "utils": {
+        "title": "Tiện ích",
+        "departments": "Phòng ban",
+        "dormitories": "Ký túc xá",
+        "job_titles": "Chức vụ",
+        "nationalities": "Quốc tịch",
+        "national_holidays": "Ngày lễ",
+        "shift_types": "Loại ca",
+        "languages": "Ngôn ngữ",
+        "ethnicities": "Dân tộc",
+        "add": "Thêm",
+        "export": "Xuất",
+        "refresh": "Làm mới",
+        "name": "Tên",
+        "code": "Mã",
+        "actions": "Hành động",
+        "search": "Tìm kiếm",
+        "type": "Loại",
+        "category": "Danh mục"
     }
 }
