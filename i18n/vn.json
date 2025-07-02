@@ -154,6 +154,8 @@
         "break_time": "Thời gian nghỉ",
         "period": "Ca",
         "location": "Địa điểm",
-        "tag": "Tag"
+        "tag": "Tag",
+        "education": "Giáo dục",
+        "level": "Trình độ"
     }
 }

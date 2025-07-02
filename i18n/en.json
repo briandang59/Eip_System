@@ -154,6 +154,8 @@
         "break_time": "Break Time",
         "period": "Period",
         "location": "Location",
-        "tag": "Tag"
+        "tag": "Tag",
+        "education": "Education",
+        "level": "Level"
     }
 }

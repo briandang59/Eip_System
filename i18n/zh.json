@@ -154,6 +154,8 @@
         "break_time": "休息時間",
         "period": "班次",
         "location": "地點",
-        "tag": "標籤"
+        "tag": "標籤",
+        "education": "教育",
+        "level": "等級"
     }
 }

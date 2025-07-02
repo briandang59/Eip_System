@@ -4,17 +4,17 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
 
 import { useState } from 'react';
+import { NationResponseType } from '@/types/response/nation';
+import { useEducations } from '@/apis/useSwr/educations';
+import { useEducationCols } from '@/utils/constants/cols/educationCols';
+import { EducationResponseType } from '@/types/response/education';
 
-import { useEthnics } from '@/apis/useSwr/ethnic';
-import { EthnicResponseType } from '@/types/response/ethnic';
-import { useEthnicCols } from '@/utils/constants/cols/ethnicCols';
-
-function Ethnicities() {
+function Educations() {
     const { t } = useTranslationCustom();
-    const ethnicCols = useEthnicCols();
+    const educationCols = useEducationCols();
     const [search, setSearch] = useState('');
 
-    const { ethnics, isLoading: isLoadingEthnics } = useEthnics({ search });
+    const { educations, isLoading: isLoadingEducations } = useEducations({ search });
 
     return (
         <div>
@@ -31,11 +31,11 @@ function Ethnicities() {
                     allowClear
                 />
             </div>
-            <GenericTable<EthnicResponseType>
-                columns={ethnicCols}
-                dataSource={ethnics || []}
+            <GenericTable<EducationResponseType>
+                columns={educationCols}
+                dataSource={educations || []}
                 rowKey="id"
-                isLoading={isLoadingEthnics}
+                isLoading={isLoadingEducations}
                 summary={() => null}
                 pagination={{
                     defaultPageSize: 30,
@@ -50,4 +50,4 @@ function Ethnicities() {
     );
 }
 
-export default Ethnicities;
+export default Educations;

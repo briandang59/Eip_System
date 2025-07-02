@@ -24,4 +24,6 @@ export const urls = {
     shift: 'shift',
     list: 'list',
     language: 'language',
+    education: 'education',
+    ethnic: 'ethnic',
 };

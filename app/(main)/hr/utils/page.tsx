@@ -2,6 +2,7 @@
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Tabs } from 'antd';
 import {
+    Book,
     Briefcase,
     CalendarDays,
     CalendarSync,
@@ -19,6 +20,7 @@ import NationalHolidays from '@/components/ui/nationalHolidays';
 import ShiftTypes from '@/components/ui/shiftTypes';
 import Languages from '@/components/ui/languages';
 import Ethnicities from '@/components/ui/ethnicities';
+import Educations from '@/components/ui/educations';
 
 function UtilsPage() {
     const { t } = useTranslationCustom();
@@ -67,6 +69,12 @@ function UtilsPage() {
         },
         {
             key: '8',
+            label: t.utils.education,
+            children: <Educations />,
+            icon: <Book strokeWidth={1.5} />,
+        },
+        {
+            key: '9',
             label: t.utils.ethnicities,
             children: <Ethnicities />,
             icon: <Users strokeWidth={1.5} />,
