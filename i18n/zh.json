@@ -118,5 +118,8 @@
         "shift": "班次",
         "week": "周",
         "actions": "操作"
+    },
+    "statistical": {
+        "error": "載入工作日統計數據失敗"
     }
 }

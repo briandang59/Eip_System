@@ -118,5 +118,8 @@
         "shift": "Ca",
         "week": "Tuần",
         "actions": "Hành động"
+    },
+    "statistical": {
+        "error": "Lỗi khi tải dữ liệu thống kê ngày công"
     }
 }

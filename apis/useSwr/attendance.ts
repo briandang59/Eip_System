@@ -5,6 +5,7 @@ import { BaseResponse } from '@/types/response/baseResponse';
 import { AttendanceV2Type } from '@/types/response/attendance';
 import { checkSunday } from '@/utils/functions/checkSunday';
 import { calculateShiftHour } from '@/utils/functions/calculateShiftHour';
+import { calculateStatisticalWorkday } from '@/utils/functions/calculateStatisticalWorkday';
 
 // Extended type với unique key
 type AttendanceV2WithKey = AttendanceV2Type & { stt: string };
@@ -33,8 +34,10 @@ interface filterParams {
     unit_id?: number;
     tag_shift?: string;
     is_abnormal?: boolean;
+    year?: number;
+    month?: number;
 }
-export const useAttendanceV2 = (params: params, filterParams: filterParams) => {
+export const useAttendanceV2 = (params: params, filterParams?: filterParams) => {
     const swrKey = [API_URL, params] as const;
     const { data, error, mutate } = useSWR<BaseResponse<AttendanceV2Type[]>>(
         swrKey,
@@ -49,9 +52,9 @@ export const useAttendanceV2 = (params: params, filterParams: filterParams) => {
         },
     );
     const matchesSearch = (item: AttendanceV2WithKey): boolean => {
-        if (!filterParams.search) return true;
+        if (!filterParams?.search) return true;
 
-        const searchTerm = filterParams.search.toLowerCase().trim();
+        const searchTerm = filterParams?.search.toLowerCase().trim();
         const fullnameMatch = item.fullname.toLowerCase().includes(searchTerm);
         const cardNumberMatch = item.card_number.toLowerCase().includes(searchTerm);
         const shiftTagMatch = item?.details[0]?.shift?.tag?.toLowerCase().includes(searchTerm);
@@ -61,7 +64,7 @@ export const useAttendanceV2 = (params: params, filterParams: filterParams) => {
     };
 
     const matchesUnit = (item: AttendanceV2WithKey): boolean => {
-        return filterParams.unit_id ? item.unit.id === filterParams.unit_id : true;
+        return filterParams?.unit_id ? item.unit.id === filterParams.unit_id : true;
     };
 
     const matchesAbnormalStatus = (item: AttendanceV2WithKey): boolean => {
@@ -133,7 +136,7 @@ export const useAttendanceV2 = (params: params, filterParams: filterParams) => {
     };
 
     const filterActiveEmployee = (item: AttendanceV2WithKey) => {
-        return filterParams.is_abnormal
+        return filterParams?.is_abnormal
             ? isActiveEmployee(item) &&
                   matchesSearch(item) &&
                   matchesUnit(item) &&
@@ -167,9 +170,16 @@ export const useAttendanceV2 = (params: params, filterParams: filterParams) => {
     const activeEmployee = transformedData?.filter(filterActiveEmployee);
     const resignEmployee = transformedData?.filter(filterResignEmployee);
 
+    const statisticalWorkday = calculateStatisticalWorkday(
+        activeEmployee,
+        filterParams?.year || 0,
+        filterParams?.month || 0,
+    );
+
     return {
         attendance: activeEmployee,
         resignEmployee,
+        statisticalWorkday,
         isLoading: !error && !data,
         isError: error,
         mutate,

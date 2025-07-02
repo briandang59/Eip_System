@@ -81,6 +81,7 @@ export type AttendanceV2Type = {
                     c200: number;
                     c300: number;
                     c390: number;
+                    c400: number;
                 };
                 nle: number;
                 GDem: number;
@@ -120,4 +121,41 @@ export type AttendanceV2Type = {
             };
         },
     ];
+};
+
+export type StatisticalWorkdayType = {
+    card_number: string;
+    fullname: string;
+    unit: {
+        id: number;
+        code: string;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+    };
+    total_GC: number;
+    total_NLE: number;
+    total_150: number;
+    total_200: number;
+    total_300: number;
+    total_390: number;
+    total_400: number;
+    total_A: number;
+    total_B: number;
+    total_KP: number;
+    total_C: number;
+    total_D: number;
+    total_CV: number;
+    total_DT: number;
+    total_VS: number;
+    total_G200: number;
+    total_G210: number;
+    total_Gdem: number;
+    total_CCAN: number;
+    total_Tcom: number;
+    total_MonthH: number;
+    total_HChuan: number;
+    total_SGC: number;
+    total_AllH: number;
+    month: string;
 };

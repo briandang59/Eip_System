@@ -118,5 +118,8 @@
         "shift": "Shift",
         "week": "Week",
         "actions": "Actions"
+    },
+    "statistical": {
+        "error": "Error loading statistical workday data"
     }
 }

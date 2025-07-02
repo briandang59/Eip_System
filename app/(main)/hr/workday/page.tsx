@@ -29,10 +29,10 @@ function Workday() {
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectWorkPlace || undefined,
     });
-    const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null] | null>([
-        dayjs(),
-        dayjs(),
-    ]);
+    const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
+        start: dayjs(),
+        end: dayjs(),
+    });
     const [searchInput, setSearchInput] = useState<string>(''); // Input value for immediate UI update
     const [searchText, setSearchText] = useState<string>(''); // Debounced search value for API call
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
@@ -53,8 +53,8 @@ function Workday() {
         mutate,
     } = useAttendanceV2(
         {
-            start: dateRange?.[0]?.format('YYYY-MM-DD') || '',
-            end: dateRange?.[1]?.format('YYYY-MM-DD') || '',
+            start: dateRange.start.format('YYYY-MM-DD') || '',
+            end: dateRange.end.format('YYYY-MM-DD') || '',
             work_place_id: selectWorkPlace || undefined,
         },
         {
@@ -217,9 +217,11 @@ function Workday() {
     };
     const onChangeDateRange = (value: [Dayjs | null, Dayjs | null] | null) => {
         if (value) {
-            setDateRange(value);
+            setDateRange({
+                start: value[0]!,
+                end: value[1]!,
+            });
         }
-        setDateRange(value);
     };
 
     const handleRefresh = () => {
@@ -292,7 +294,7 @@ function Workday() {
                         <span className="text-sm font-medium">{t.workday.date}</span>
                         <DatePicker.RangePicker
                             style={{ width: '250px' }}
-                            value={dateRange}
+                            value={[dateRange.start, dateRange.end]}
                             onChange={onChangeDateRange}
                             allowClear={false}
                         />
