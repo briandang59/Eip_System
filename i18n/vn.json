@@ -148,6 +148,12 @@
         "type": "Loại",
         "category": "Danh mục",
         "language": "Ngôn ngữ",
-        "date": "Ngày"
+        "date": "Ngày",
+        "start_time": "Thời gian bắt đầu",
+        "end_time": "Thời gian kết thúc",
+        "break_time": "Thời gian nghỉ",
+        "period": "Ca",
+        "location": "Địa điểm",
+        "tag": "Tag"
     }
 }

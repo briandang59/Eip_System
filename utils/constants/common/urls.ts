@@ -23,4 +23,5 @@ export const urls = {
     daily: 'daily',
     shift: 'shift',
     list: 'list',
+    language: 'language',
 };

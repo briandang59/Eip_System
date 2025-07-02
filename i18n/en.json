@@ -148,6 +148,12 @@
         "type": "Type",
         "category": "Category",
         "language": "Language",
-        "date": "Date"
+        "date": "Date",
+        "start_time": "Start Time",
+        "end_time": "End Time",
+        "break_time": "Break Time",
+        "period": "Period",
+        "location": "Location",
+        "tag": "Tag"
     }
 }

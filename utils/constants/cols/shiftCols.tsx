@@ -20,16 +20,16 @@ export const useShiftCols = (): TableColumnsType<ShiftType> => {
             render: (_text, _record, index) => index + 1,
         },
         {
-            title: 'Tên ca làm việc',
-            dataIndex: 'name',
-            key: 'name',
+            title: t.utils.tag,
+            dataIndex: 'tag',
+            key: 'tag',
             width: 200,
             render: (_, record: ShiftType) => (
                 <div className="line-clamp-2">{record?.tag || '-'}</div>
             ),
         },
         {
-            title: 'Thời gian bắt đầu',
+            title: t.utils.start_time,
             dataIndex: 'start_time',
             key: 'start_time',
             width: 200,
@@ -38,7 +38,7 @@ export const useShiftCols = (): TableColumnsType<ShiftType> => {
             ),
         },
         {
-            title: 'Thời gian kết thúc',
+            title: t.utils.end_time,
             dataIndex: 'end_time',
             key: 'end_time',
             width: 200,
@@ -47,7 +47,7 @@ export const useShiftCols = (): TableColumnsType<ShiftType> => {
             ),
         },
         {
-            title: 'Thời gian nghỉ',
+            title: t.utils.break_time,
             dataIndex: 'break_time',
             key: 'break_time',
             width: 200,
@@ -58,14 +58,14 @@ export const useShiftCols = (): TableColumnsType<ShiftType> => {
             ),
         },
         {
-            title: 'Ca',
+            title: t.utils.period,
             dataIndex: 'period_id',
             key: 'period_id',
             width: 200,
             render: (_, record: ShiftType) => <PeriodCell period={record?.period_id} />,
         },
         {
-            title: 'Địa điểm',
+            title: t.utils.location,
             dataIndex: 'location',
             key: 'location',
             width: 200,

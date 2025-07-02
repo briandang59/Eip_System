@@ -148,6 +148,12 @@
         "type": "類型",
         "category": "類別",
         "language": "語言",
-        "date": "日期"
+        "date": "日期",
+        "start_time": "開始時間",
+        "end_time": "結束時間",
+        "break_time": "休息時間",
+        "period": "班次",
+        "location": "地點",
+        "tag": "標籤"
     }
 }
