@@ -4,7 +4,6 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
 
 import { useState } from 'react';
-import { NationResponseType } from '@/types/response/nation';
 import { useEducations } from '@/apis/useSwr/educations';
 import { useEducationCols } from '@/utils/constants/cols/educationCols';
 import { EducationResponseType } from '@/types/response/education';

@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import { useShifts } from '@/apis/useSwr/shift';
 import { useShiftCols } from '@/utils/constants/cols/shiftCols';
-import { ShiftType, ShiftTypeResponseType } from '@/types/response/shiftType';
+import { ShiftType } from '@/types/response/shiftType';
 
 function ShiftTypes() {
     const { t } = useTranslationCustom();
