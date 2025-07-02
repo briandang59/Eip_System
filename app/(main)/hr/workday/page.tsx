@@ -15,6 +15,7 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { formatNumber } from '@/utils/functions/formatNumber';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { ReloadOutlined } from '@ant-design/icons';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Workday() {
     const { t } = useTranslationCustom();
@@ -241,6 +242,27 @@ function Workday() {
         setSearchText('');
     };
 
+    // Export hook
+    const { exportWithoutSummary } = useExportToExcel(workdayCols, 'Workday', 'Workday Data');
+
+    const handleExportExcel = () => {
+        if (!data || data.length === 0) {
+            console.warn('No data to export');
+            return;
+        }
+
+        // Create filename with date range and filters
+        const startDate = dateRange.start.format('YYYY-MM-DD');
+        const endDate = dateRange.end.format('YYYY-MM-DD');
+        const workplaceName =
+            workPlaces?.find((wp) => wp.id === selectWorkPlace)?.name_en || 'AllWorkplaces';
+        const abnormalText = isAbnormal ? 'Abnormal' : 'Normal';
+        const filename = `Workday_${startDate}_to_${endDate}_${workplaceName}_${abnormalText}`;
+
+        // Export data only without summary/total row
+        exportWithoutSummary(data, filename);
+    };
+
     return (
         <ClientOnly>
             <div className="min-h-screen">
@@ -299,7 +321,11 @@ function Workday() {
                             allowClear={false}
                         />
                     </div>
-                    <Button icon={<FileExcelOutlined className="!text-green-600" />}>
+                    <Button
+                        icon={<FileExcelOutlined className="!text-green-600" />}
+                        onClick={handleExportExcel}
+                        disabled={!data || data.length === 0}
+                    >
                         {t.workday.export}
                     </Button>
                     <Button

@@ -29,6 +29,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             dataIndex: 'card_number',
             key: 'card_number',
             fixed: 'left',
+            sorter: (a, b) => a.card_number.localeCompare(b.card_number),
         },
         {
             title: t.workday.fullname,
@@ -36,16 +37,18 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             key: 'fullname',
             width: 170,
             fixed: 'left',
+            sorter: (a, b) => a.fullname.localeCompare(b.fullname),
         },
         {
             title: t.workday.unit,
             dataIndex: 'unit',
             key: 'unit',
-            width: 60,
+            width: 120,
             fixed: 'left',
             render: (_, record) => {
                 return <UnitCell unit={record.unit} />;
             },
+            sorter: (a, b) => a.unit.name_en.localeCompare(b.unit.name_en),
         },
 
         {
@@ -60,6 +63,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_GC - b.total_GC,
         },
         {
             title: 'NLE',
@@ -73,12 +77,13 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_NLE - b.total_NLE,
         },
         {
             title: '150',
             dataIndex: 'total_150',
             key: 'total_150',
-            width: 50,
+            width: 100,
             render: (_, record) => {
                 return (
                     <div className="text-green-700 font-medium">
@@ -86,6 +91,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_150 - b.total_150,
         },
         {
             title: '200',
@@ -99,6 +105,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_200 - b.total_200,
         },
         {
             title: '300',
@@ -112,6 +119,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_300 - b.total_300,
         },
         {
             title: '390',
@@ -125,6 +133,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_390 - b.total_390,
         },
         {
             title: '400',
@@ -138,6 +147,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_400 - b.total_400,
         },
         {
             title: 'A',
@@ -151,6 +161,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_A - b.total_A,
         },
         {
             title: 'KP',
@@ -164,6 +175,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_KP - b.total_KP,
         },
         {
             title: 'B',
@@ -177,6 +189,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_B - b.total_B,
         },
 
         {
@@ -191,6 +204,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_C - b.total_C,
         },
         {
             title: 'D',
@@ -200,25 +214,28 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             render: (_, record) => {
                 return <div>{record.total_D > 0 ? record.total_D : '-'}</div>;
             },
+            sorter: (a, b) => a.total_D - b.total_D,
         },
 
         {
             title: 'DT',
             dataIndex: 'total_DT',
             key: 'total_DT',
-            width: 50,
+            width: 100,
             render: (_, record) => {
                 return <div>{record.total_DT > 0 ? formatNumber(record.total_DT) : '-'}</div>;
             },
+            sorter: (a, b) => a.total_DT - b.total_DT,
         },
         {
             title: 'VS',
             dataIndex: 'total_VS',
             key: 'total_VS',
-            width: 50,
+            width: 100,
             render: (_, record) => {
                 return <div>{record.total_VS > 0 ? formatNumber(record.total_VS) : '-'}</div>;
             },
+            sorter: (a, b) => a.total_VS - b.total_VS,
         },
         {
             title: 'G200',
@@ -232,6 +249,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_G200 - b.total_G200,
         },
         {
             title: 'G210',
@@ -245,12 +263,13 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_G210 - b.total_G210,
         },
         {
             title: 'Gdem',
             dataIndex: 'total_Gdem',
             key: 'total_Gdem',
-            width: 60,
+            width: 70,
             render: (_, record) => {
                 return (
                     <div className="text-green-700 font-medium">
@@ -258,24 +277,27 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_Gdem - b.total_Gdem,
         },
         {
             title: 'CCAN',
             dataIndex: 'total_CCAN',
             key: 'total_CCAN',
-            width: 60,
+            width: 100,
             render: (_, record) => {
-                return <div>{record.total_CCAN > 0 ? record.total_CCAN : '-'}</div>;
+                return <div>{record.total_CCAN > 0 ? formatNumber(record.total_CCAN) : '-'}</div>;
             },
+            sorter: (a, b) => a.total_CCAN - b.total_CCAN,
         },
         {
             title: 'Tcom',
             dataIndex: 'total_Tcom',
             key: 'total_Tcom',
-            width: 70,
+            width: 100,
             render: (_, record) => {
                 return <div>{record.total_Tcom > 0 ? formatNumber(record.total_Tcom) : '-'}</div>;
             },
+            sorter: (a, b) => a.total_Tcom - b.total_Tcom,
         },
         {
             title: 'MonthH',
@@ -285,15 +307,17 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             render: (_, record) => {
                 return <div>{record.total_MonthH > 0 ? record.total_MonthH : '-'}</div>;
             },
+            sorter: (a, b) => a.total_MonthH - b.total_MonthH,
         },
         {
             title: 'H chuẩn',
             dataIndex: 'total_HChuan',
             key: 'total_HChuan',
-            width: 60,
+            width: 100,
             render: (_, record) => {
                 return <div>{record.total_HChuan > 0 ? record.total_HChuan : '-'}</div>;
             },
+            sorter: (a, b) => a.total_HChuan - b.total_HChuan,
         },
         {
             title: 'SGC',
@@ -307,6 +331,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
                     </div>
                 );
             },
+            sorter: (a, b) => a.total_SGC - b.total_SGC,
         },
         {
             title: 'AllH',
@@ -316,48 +341,70 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             render: (_, record) => {
                 return <div>{record.total_AllH > 0 ? record.total_AllH : '-'}</div>;
             },
+            sorter: (a, b) => a.total_AllH - b.total_AllH,
         },
         {
             title: 'KG KToan',
             dataIndex: 'KG KToan',
             key: 'KG KToan',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'XL',
             dataIndex: 'XL',
             key: 'XL',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'PcNu',
             dataIndex: 'PcNu',
             key: 'PcNu',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'Date In',
             dataIndex: 'Date In',
             key: 'Date In',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'Date HD',
             dataIndex: 'Date HD',
             key: 'Date HD',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'Date Out',
             dataIndex: 'Date Out',
             key: 'Date Out',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'DL NV',
             dataIndex: 'DL NV',
             key: 'DL NV',
-            width: 60,
+            width: 70,
+            render: (_, _record) => {
+                return <div>{'-'}</div>;
+            },
         },
         {
             title: 'Month',

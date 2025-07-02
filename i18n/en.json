@@ -120,6 +120,12 @@
         "actions": "Actions"
     },
     "statistical": {
-        "error": "Error loading statistical workday data"
+        "error": "Error loading statistical workday data",
+        "status": {
+            "all": "All",
+            "active": "Active",
+            "resign": "Resign",
+            "title": "Status"
+        }
     }
 }

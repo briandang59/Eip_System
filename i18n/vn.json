@@ -120,6 +120,12 @@
         "actions": "Hành động"
     },
     "statistical": {
-        "error": "Lỗi khi tải dữ liệu thống kê ngày công"
+        "error": "Lỗi khi tải dữ liệu thống kê ngày công",
+        "status": {
+            "all": "Tất cả",
+            "active": "Đang làm việc",
+            "resign": "Nghỉ việc",
+            "title": "Trạng thái"
+        }
     }
 }

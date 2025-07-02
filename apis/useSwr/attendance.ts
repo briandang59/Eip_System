@@ -36,6 +36,7 @@ interface filterParams {
     is_abnormal?: boolean;
     year?: number;
     month?: number;
+    status?: 'active' | 'resign' | 'all';
 }
 export const useAttendanceV2 = (params: params, filterParams?: filterParams) => {
     const swrKey = [API_URL, params] as const;
@@ -169,17 +170,68 @@ export const useAttendanceV2 = (params: params, filterParams?: filterParams) => 
     const transformedData = data?.data ? transformToDaily(data.data) : [];
     const activeEmployee = transformedData?.filter(filterActiveEmployee);
     const resignEmployee = transformedData?.filter(filterResignEmployee);
+    const resignEmployeeWithMonth = resignEmployee.filter((item) => {
+        if (item.resign_date) {
+            const date = new Date(item.resign_date); // Tự parse từ chuỗi YYYY-MM-DD
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // getMonth: 0–11
+            return month === filterParams?.month?.toString().padStart(2, '0');
+        }
+        return false;
+    });
 
     const statisticalWorkday = calculateStatisticalWorkday(
+        transformedData,
+        filterParams?.year || 0,
+        filterParams?.month || 0,
+    );
+    const statisticalWorkdayActive = calculateStatisticalWorkday(
         activeEmployee,
         filterParams?.year || 0,
         filterParams?.month || 0,
     );
 
+    const statisticalWorkdayResign = calculateStatisticalWorkday(
+        resignEmployeeWithMonth,
+        filterParams?.year || 0,
+        filterParams?.month || 0,
+    );
+
+    const statisticalWorkdayByStatus = (status: 'active' | 'resign' | 'all') => {
+        if (status === 'active') {
+            return statisticalWorkdayActive;
+        }
+        if (status === 'resign') {
+            return statisticalWorkdayResign;
+        }
+        return statisticalWorkday;
+    };
+
+    const filterByParams = statisticalWorkdayByStatus(filterParams?.status || 'all').filter(
+        (item) => {
+            // Filter by search text
+            const matchesSearch = filterParams?.search
+                ? item.card_number
+                      .trim()
+                      .toLowerCase()
+                      .includes(filterParams.search.trim().toLowerCase()) ||
+                  item.fullname
+                      .trim()
+                      .toLowerCase()
+                      .includes(filterParams.search.trim().toLowerCase())
+                : true;
+
+            // Filter by unit
+            const matchesUnit = filterParams?.unit_id
+                ? item.unit.id === filterParams.unit_id
+                : true;
+
+            return matchesSearch && matchesUnit;
+        },
+    );
     return {
         attendance: activeEmployee,
         resignEmployee,
-        statisticalWorkday,
+        statisticalWorkday: filterByParams,
         isLoading: !error && !data,
         isError: error,
         mutate,

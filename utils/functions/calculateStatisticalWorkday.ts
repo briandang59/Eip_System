@@ -5,6 +5,8 @@ import { calculateSGC } from './calculateSGC';
 import { calculateAllH } from './calculateAllH';
 import { calculateMonthH } from './calculateMonthH';
 import { calculateCcan } from './calculateCCAN';
+import { checkSunday } from './checkSunday';
+import { formatNumber } from './formatNumber';
 
 export const calculateStatisticalWorkday = (
     attendance: AttendanceV2Type[],
@@ -54,6 +56,13 @@ export const calculateStatisticalWorkday = (
         employeeAttendance.forEach((item) => {
             if (item.details.length > 0) {
                 const details = item.details[0];
+                const check_sunday = checkSunday(details?.date);
+                const result = calculateDTVS(
+                    details?.workday.DT || 0,
+                    details?.workday.VS || 0,
+                    check_sunday ? 0 : details?.workday.KP || 0,
+                    details?.date,
+                );
                 total_GC += details?.workday.GC || 0;
                 total_NLE += details?.workday.nle || 0;
                 total_150 += details?.workday.overtime.c150 || 0;
@@ -63,25 +72,15 @@ export const calculateStatisticalWorkday = (
                 total_400 += details?.workday.overtime.c400 || 0;
                 total_A += details?.workday.leave_hours.A || 0;
                 total_B += details?.workday.leave_hours.B || 0;
-                total_KP += details?.workday.KP || 0;
+                total_KP += result.kp_time || 0;
                 total_C += details?.workday.leave_hours.C || 0;
                 total_D += details?.workday.leave_hours.D || 0;
                 total_CV += details?.workday.leave_hours.A || 0;
                 total_G200 += details?.workday.G200 || 0;
                 total_G210 += details?.workday.G210 || 0;
                 total_Gdem += details?.workday.GDem || 0;
-                total_DT += calculateDTVS(
-                    details?.workday.DT,
-                    details?.workday.VS,
-                    details?.workday.KP,
-                    details?.date,
-                ).money_DT;
-                total_VS += calculateDTVS(
-                    details?.workday.VS,
-                    details?.workday.DT,
-                    details?.workday.KP,
-                    details?.date,
-                ).money_VS;
+                total_DT += result.money_DT;
+                total_VS += result.money_VS;
                 total_SGC += calculateSGC(
                     details?.workday.GC,
                     details?.workday.nle,
@@ -95,20 +94,23 @@ export const calculateStatisticalWorkday = (
                     details?.workday.leave_hours.B,
                     details?.workday.leave_hours.C,
                     details?.workday.leave_hours.D,
-                    details?.workday.KP,
+                    result.kp_time,
                 );
                 total_MonthH = calculateMonthH(year, month);
                 total_HChuan = total_MonthH > 208 ? 208 : total_MonthH;
-                total_CCAN = calculateCcan(
-                    details?.workday.GC,
-                    details?.workday.nle,
-                    details?.workday.leave_hours.A,
-                    details?.workday.leave_hours.B,
-                    details?.workday.leave_hours.C,
-                );
+
                 total_Tcom += details?.workday.Tcom || 0;
             }
         });
+
+        total_CCAN = calculateCcan(
+            total_SGC > 0 ? total_SGC : 0,
+            total_KP,
+            total_A,
+            total_C,
+            employeeAttendance[0]?.unit?.id,
+            total_MonthH,
+        );
 
         // Return statistical data for this employee
         return {

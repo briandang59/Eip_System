@@ -120,6 +120,12 @@
         "actions": "操作"
     },
     "statistical": {
-        "error": "載入工作日統計數據失敗"
+        "error": "載入工作日統計數據失敗",
+        "status": {
+            "all": "全部",
+            "active": "在職",
+            "resign": "離職",
+            "title": "狀態"
+        }
     }
 }
