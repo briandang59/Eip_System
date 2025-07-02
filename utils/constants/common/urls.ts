@@ -19,4 +19,5 @@ export const urls = {
     unit_type: 'unit_type',
     jobtitle: 'jobtitle',
     nation: 'nation',
+    holiday: 'holiday',
 };

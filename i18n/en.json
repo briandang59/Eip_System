@@ -147,6 +147,7 @@
         "search": "Search",
         "type": "Type",
         "category": "Category",
-        "language": "Language"
+        "language": "Language",
+        "date": "Date"
     }
 }

@@ -147,6 +147,7 @@
         "search": "搜索",
         "type": "類型",
         "category": "類別",
-        "language": "語言"
+        "language": "語言",
+        "date": "日期"
     }
 }
