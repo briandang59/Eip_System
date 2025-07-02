@@ -14,11 +14,6 @@ function NationalHolidays() {
     const holidayCols = useHolidayCols();
     const [search, setSearch] = useState('');
 
-    const typeOptions = [
-        { label: 'Product', value: 1 },
-        { label: 'Office', value: 2 },
-    ];
-
     const { holidays, isLoading: isLoadingHolidays } = useHolidays(undefined, { search });
 
     return (

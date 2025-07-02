@@ -13,11 +13,6 @@ function Nationalities() {
     const nationCols = useNationCols();
     const [search, setSearch] = useState('');
 
-    const typeOptions = [
-        { label: 'Product', value: 1 },
-        { label: 'Office', value: 2 },
-    ];
-
     const { nations, isLoading: isLoadingNations } = useNations(undefined, { search });
 
     return (

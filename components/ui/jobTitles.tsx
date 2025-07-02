@@ -17,7 +17,6 @@ function JobTitles() {
         { label: 'Office', value: 2 },
     ];
     const [classId, setClassId] = useState<number>(typeOptions[0].value);
-    const [categoryId, setCategoryId] = useState<number>();
 
     const { jobTitles, isLoading: isLoadingJobTitles } = useJobTitle(
         { classid: classId },

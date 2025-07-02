@@ -20,4 +20,7 @@ export const urls = {
     jobtitle: 'jobtitle',
     nation: 'nation',
     holiday: 'holiday',
+    daily: 'daily',
+    shift: 'shift',
+    list: 'list',
 };
