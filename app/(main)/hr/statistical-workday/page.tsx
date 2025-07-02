@@ -12,7 +12,6 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useUnits } from '@/apis/useSwr/units';
 import { formatNumber } from '@/utils/functions/formatNumber';
 import { FileExcelOutlined, ReloadOutlined } from '@ant-design/icons';
-import { mutate } from 'swr';
 import { useStatisticalWorkdayExport } from '@/utils/hooks/useExportToExcel';
 
 function StatisticalWorkday() {
@@ -36,7 +35,7 @@ function StatisticalWorkday() {
     });
 
     // Export hook
-    const { exportData, exportDataOnly } = useStatisticalWorkdayExport(
+    const { exportDataOnly } = useStatisticalWorkdayExport(
         workdayCols,
         workPlaces,
         selectedMonth,
