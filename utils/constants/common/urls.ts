@@ -17,4 +17,6 @@ export const urls = {
     organization: 'organization',
     unit_category: 'unit_category',
     unit_type: 'unit_type',
+    jobtitle: 'jobtitle',
+    nation: 'nation',
 };

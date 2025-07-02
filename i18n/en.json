@@ -146,6 +146,7 @@
         "actions": "Actions",
         "search": "Search",
         "type": "Type",
-        "category": "Category"
+        "category": "Category",
+        "language": "Language"
     }
 }

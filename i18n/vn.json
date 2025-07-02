@@ -146,6 +146,7 @@
         "actions": "Hành động",
         "search": "Tìm kiếm",
         "type": "Loại",
-        "category": "Danh mục"
+        "category": "Danh mục",
+        "language": "Ngôn ngữ"
     }
 }

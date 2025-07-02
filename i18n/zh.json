@@ -146,6 +146,7 @@
         "actions": "操作",
         "search": "搜索",
         "type": "類型",
-        "category": "類別"
+        "category": "類別",
+        "language": "語言"
     }
 }
