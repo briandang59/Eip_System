@@ -1,0 +1,52 @@
+import useSWR from 'swr';
+import qs from 'qs';
+import { fetcher } from '../fetcher';
+import { urls } from '@/utils/constants/common/urls';
+import { BaseResponse } from '@/types/response/baseResponse';
+import { EmployeeResponseType } from '@/types/response/employees';
+
+const API_URL = `/${urls.employee}`;
+
+interface params {
+    unit_id?: number;
+    card_number?: string;
+    place_id?: number;
+}
+interface filterParams {
+    status?: number;
+    search?: string;
+    state?: number;
+}
+
+export const useEmployees = (params?: params, filterParams?: filterParams) => {
+    const queryString = params ? `?${qs.stringify(params)}` : '';
+    const { data, error, mutate } = useSWR<BaseResponse<EmployeeResponseType[]>>(
+        `${API_URL}${queryString}`,
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateIfStale: false,
+            revalidateOnReconnect: false,
+        },
+    );
+    const filterData = data?.data?.filter((item) => {
+        const matchesSearch =
+            !filterParams?.search ||
+            [item.fullname, item.fullname_other, item.card_number]
+                .filter(Boolean)
+                .some((field) =>
+                    field.trim().toLowerCase().includes(filterParams.search!.trim().toLowerCase()),
+                );
+
+        const matchesState = !filterParams?.state || item.employee_state?.id === filterParams.state;
+
+        return matchesSearch && matchesState;
+    });
+
+    return {
+        employees: filterData,
+        isLoading: !error && !data,
+        isError: error,
+        mutate,
+    };
+};

@@ -26,4 +26,6 @@ export const urls = {
     language: 'language',
     education: 'education',
     ethnic: 'ethnic',
+    employee: 'employee',
+    employee_state: 'employee_state',
 };
