@@ -14,11 +14,11 @@ fi
 ACTIVE_UPSTREAM=$(grep "proxy_pass http://" "$NGINX_CONFIG_FILE" | awk -F'//' '{print $2}' | sed 's/;//')
 
 if [ "$ACTIVE_UPSTREAM" == "eip-ui-v2-blue_upstream" ]; then
-  INACTIVE_COLOR="green"
-  ACTIVE_COLOR="blue"
+  INACTIVE_COLOR="eip-ui-v2-green"
+  ACTIVE_COLOR="eip-ui-v2-blue"
 else
-  INACTIVE_COLOR="blue"
-  ACTIVE_COLOR="green"
+  INACTIVE_COLOR="eip-ui-v2-blue"
+  ACTIVE_COLOR="eip-ui-v2-green"
 fi
 
 echo "當前活躍服務: $ACTIVE_COLOR"
