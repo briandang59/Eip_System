@@ -49,13 +49,7 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
             hours_D: yup.number().required().min(0),
         })
         .required();
-    const {
-        control,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors },
-    } = useForm<FormValueProps>({
+    const { control, handleSubmit, reset, setValue } = useForm<FormValueProps>({
         resolver: yupResolver(schema),
         defaultValues: {
             type: 0,
@@ -96,7 +90,7 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
             setValue('type', 0);
             setValue('subtitute', undefined);
         }
-    }, [isOpen, debouncedUpdate]);
+    }, [isOpen, debouncedUpdate, setValue]);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
