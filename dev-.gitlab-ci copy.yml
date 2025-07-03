@@ -3,18 +3,24 @@ stages:
     - notify
     - cleanup
 
+variables:
+    BLUE_CONTAINER: 'eip-ui-blue'
+    GREEN_CONTAINER: 'eip-ui-green'
+    PORT: '3000'
+    IMAGE_TAG: 'eip-ui:${CI_COMMIT_SHORT_SHA}'
+
 deploy:
-  stage: deploy
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-  tags:
-    - docker-prod
-  script:
-    - echo "開始零停機部署, now deploying..."
-    - cd $CI_PROJECT_DIR
-    - chmod +x deploy.sh
-    - ./deploy.sh
-    - echo "零停機部署完成, deploy job's done"
+    stage: deploy
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "main"'
+    tags:
+        - docker-prod
+    script:
+        - echo "now deploying"
+        - cd $CI_PROJECT_DIR
+        - sudo docker compose down
+        - sudo docker compose up -d --build
+        - echo "deploy job's done"
 
 notify_failure:
     stage: notify
