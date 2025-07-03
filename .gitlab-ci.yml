@@ -37,7 +37,7 @@ notify_failure:
 notify_success:
     stage: notify
     tags:
-        - docker
+        - docker-prod
     script:
         - echo "Deployment success! Sending notification..."
         - |
@@ -54,7 +54,7 @@ notify_success:
 cleanup:
     stage: cleanup
     tags:
-        - docker
+        - docker-prod
     script:
         - echo "Now cleanup Docker images"
         - sudo docker container prune -f
