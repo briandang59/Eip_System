@@ -204,5 +204,28 @@
         "add": "添加",
         "export": "導出",
         "import": "導入"
+    },
+    "take_leave": {
+        "year": "年",
+        "used_hours": "使用時數",
+        "remain_hours": "剩餘時數",
+        "available_hours": "可用時數",
+        "leave_hours": "請假時數",
+        "title": "請假",
+        "info": "員工資訊",
+        "card_number": "卡號",
+        "full_name": "姓名",
+        "sex": "性別",
+        "nation": "國籍",
+        "unit": "單位",
+        "job_title": "職稱",
+        "infor_take_leave": "留下訊息",
+        "confirm": "確認",
+        "cancel": "取消",
+        "required_range_date": "請選擇完整的兩天區間",
+        "err_1": "請假時數必須大於 0",
+        "err_2": "請假時數超過一天工時",
+        "success": "請求提交成功",
+        "error": "請求提交失敗"
     }
 }

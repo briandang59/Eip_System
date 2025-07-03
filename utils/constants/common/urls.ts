@@ -28,4 +28,9 @@ export const urls = {
     ethnic: 'ethnic',
     employee: 'employee',
     employee_state: 'employee_state',
+    dayoff: 'dayoff',
+    remain_hours: 'remain_hours',
+    tw: 'tw',
+    vn: 'vn',
+    type: 'type',
 };

@@ -9,6 +9,7 @@ import { GenericTable } from '@/components/common/GenericTable';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { useEmployeeCols } from '@/utils/constants/cols/employeeCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { ExportOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from 'antd';
@@ -34,9 +35,7 @@ function EmployeesPage() {
         },
     );
     const { units, isLoading: isLoadingUnits } = useUnits({ place_id: selectedWorkPlace });
-    const getLocalizedName = (name_en: string, name_zh: string, name_vn: string) => {
-        return lang === 'en' ? name_en : lang === 'zh' ? name_zh : (name_vn ?? '');
-    };
+
     const employeeCols = useEmployeeCols();
 
     return (
@@ -72,7 +71,7 @@ function EmployeesPage() {
                                 .localeCompare((optionB?.label ?? '').toLowerCase())
                         }
                         options={units?.map((item) => ({
-                            label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn)}`,
+                            label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                             value: item.id,
                         }))}
                         loading={isLoadingUnits}
@@ -82,7 +81,7 @@ function EmployeesPage() {
                     <span className="text-sm font-medium">{t.employee.state}</span>
                     <Select
                         options={employeeState?.map((item) => ({
-                            label: getLocalizedName(item.name_en, item.name_zh, item.name_vn),
+                            label: getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang),
                             value: item.id,
                         }))}
                         placeholder="Select Employee State"

@@ -2,7 +2,7 @@
 
 import { GenericTable } from '@/components/common/GenericTable';
 import { useWorkdayCols } from '@/utils/constants/cols/workdayCols';
-import { Button, DatePicker, Input, Select, Switch, Alert, Table } from 'antd';
+import { Button, DatePicker, Input, Select, Switch, Alert, Table, Modal } from 'antd';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { useState, useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -16,14 +16,37 @@ import { formatNumber } from '@/utils/functions/formatNumber';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { ReloadOutlined } from '@ant-design/icons';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
+import TakeLeaveForm from '@/components/forms/TakeLeaveForm';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 function Workday() {
-    const { t } = useTranslationCustom();
-    const workdayCols = useWorkdayCols();
+    const { t, lang } = useTranslationCustom();
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [key, setKey] = useState<string>('');
+    const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
+    const handleOpenModalByKey = (key: string) => {
+        switch (key) {
+            case 'take_leave':
+                setKey('take_leave');
+                setIsOpenModal(true);
+                break;
+            default:
+                break;
+        }
+    };
+    const handleCloseModal = () => {
+        setIsOpenModal(false);
+    };
+    const handleSelectedCardNumber = (uuid: string) => {
+        setSelectedCardNumber(uuid);
+    };
+    const workdayCols = useWorkdayCols({
+        handleOpenModalByKey,
+        handleSelectedCardNumber,
+    });
     const [isAbnormal, setIsAbnormal] = useState<boolean>(false);
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const myInfo = getInfomation();
-    const { lang } = useTranslationCustom();
     const [selectWorkPlace, setSelectWorkPlace] = useState<number | null>(
         myInfo?.work_place?.id || null,
     );
@@ -64,10 +87,6 @@ function Workday() {
             is_abnormal: isAbnormal,
         },
     );
-
-    const getLocalizedName = (name_en: string, name_zh: string, name_vn: string) => {
-        return lang === 'en' ? name_en : lang === 'zh' ? name_zh : (name_vn ?? '');
-    };
 
     if (isError) {
         console.error('Attendance API Error:', isError);
@@ -262,6 +281,20 @@ function Workday() {
         // Export data only without summary/total row
         exportWithoutSummary(data, filename);
     };
+    const renderForm = () => {
+        switch (key) {
+            case 'take_leave':
+                return (
+                    <TakeLeaveForm
+                        card_number={selectedCardNumber}
+                        isOpen={isOpenModal}
+                        close={handleCloseModal}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
 
     return (
         <ClientOnly>
@@ -296,7 +329,7 @@ function Workday() {
                                     .localeCompare((optionB?.label ?? '').toLowerCase())
                             }
                             options={units?.map((item) => ({
-                                label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn)}`,
+                                label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                                 value: item.id,
                             }))}
                             loading={isLoadingUnits}
@@ -385,6 +418,14 @@ function Workday() {
                     }}
                 />
             </div>
+            <Modal
+                open={isOpenModal}
+                onCancel={() => setIsOpenModal(false)}
+                footer={null}
+                width={1000}
+            >
+                {renderForm()}
+            </Modal>
         </ClientOnly>
     );
 }

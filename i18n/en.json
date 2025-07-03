@@ -204,5 +204,28 @@
         "add": "Add",
         "export": "Export",
         "import": "Import"
+    },
+    "take_leave": {
+        "year": "Year",
+        "used_hours": "Used Hours",
+        "remain_hours": "Remain Hours",
+        "available_hours": "Available Hours",
+        "leave_hours": "Leave Hours",
+        "infor_take_leave": "Take leave information",
+        "title": "Take Leave",
+        "info": "Employee Information",
+        "card_number": "Card Number",
+        "full_name": "Full Name",
+        "sex": "Gender",
+        "nation": "Nationality",
+        "unit": "Department",
+        "job_title": "Job Title",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "required_range_date": "Please select a full 2-day range",
+        "err_1": "Leave hours must be greater than 0",
+        "err_2": "Leave hours exceed one working day",
+        "success": "Request submitted successfully",
+        "error": "Failed to submit request"
     }
 }
