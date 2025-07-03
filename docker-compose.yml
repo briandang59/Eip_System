@@ -3,8 +3,8 @@ version: '3.8'
 services:
   blue:
     build: .
-    container_name: eip-ui-blue
-    image: eip-ui:blue
+    container_name: eip-ui-v2-blue
+    image: eip-ui-v2:blue
     expose:
       - "3000"
     environment:
@@ -19,12 +19,12 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
-      start_period: 240s
+      start_period: 120s
 
   green:
     build: .
-    container_name: eip-ui-green
-    image: eip-ui:green
+    container_name: eip-ui-v2-green
+    image: eip-ui-v2:green
     expose:
       - "3000"
     environment:
@@ -39,7 +39,7 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
-      start_period: 240s
+      start_period: 120s
 
   nginx:
     image: nginx:1.25-alpine
