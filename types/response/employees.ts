@@ -1,0 +1,184 @@
+export type EmployeeResponseType = {
+    id_card_number: string;
+    id_card_issue_date: string;
+    id_card_issue_by: string | null;
+    education_id: number;
+    phone_taiwan: string | null;
+    phone_vientnam: string | null;
+    national_id: number;
+    marriage_status: boolean;
+    is_pregnant_woman: boolean;
+    has_children: number;
+    class_id: number;
+    work_description: string | null;
+    job_title_id: number;
+    fullname: string;
+    fullname_other: string;
+    gender: boolean;
+    place_of_birth: string;
+    birthday: string;
+    address: string | null;
+    province: string;
+    account_id: string | null;
+    active: boolean;
+    work_place_id: number;
+    state_id: number;
+    join_company_date1: string;
+    ethnic_id: number | null;
+    join_company_date2: string;
+    uuid: string;
+    created_at: string;
+    vn_address: {
+        address: string;
+        province: string;
+    };
+    card_number: string;
+    is_taking_care_children: boolean;
+    employee_state: {
+        id: number;
+        name_en: string;
+        name_vn: string;
+        name_zh: string;
+    };
+    class: {
+        id: number;
+        created_at: string;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+        assign_by_user: boolean;
+        code: string;
+    };
+    nation: {
+        id: number;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+        native_language: number;
+        languages: {
+            id: number;
+            active: boolean;
+            name_en: string;
+            name_vn: string;
+            name_zh: string;
+            system_support: boolean;
+        };
+    };
+    job_title: {
+        id: number;
+        created_at: string;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+        employee_class: number;
+        assign_by_user: boolean;
+        code: string;
+        order: number;
+        active: boolean;
+        location: string;
+        belongs_to_workplace: number[];
+    };
+    education: {
+        id: number;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+        level: number;
+        active: boolean;
+        created_at: string;
+        created_by: string | null;
+        updated_at: string | null;
+        updated_by: string | null;
+    };
+    work_place: {
+        id: number;
+        created_at: string;
+        name: string;
+        image: string | null;
+        national_id: number;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+        code: string;
+        location: string;
+        detail_name_en: string | null;
+        detail_name_zh: string | null;
+        detail_name_vn: string;
+        address: string;
+        active: boolean;
+    };
+    pregnancy: string | null;
+    speak_languages: {
+        id: number;
+        created_at: string;
+        card_number: string;
+        language_id: number;
+        note: string | null;
+        languages: {
+            id: number;
+            active: boolean;
+            name_en: string;
+            name_vn: string;
+            name_zh: string;
+            system_support: boolean;
+        };
+    } | null;
+    take_care_of_child: string | null;
+    insurance: {
+        id: number;
+        card_number: string;
+        created_at: string;
+        join_date: string;
+        initial_deduction_date: string | null;
+        note: string | null;
+        social_insurance_code: string | null;
+    };
+    refusal_insurance: null;
+    contract: {
+        id: number;
+        card_number: string;
+        effect_date: string;
+        created_at: string;
+        created_by: null;
+        type_id: null;
+        expir_date: string | null;
+    };
+    unit: {
+        id: number;
+        code: string;
+        manager: string | null;
+        name_en: string;
+        name_vn: string;
+        name_zh: string;
+        type_id: number;
+        class_id: number;
+        created_at: string;
+        created_by: string | null;
+        group_code: string | null;
+        updated_at: null;
+        updated_by: null;
+        category_id: number;
+        parent_unit_id: number;
+        staffing_limit: number | null;
+        belongs_to_workplace: number[];
+        support_employee_class: number[];
+        organization_unit_category: {
+            id: number;
+            name_en: string | null;
+            name_vn: string;
+            name_zh: string;
+        };
+    };
+    ethnic: {
+        id: number;
+        name_en: string;
+        name_vn: string;
+        name_zh: string;
+    };
+    shift: {
+        id: number;
+        name_en: string;
+        name_vn: string;
+        name_zh: string;
+    };
+};

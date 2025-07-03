@@ -24,7 +24,14 @@ const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
     return <div>{unitName}</div>;
 };
 
-export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
+interface WorkdayColsProps {
+    handleOpenModalByKey: (key: string) => void;
+    handleSelectedCardNumber: (uuid: string) => void;
+}
+export const useWorkdayCols = ({
+    handleOpenModalByKey,
+    handleSelectedCardNumber,
+}: WorkdayColsProps): TableColumnsType<AttendanceV2Type> => {
     const { t } = useTranslationCustom();
     return [
         {
@@ -506,7 +513,7 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
             key: 'operation',
             fixed: 'right',
             width: 50,
-            render: () => {
+            render: (_, record: AttendanceV2Type) => {
                 return (
                     <Popover
                         content={
@@ -523,7 +530,13 @@ export const useWorkdayCols = (): TableColumnsType<AttendanceV2Type> => {
                                     <ClockAlert className="w-4 h-4 text-blue-500" />
                                     <span>{t.workday.edit_clock}</span>
                                 </button>
-                                <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
+                                <button
+                                    className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300"
+                                    onClick={() => {
+                                        handleOpenModalByKey('take_leave');
+                                        handleSelectedCardNumber(record.card_number);
+                                    }}
+                                >
                                     <Home className="w-4 h-4 text-green-700" />
                                     <span>{t.workday.take_leave}</span>
                                 </button>

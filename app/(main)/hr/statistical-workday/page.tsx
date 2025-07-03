@@ -13,6 +13,7 @@ import { useUnits } from '@/apis/useSwr/units';
 import { formatNumber } from '@/utils/functions/formatNumber';
 import { FileExcelOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useStatisticalWorkdayExport } from '@/utils/hooks/useExportToExcel';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 function StatisticalWorkday() {
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
@@ -43,9 +44,6 @@ function StatisticalWorkday() {
         status,
     );
 
-    const getLocalizedName = (name_en: string, name_zh: string, name_vn: string) => {
-        return lang === 'en' ? name_en : lang === 'zh' ? name_zh : (name_vn ?? '');
-    };
     const statusOptions = [
         { label: t.statistical.status.all, value: 'all' },
         { label: t.statistical.status.active, value: 'active' },
@@ -379,7 +377,7 @@ function StatisticalWorkday() {
                                 .localeCompare((optionB?.label ?? '').toLowerCase())
                         }
                         options={units?.map((item) => ({
-                            label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn)}`,
+                            label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                             value: item.id,
                         }))}
                         loading={isLoadingUnits}
