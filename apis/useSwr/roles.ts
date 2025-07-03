@@ -2,11 +2,12 @@ import useSWR from 'swr';
 import { fetcher } from '../fetcher';
 import { urls } from '@/utils/constants/common/urls';
 import { BaseResponse } from '@/types/response/baseResponse';
+import { RoleType } from '@/types/response/roles';
 
 const API_URL = `/${urls.user}/${urls.account}/${urls.roles}`;
 
 export const useRoles = (page: number = 1, pageSize: number = 10) => {
-    const { data, error, mutate } = useSWR<BaseResponse<any[]>>(`${API_URL}`, fetcher, {
+    const { data, error, mutate } = useSWR<BaseResponse<RoleType[]>>(`${API_URL}`, fetcher, {
         revalidateOnFocus: false,
         revalidateIfStale: false,
         revalidateOnReconnect: false,

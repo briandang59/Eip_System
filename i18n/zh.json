@@ -227,5 +227,17 @@
         "err_2": "請假時數超過一天工時",
         "success": "請求提交成功",
         "error": "請求提交失敗"
+    },
+    "role_and_permission": {
+        "manage_role": "管理角色",
+        "manage_permission": "管理權限",
+        "account_role": "使用者角色",
+        "add": "新增",
+        "refresh": "刷新",
+        "card_number": "卡號",
+        "fullname": "全名",
+        "workplace": "工作場所",
+        "tag": "標籤",
+        "description": "描述"
     }
 }

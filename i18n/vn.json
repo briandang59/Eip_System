@@ -227,5 +227,17 @@
         "err_2": "Số giờ nghỉ vượt quá 1 ngày công",
         "success": "Gửi yêu cầu thành công",
         "error": "Gửi yêu cầu thất bại"
+    },
+    "role_and_permission": {
+        "manage_role": "Quản lý vai trò",
+        "manage_permission": "Quản lý quyền hạn",
+        "account_role": "Vai trò người dùng",
+        "add": "Thêm",
+        "refresh": "Làm mới",
+        "card_number": "Số thẻ",
+        "fullname": "Họ tên",
+        "workplace": "Nơi làm việc",
+        "tag": "Tag",
+        "description": "Mô tả"
     }
 }

@@ -33,4 +33,7 @@ export const urls = {
     tw: 'tw',
     vn: 'vn',
     type: 'type',
+    permission_manage: 'permission_manage',
+    permissions: 'permissions',
+    account_role: 'account_role',
 };
