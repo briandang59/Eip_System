@@ -24,13 +24,17 @@ fi
 echo "當前活躍服務: $ACTIVE_COLOR"
 echo "將要部署到: $INACTIVE_COLOR"
 
-# 建立並啟動閒置容器
-echo "正在建立新版本 $INACTIVE_COLOR..."
-sudo docker compose up -d --no-deps --build $INACTIVE_COLOR
+# 步驟 1: 只建立新版本服務的映像檔
+echo "正在建立新版本 $INACTIVE_COLOR 的映像檔..."
+sudo docker compose build $INACTIVE_COLOR
+
+# 步驟 2: 啟動所有服務 (Compose 會自動使用新的映像檔)
+echo "正在啟動所有服務..."
+sudo docker compose up -d
 
 # 等待新容器健康檢查通過
 echo "等待 $INACTIVE_COLOR 服務健康..."
-while [ "$(sudo docker inspect -f {{.State.Health.Status}} eip-ui-v2-${INACTIVE_COLOR})" != "healthy" ]; do
+while [ "$(sudo docker inspect -f {{.State.Health.Status}} eip-ui-${INACTIVE_COLOR})" != "healthy" ]; do
     echo -n "."
     sleep 3
 done
