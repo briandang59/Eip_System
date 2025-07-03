@@ -39,7 +39,7 @@ echo "$INACTIVE_COLOR 服務已準備就緒！"
 
 # 確保 Nginx 服務正在運行
 echo "正在檢查 Nginx 服務狀態..."
-while [ "$(docker inspect -f {{.State.Status}} eip-ui-proxy)" != "running" ]; do
+while [ "$(sudo docker inspect -f {{.State.Status}} eip-ui-proxy)" != "running" ]; do
     echo "Nginx 尚未運行，等待中..."
     sleep 3
 done
