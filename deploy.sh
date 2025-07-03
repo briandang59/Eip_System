@@ -1,8 +1,17 @@
 #!/bin/bash
 set -e
 
+# 定義 Nginx 設定檔的路徑
+NGINX_CONFIG_FILE="./nginx/default.conf"
+
+# 檢查 Nginx 設定檔是否存在
+if [ ! -f "$NGINX_CONFIG_FILE" ]; then
+    echo "錯誤: Nginx 設定檔不存在於 $NGINX_CONFIG_FILE"
+    exit 1
+fi
+
 # 找出當前活躍的 upstream 和閒置的顏色
-ACTIVE_UPSTREAM=$(grep "proxy_pass http://" /path/to/your/project/nginx/default.conf | awk -F'//' '{print $2}' | sed 's/;//')
+ACTIVE_UPSTREAM=$(grep "proxy_pass http://" "$NGINX_CONFIG_FILE" | awk -F'//' '{print $2}' | sed 's/;//')
 
 if [ "$ACTIVE_UPSTREAM" == "blue_upstream" ]; then
   INACTIVE_COLOR="green"
@@ -30,7 +39,7 @@ echo "$INACTIVE_COLOR 服務已準備就緒！"
 
 # 切換 Nginx 流量
 echo "正在切換流量至 $INACTIVE_COLOR..."
-sed -i "s/proxy_pass http:\/\/$ACTIVE_UPSTREAM;/proxy_pass http:\/\/${INACTIVE_COLOR}_upstream;/" /path/to/your/project/nginx/default.conf
+sed -i "s/proxy_pass http:\/\/$ACTIVE_UPSTREAM;/proxy_pass http:\/\/${INACTIVE_COLOR}_upstream;/" "$NGINX_CONFIG_FILE"
 
 # 重新載入 Nginx 設定
 docker compose exec nginx nginx -s reload
