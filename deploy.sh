@@ -34,7 +34,7 @@ sudo docker compose up -d
 
 # 等待新容器健康檢查通過
 echo "等待 $INACTIVE_COLOR 服務健康..."
-while [ "$(sudo docker inspect -f {{.State.Health.Status}} eip-ui-v2-${INACTIVE_COLOR})" != "healthy" ]; do
+while [ "$(sudo docker inspect -f {{.State.Health.Status}} ${INACTIVE_COLOR})" != "healthy" ]; do
     echo -n "."
     sleep 3
 done
