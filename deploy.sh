@@ -37,6 +37,14 @@ done
 echo ""
 echo "$INACTIVE_COLOR 服務已準備就緒！"
 
+# 確保 Nginx 服務正在運行
+echo "正在檢查 Nginx 服務狀態..."
+while [ "$(docker inspect -f {{.State.Status}} eip-ui-proxy)" != "running" ]; do
+    echo "Nginx 尚未運行，等待中..."
+    sleep 3
+done
+echo "Nginx 服務已運行！"
+
 # 切換 Nginx 流量
 echo "正在切換流量至 $INACTIVE_COLOR..."
 sed -i "s/proxy_pass http:\/\/$ACTIVE_UPSTREAM;/proxy_pass http:\/\/${INACTIVE_COLOR}_upstream;/" "$NGINX_CONFIG_FILE"
