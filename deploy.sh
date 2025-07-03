@@ -13,7 +13,7 @@ fi
 # 找出當前活躍的 upstream 和閒置的顏色
 ACTIVE_UPSTREAM=$(grep "proxy_pass http://" "$NGINX_CONFIG_FILE" | awk -F'//' '{print $2}' | sed 's/;//')
 
-if [ "$ACTIVE_UPSTREAM" == "blue_upstream" ]; then
+if [ "$ACTIVE_UPSTREAM" == "eip-ui-v2-blue_upstream" ]; then
   INACTIVE_COLOR="green"
   ACTIVE_COLOR="blue"
 else
