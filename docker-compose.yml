@@ -49,8 +49,8 @@ services:
     volumes:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
-      - blue
-      - green
+      - eip-ui-v2-blue
+      - eip-ui-v2-green
     networks:
       - EipApps_network
 
