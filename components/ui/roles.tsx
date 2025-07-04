@@ -32,7 +32,9 @@ function Roles() {
         setSelectedRole(role);
     };
     const cols = useRoleITCols({ toggleModal, handleGetRole });
-
+    const refresh = () => {
+        mutate();
+    };
     function renderChildren() {
         switch (key) {
             case 'add_role':
@@ -59,7 +61,9 @@ function Roles() {
                 <Button icon={<PlusOutlined />} onClick={() => toggleModal('add_role')}>
                     {t.role_and_permission.add}
                 </Button>
-                <Button icon={<ReloadOutlined />}>{t.role_and_permission.refresh}</Button>
+                <Button icon={<ReloadOutlined />} onClick={refresh}>
+                    {t.role_and_permission.refresh}
+                </Button>
                 <div className="w-[200px]">
                     <Input.Search
                         value={search}

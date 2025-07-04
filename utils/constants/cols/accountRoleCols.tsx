@@ -3,7 +3,12 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Popover, TableColumnsType } from 'antd';
 import { Pen, Settings, Shield, Trash } from 'lucide-react';
 
-export const useAccountRoleCols = (): TableColumnsType<AccountRoleITResponse> => {
+interface params {
+    toggleModal: (key: string, card_number?: string) => void;
+}
+export const useAccountRoleCols = ({
+    toggleModal,
+}: params): TableColumnsType<AccountRoleITResponse> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -51,14 +56,22 @@ export const useAccountRoleCols = (): TableColumnsType<AccountRoleITResponse> =>
             dataIndex: 'actions',
             key: 'actions',
             width: 40,
-            render: () => {
+            render: (_, record: AccountRoleITResponse) => {
                 return (
                     <div className="flex items-center gap-2">
                         <Popover
                             trigger="click"
                             content={
                                 <div className="flex flex-col gap-2">
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
+                                    <button
+                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                        onClick={() => {
+                                            toggleModal(
+                                                'account_role',
+                                                record.employee.card_number,
+                                            );
+                                        }}
+                                    >
                                         <Shield className="size-4 !text-green-700" />
                                         Add permission
                                     </button>

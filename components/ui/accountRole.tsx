@@ -1,6 +1,6 @@
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Input } from 'antd';
-import { useState } from 'react';
+import { Button, Input, Modal } from 'antd';
+import { useMemo, useState } from 'react';
 import { GenericTable } from '../common/GenericTable';
 
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -8,12 +8,43 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useAccountRoleIT } from '@/apis/useSwr/accountRoleIT';
 import { AccountRoleITResponse } from '@/types/response/accountRole';
 import { useAccountRoleCols } from '@/utils/constants/cols/accountRoleCols';
+import AcountRoleUI from '../forms/AccountRoleUI';
 
 function AccountRoles() {
     const [search, setSearch] = useState<string>('');
-    const cols = useAccountRoleCols();
-    const { accountRoles, isLoading: isLoadingPermission } = useAccountRoleIT({ search });
+    const { accountRoles, isLoading: isLoadingPermission, mutate } = useAccountRoleIT({ search });
+    const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
     const { t } = useTranslationCustom();
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [key, setKey] = useState<string>('');
+
+    const selectedAccountRole = useMemo(
+        () =>
+            accountRoles?.filter((item) => item.employee.card_number === selectedCardNumber) ?? [],
+        [accountRoles, selectedCardNumber],
+    );
+    const toggleModal = (key: string, cardNumber?: string) => {
+        if (cardNumber) setSelectedCardNumber(cardNumber);
+        setKey(key);
+        setIsOpenModal((prev) => !prev);
+    };
+    const cols = useAccountRoleCols({ toggleModal });
+
+    function renderUI() {
+        switch (key) {
+            case 'account_role':
+                return (
+                    <div className="min-h-[500px]">
+                        <AcountRoleUI
+                            accountRoles={selectedAccountRole}
+                            mutate={mutate}
+                            toggleModal={toggleModal}
+                        />
+                    </div>
+                );
+        }
+    }
+
     return (
         <div>
             <div className="flex items-end gap-2 mb-4">
@@ -41,6 +72,16 @@ function AccountRoles() {
                     size: 'default',
                 }}
             />
+            <Modal
+                centered
+                width={1000}
+                footer={null}
+                title=""
+                open={isOpenModal}
+                onCancel={() => toggleModal(key)}
+            >
+                {renderUI()}
+            </Modal>
         </div>
     );
 }
