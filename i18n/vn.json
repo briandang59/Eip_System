@@ -243,6 +243,8 @@
         "fullname": "Họ tên",
         "workplace": "Nơi làm việc",
         "tag": "Tag",
-        "description": "Mô tả"
+        "description": "Mô tả",
+        "success": "Gửi yêu cầu thành công",
+        "error": "Gửi yêu cầu thất bại"
     }
 }

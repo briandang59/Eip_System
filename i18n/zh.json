@@ -243,6 +243,8 @@
         "fullname": "全名",
         "workplace": "工作場所",
         "tag": "標籤",
-        "description": "描述"
+        "description": "描述",
+        "success": "請求提交成功",
+        "error": "請求提交失敗"
     }
 }

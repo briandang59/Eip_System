@@ -243,6 +243,8 @@
         "fullname": "Full name",
         "workplace": "Workplace",
         "tag": "Tag",
-        "description": "Description"
+        "description": "Description",
+        "success": "Request submitted successfully",
+        "error": "Failed to submit request"
     }
 }

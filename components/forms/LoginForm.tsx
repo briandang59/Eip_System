@@ -8,7 +8,7 @@ import { Lock, User } from 'lucide-react';
 import { routes } from '@/utils/constants/common/routes';
 import { useRouter } from 'next/navigation';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { authService } from '@/apis/services/authService';
+import { authService } from '@/apis/services/auth';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { AuthSignInRequest } from '@/types/response/auth';

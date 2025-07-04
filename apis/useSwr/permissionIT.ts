@@ -9,7 +9,7 @@ const API_URL = `/${urls.permission_manage}/${urls.permissions}`;
 interface filterParams {
     search?: string;
 }
-export const usePermissionIT = (params?: { search?: string }) => {
+export const usePermissionIT = (params?: filterParams) => {
     const { data, error, mutate } = useSWR<BaseResponse<PermisisonITResponse[]>>(API_URL, fetcher, {
         revalidateOnFocus: false,
         revalidateIfStale: false,

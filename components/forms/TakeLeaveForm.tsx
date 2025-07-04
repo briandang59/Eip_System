@@ -14,7 +14,7 @@ import { useDayOffType } from '@/apis/useSwr/dayoffType';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { generateDayOffRequests } from '@/utils/functions/generateDayOffRequest';
 import { toast } from 'sonner';
-import { dayOffService } from '@/apis/services/dayOffService';
+import { dayOffService } from '@/apis/services/dayOff';
 
 interface TakeLeaveFormProps {
     card_number?: string;
