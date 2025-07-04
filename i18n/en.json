@@ -226,7 +226,12 @@
         "err_1": "Leave hours must be greater than 0",
         "err_2": "Leave hours exceed one working day",
         "success": "Request submitted successfully",
-        "error": "Failed to submit request"
+        "error": "Failed to submit request",
+        "start_time": "Start Time",
+        "end_time": "End Time",
+        "hours": "Hours",
+        "leave_type": "Leave Type",
+        "location": "Location"
     },
     "role_and_permission": {
         "manage_role": "Manage Role",

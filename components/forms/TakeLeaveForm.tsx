@@ -20,6 +20,7 @@ interface TakeLeaveFormProps {
     card_number?: string;
     isOpen: boolean;
     close: () => void;
+    mutate?: () => void;
 }
 
 interface FormValueProps {
@@ -32,7 +33,7 @@ interface FormValueProps {
     hours_D: number;
 }
 
-function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
+function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProps) {
     const { t, lang } = useTranslationCustom();
     const schema: yup.ObjectSchema<FormValueProps> = yup
         .object({
@@ -146,12 +147,21 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
         if (data && employees) {
             const records = generateDayOffRequests(data, employees[0].uuid);
             const LIMIT_HOURS = 10;
-            const totalHours = records.reduce<number>((sum, { hours }) => sum + hours, 0);
-            if (totalHours === 0) {
-                toast.error(t.take_leave.err_1);
-            }
-            if (totalHours > LIMIT_HOURS) {
+            const dateKey = (ts: string) => ts.split(' ')[0];
+
+            const totalHoursByDate = records.reduce<Record<string, number>>((acc, rec) => {
+                const key = dateKey(rec.start); // "2025‑07‑11"
+                acc[key] = (acc[key] || 0) + rec.hours;
+                return acc;
+            }, {});
+
+            // Kiểm tra ngày nào vượt giới hạn
+            const exceededDates = Object.entries(totalHoursByDate).filter(
+                ([_, h]) => h > LIMIT_HOURS,
+            );
+            if (exceededDates.length) {
                 toast.error(t.take_leave.err_2);
+                return;
             }
 
             await dayOffService
@@ -161,6 +171,7 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
                         toast.success(t.take_leave.success);
                         reset();
                         close();
+                        if (mutate) mutate();
                     }
                 })
                 .catch(() => toast.error(t.take_leave.error));
@@ -332,7 +343,14 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
                     </div>
                     <Form.Item>
                         <div className="flex items-center gap-2 justify-end">
-                            <Button htmlType="button" type="primary" danger onClick={() => close()}>
+                            <Button
+                                htmlType="button"
+                                type="primary"
+                                danger
+                                onClick={() => {
+                                    (close(), reset());
+                                }}
+                            >
                                 {t.take_leave.cancel}
                             </Button>
                             <Button htmlType="submit" type="primary">
