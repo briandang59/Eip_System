@@ -157,8 +157,9 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
 
             // Kiểm tra ngày nào vượt giới hạn
             const exceededDates = Object.entries(totalHoursByDate).filter(
-                ([_, h]) => h > LIMIT_HOURS,
+                ([, hours]) => hours > LIMIT_HOURS,
             );
+
             if (exceededDates.length) {
                 toast.error(t.take_leave.err_2);
                 return;
@@ -348,7 +349,8 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                                 type="primary"
                                 danger
                                 onClick={() => {
-                                    (close(), reset());
+                                    close();
+                                    reset();
                                 }}
                             >
                                 {t.take_leave.cancel}
