@@ -4,6 +4,10 @@
             "english": "Tiếng Anh",
             "vietnamese": "Tiếng Việt",
             "chinese": "Tiếng Trung"
+        },
+        "forms": {
+            "submit": "Xác nhận",
+            "cancel": "Huỷ"
         }
     },
     "sidebar": {

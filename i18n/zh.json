@@ -4,6 +4,10 @@
             "english": "英語",
             "vietnamese": "越南語",
             "chinese": "中文"
+        },
+        "forms": {
+            "submit": "確認",
+            "cancel": "取消"
         }
     },
     "sidebar": {

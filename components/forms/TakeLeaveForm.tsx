@@ -188,7 +188,9 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                 </h3>
 
                 {employeeLoading ? (
-                    <Spin />
+                    <div className="h-[150px] flex items-center justify-center">
+                        <Spin />
+                    </div>
                 ) : (
                     <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-1">
@@ -240,7 +242,9 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                     {t.take_leave.leave_hours}
                 </h3>
                 {remainHourLoading ? (
-                    <Spin />
+                    <div className="h-[150px] flex items-center justify-center">
+                        <Spin />
+                    </div>
                 ) : (
                     <div className="grid grid-cols-4 gap-4">
                         <div className="col-span-1 flex flex-col gap-2">

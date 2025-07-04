@@ -4,7 +4,7 @@ import { Button, Popover, TableColumnsType } from 'antd';
 import { Pen, Settings, Shield, Trash } from 'lucide-react';
 
 interface params {
-    toggleModal: () => void;
+    toggleModal: (key: string) => void;
     handleGetRole: (role: RoleITResponseType) => void;
 }
 export const useRoleITCols = ({
@@ -67,18 +67,30 @@ export const useRoleITCols = ({
                                     <button
                                         className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
                                         onClick={() => {
-                                            toggleModal();
+                                            toggleModal('role_permission');
                                             handleGetRole(record);
                                         }}
                                     >
                                         <Shield className="size-4 !text-green-700" />
-                                        Add permission
+                                        Toggle permission
                                     </button>
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
+                                    <button
+                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                        onClick={() => {
+                                            toggleModal('edit_role');
+                                            handleGetRole(record);
+                                        }}
+                                    >
                                         <Pen className="size-4 !text-blue-700" />
                                         Edit role
                                     </button>
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
+                                    <button
+                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                        onClick={() => {
+                                            toggleModal('delete_role');
+                                            handleGetRole(record);
+                                        }}
+                                    >
                                         <Trash className="size-4 !text-red-700" />
                                         Delete role
                                     </button>

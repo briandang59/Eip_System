@@ -4,6 +4,10 @@
             "english": "English",
             "vietnamese": "Vietnamese",
             "chinese": "Chinese"
+        },
+        "forms": {
+            "submit": "Submit",
+            "cancel": "Cancel"
         }
     },
     "sidebar": {

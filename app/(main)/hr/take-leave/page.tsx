@@ -85,7 +85,7 @@ function TakeLeavePage() {
                     size: 'default',
                 }}
             />
-            <Modal open={isOpenModal} onCancel={toggleModal} footer={null} width={1000}>
+            <Modal open={isOpenModal} onCancel={toggleModal} footer={null} width={1000} centered>
                 <TakeLeaveForm isOpen={isOpenModal} close={toggleModal} mutate={mutate} />
             </Modal>
         </ClientOnly>
