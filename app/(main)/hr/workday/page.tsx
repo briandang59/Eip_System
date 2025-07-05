@@ -21,11 +21,13 @@ import { summaryWorkdayRow } from '@/utils/constants/totalRows/workdaySummaryRow
 import { faceScanService } from '@/apis/services/faceScan';
 import { toast } from 'sonner';
 import FaceScanUI from '@/components/ui/faceScanUI';
+import ClockTimeForm from '@/components/forms/ClockTimeForm';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [key, setKey] = useState<string>('');
+    const [widthModal, setWidthModal] = useState<number>(1000);
     const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
     const [selectedAttendance, setSelectedAttendance] = useState<AttendanceV2Type | null>(null);
     const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
@@ -34,14 +36,22 @@ function Workday() {
             case 'take_leave':
                 setKey('take_leave');
                 setIsOpenModal(true);
+                setWidthModal(1000);
                 break;
             case 'image_scan_t1':
                 setKey('image_scan_t1');
                 setIsOpenModal(true);
+                setWidthModal(500);
                 break;
             case 'image_scan_t2':
                 setKey('image_scan_t2');
                 setIsOpenModal(true);
+                setWidthModal(500);
+                break;
+            case 'clock_edit':
+                setKey('clock_edit');
+                setIsOpenModal(true);
+                setWidthModal(500);
                 break;
             default:
                 break;
@@ -69,8 +79,11 @@ function Workday() {
     );
 
     useEffect(() => {
-        if (selectedAttendance !== null) {
-            const facePhoto = selectedAttendance?.details?.[0]?.workday?.T1?.face_photo;
+        if (selectedAttendance !== null && (key === 'image_scan_t2' || key === 'image_scan_t1')) {
+            const facePhoto =
+                key === 'image_scan_t1'
+                    ? selectedAttendance?.details?.[0]?.workday?.T1?.face_photo
+                    : selectedAttendance?.details?.[0]?.workday?.T2?.face_photo;
 
             const payload = {
                 uri: facePhoto,
@@ -86,7 +99,7 @@ function Workday() {
                     toast.error(`${err}`);
                 });
         }
-    }, [selectedAttendance, selectWorkPlace]);
+    }, [selectedAttendance, selectWorkPlace, key]);
 
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectWorkPlace || undefined,
@@ -219,6 +232,14 @@ function Workday() {
                         )}
                     </div>
                 );
+            case 'clock_edit':
+                return (
+                    <ClockTimeForm
+                        attendance={selectedAttendance}
+                        mutate={mutate}
+                        close={handleCloseModal}
+                    />
+                );
             default:
                 return null;
         }
@@ -350,7 +371,8 @@ function Workday() {
                 open={isOpenModal}
                 onCancel={() => setIsOpenModal(false)}
                 footer={null}
-                width={1000}
+                width={widthModal}
+                centered
             >
                 {renderForm()}
             </Modal>

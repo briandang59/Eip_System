@@ -1,3 +1,27 @@
+export interface TimeUpdate {
+    user_update: boolean;
+    update_time: string;
+    system: string;
+    method: string;
+    face_photo: string;
+    reason: {
+        id: number;
+        reason_en: string;
+        reason_zh: string;
+        reason_vn: string;
+    };
+    time: string;
+}
+export interface TimeNormal {
+    system: string;
+    method: string;
+    face_photo: string;
+    time: string;
+}
+export interface BreakTime {
+    start: string;
+    end: string;
+}
 export type AttendanceV2Type = {
     fullname: string;
     card_number: string;
@@ -61,18 +85,8 @@ export type AttendanceV2Type = {
                     id: number;
                     clockin: string;
                     clockout: null;
-                    T1: {
-                        system: string;
-                        method: string;
-                        face_photo: string;
-                        time: string;
-                    };
-                    T2: {
-                        system: string;
-                        method: string;
-                        face_photo: string;
-                        time: string;
-                    };
+                    T1: TimeNormal | TimeUpdate;
+                    T2: TimeNormal | TimeUpdate;
                     is_abnormal: false;
                     abnormal_processing: false;
                 },
@@ -105,23 +119,30 @@ export type AttendanceV2Type = {
                     I: number;
                 };
                 KP: number;
-                T1: {
-                    system: string;
-                    method: string;
-                    face_photo: string;
-                    time: string;
-                };
-                T2: {
-                    time: null;
-                };
+                T1: TimeNormal | TimeUpdate;
+                T2: TimeNormal | TimeUpdate;
             };
             holiday: null;
             shift: {
+                id: number;
                 tag: string;
                 start_time: string;
                 end_time: string;
-                color_code: null;
-            };
+                break_time: BreakTime | null;
+                description: string | null;
+                location: string;
+                active: boolean;
+                color_code: null | string;
+                weekend: any;
+                order: number;
+                hours: string;
+                dinner_hours: number;
+                period_id: number;
+                allow_auto_overtime: boolean;
+                break_hours: string;
+                standard_hours: string;
+                is_night_shift: boolean;
+            } | null;
         },
     ];
 };
@@ -161,4 +182,11 @@ export type StatisticalWorkdayType = {
     total_SGC: number;
     total_AllH: number;
     month: string;
+};
+
+export type AttendanceModifyReasonList = {
+    id: number;
+    reason_en: string;
+    reason_zh: string;
+    reason_vn: string;
 };

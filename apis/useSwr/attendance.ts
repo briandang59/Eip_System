@@ -55,12 +55,15 @@ export const useAttendanceV2 = (params: params, filterParams?: filterParams) => 
     const matchesSearch = (item: AttendanceV2WithKey): boolean => {
         if (!filterParams?.search) return true;
 
-        const searchTerm = filterParams?.search.toLowerCase().trim();
+        const searchTerm = filterParams.search.toLowerCase().trim();
+
         const fullnameMatch = item.fullname.toLowerCase().includes(searchTerm);
         const cardNumberMatch = item.card_number.toLowerCase().includes(searchTerm);
-        const shiftTagMatch = item?.details[0]?.shift?.tag?.toLowerCase().includes(searchTerm);
 
-        // Sử dụng OR (||) để tìm kiếm theo bất kỳ trường nào
+        const shiftTagMatch = item.details[0]?.shift?.tag
+            ? item.details[0].shift.tag.toLowerCase().includes(searchTerm)
+            : false;
+
         return fullnameMatch || cardNumberMatch || shiftTagMatch;
     };
 
@@ -145,6 +148,12 @@ export const useAttendanceV2 = (params: params, filterParams?: filterParams) => 
             : isActiveEmployee(item) && matchesSearch(item) && matchesUnit(item);
     };
 
+    const filterOriginData = (item: AttendanceV2WithKey) => {
+        return filterParams?.is_abnormal
+            ? matchesSearch(item) && matchesUnit(item) && matchesAbnormalStatus(item)
+            : matchesSearch(item) && matchesUnit(item);
+    };
+
     const filterResignEmployee = (item: AttendanceV2WithKey) => {
         return !isActiveEmployee(item) && matchesSearch(item) && matchesUnit(item);
     };
@@ -168,6 +177,7 @@ export const useAttendanceV2 = (params: params, filterParams?: filterParams) => 
     };
 
     const transformedData = data?.data ? transformToDaily(data.data) : [];
+    const originData = transformedData?.filter(filterOriginData);
     const activeEmployee = transformedData?.filter(filterActiveEmployee);
     const resignEmployee = transformedData?.filter(filterResignEmployee);
     const resignEmployeeWithMonth = resignEmployee.filter((item) => {
@@ -232,7 +242,7 @@ export const useAttendanceV2 = (params: params, filterParams?: filterParams) => 
         },
     );
     return {
-        attendance: activeEmployee,
+        attendance: originData,
         resignEmployee,
         statisticalWorkday: filterByParams,
         isLoading: !error && !data,

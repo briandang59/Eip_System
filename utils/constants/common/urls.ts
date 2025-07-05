@@ -40,4 +40,8 @@ export const urls = {
     webpages: 'webpages',
     face_scan: 'face_scan',
     parse_hikvision_photo: 'parse_hikvision_photo',
+    modify: 'modify',
+    reason: 'reason',
+    append: 'append',
+    record: 'record',
 };
