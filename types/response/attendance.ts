@@ -68,7 +68,10 @@ export type AttendanceV2Type = {
                         time: string;
                     };
                     T2: {
-                        time: null;
+                        system: string;
+                        method: string;
+                        face_photo: string;
+                        time: string;
                     };
                     is_abnormal: false;
                     abnormal_processing: false;
