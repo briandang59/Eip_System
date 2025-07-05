@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { authService } from '@/apis/services/authService';
+import { authService } from '@/apis/services/auth';
 import { toast } from 'sonner';
 
 function ChangePasswordForm() {

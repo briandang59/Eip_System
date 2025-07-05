@@ -1,9 +1,16 @@
 import { RoleITResponseType } from '@/types/response/roleIT';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { Button, TableColumnsType } from 'antd';
-import { Pen, Shield, Trash } from 'lucide-react';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Pen, Settings, Shield, Trash } from 'lucide-react';
 
-export const useRoleITCols = (): TableColumnsType<RoleITResponseType> => {
+interface params {
+    toggleModal: (key: string) => void;
+    handleGetRole: (role: RoleITResponseType) => void;
+}
+export const useRoleITCols = ({
+    toggleModal,
+    handleGetRole,
+}: params): TableColumnsType<RoleITResponseType> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -49,13 +56,49 @@ export const useRoleITCols = (): TableColumnsType<RoleITResponseType> => {
             title: '',
             dataIndex: 'actions',
             key: 'actions',
-            width: 100,
-            render: () => {
+            width: 40,
+            render: (_, record: RoleITResponseType) => {
                 return (
                     <div className="flex items-center gap-2">
-                        <Button icon={<Shield className="size-4 !text-green-700" />}></Button>
-                        <Button icon={<Pen className="size-4 !text-blue-700" />}></Button>
-                        <Button icon={<Trash className="size-4 !text-red-700" />}></Button>
+                        <Popover
+                            trigger="click"
+                            content={
+                                <div className="flex flex-col gap-2">
+                                    <button
+                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                        onClick={() => {
+                                            toggleModal('role_permission');
+                                            handleGetRole(record);
+                                        }}
+                                    >
+                                        <Shield className="size-4 !text-green-700" />
+                                        Toggle permission
+                                    </button>
+                                    <button
+                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                        onClick={() => {
+                                            toggleModal('edit_role');
+                                            handleGetRole(record);
+                                        }}
+                                    >
+                                        <Pen className="size-4 !text-blue-700" />
+                                        Edit role
+                                    </button>
+                                    <button
+                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                        onClick={() => {
+                                            toggleModal('delete_role');
+                                            handleGetRole(record);
+                                        }}
+                                    >
+                                        <Trash className="size-4 !text-red-700" />
+                                        Delete role
+                                    </button>
+                                </div>
+                            }
+                        >
+                            <Button icon={<Settings className="size-4 !text-green-700" />}></Button>
+                        </Popover>
                     </div>
                 );
             },

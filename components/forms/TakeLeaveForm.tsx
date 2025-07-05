@@ -14,12 +14,13 @@ import { useDayOffType } from '@/apis/useSwr/dayoffType';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { generateDayOffRequests } from '@/utils/functions/generateDayOffRequest';
 import { toast } from 'sonner';
-import { dayOffService } from '@/apis/services/dayOffService';
+import { dayOffService } from '@/apis/services/dayOff';
 
 interface TakeLeaveFormProps {
     card_number?: string;
     isOpen: boolean;
     close: () => void;
+    mutate?: () => void;
 }
 
 interface FormValueProps {
@@ -32,7 +33,7 @@ interface FormValueProps {
     hours_D: number;
 }
 
-function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
+function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProps) {
     const { t, lang } = useTranslationCustom();
     const schema: yup.ObjectSchema<FormValueProps> = yup
         .object({
@@ -146,12 +147,22 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
         if (data && employees) {
             const records = generateDayOffRequests(data, employees[0].uuid);
             const LIMIT_HOURS = 10;
-            const totalHours = records.reduce<number>((sum, { hours }) => sum + hours, 0);
-            if (totalHours === 0) {
-                toast.error(t.take_leave.err_1);
-            }
-            if (totalHours > LIMIT_HOURS) {
+            const dateKey = (ts: string) => ts.split(' ')[0];
+
+            const totalHoursByDate = records.reduce<Record<string, number>>((acc, rec) => {
+                const key = dateKey(rec.start); // "2025‑07‑11"
+                acc[key] = (acc[key] || 0) + rec.hours;
+                return acc;
+            }, {});
+
+            // Kiểm tra ngày nào vượt giới hạn
+            const exceededDates = Object.entries(totalHoursByDate).filter(
+                ([, hours]) => hours > LIMIT_HOURS,
+            );
+
+            if (exceededDates.length) {
                 toast.error(t.take_leave.err_2);
+                return;
             }
 
             await dayOffService
@@ -161,6 +172,7 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
                         toast.success(t.take_leave.success);
                         reset();
                         close();
+                        if (mutate) mutate();
                     }
                 })
                 .catch(() => toast.error(t.take_leave.error));
@@ -176,7 +188,9 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
                 </h3>
 
                 {employeeLoading ? (
-                    <Spin />
+                    <div className="h-[150px] flex items-center justify-center">
+                        <Spin />
+                    </div>
                 ) : (
                     <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-1">
@@ -228,7 +242,9 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
                     {t.take_leave.leave_hours}
                 </h3>
                 {remainHourLoading ? (
-                    <Spin />
+                    <div className="h-[150px] flex items-center justify-center">
+                        <Spin />
+                    </div>
                 ) : (
                     <div className="grid grid-cols-4 gap-4">
                         <div className="col-span-1 flex flex-col gap-2">
@@ -332,7 +348,15 @@ function TakeLeaveForm({ card_number, isOpen, close }: TakeLeaveFormProps) {
                     </div>
                     <Form.Item>
                         <div className="flex items-center gap-2 justify-end">
-                            <Button htmlType="button" type="primary" danger onClick={() => close()}>
+                            <Button
+                                htmlType="button"
+                                type="primary"
+                                danger
+                                onClick={() => {
+                                    close();
+                                    reset();
+                                }}
+                            >
                                 {t.take_leave.cancel}
                             </Button>
                             <Button htmlType="submit" type="primary">

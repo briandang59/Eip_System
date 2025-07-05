@@ -27,10 +27,12 @@ const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
 interface WorkdayColsProps {
     handleOpenModalByKey: (key: string) => void;
     handleSelectedCardNumber: (uuid: string) => void;
+    handleSelectedAttendance: (atd: AttendanceV2Type) => void;
 }
 export const useWorkdayCols = ({
     handleOpenModalByKey,
     handleSelectedCardNumber,
+    handleSelectedAttendance,
 }: WorkdayColsProps): TableColumnsType<AttendanceV2Type> => {
     const { t } = useTranslationCustom();
     return [
@@ -146,11 +148,18 @@ export const useWorkdayCols = ({
             render: (_, record) => {
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
+                const face_t1 = record?.details[0]?.workday?.T1?.face_photo;
 
                 if (time1 && !time2) {
                     return (
-                        <button className="text-nowrap flex items-center gap-2 cursor-pointer">
-                            <Eye className="w-4 h-4 text-blue-600" />
+                        <button
+                            className="text-nowrap flex items-center gap-2 cursor-pointer"
+                            onClick={() => {
+                                handleSelectedAttendance(record);
+                                handleOpenModalByKey('image_scan_t1');
+                            }}
+                        >
+                            {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : <></>}
                             <span className="font-medium text-red-600">
                                 {formatTimeHHmm(time1)}
                             </span>
@@ -158,8 +167,14 @@ export const useWorkdayCols = ({
                     );
                 } else if (time1 && time2) {
                     return (
-                        <button className="text-nowrap flex items-center gap-2 cursor-pointer">
-                            <Eye className="w-4 h-4 text-blue-600" />
+                        <button
+                            className="text-nowrap flex items-center gap-2 cursor-pointer"
+                            onClick={() => {
+                                handleSelectedAttendance(record);
+                                handleOpenModalByKey('image_scan_t1');
+                            }}
+                        >
+                            {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : <></>}
                             <span className="font-medium text-purple-600">
                                 {formatTimeHHmm(time1)}
                             </span>
@@ -184,11 +199,18 @@ export const useWorkdayCols = ({
             render: (_, record) => {
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
+                const face_t2 = record?.details[0]?.attendance[0]?.T2.time;
 
                 if (time1 && !time2) {
                     return (
-                        <button className="text-nowrap flex items-center gap-2 cursor-pointer">
-                            {time2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
+                        <button
+                            className="text-nowrap flex items-center gap-2 cursor-pointer"
+                            onClick={() => {
+                                handleSelectedAttendance(record);
+                                handleOpenModalByKey('image_scan_t2');
+                            }}
+                        >
+                            {face_t2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
                             <span className="font-medium text-red-600">
                                 {time2 ? formatTimeHHmm(time2) : null}
                             </span>
@@ -196,7 +218,13 @@ export const useWorkdayCols = ({
                     );
                 } else if (time1 && time2) {
                     return (
-                        <button className="text-nowrap flex items-center gap-2 cursor-pointer">
+                        <button
+                            className="text-nowrap flex items-center gap-2 cursor-pointer"
+                            onClick={() => {
+                                handleSelectedAttendance(record);
+                                handleOpenModalByKey('image_scan_t2');
+                            }}
+                        >
                             <Eye className="w-4 h-4 text-blue-600" />
                             <span className="font-medium text-purple-600">
                                 {formatTimeHHmm(time2)}

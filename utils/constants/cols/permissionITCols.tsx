@@ -1,7 +1,7 @@
 import { PermisisonITResponse } from '@/types/response/permissionIT';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { Button, TableColumnsType } from 'antd';
-import { Pen, Shield, Trash } from 'lucide-react';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Pen, Settings, Shield, Trash } from 'lucide-react';
 
 export const usePermissionCols = (): TableColumnsType<PermisisonITResponse> => {
     const { t } = useTranslationCustom();
@@ -50,13 +50,31 @@ export const usePermissionCols = (): TableColumnsType<PermisisonITResponse> => {
             title: '',
             dataIndex: 'actions',
             key: 'actions',
-            width: 100,
+            width: 40,
             render: () => {
                 return (
                     <div className="flex items-center gap-2">
-                        <Button icon={<Shield className="size-4 !text-green-700" />}></Button>
-                        <Button icon={<Pen className="size-4 !text-blue-700" />}></Button>
-                        <Button icon={<Trash className="size-4 !text-red-700" />}></Button>
+                        <Popover
+                            trigger="click"
+                            content={
+                                <div className="flex flex-col gap-2">
+                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
+                                        <Shield className="size-4 !text-green-700" />
+                                        Add permission
+                                    </button>
+                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
+                                        <Pen className="size-4 !text-blue-700" />
+                                        Edit role
+                                    </button>
+                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
+                                        <Trash className="size-4 !text-red-700" />
+                                        Delete role
+                                    </button>
+                                </div>
+                            }
+                        >
+                            <Button icon={<Settings className="size-4 !text-green-700" />}></Button>
+                        </Popover>
                     </div>
                 );
             },

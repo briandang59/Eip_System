@@ -36,4 +36,8 @@ export const urls = {
     permission_manage: 'permission_manage',
     permissions: 'permissions',
     account_role: 'account_role',
+    role_permission: 'role_permission',
+    webpages: 'webpages',
+    face_scan: 'face_scan',
+    parse_hikvision_photo: 'parse_hikvision_photo',
 };
