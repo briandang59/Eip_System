@@ -7,6 +7,7 @@ import { calculateMonthH } from './calculateMonthH';
 import { calculateCcan } from './calculateCCAN';
 import { checkSunday } from './checkSunday';
 import { formatNumber } from './formatNumber';
+import { calculateCcanV2 } from './calculateCCAN_V2';
 
 export const calculateStatisticalWorkday = (
     attendance: AttendanceV2Type[],
@@ -103,15 +104,15 @@ export const calculateStatisticalWorkday = (
             }
         });
 
-        total_CCAN = calculateCcan(
-            total_SGC > 0 ? total_SGC : 0,
-            total_KP,
-            total_A,
-            total_C,
-            employeeAttendance[0]?.unit?.id,
-            total_MonthH,
-        );
-
+        // total_CCAN = calculateCcan(
+        //     total_SGC > 0 ? total_SGC : 0,
+        //     total_KP,
+        //     total_A,
+        //     total_C,
+        //     employeeAttendance[0]?.unit?.id,
+        //     total_MonthH,
+        // );
+        total_CCAN = calculateCcanV2(total_SGC > 0 ? total_SGC : 0, total_MonthH);
         // Return statistical data for this employee
         return {
             card_number: employeeAttendance[0]?.card_number || '',

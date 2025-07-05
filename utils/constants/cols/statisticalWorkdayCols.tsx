@@ -285,7 +285,11 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             key: 'total_CCAN',
             width: 100,
             render: (_, record) => {
-                return <div>{record.total_CCAN > 0 ? formatNumber(record.total_CCAN) : '-'}</div>;
+                return (
+                    <div>
+                        {record.total_CCAN > 0 ? formatNumber(record.total_CCAN.toFixed(0)) : '-'}
+                    </div>
+                );
             },
             sorter: (a, b) => a.total_CCAN - b.total_CCAN,
         },
