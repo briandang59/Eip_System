@@ -18,6 +18,7 @@ import { formatNumber } from '@/utils/functions/formatNumber';
 import { AttendanceV2Type } from '@/types/response/attendance';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { checkInPregnancyOrTakeCareChild } from '@/utils/functions/checkInPregnancyOrTakeCareChild';
+import dayjs from 'dayjs';
 
 const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
     const unitName = useChangeLanguage(unit.name_en, unit.name_zh, unit.name_vn);
@@ -88,9 +89,13 @@ export const useWorkdayCols = ({
             key: 'shift',
             width: 180,
             fixed: 'left',
-            sorter: (a, b) => {
-                return a?.details[0]?.shift?.tag.localeCompare(b?.details[0]?.shift?.tag);
+            sorter: (a: AttendanceV2Type, b: AttendanceV2Type) => {
+                const tagA = a.details?.[0]?.shift?.tag ?? '';
+                const tagB = b.details?.[0]?.shift?.tag ?? '';
+
+                return tagA.localeCompare(tagB); // luôn number
             },
+
             render: (_, record) => {
                 return (
                     <div className="flex items-center gap-2">
@@ -191,15 +196,20 @@ export const useWorkdayCols = ({
             key: 't2',
             width: 70,
             sorter: (a, b) => {
-                return (
-                    (a?.details[0]?.workday?.T2?.time || 0) -
-                    (b?.details[0]?.workday?.T2?.time || 0)
-                );
+                const t1 = a?.details?.[0]?.workday?.T2?.time
+                    ? dayjs(a.details[0].workday.T2.time, 'YYYY-MM-DD HH:mm:ss').valueOf()
+                    : 0;
+
+                const t2 = b?.details?.[0]?.workday?.T2?.time
+                    ? dayjs(b.details[0].workday.T2.time, 'YYYY-MM-DD HH:mm:ss').valueOf()
+                    : 0;
+
+                return t1 - t2; // giờ là number nên TS không lỗi
             },
             render: (_, record) => {
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
-                const face_t2 = record?.details[0]?.attendance[0]?.T2.time;
+                const face_t2 = record?.details[0]?.attendance[0]?.T2.face_photo;
 
                 if (time1 && !time2) {
                     return (
@@ -225,7 +235,7 @@ export const useWorkdayCols = ({
                                 handleOpenModalByKey('image_scan_t2');
                             }}
                         >
-                            <Eye className="w-4 h-4 text-blue-600" />
+                            {face_t2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
                             <span className="font-medium text-purple-600">
                                 {formatTimeHHmm(time2)}
                             </span>
@@ -554,7 +564,13 @@ export const useWorkdayCols = ({
                                     <AlertCircle className="w-4 h-4 text-red-500" />
                                     <span>{t.workday.abnormal_process}</span>
                                 </button>
-                                <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
+                                <button
+                                    className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300"
+                                    onClick={() => {
+                                        handleOpenModalByKey('clock_edit');
+                                        handleSelectedAttendance(record);
+                                    }}
+                                >
                                     <ClockAlert className="w-4 h-4 text-blue-500" />
                                     <span>{t.workday.edit_clock}</span>
                                 </button>
