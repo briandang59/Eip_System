@@ -263,5 +263,9 @@
         "delete_title": "Chọn mục muốn xoá",
         "both": "Xoá cả ngày",
         "only_clockout": "Chỉ xoá xuống ca"
+    },
+    "logs": {
+        "view": "Xem hình",
+        "no_logs": "Không có log để hiển thị"
     }
 }

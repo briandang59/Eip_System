@@ -2,7 +2,7 @@
 
 import { GenericTable } from '@/components/common/GenericTable';
 import { useWorkdayCols } from '@/utils/constants/cols/workdayCols';
-import { Button, DatePicker, Input, Select, Switch, Alert, Modal } from 'antd';
+import { Button, DatePicker, Input, Select, Switch, Alert, Modal, Spin } from 'antd';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { useState, useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -22,6 +22,8 @@ import { faceScanService } from '@/apis/services/faceScan';
 import { toast } from 'sonner';
 import FaceScanUI from '@/components/ui/faceScanUI';
 import ClockTimeForm from '@/components/forms/ClockTimeForm';
+import LogsUI from '@/components/ui/logsUI';
+import { useLogs } from '@/apis/useSwr/logs';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -31,6 +33,7 @@ function Workday() {
     const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
     const [selectedAttendance, setSelectedAttendance] = useState<AttendanceV2Type | null>(null);
     const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
+
     const handleOpenModalByKey = (key: string) => {
         switch (key) {
             case 'take_leave':
@@ -53,6 +56,11 @@ function Workday() {
                 setIsOpenModal(true);
                 setWidthModal(500);
                 break;
+            case 'logs':
+                setKey('logs');
+                setIsOpenModal(true);
+                setWidthModal(700);
+                break;
             default:
                 break;
         }
@@ -71,13 +79,21 @@ function Workday() {
         handleSelectedCardNumber,
         handleSelectedAttendance,
     });
+
     const [isAbnormal, setIsAbnormal] = useState<boolean>(false);
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const myInfo = getInfomation();
     const [selectWorkPlace, setSelectWorkPlace] = useState<number | null>(
         myInfo?.work_place?.id || null,
     );
-
+    const { logsByDate } = useLogs({
+        date:
+            (selectedAttendance && selectedAttendance?.details[0]?.date) ||
+            dayjs().format('YYYY-MM-DD'),
+        scope_days: 1,
+        work_place_id: selectWorkPlace && selectWorkPlace,
+        card_number: selectedAttendance?.card_number,
+    });
     useEffect(() => {
         if (selectedAttendance !== null && (key === 'image_scan_t2' || key === 'image_scan_t1')) {
             const facePhoto =
@@ -108,15 +124,14 @@ function Workday() {
         start: dayjs(),
         end: dayjs(),
     });
-    const [searchInput, setSearchInput] = useState<string>(''); // Input value for immediate UI update
-    const [searchText, setSearchText] = useState<string>(''); // Debounced search value for API call
+    const [searchInput, setSearchInput] = useState<string>('');
+    const [searchText, setSearchText] = useState<string>('');
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
 
-    // Debounce search input
     useEffect(() => {
         const timer = setTimeout(() => {
             setSearchText(searchInput);
-        }, 500); // 500ms delay
+        }, 500);
 
         return () => clearTimeout(timer);
     }, [searchInput]);
@@ -144,8 +159,6 @@ function Workday() {
     }
 
     const data: AttendanceV2Type[] = attendance || [];
-
-    // Calculate totals for summary row
 
     const onChangeWorkPlace = (value: number) => {
         setSelectWorkPlace(value);
@@ -176,7 +189,6 @@ function Workday() {
         setSearchText('');
     };
 
-    // Export hook
     const { exportWithoutSummary } = useExportToExcel(workdayCols, 'Workday', 'Workday Data');
 
     const handleExportExcel = () => {
@@ -185,7 +197,6 @@ function Workday() {
             return;
         }
 
-        // Create filename with date range and filters
         const startDate = dateRange.start.format('YYYY-MM-DD');
         const endDate = dateRange.end.format('YYYY-MM-DD');
         const workplaceName =
@@ -193,7 +204,6 @@ function Workday() {
         const abnormalText = isAbnormal ? 'Abnormal' : 'Normal';
         const filename = `Workday_${startDate}_to_${endDate}_${workplaceName}_${abnormalText}`;
 
-        // Export data only without summary/total row
         exportWithoutSummary(data, filename);
     };
     const renderForm = () => {
@@ -239,6 +249,19 @@ function Workday() {
                         mutate={mutate}
                         close={handleCloseModal}
                     />
+                );
+            case 'logs':
+                return (
+                    <>
+                        {selectedAttendance && selectWorkPlace && (
+                            <LogsUI
+                                card_number={selectedAttendance?.card_number}
+                                full_name={selectedAttendance?.fullname}
+                                logsByDate={logsByDate}
+                                work_place={selectWorkPlace}
+                            />
+                        )}
+                    </>
                 );
             default:
                 return null;

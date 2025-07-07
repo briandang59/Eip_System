@@ -44,4 +44,5 @@ export const urls = {
     reason: 'reason',
     append: 'append',
     record: 'record',
+    log: 'log',
 };

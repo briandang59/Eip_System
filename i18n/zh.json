@@ -263,5 +263,9 @@
         "delete_title": "選擇您要刪除的項目",
         "both": "刪除兩天",
         "only_clockout": "僅刪除輪班結束時間"
+    },
+    "logs": {
+        "view": "查看圖片",
+        "no_logs": "沒有可顯示的日誌"
     }
 }

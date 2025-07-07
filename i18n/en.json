@@ -263,5 +263,9 @@
         "delete_title": "Select the item you want to delete",
         "both": "Delete all day",
         "only_clockout": "Delete only clockout"
+    },
+    "logs": {
+        "view": "View image",
+        "no_logs": "No logs to display"
     }
 }
