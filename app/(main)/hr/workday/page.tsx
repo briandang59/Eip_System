@@ -2,7 +2,7 @@
 
 import { GenericTable } from '@/components/common/GenericTable';
 import { useWorkdayCols } from '@/utils/constants/cols/workdayCols';
-import { Button, DatePicker, Input, Select, Switch, Alert, Modal, Spin } from 'antd';
+import { Button, DatePicker, Input, Select, Switch, Alert, Modal } from 'antd';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { useState, useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';

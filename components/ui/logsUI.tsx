@@ -70,7 +70,7 @@ export default function LogsUI({
                         ? { background: '#f6ffed' }
                         : undefined,
                 })),
-        [logsByDate],
+        [logsByDate, t.logs.view],
     );
     useEffect(() => {
         if (!selectedRecord) return;
@@ -78,7 +78,7 @@ export default function LogsUI({
             .get({ uri: selectedRecord.picUri, place_id: work_place })
             .then(setImageBase64Url)
             .catch((err) => toast.error(String(err)));
-    }, [selectedRecord]);
+    }, [selectedRecord, work_place]);
 
     return (
         <div className="flex flex-col gap-4">
