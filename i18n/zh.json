@@ -250,5 +250,18 @@
         "description": "描述",
         "success": "請求提交成功",
         "error": "請求提交失敗"
+    },
+    "edit_clock": {
+        "card_number": "卡號",
+        "reason_type": "原因型別",
+        "description": "描述",
+        "clockin": "工作時間",
+        "clockout": "下班時間",
+        "submit": "確認",
+        "cancel": "取消",
+        "success": "請求發送成功",
+        "delete_title": "選擇您要刪除的項目",
+        "both": "刪除兩天",
+        "only_clockout": "僅刪除輪班結束時間"
     }
 }

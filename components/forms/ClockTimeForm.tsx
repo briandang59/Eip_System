@@ -12,6 +12,7 @@ import { generateShiftDates } from '@/utils/functions/generateDateByShift';
 import { toast } from 'sonner';
 import { useAttendanceModifyReasonList } from '@/apis/useSwr/attendanceModifyReasonList';
 import { attendanceService } from '@/apis/services/attendance';
+import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 
 interface Params {
     attendance: AttendanceV2Type | null;
@@ -33,7 +34,7 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 function ClockTimeForm({ attendance, mutate, close }: Params) {
-    // const { t } = useTranslationCustom();
+    const { t } = useTranslationCustom();
     const { reasonList, isLoading: isLoadingReasonList } = useAttendanceModifyReasonList();
     const [selectedRemoveOption, setSelectedRemoveOption] = useState<number | null>(null);
     const {
@@ -96,7 +97,7 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
                 .update(updateData)
                 .then((res) => {
                     if (res) {
-                        toast.success('Submit form successed');
+                        toast.success(t.edit_clock.success);
                         reset();
                         mutate();
                         setSelectedRemoveOption(null);
@@ -118,7 +119,7 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
                 .add(newData)
                 .then((res) => {
                     if (res) {
-                        toast.success('Submit form successed');
+                        toast.success(t.edit_clock.success);
                         reset();
                         mutate();
                         setSelectedRemoveOption(null);
@@ -143,7 +144,7 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
             <FormInput
                 control={control}
                 name="card_number"
-                label={'Số thẻ'}
+                label={t.edit_clock.card_number}
                 placeholder="Enter your card number"
                 required
                 error={errors.card_number?.message}
@@ -153,7 +154,7 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
             <FormSelect
                 control={control}
                 name="reason_id"
-                label="Loại nghỉ phép"
+                label={t.edit_clock.reason_type}
                 required
                 options={reasonList?.map((item) => ({
                     value: item.id,
@@ -167,24 +168,36 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
                 <FormTextArea
                     control={control}
                     name="reason_text"
-                    label="Lý do"
+                    label={t.edit_clock.description}
                     placeholder="Nhập lý do"
                     // error={errors.reason_text?.message}
                 />
             </div>
 
-            <FormDatePicker control={control} name="clockin" label="Clock in" required showTime />
+            <FormDatePicker
+                control={control}
+                name="clockin"
+                label={t.edit_clock.clockin}
+                required
+                showTime
+            />
 
-            <FormDatePicker control={control} name="clockout" label="Clock out" required showTime />
+            <FormDatePicker
+                control={control}
+                name="clockout"
+                label={t.edit_clock.clockout}
+                required
+                showTime
+            />
 
             {attendance?.details[0]?.attendance[0]?.id && (
                 <div className="p-2 rounded-[10px] border border-red-600 bg-red-50 h-[100px] col-span-2 mb-4">
-                    <h3 className="font-bold text-red-600 mb-4">Chọn mục muốn xoá</h3>
+                    <h3 className="font-bold text-red-600 mb-4">{t.edit_clock.delete_title}</h3>
                     <Radio.Group
                         value={selectedRemoveOption}
                         options={[
-                            { value: 1, label: 'Xoá cả ngày' },
-                            { value: 2, label: 'Chỉ xoá giờ ra ca' },
+                            { value: 1, label: t.edit_clock.both },
+                            { value: 2, label: t.edit_clock.only_clockout },
                         ]}
                         onChange={(e) => setSelectedRemoveOption(e.target.value)}
                     />
@@ -194,10 +207,10 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
                 <Form.Item>
                     <div className="flex justify-end gap-2">
                         <Button htmlType="button" onClick={close}>
-                            Cancel
+                            {t.edit_clock.cancel}
                         </Button>
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            {t.edit_clock.submit}
                         </Button>
                     </div>
                 </Form.Item>

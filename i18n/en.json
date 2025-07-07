@@ -250,5 +250,18 @@
         "description": "Description",
         "success": "Request submitted successfully",
         "error": "Failed to submit request"
+    },
+    "edit_clock": {
+        "card_number": "Card number",
+        "reason_type": "Reason type",
+        "description": "Description",
+        "clockin": "Working date and time",
+        "clockout": "Ending date and time",
+        "submit": "Confirm",
+        "cancel": "Cancel",
+        "success": "Request sent successfully",
+        "delete_title": "Select the item you want to delete",
+        "both": "Delete all day",
+        "only_clockout": "Delete only clockout"
     }
 }

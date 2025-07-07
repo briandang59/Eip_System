@@ -250,5 +250,18 @@
         "description": "Mô tả",
         "success": "Gửi yêu cầu thành công",
         "error": "Gửi yêu cầu thất bại"
+    },
+    "edit_clock": {
+        "card_number": "Số thẻ",
+        "reason_type": "Loại lý do",
+        "description": "Mô tả",
+        "clockin": "Ngày giờ lên ca",
+        "clockout": "Ngày giờ xuống ca",
+        "submit": "Xác nhận",
+        "cancel": "Huỷ",
+        "success": "Gửi yêu cầu thành công",
+        "delete_title": "Chọn mục muốn xoá",
+        "both": "Xoá cả ngày",
+        "only_clockout": "Chỉ xoá xuống ca"
     }
 }
