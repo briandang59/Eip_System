@@ -25,6 +25,7 @@ import ClockTimeForm from '@/components/forms/ClockTimeForm';
 import LogsUI from '@/components/ui/logsUI';
 import { useLogs } from '@/apis/useSwr/logs';
 import Overtime from '@/components/forms/Overtime';
+import { EditedClockTime } from '@/components/ui/editClocktimeUI';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -64,6 +65,11 @@ function Workday() {
                 break;
             case 'overtime':
                 setKey('overtime');
+                setIsOpenModal(true);
+                setWidthModal(700);
+                break;
+            case 'edited_clock_time':
+                setKey('edited_clock_time');
                 setIsOpenModal(true);
                 setWidthModal(700);
                 break;
@@ -280,6 +286,14 @@ function Workday() {
                             />
                         )}
                     </div>
+                );
+            case 'edited_clock_time':
+                return (
+                    <>
+                        {selectedAttendance && (
+                            <EditedClockTime selectedAttendance={selectedAttendance} />
+                        )}
+                    </>
                 );
             default:
                 return null;

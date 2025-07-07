@@ -121,7 +121,13 @@
         "fullname": "Họ tên",
         "shift": "Ca",
         "week": "Tuần",
-        "actions": "Hành động"
+        "actions": "Hành động",
+        "user_update": "Cập nhật người dùng",
+        "time_update": "Cập nhật thời gian",
+        "reason": "Lý do",
+        "reason_text": "Văn bản lý do",
+        "clock_in_date_edit": "Chỉnh sửa ngày chấm công",
+        "clock_out_date_edit": "Chỉnh sửa ngày chấm công"
     },
     "statistical": {
         "error": "Lỗi khi tải dữ liệu thống kê ngày công",

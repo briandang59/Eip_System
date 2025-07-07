@@ -8,6 +8,7 @@ import {
     ClockAlert,
     Eye,
     Home,
+    Newspaper,
     Paperclip,
     Settings,
     Users,
@@ -19,6 +20,7 @@ import { AttendanceV2Type } from '@/types/response/attendance';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { checkInPregnancyOrTakeCareChild } from '@/utils/functions/checkInPregnancyOrTakeCareChild';
 import dayjs from 'dayjs';
+import { isTimeUpdate } from '@/utils/functions/isTimeUpdate';
 
 const UnitCell = ({ unit }: { unit: AttendanceV2Type['unit'] }) => {
     const unitName = useChangeLanguage(unit.name_en, unit.name_zh, unit.name_vn);
@@ -150,7 +152,7 @@ export const useWorkdayCols = ({
                     b?.details[0]?.workday?.T1?.time,
                 );
             },
-            render: (_, record) => {
+            render: (_, record: AttendanceV2Type) => {
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t1 = record?.details[0]?.workday?.T1?.face_photo;
@@ -206,10 +208,13 @@ export const useWorkdayCols = ({
 
                 return t1 - t2; // giờ là number nên TS không lỗi
             },
-            render: (_, record) => {
+            render: (_, record: AttendanceV2Type) => {
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t2 = record?.details[0]?.attendance[0]?.T2.face_photo;
+                let isUpdated = false;
+                if (isTimeUpdate(record.details[0].workday.T2))
+                    isUpdated = record?.details[0]?.workday?.T2?.user_update;
 
                 if (time1 && !time2) {
                     return (
@@ -228,18 +233,34 @@ export const useWorkdayCols = ({
                     );
                 } else if (time1 && time2) {
                     return (
-                        <button
-                            className="text-nowrap flex items-center gap-2 cursor-pointer"
-                            onClick={() => {
-                                handleSelectedAttendance(record);
-                                handleOpenModalByKey('image_scan_t2');
-                            }}
-                        >
-                            {face_t2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
-                            <span className="font-medium text-purple-600">
-                                {formatTimeHHmm(time2)}
-                            </span>
-                        </button>
+                        <div className="flex justify-between gap-2">
+                            <button
+                                className="text-nowrap flex items-center gap-2 cursor-pointer"
+                                onClick={() => {
+                                    handleSelectedAttendance(record);
+                                    handleOpenModalByKey('image_scan_t2');
+                                }}
+                            >
+                                {face_t2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
+                                <span className="font-medium text-purple-600">
+                                    {formatTimeHHmm(time2)}
+                                </span>
+                            </button>
+                            {isUpdated && (
+                                <button
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        handleSelectedAttendance(record);
+                                        handleOpenModalByKey('edited_clock_time');
+                                    }}
+                                >
+                                    <Newspaper
+                                        strokeWidth={1.5}
+                                        className="w-4 h-4 text-orange-700"
+                                    />
+                                </button>
+                            )}
+                        </div>
                     );
                 }
 

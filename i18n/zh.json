@@ -121,7 +121,13 @@
         "fullname": "姓名",
         "shift": "班次",
         "week": "周",
-        "actions": "操作"
+        "actions": "操作",
+        "user_update": "使用者更新",
+        "time_update": "時間更新",
+        "reason": "原因",
+        "reason_text": "原因文字",
+        "clock_in_date_edit": "編輯打卡日期",
+        "clock_out_date_edit": "編輯下班日期"
     },
     "statistical": {
         "error": "載入工作日統計數據失敗",

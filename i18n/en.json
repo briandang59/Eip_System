@@ -121,7 +121,13 @@
         "fullname": "Fullname",
         "shift": "Shift",
         "week": "Week",
-        "actions": "Actions"
+        "actions": "Actions",
+        "user_update": "User update",
+        "time_update": "Time update",
+        "reason": "Reason",
+        "reason_text": "Reason text",
+        "clock_in_date_edit": "Clockin date edit",
+        "clock_out_date_edit": "Clockout date edit"
     },
     "statistical": {
         "error": "Error loading statistical workday data",
