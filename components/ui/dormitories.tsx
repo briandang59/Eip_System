@@ -1,7 +1,49 @@
+import { Button, Input } from 'antd';
+import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { GenericTable } from '../common/GenericTable';
+
+import { useState } from 'react';
+import { useDormitories } from '@/apis/useSwr/dormitories';
+import { DormitoriesResponseType } from '@/types/response/dormitories';
+import { useDormitoriesCols } from '@/utils/constants/cols/dormitoryCols';
+
 function Dormitories() {
+    const { t } = useTranslationCustom();
+    const dormitoriesCols = useDormitoriesCols();
+    const [search, setSearch] = useState('');
+
+    const { dormitories, isLoading: isLoadingDormitory } = useDormitories();
     return (
         <div>
-            <h1>Dormitories</h1>
+            <div className="flex flex-wrap items-end gap-2 mb-4">
+                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
+                <Input.Search
+                    placeholder={t.utils.search}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onSearch={setSearch}
+                    style={{ width: 200 }}
+                    allowClear
+                />
+            </div>
+            <GenericTable<DormitoriesResponseType>
+                columns={dormitoriesCols}
+                dataSource={dormitories || []}
+                rowKey="id"
+                isLoading={isLoadingDormitory}
+                summary={() => null}
+                pagination={{
+                    defaultPageSize: 30,
+                    pageSizeOptions: ['30', '50'],
+                    showSizeChanger: true,
+                    showQuickJumper: true,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    size: 'default',
+                }}
+            />
         </div>
     );
 }

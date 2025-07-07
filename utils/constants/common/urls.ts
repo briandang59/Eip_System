@@ -46,4 +46,6 @@ export const urls = {
     record: 'record',
     log: 'log',
     overtime: 'overtime',
+    basic_data: 'basic_data',
+    dormitory: 'dormitory',
 };
