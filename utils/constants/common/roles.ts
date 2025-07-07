@@ -5,6 +5,6 @@ export enum Roles {
     HR_ASSISTANT = 'hr_assistant',
     MEETING_ROOM_USER = 'meeting_room_user',
     PRODUCTIVITY_SUPERVISOR = 'productivity_supervisor',
-    DEPARTMENT_SCHEDULER = 'department_scheduler',
+    DEPARTMENT_SHIFT_SCHEDULER = 'department_shift_scheduler',
     SYSTEM_ADMINISTRATOR = 'system_administrator',
 }

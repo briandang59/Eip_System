@@ -3,12 +3,23 @@ import { Roles } from './roles';
 export const menuPermissions: Record<string, Roles[]> = {
     // Dashboard
     dashboard: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
-    '/': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
+    '/': [
+        Roles.SUPER_USER,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+        Roles.EMPLOYEE,
+        Roles.DEPARTMENT_SHIFT_SCHEDULER,
+    ],
 
     // HR Section
     hr: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/employees': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
-    'hr/shift-scheduling': [Roles.SUPER_USER, Roles.HR_MANAGER],
+    'hr/shift-scheduling': [
+        Roles.SUPER_USER,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+        Roles.DEPARTMENT_SHIFT_SCHEDULER,
+    ],
     'hr/take-leave': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/overtime': [Roles.SUPER_USER, Roles.HR_MANAGER],
     'hr/base-salary': [Roles.SUPER_USER, Roles.HR_MANAGER],
@@ -46,7 +57,7 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.PRODUCTIVITY_SUPERVISOR,
         Roles.MEETING_ROOM_USER,
         Roles.SUPER_USER,
-        Roles.DEPARTMENT_SCHEDULER,
+        Roles.DEPARTMENT_SHIFT_SCHEDULER,
     ],
     'settings/user-information': [
         Roles.EMPLOYEE,
@@ -56,7 +67,7 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.PRODUCTIVITY_SUPERVISOR,
         Roles.MEETING_ROOM_USER,
         Roles.SUPER_USER,
-        Roles.DEPARTMENT_SCHEDULER,
+        Roles.DEPARTMENT_SHIFT_SCHEDULER,
     ],
     'settings/account-role': [
         Roles.EMPLOYEE,
@@ -66,7 +77,7 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.PRODUCTIVITY_SUPERVISOR,
         Roles.MEETING_ROOM_USER,
         Roles.SUPER_USER,
-        Roles.DEPARTMENT_SCHEDULER,
+        Roles.DEPARTMENT_SHIFT_SCHEDULER,
     ],
     'settings/change-password': [
         Roles.EMPLOYEE,
@@ -76,7 +87,7 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.PRODUCTIVITY_SUPERVISOR,
         Roles.MEETING_ROOM_USER,
         Roles.SUPER_USER,
-        Roles.DEPARTMENT_SCHEDULER,
+        Roles.DEPARTMENT_SHIFT_SCHEDULER,
     ],
 
     // Logout (available for all)
