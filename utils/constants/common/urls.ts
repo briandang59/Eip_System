@@ -45,4 +45,5 @@ export const urls = {
     append: 'append',
     record: 'record',
     log: 'log',
+    overtime: 'overtime',
 };

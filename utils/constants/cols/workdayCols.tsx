@@ -584,7 +584,13 @@ export const useWorkdayCols = ({
                                     <Home className="w-4 h-4 text-green-700" />
                                     <span>{t.workday.take_leave}</span>
                                 </button>
-                                <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
+                                <button
+                                    className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300"
+                                    onClick={() => {
+                                        handleOpenModalByKey('overtime');
+                                        handleSelectedAttendance(record);
+                                    }}
+                                >
                                     <Clock className="w-4 h-4 text-purple-500" />
                                     <span>{t.workday.overtime}</span>
                                 </button>

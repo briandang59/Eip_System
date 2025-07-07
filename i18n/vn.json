@@ -267,5 +267,14 @@
     "logs": {
         "view": "Xem hình",
         "no_logs": "Không có log để hiển thị"
+    },
+    "overtime": {
+        "date": "Ngày",
+        "employee": "Nhân viên",
+        "card_number": "Số thẻ",
+        "department": "Bộ phận",
+        "work_place": "Nơi làm việc",
+        "overtime_hours": "Giờ tăng ca",
+        "success": "Gửi yêu cầu thành công"
     }
 }

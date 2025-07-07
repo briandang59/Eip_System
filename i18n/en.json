@@ -267,5 +267,14 @@
     "logs": {
         "view": "View image",
         "no_logs": "No logs to display"
+    },
+    "overtime": {
+        "date": "Date",
+        "employee": "Employee",
+        "card_number": "Card number",
+        "department": "Department",
+        "work_place": "Workplace",
+        "overtime_hours": "Overtime hours",
+        "success": "Request sent successfully"
     }
 }

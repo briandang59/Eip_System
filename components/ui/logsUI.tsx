@@ -97,7 +97,12 @@ export default function LogsUI({
             )}
 
             {selectedRecord && (
-                <Modal open={isModalOpen} footer={null} onCancel={() => setModalOpen(false)}>
+                <Modal
+                    open={isModalOpen}
+                    footer={null}
+                    onCancel={() => setModalOpen(false)}
+                    centered
+                >
                     <FaceScanUI
                         imageBase64Url={imageBase64Url}
                         full_name={full_name}

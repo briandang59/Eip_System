@@ -267,5 +267,14 @@
     "logs": {
         "view": "查看圖片",
         "no_logs": "沒有可顯示的日誌"
+    },
+    "overtime": {
+        "date": "日期",
+        "employee": "員工",
+        "card_number": "卡號",
+        "department": "部門",
+        "work_place": "工作場所",
+        "overtime_hours": "加班時間",
+        "success": "請求提交成功"
     }
 }

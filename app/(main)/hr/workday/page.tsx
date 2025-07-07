@@ -24,6 +24,7 @@ import FaceScanUI from '@/components/ui/faceScanUI';
 import ClockTimeForm from '@/components/forms/ClockTimeForm';
 import LogsUI from '@/components/ui/logsUI';
 import { useLogs } from '@/apis/useSwr/logs';
+import Overtime from '@/components/forms/Overtime';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -58,6 +59,11 @@ function Workday() {
                 break;
             case 'logs':
                 setKey('logs');
+                setIsOpenModal(true);
+                setWidthModal(700);
+                break;
+            case 'overtime':
+                setKey('overtime');
                 setIsOpenModal(true);
                 setWidthModal(700);
                 break;
@@ -262,6 +268,18 @@ function Workday() {
                             />
                         )}
                     </>
+                );
+            case 'overtime':
+                return (
+                    <div>
+                        {selectedAttendance && (
+                            <Overtime
+                                attendance={selectedAttendance}
+                                mutate={mutate}
+                                close={handleCloseModal}
+                            />
+                        )}
+                    </div>
                 );
             default:
                 return null;
