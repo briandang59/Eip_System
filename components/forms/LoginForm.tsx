@@ -45,7 +45,11 @@ function LoginForm() {
     const onSubmit = async (data: FormData) => {
         try {
             setIsLoading(true);
-            const response = await authService.signin(data as AuthSignInRequest);
+            const loginData = {
+                ...data,
+                account: data.account.toUpperCase(),
+            };
+            const response = await authService.signin(loginData as AuthSignInRequest);
             if (response.token) {
                 const roles = response.roles.map((role) => role.tag);
                 Cookies.set(AUTH_COOKIE, response.token);

@@ -350,8 +350,6 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                         <div className="flex items-center gap-2 justify-end">
                             <Button
                                 htmlType="button"
-                                type="primary"
-                                danger
                                 onClick={() => {
                                     close();
                                     reset();
