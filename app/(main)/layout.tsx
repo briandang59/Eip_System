@@ -54,7 +54,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 cz-shortcut-listen="true"
             >
-                <Toaster position="top-right" richColors />
+                <Toaster position="top-center" richColors />
                 <AntdProvider>
                     <MainLayout>{children}</MainLayout>
                 </AntdProvider>

@@ -54,7 +54,7 @@ export default function AuthLayoutComponent({
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
                 <ClientOnly>
-                    <Toaster position="top-right" richColors />
+                    <Toaster position="top-center" richColors />
                     <AntdProvider>
                         <AuthLayout>{children}</AuthLayout>
                     </AntdProvider>
