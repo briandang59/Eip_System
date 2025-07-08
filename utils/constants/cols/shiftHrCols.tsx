@@ -4,6 +4,7 @@ import type { TableColumnsType } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { TempAssignments } from '@/types/response/shiftType';
 import { EmployeeRow } from '@/utils/functions/mergeShiftDate';
+import { useMemo } from 'react';
 
 interface Params {
     year: number;
@@ -45,8 +46,10 @@ export const useShiftHrCols = ({
         },
     ];
 
-    return [
-        ...fixed,
-        ...generateDateColumns<EmployeeRow>({ year, month, getAssignment, onCellClick }),
-    ];
+    const dateColumns = useMemo(
+        () => generateDateColumns<EmployeeRow>({ year, month, getAssignment, onCellClick }),
+        [year, month, getAssignment, onCellClick],
+    );
+
+    return [...fixed, ...dateColumns];
 };

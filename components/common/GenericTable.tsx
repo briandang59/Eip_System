@@ -57,6 +57,7 @@ export function GenericTable<T extends object>({
             rowKey={rowKey}
             scroll={scroll}
             bordered
+            virtual
             loading={isLoading}
             summary={summary}
             pagination={pagination}

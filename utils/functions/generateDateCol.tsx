@@ -33,15 +33,11 @@ export function generateDateColumns<T>({
             dataIndex: dayStr,
             key: dayStr,
             width: 40,
-
-            // Chủ nhật: header đỏ
             onHeaderCell: () => ({
                 className: clsx({
                     '!bg-red-500 !text-white': isSunday,
                 }),
             }),
-
-            // Click để gán ca
             onCell: (record: any) => {
                 const assigned = getAssignment(record.card_number, dayStr);
                 return {
@@ -52,7 +48,6 @@ export function generateDateColumns<T>({
                     onClick: () => onCellClick(record.card_number, dayStr),
                 };
             },
-
             render: (_v, record: any) => {
                 const manual = getAssignment(record.card_number, dayStr);
                 if (manual) return manual;

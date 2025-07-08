@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { DatePicker, Input, InputNumber, Select, Button, Space, message } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
+import { debounce } from 'lodash';
 
 import { useEmployees } from '@/apis/useSwr/employees';
 import { useShifts } from '@/apis/useSwr/shift';
@@ -25,19 +26,24 @@ export default function ShiftSchedulingPage() {
     const myInfo = getInfomation();
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 0);
     const [selectedShiftId, setSelectedShiftId] = useState<number>();
+    const [assignments, setAssignments] = useState<TempAssignments>({});
 
-    const assignmentsRef = useRef<TempAssignments>({});
-    const hasAssign = Boolean(Object.keys(assignmentsRef.current).length);
-    const [, force] = useState(0); // trigger nhẹ
+    const hasAssign = Boolean(Object.keys(assignments).length);
     const year = monthValue.year();
     const month = monthValue.month() + 1;
     const daysInMonth = monthValue.daysInMonth();
 
     const { shifts, isLoading: loadingShift } = useShifts();
     const { workPlaces, isLoading: loadingWp } = useWorkPlaces();
+    const dateRange = useMemo(
+        () => ({
+            range_date_start: `${year}-${month.toString().padStart(2, '0')}-01`,
+            range_date_end: `${year}-${month.toString().padStart(2, '0')}-${daysInMonth}`,
+        }),
+        [year, month, daysInMonth],
+    );
     const { shiftsDate, isLoading: isLoadingShiftDate } = useShiftsDate({
-        range_date_start: '2025-07-01',
-        range_date_end: '2025-07-31',
+        ...dateRange,
         work_place_id: selectedWorkPlace,
     });
     const { employees } = useEmployees({ place_id: selectedWorkPlace });
@@ -61,34 +67,60 @@ export default function ShiftSchedulingPage() {
     const filteredRows = useMemo(() => {
         if (!search.trim()) return mergedRows;
         const q = search.toLowerCase();
-        return mergedRows.filter(
-            (r) => r.fullname.toLowerCase().includes(q) || r.card_number.toLowerCase().includes(q),
-        );
+        return mergedRows
+            .filter(
+                (r) =>
+                    r.fullname.toLowerCase().includes(q) || r.card_number.toLowerCase().includes(q),
+            )
+            .sort((a, b) => (a.unit?.id ?? 0) - (b.unit?.id ?? 0));
     }, [mergedRows, search]);
 
-    const handleCellClick = (card: string, day: string) => {
-        if (!selectedShift) return message.warning('Chọn ca trước!');
-        // ⬇️ Cập nhật REF – không đổi object columns
-        assignmentsRef.current = {
-            ...assignmentsRef.current,
-            [card]: {
-                ...assignmentsRef.current[card],
-                [day]: selectedShift.tag,
-            },
-        };
-        force((c) => c + 1); // chỉ rerender Table body
-    };
+    const handleCellClick = useCallback(
+        (card: string, day: string) => {
+            if (!selectedShift) {
+                message.warning('Chọn ca trước!');
+                return;
+            }
+            setAssignments((prev) => {
+                const newAssignments = { ...prev };
+                const startDay = parseInt(day, 10);
+                const endDay = Math.min(startDay + step - 1, daysInMonth); // Giới hạn trong tháng
+                for (let d = startDay; d <= endDay; d++) {
+                    const dayStr = d.toString().padStart(2, '0');
+                    newAssignments[card] = {
+                        ...newAssignments[card],
+                        [dayStr]: selectedShift.tag,
+                    };
+                }
+                return newAssignments;
+            });
+        },
+        [selectedShift, step, daysInMonth],
+    );
 
-    const handleClear = () => {
-        assignmentsRef.current = {};
-        force((c) => c + 1);
-    };
+    const handleClear = useCallback(() => {
+        setAssignments({});
+    }, []);
+
+    const debouncedSetMonthValue = useCallback(
+        debounce((value: Dayjs) => {
+            setMonthValue(value);
+        }, 300),
+        [],
+    );
+
+    const debouncedSetSelectedWorkPlace = useCallback(
+        debounce((value: number) => {
+            setSelectedWorkPlace(value);
+        }, 300),
+        [],
+    );
 
     const columns = useShiftHrCols({
         year,
         month,
         onCellClick: handleCellClick,
-        getAssignment: (card, day) => assignmentsRef.current[card]?.[day],
+        getAssignment: (card, day) => assignments[card]?.[day],
     });
 
     return (
@@ -98,7 +130,7 @@ export default function ShiftSchedulingPage() {
                     options={workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
                     style={{ width: 160 }}
                     value={selectedWorkPlace}
-                    onChange={setSelectedWorkPlace}
+                    onChange={debouncedSetSelectedWorkPlace}
                     loading={loadingWp}
                     placeholder="Workplace"
                 />
@@ -127,7 +159,7 @@ export default function ShiftSchedulingPage() {
                 <DatePicker
                     picker="month"
                     value={monthValue}
-                    onChange={(v) => v && setMonthValue(v)}
+                    onChange={(v) => v && debouncedSetMonthValue(v)}
                     allowClear={false}
                 />
 
