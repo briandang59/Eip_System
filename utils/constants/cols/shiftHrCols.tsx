@@ -2,13 +2,13 @@
 import { generateDateColumns } from '@/utils/functions/generateDateCol';
 import type { TableColumnsType } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { TempAssignments } from '@/types/response/shiftType';
 import { EmployeeRow } from '@/utils/functions/mergeShiftDate';
 import { useMemo } from 'react';
 
 interface Params {
     year: number;
     month: number;
+    step: number;
     getAssignment: (card: string, day: string) => string | undefined;
     onCellClick: (card: string, day: string) => void;
 }
@@ -16,6 +16,7 @@ interface Params {
 export const useShiftHrCols = ({
     year,
     month,
+    step,
     getAssignment,
     onCellClick,
 }: Params): TableColumnsType<EmployeeRow> => {
@@ -47,8 +48,8 @@ export const useShiftHrCols = ({
     ];
 
     const dateColumns = useMemo(
-        () => generateDateColumns<EmployeeRow>({ year, month, getAssignment, onCellClick }),
-        [year, month, getAssignment, onCellClick],
+        () => generateDateColumns<EmployeeRow>({ year, month, step, getAssignment, onCellClick }),
+        [year, month, step, getAssignment, onCellClick],
     );
 
     return [...fixed, ...dateColumns];

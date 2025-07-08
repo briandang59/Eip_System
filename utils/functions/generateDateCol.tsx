@@ -10,6 +10,7 @@ import { TempAssignments } from '@/types/response/shiftType';
 interface GenColParams<T> {
     year: number;
     month: number;
+    step: number;
     getAssignment: (card: string, day: string) => string | undefined;
     onCellClick: (cardNumber: string, day: string) => void;
 }
@@ -17,6 +18,7 @@ interface GenColParams<T> {
 export function generateDateColumns<T>({
     year,
     month,
+    step,
     getAssignment,
     onCellClick,
 }: GenColParams<T>): TableColumnsType<T> {
@@ -44,6 +46,7 @@ export function generateDateColumns<T>({
                     className: clsx('cursor-pointer', {
                         'bg-green-200': !!assigned,
                         'bg-red-100': !assigned && isSunday,
+                        'hover:bg-yellow-100': !assigned,
                     }),
                     onClick: () => onCellClick(record.card_number, dayStr),
                 };
