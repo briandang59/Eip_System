@@ -10,7 +10,7 @@ import { useShifts } from '@/apis/useSwr/shift';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 
 import { GenericTable } from '@/components/common/GenericTable';
-import { ShiftDateResponseType, TempAssignments } from '@/types/response/shiftType';
+import { TempAssignments } from '@/types/response/shiftType';
 import { useShiftHrCols } from '@/utils/constants/cols/shiftHrCols';
 import { Hand, Save } from 'lucide-react';
 import { useShiftsDate } from '@/apis/useSwr/shiftDate';
@@ -180,20 +180,22 @@ export default function ShiftSchedulingPage() {
             message.error('Lưu ca thất bại!');
             console.error(err);
         }
-    }, [formatAssignments]);
+    }, [formatAssignments, mutate]);
 
-    const debouncedSetMonthValue = useCallback(
-        debounce((value: Dayjs) => {
-            setMonthValue(value);
-        }, 300),
-        [],
+    const debouncedSetMonthValue = useMemo(
+        () =>
+            debounce((value: Dayjs) => {
+                setMonthValue(value);
+            }, 300),
+        [setMonthValue],
     );
 
-    const debouncedSetSelectedWorkPlace = useCallback(
-        debounce((value: number) => {
-            setSelectedWorkPlace(value);
-        }, 300),
-        [],
+    const debouncedSetSelectedWorkPlace = useMemo(
+        () =>
+            debounce((value: number) => {
+                setSelectedWorkPlace(value);
+            }, 300),
+        [setSelectedWorkPlace],
     );
 
     const columns = useShiftHrCols({
