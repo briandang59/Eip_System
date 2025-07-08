@@ -10,13 +10,14 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Select } from 'antd';
 import { IdCard } from 'lucide-react';
+import { UserInfo } from '@/types/response/auth';
 
 export default function PrintCardPage() {
     /* ------------------- i18n ------------------- */
     const { lang } = useTranslationCustom();
 
     /* ----------------- client‑side only info ---------------- */
-    const [myInfo, setMyInfo] = useState<any>(null);
+    const [myInfo, setMyInfo] = useState<UserInfo | null>(null);
 
     // Lấy thông tin localStorage sau khi đã vào browser
     useEffect(() => {
