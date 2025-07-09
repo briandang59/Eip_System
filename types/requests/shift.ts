@@ -5,3 +5,13 @@ export type ShiftCreateRequestType = {
     shift_id: number;
     note: string;
 };
+
+export type ShiftDeleteRequestType = {
+    card_number: string;
+    start_date: string;
+    end_date: string;
+};
+
+export type ShiftModifyRequestType = ShiftDeleteRequestType & {
+    shift_id: number;
+};

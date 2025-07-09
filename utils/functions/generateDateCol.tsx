@@ -5,7 +5,6 @@ dayjs.extend(isBetween);
 
 import { clsx } from 'clsx';
 import type { TableColumnsType } from 'antd';
-import { TempAssignments } from '@/types/response/shiftType';
 
 interface GenColParams<T> {
     year: number;
@@ -18,7 +17,6 @@ interface GenColParams<T> {
 export function generateDateColumns<T>({
     year,
     month,
-    step,
     getAssignment,
     onCellClick,
 }: GenColParams<T>): TableColumnsType<T> {
@@ -27,7 +25,6 @@ export function generateDateColumns<T>({
 
     for (let d = 1; d <= days; d++) {
         const dayStr = d.toString().padStart(2, '0');
-        const dateISO = `${year}-${month.toString().padStart(2, '0')}-${dayStr}`;
         const isSunday = new Date(year, month - 1, d).getDay() === 0;
 
         cols.push({
@@ -45,6 +42,7 @@ export function generateDateColumns<T>({
                 return {
                     className: clsx('cursor-pointer', {
                         'bg-green-200': !!assigned,
+                        'bg-red-300': !!assigned && assigned === 'unshift',
                         'bg-red-100': !assigned && isSunday,
                         'hover:bg-yellow-100': !assigned,
                     }),

@@ -22,19 +22,19 @@ export interface ShiftType {
     tag: string;
     description: string | null;
 
-    start_time: string;
-    end_time: string;
+    start_time: string | null;
+    end_time: string | null;
     break_time: BreakTime | null;
 
-    location: string;
+    location: string | null;
     active: boolean;
 
     weekend: WeekendDay[] | null;
     order: number | null;
     allow_auto_overtime: boolean;
-    dinner_hours: number;
+    dinner_hours: number | null;
 
-    period_id: Period;
+    period_id: Period | null;
     color_code: string | null;
     custom_rules: unknown | null;
 }

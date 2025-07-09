@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import { DatePicker, Input, InputNumber, Select, Button, Space, message } from 'antd';
+import { DatePicker, Input, InputNumber, Select, Button, Space } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'lodash';
 
@@ -19,14 +19,17 @@ import { getInfomation } from '@/utils/functions/getInfomation';
 import { toast } from 'sonner';
 import ClientOnly from '@/components/common/ClientOnly';
 import { shiftService } from '@/apis/services/shift';
-import { ShiftCreateRequestType } from '@/types/requests/shift';
+import {
+    ShiftCreateRequestType,
+    ShiftDeleteRequestType,
+    ShiftModifyRequestType,
+} from '@/types/requests/shift';
+import { DayKey } from '@/types/response/dateKey';
 
-interface FormattedAssignment {
-    card_numbers: string[];
-    start: string;
-    end: string;
-    shift_id: number;
-    note: string;
+interface FormatAssignmentsReturnType {
+    create: ShiftCreateRequestType[];
+    delete: ShiftDeleteRequestType[];
+    modify: ShiftModifyRequestType[];
 }
 
 export default function ShiftSchedulingPage() {
@@ -35,7 +38,7 @@ export default function ShiftSchedulingPage() {
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 0);
-    const [selectedShiftId, setSelectedShiftId] = useState<number>();
+    const [selectedShiftId, setSelectedShiftId] = useState<number | undefined>(undefined);
     const [assignments, setAssignments] = useState<TempAssignments>({});
 
     const hasAssign = Boolean(Object.keys(assignments).length);
@@ -43,7 +46,7 @@ export default function ShiftSchedulingPage() {
     const month = monthValue.month() + 1;
     const daysInMonth = monthValue.daysInMonth();
 
-    const { shifts, isLoading: loadingShift } = useShifts();
+    const { shiftForShiftPage, isLoading: loadingShift } = useShifts();
     const { workPlaces, isLoading: loadingWp } = useWorkPlaces();
     const dateRange = useMemo(
         () => ({
@@ -63,8 +66,8 @@ export default function ShiftSchedulingPage() {
     const { employees } = useEmployees({ place_id: selectedWorkPlace });
 
     const selectedShift = useMemo(
-        () => shifts?.find((s) => s.id === selectedShiftId),
-        [shifts, selectedShiftId],
+        () => shiftForShiftPage?.find((s) => s.id === selectedShiftId),
+        [shiftForShiftPage, selectedShiftId],
     );
 
     const mergedRows = useMemo(
@@ -88,8 +91,8 @@ export default function ShiftSchedulingPage() {
 
     const handleCellClick = useCallback(
         (card: string, day: string) => {
-            if (!selectedShift) {
-                message.warning('Chọn ca trước!');
+            if (selectedShiftId === undefined || !selectedShift) {
+                toast.warning('Chọn ca trước!');
                 return;
             }
             setAssignments((prev) => {
@@ -106,17 +109,19 @@ export default function ShiftSchedulingPage() {
                 return newAssignments;
             });
         },
-        [selectedShift, step, daysInMonth],
+        [selectedShift, selectedShiftId, step, daysInMonth],
     );
 
     const handleClear = useCallback(() => {
         setAssignments({});
     }, []);
 
-    const formatAssignments = useCallback((): FormattedAssignment[] => {
-        if (!selectedShiftId || !shifts) return [];
-        const result: FormattedAssignment[] = [];
-        const shiftTagToId = new Map(shifts.map((s) => [s.tag, s.id]));
+    const formatAssignments = useCallback((): FormatAssignmentsReturnType => {
+        if (!shiftForShiftPage) return { create: [], delete: [], modify: [] };
+        const createAssignments: ShiftCreateRequestType[] = [];
+        const deleteAssignments: ShiftDeleteRequestType[] = [];
+        const modifyAssignments: ShiftModifyRequestType[] = [];
+        const shiftTagToId = new Map(shiftForShiftPage.map((s) => [s.tag, s.id]));
 
         Object.entries(assignments).forEach(([card, days]) => {
             let startDay: number | null = null;
@@ -131,17 +136,42 @@ export default function ShiftSchedulingPage() {
                         startDay = dayNum;
                         endDay = dayNum;
                         currentTag = tag;
-                    } else if (tag === currentTag && dayNum === endDay! + 1) {
+                    } else if (tag === currentTag && endDay !== null && dayNum === endDay + 1) {
                         endDay = dayNum;
                     } else {
-                        if (startDay !== null && endDay !== null) {
-                            result.push({
-                                card_numbers: [card],
-                                start: `${year}-${month.toString().padStart(2, '0')}-${startDay.toString().padStart(2, '0')}`,
+                        if (startDay !== null && endDay !== null && currentTag !== null) {
+                            const dayStr = startDay.toString().padStart(2, '0') as DayKey; // Type assertion
+                            const formatted = {
+                                start: `${year}-${month.toString().padStart(2, '0')}-${dayStr}`,
                                 end: `${year}-${month.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`,
-                                shift_id: shiftTagToId.get(currentTag)!,
-                                note: '',
-                            });
+                            };
+                            // Tìm ca hiện tại trong mergedRows
+                            const employee = mergedRows.find((row) => row.card_number === card);
+                            const currentShiftTag = employee ? (employee[dayStr] ?? '') : '';
+                            if (currentTag === 'unshift') {
+                                deleteAssignments.push({
+                                    card_number: card,
+                                    start_date: formatted.start,
+                                    end_date: formatted.end,
+                                });
+                            } else if (currentShiftTag && currentShiftTag !== currentTag) {
+                                // Nếu ô đã có ca và ca mới khác ca hiện tại, thì modify
+                                modifyAssignments.push({
+                                    card_number: card,
+                                    start_date: formatted.start,
+                                    end_date: formatted.end,
+                                    shift_id: shiftTagToId.get(currentTag)!,
+                                });
+                            } else {
+                                // Nếu ô không có ca hoặc ca giống nhau, thì create
+                                createAssignments.push({
+                                    card_numbers: [card],
+                                    start: formatted.start,
+                                    end: formatted.end,
+                                    shift_id: shiftTagToId.get(currentTag)!,
+                                    note: '',
+                                });
+                            }
                         }
                         startDay = dayNum;
                         endDay = dayNum;
@@ -149,35 +179,79 @@ export default function ShiftSchedulingPage() {
                     }
                 });
 
-            if (startDay !== null && endDay !== null && currentTag) {
-                result.push({
-                    card_numbers: [card],
-                    start: `${year}-${month.toString().padStart(2, '0')}-${String(startDay).padStart(2, '0')}`,
+            if (startDay !== null && endDay !== null && currentTag !== null) {
+                const dayStr = String(startDay).padStart(2, '0') as DayKey; // Type assertion
+                const formatted = {
+                    start: `${year}-${month.toString().padStart(2, '0')}-${dayStr}`,
                     end: `${year}-${month.toString().padStart(2, '0')}-${String(endDay).padStart(2, '0')}`,
-                    shift_id: shiftTagToId.get(currentTag)!,
-                    note: '',
-                });
+                };
+                // Tìm ca hiện tại trong mergedRows
+                const employee = mergedRows.find((row) => row.card_number === card);
+                const currentShiftTag = employee ? (employee[dayStr] ?? '') : '';
+                if (currentTag === 'unshift') {
+                    deleteAssignments.push({
+                        card_number: card,
+                        start_date: formatted.start,
+                        end_date: formatted.end,
+                    });
+                } else if (currentShiftTag && currentShiftTag !== currentTag) {
+                    // Nếu ô đã có ca và ca mới khác ca hiện tại, thì modify
+                    modifyAssignments.push({
+                        card_number: card,
+                        start_date: formatted.start,
+                        end_date: formatted.end,
+                        shift_id: shiftTagToId.get(currentTag)!,
+                    });
+                } else {
+                    // Nếu ô không có ca hoặc ca giống nhau, thì create
+                    createAssignments.push({
+                        card_numbers: [card],
+                        start: formatted.start,
+                        end: formatted.end,
+                        shift_id: shiftTagToId.get(currentTag)!,
+                        note: '',
+                    });
+                }
             }
         });
 
-        return result;
-    }, [assignments, year, month, shifts, selectedShiftId]);
+        return { create: createAssignments, delete: deleteAssignments, modify: modifyAssignments };
+    }, [assignments, year, month, shiftForShiftPage, mergedRows]);
 
     const handleSave = useCallback(async () => {
-        const formatted: ShiftCreateRequestType[] = formatAssignments();
+        const {
+            create,
+            delete: toDelete,
+            modify,
+        }: FormatAssignmentsReturnType = formatAssignments();
+        console.log('formatAssignments result:', { create, toDelete, modify }); // Debug
 
-        if (formatted.length === 0) {
-            message.warning('Không có ca nào được gán!');
+        if (create.length === 0 && toDelete.length === 0 && modify.length === 0) {
+            toast.warning('Không có ca nào được gán!');
             return;
         }
 
         try {
-            await Promise.all(formatted.map((item) => shiftService.add(item)));
+            if (create.length > 0) {
+                await Promise.all(
+                    create.map((item: ShiftCreateRequestType) => shiftService.add(item)),
+                );
+            }
+            if (toDelete.length > 0) {
+                await Promise.all(
+                    toDelete.map((item: ShiftDeleteRequestType) => shiftService.remove(item)),
+                );
+            }
+            if (modify.length > 0) {
+                await Promise.all(
+                    modify.map((item: ShiftModifyRequestType) => shiftService.modify(item)),
+                );
+            }
             toast.success('Đã lưu các ca thành công!');
-            setAssignments({}); // reset nếu cần
+            setAssignments({});
             mutate();
         } catch (err) {
-            message.error('Lưu ca thất bại!');
+            toast.error('Lưu ca thất bại!');
             console.error(err);
         }
     }, [formatAssignments, mutate]);
@@ -219,8 +293,11 @@ export default function ShiftSchedulingPage() {
                 />
 
                 <Select
-                    options={shifts?.map((s) => ({
-                        label: `${s.tag} (${s.start_time}‑${s.end_time})`,
+                    options={shiftForShiftPage?.map((s) => ({
+                        label:
+                            s.tag === 'unshift'
+                                ? 'Unshift'
+                                : `${s.tag} (${s.start_time ?? ''}‑${s.end_time ?? ''})`,
                         value: s.id,
                     }))}
                     style={{ width: 190 }}

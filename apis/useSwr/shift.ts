@@ -23,8 +23,29 @@ export const useShifts = (filterParams?: filterParams) => {
         }
         return true;
     });
+
+    const UN_SHIFT: ShiftType = {
+        id: 0,
+        tag: 'unshift',
+        start_time: null,
+        end_time: null,
+        description: null,
+        break_time: null,
+        location: null,
+        active: true,
+        weekend: null,
+        order: 0,
+        allow_auto_overtime: false,
+        dinner_hours: 0,
+        period_id: null,
+        color_code: null,
+        custom_rules: null,
+    };
+
+    const shiftForShiftPage: ShiftType[] = [UN_SHIFT, ...filterShifts];
     return {
         shifts: filterShifts,
+        shiftForShiftPage,
         isLoading: !error && !data,
         isError: error,
         mutate,

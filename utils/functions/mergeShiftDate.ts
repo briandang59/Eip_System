@@ -7,7 +7,7 @@ import type { ShiftDateResponseType } from '@/types/response/shiftType';
 import type { EmployeeResponseType } from '@/types/response/employees';
 import { DayKey } from '@/types/response/dateKey';
 
-export type EmployeeRow = EmployeeResponseType & { [K in DayKey]: string };
+export type EmployeeRow = EmployeeResponseType & { [K in DayKey]: string | undefined };
 
 interface Params {
     employees: EmployeeResponseType[];

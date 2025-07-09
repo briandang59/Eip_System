@@ -48,4 +48,5 @@ export const urls = {
     overtime: 'overtime',
     basic_data: 'basic_data',
     dormitory: 'dormitory',
+    range_date: 'range_date',
 };
