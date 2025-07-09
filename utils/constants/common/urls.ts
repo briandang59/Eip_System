@@ -49,4 +49,6 @@ export const urls = {
     basic_data: 'basic_data',
     dormitory: 'dormitory',
     range_date: 'range_date',
+    member_data: 'member_data',
+    photo: 'photo',
 };

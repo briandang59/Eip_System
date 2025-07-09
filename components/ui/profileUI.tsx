@@ -12,6 +12,9 @@ import {
 } from 'lucide-react';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { useMemberDataPhoto } from '@/apis/useSwr/photo';
+import Image from 'next/image';
+import { Spin } from 'antd';
 
 interface ProfileUIProps {
     employee?: EmployeeResponseType;
@@ -65,6 +68,11 @@ function Section({
 export default function ProfileUI({ employee }: ProfileUIProps) {
     const { t } = useTranslationCustom();
     if (!employee) return null;
+    const { photos, isLoading } = useMemberDataPhoto({
+        card_number: employee.card_number,
+    });
+
+    console.log(photos);
 
     const basicRows = [
         {
@@ -122,9 +130,23 @@ export default function ProfileUI({ employee }: ProfileUIProps) {
     return (
         <div className="grid grid-cols-[30%_70%] gap-4 bg-gray-50">
             <div className="rounded-[10px] p-4 flex flex-col items-center gap-4 shadow-sm bg-white">
-                <div className="bg-gray-800 rounded-full size-[150px] flex items-center justify-center">
-                    <UserIcon className="text-white" width={80} height={80} strokeWidth={1.5} />
+                <div className="rounded-full size-[150px] flex items-center justify-center bg-gray-800">
+                    {isLoading ? (
+                        <Spin />
+                    ) : photos ? (
+                        <Image
+                            width={150}
+                            height={150}
+                            alt="Employee photo"
+                            src={`data:image/jpeg;base64,${photos}`}
+                            unoptimized
+                            className="rounded-full size-[150px] object-cover"
+                        />
+                    ) : (
+                        <UserIcon className="text-white" width={80} height={80} strokeWidth={1.5} />
+                    )}
                 </div>
+
                 <h2 className="text-[20px] font-bold">{employee.fullname}</h2>
                 <h2 className="text-[16px] font-medium">{employee.fullname_other}</h2>
                 <p className="p-2 rounded-full w-full bg-gray-100 font-bold">
@@ -138,17 +160,25 @@ export default function ProfileUI({ employee }: ProfileUIProps) {
             </div>
 
             <div className="flex flex-col gap-4">
-                <Section title="Contact Information" icon={Phone} rows={contactRows} />
-                <Section title="Job Information" icon={BriefcaseBusiness} rows={jobRows} />
+                <Section
+                    title={t.user_information.contact_information}
+                    icon={Phone}
+                    rows={contactRows}
+                />
+                <Section
+                    title={t.user_information.job_information}
+                    icon={BriefcaseBusiness}
+                    rows={jobRows}
+                />
                 <div className="grid grid-cols-2 gap-4">
                     <Section
-                        title="Insurance Information"
+                        title={t.user_information.insurance_information}
                         icon={ShieldCheck}
                         rows={insuranceRows}
                         cols={2}
                     />
                     <Section
-                        title="Contract Information"
+                        title={t.user_information.contract_information}
                         icon={Scroll}
                         rows={contractRows}
                         cols={2}
