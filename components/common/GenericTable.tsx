@@ -36,6 +36,7 @@ export interface GenericTableProps<T extends object> {
     summary?: (pageData: readonly T[]) => React.ReactNode;
     /** Pagination configuration */
     pagination?: TableProps<T>['pagination'];
+    virtual?: boolean;
 }
 
 export function GenericTable<T extends object>({
@@ -46,6 +47,7 @@ export function GenericTable<T extends object>({
     isLoading = false,
     summary,
     pagination,
+    virtual = false,
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 
@@ -57,7 +59,7 @@ export function GenericTable<T extends object>({
             rowKey={rowKey}
             scroll={scroll}
             bordered
-            virtual
+            virtual={virtual}
             loading={isLoading}
             summary={summary}
             pagination={pagination}

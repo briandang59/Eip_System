@@ -42,7 +42,7 @@ export default function ShiftSchedulingPage() {
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 0);
     const [selectedShiftId, setSelectedShiftId] = useState<number | undefined>(undefined);
     const [assignments, setAssignments] = useState<TempAssignments>({});
-    const { isLoading, run } = useLoadingWithDelay({ minDelayMs: 3000, timeoutMs: 10000 });
+    const { isLoading, run } = useLoadingWithDelay({ minDelayMs: 5000, timeoutMs: 10000 });
     const hasAssign = Boolean(Object.keys(assignments).length);
     const year = monthValue.year();
     const month = monthValue.month() + 1;
