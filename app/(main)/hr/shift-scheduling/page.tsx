@@ -25,6 +25,8 @@ import {
     ShiftModifyRequestType,
 } from '@/types/requests/shift';
 import { DayKey } from '@/types/response/dateKey';
+import { useLoadingWithDelay } from '@/utils/hooks/useLoadingWithTimeout';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 interface FormatAssignmentsReturnType {
     create: ShiftCreateRequestType[];
@@ -40,7 +42,7 @@ export default function ShiftSchedulingPage() {
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 0);
     const [selectedShiftId, setSelectedShiftId] = useState<number | undefined>(undefined);
     const [assignments, setAssignments] = useState<TempAssignments>({});
-
+    const { isLoading, run } = useLoadingWithDelay({ minDelayMs: 3000, timeoutMs: 10000 });
     const hasAssign = Boolean(Object.keys(assignments).length);
     const year = monthValue.year();
     const month = monthValue.month() + 1;
@@ -217,44 +219,41 @@ export default function ShiftSchedulingPage() {
 
         return { create: createAssignments, delete: deleteAssignments, modify: modifyAssignments };
     }, [assignments, year, month, shiftForShiftPage, mergedRows]);
+    const handleSave = useCallback(() => {
+        run(async () => {
+            const {
+                create,
+                delete: toDelete,
+                modify,
+            }: FormatAssignmentsReturnType = formatAssignments();
 
-    const handleSave = useCallback(async () => {
-        const {
-            create,
-            delete: toDelete,
-            modify,
-        }: FormatAssignmentsReturnType = formatAssignments();
-        console.log('formatAssignments result:', { create, toDelete, modify }); // Debug
+            console.log('formatAssignments result:', { create, toDelete, modify });
 
-        if (create.length === 0 && toDelete.length === 0 && modify.length === 0) {
-            toast.warning('Không có ca nào được gán!');
-            return;
-        }
+            if (create.length === 0 && toDelete.length === 0 && modify.length === 0) {
+                toast.warning('Không có ca nào được gán!');
+                return;
+            }
 
-        try {
-            if (create.length > 0) {
-                await Promise.all(
-                    create.map((item: ShiftCreateRequestType) => shiftService.add(item)),
-                );
+            try {
+                if (create.length > 0) {
+                    await Promise.all(create.map((item) => shiftService.add(item)));
+                }
+                if (toDelete.length > 0) {
+                    await Promise.all(toDelete.map((item) => shiftService.remove(item)));
+                }
+                if (modify.length > 0) {
+                    await Promise.all(modify.map((item) => shiftService.modify(item)));
+                }
+
+                toast.success('Đã lưu các ca thành công!');
+                setAssignments({});
+                mutate();
+            } catch (err) {
+                toast.error('Lưu ca thất bại!');
+                console.error(err);
             }
-            if (toDelete.length > 0) {
-                await Promise.all(
-                    toDelete.map((item: ShiftDeleteRequestType) => shiftService.remove(item)),
-                );
-            }
-            if (modify.length > 0) {
-                await Promise.all(
-                    modify.map((item: ShiftModifyRequestType) => shiftService.modify(item)),
-                );
-            }
-            toast.success('Đã lưu các ca thành công!');
-            setAssignments({});
-            mutate();
-        } catch (err) {
-            toast.error('Lưu ca thất bại!');
-            console.error(err);
-        }
-    }, [formatAssignments, mutate]);
+        });
+    }, [run, formatAssignments, mutate]);
 
     const debouncedSetMonthValue = useMemo(
         () =>
@@ -348,19 +347,22 @@ export default function ShiftSchedulingPage() {
                     Lưu
                 </Button>
             </Space>
-
-            <GenericTable<EmployeeRow>
-                columns={columns}
-                dataSource={filteredRows || []}
-                rowKey="uuid"
-                isLoading={isLoadingShiftDate}
-                pagination={{
-                    defaultPageSize: 30,
-                    pageSizeOptions: ['30', '50'],
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                }}
-            />
+            {isLoading || isLoadingShiftDate ? (
+                <TableSkeleton />
+            ) : (
+                <GenericTable<EmployeeRow>
+                    columns={columns}
+                    dataSource={filteredRows || []}
+                    rowKey="uuid"
+                    isLoading={isLoading || isLoadingShiftDate}
+                    pagination={{
+                        defaultPageSize: 30,
+                        pageSizeOptions: ['30', '50'],
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                    }}
+                />
+            )}
         </ClientOnly>
     );
 }
