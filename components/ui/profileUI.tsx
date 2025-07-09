@@ -25,7 +25,7 @@ function InfoRow({
     label,
     value,
 }: {
-    icon?: any;
+    icon?: React.ElementType;
     label: string;
     value: React.ReactNode;
 }) {
@@ -47,7 +47,7 @@ function Section({
     cols = 2,
 }: {
     title: string;
-    icon: any;
+    icon: React.ElementType;
     rows: { label: string; value: React.ReactNode }[];
     cols?: number;
 }) {
@@ -67,12 +67,13 @@ function Section({
 
 export default function ProfileUI({ employee }: ProfileUIProps) {
     const { t } = useTranslationCustom();
-    if (!employee) return null;
+
+    // ✅ Hook phải được gọi ở đầu
     const { photos, isLoading } = useMemberDataPhoto({
-        card_number: employee.card_number,
+        card_number: employee?.card_number ?? '',
     });
 
-    console.log(photos);
+    if (!employee) return null;
 
     const basicRows = [
         {
