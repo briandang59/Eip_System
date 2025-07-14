@@ -52,4 +52,6 @@ export const urls = {
     member_data: 'member_data',
     photo: 'photo',
     transfer_list: 'transfer_list',
+    career: 'career',
+    records: 'records',
 };

@@ -1,5 +1,6 @@
 'use client';
 
+import { useDailyCareerRecord } from '@/apis/useSwr/dailyCareerRecord';
 import { useEmployees } from '@/apis/useSwr/employees';
 import { useEmployeeState } from '@/apis/useSwr/employeeState';
 import { useTransferEmployee } from '@/apis/useSwr/transferEmployees';
@@ -7,8 +8,10 @@ import { useUnits } from '@/apis/useSwr/units';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ClientOnly from '@/components/common/ClientOnly';
 import { GenericTable } from '@/components/common/GenericTable';
+import { CareerHistoryResponseType } from '@/types/response/dailyCareerRecord';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { TransferEmployeesResponseType } from '@/types/response/transferEmployees';
+import { useDailyCareerRecordCols } from '@/utils/constants/cols/dailyCareerRecord';
 import { useEmployeeCols } from '@/utils/constants/cols/employeeCols';
 import { useTransferCols } from '@/utils/constants/cols/tranferCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
@@ -16,7 +19,7 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileOutlined, ImportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Modal, Select } from 'antd';
 import { useState } from 'react';
 
 function EmployeesPage() {
@@ -28,6 +31,21 @@ function EmployeesPage() {
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id || 0);
+    const [selectedUUID, setSelectedUUID] = useState<string>('');
+    const [key, setKey] = useState<string>('');
+    const [selectedRecord, setSelectedRecord] = useState<EmployeeResponseType>();
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const { dailyCareerRecord, isLoading: isLoadingDaily } = useDailyCareerRecord({
+        uuid: selectedUUID,
+    });
+    const hanldeToggleModal = (key: string) => {
+        setIsOpenModal(!isOpenModal);
+        switch (key) {
+            case 'career_record':
+                setKey(key);
+                break;
+        }
+    };
     const {
         employees,
         isLoading: isLoadingEmployees,
@@ -51,8 +69,14 @@ function EmployeesPage() {
         mutate: mutateTransfer,
     } = useUnits({ place_id: selectedWorkPlace });
 
-    const employeeCols = useEmployeeCols({ state: selectedState });
+    const employeeCols = useEmployeeCols({
+        state: selectedState,
+        setSelectedKey: hanldeToggleModal,
+        setSelectedUUID,
+        setSelectedRecord,
+    });
     const transferCols = useTransferCols();
+    const dailyRecord = useDailyCareerRecordCols();
 
     const handleRefresh = () => {
         mutateEmployee();
@@ -76,6 +100,40 @@ function EmployeesPage() {
             employeeTransferExport(transferEmployee, filename);
         } else if (selectedState !== 7 && employees) {
             employeeExport(employeeCols, filename);
+        }
+    };
+
+    const renderModal = () => {
+        switch (key) {
+            case 'career_record': {
+                return (
+                    <div className="min-h-[300px] flex flex-col gap-4">
+                        <div className="flex items-center gap-2">
+                            <p className="text-[20px] font-bold text-green-700">
+                                {selectedRecord?.fullname}
+                            </p>
+                            <p className="text-[20px] font-bold text-green-700">
+                                {selectedRecord?.card_number}
+                            </p>
+                        </div>
+                        <GenericTable<CareerHistoryResponseType>
+                            columns={dailyRecord}
+                            dataSource={dailyCareerRecord || []}
+                            rowKey="stt"
+                            isLoading={isLoadingDaily}
+                            pagination={{
+                                defaultPageSize: 30,
+                                pageSizeOptions: ['30', '50'],
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: (total, range) =>
+                                    `${range[0]}-${range[1]} of ${total} items`,
+                                size: 'default',
+                            }}
+                        />
+                    </div>
+                );
+            }
         }
     };
     return (
@@ -190,6 +248,15 @@ function EmployeesPage() {
                     }}
                 />
             )}
+            <Modal
+                open={isOpenModal}
+                footer={null}
+                centered
+                onCancel={() => hanldeToggleModal(key)}
+                width={1600}
+            >
+                {renderModal()}
+            </Modal>
         </ClientOnly>
     );
 }

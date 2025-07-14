@@ -6,8 +6,16 @@ import { Folder, Settings } from 'lucide-react';
 
 interface params {
     state?: number;
+    setSelectedUUID: (uuid: string) => void;
+    setSelectedKey: (key: string) => void;
+    setSelectedRecord: (record: EmployeeResponseType) => void;
 }
-export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
+export const useEmployeeCols = ({
+    state,
+    setSelectedKey,
+    setSelectedUUID,
+    setSelectedRecord,
+}: params): TableColumnsType<any> => {
     const { t } = useTranslationCustom();
     const STATE = {
         NORMAL: 1,
@@ -155,7 +163,14 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
             fixed: 'left',
             render: (_, record: EmployeeResponseType) => (
                 <span className="flex items-center gap-2">
-                    <button className="cursor-pointer">
+                    <button
+                        className="cursor-pointer"
+                        onClick={() => {
+                            setSelectedKey('career_record');
+                            setSelectedUUID(record?.uuid);
+                            setSelectedRecord(record);
+                        }}
+                    >
                         <Folder strokeWidth={1.5} className="size-4 text-blue-700" />{' '}
                     </button>
                     {record?.fullname || '-'}

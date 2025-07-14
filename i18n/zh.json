@@ -327,5 +327,15 @@
         "transfer_factory": "新工廠",
         "male": "男",
         "female": "女"
+    },
+    "record": {
+        "event": "事件",
+        "card_number": "卡號",
+        "date": "日期",
+        "workplace": "工作地點",
+        "department": "部門",
+        "job_title": "職稱",
+        "resign_reason": "離職原因",
+        "memo": "備註"
     }
 }

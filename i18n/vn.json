@@ -327,5 +327,15 @@
         "transfer_factory": "Nhà máy mới",
         "male": "Nam",
         "female": "Nữ"
+    },
+    "record": {
+        "event": "Sự kiện",
+        "card_number": "Số thẻ",
+        "date": "Ngày",
+        "workplace": "Nơi làm việc",
+        "department": "Phòng ban",
+        "job_title": "Chức danh",
+        "resign_reason": "Lý do nghỉ việc",
+        "memo": "Ghi chú"
     }
 }

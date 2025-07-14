@@ -327,5 +327,15 @@
         "transfer_factory": "New Factory",
         "male": "Male",
         "female": "Female"
+    },
+    "record": {
+        "event": "Event",
+        "card_number": "Card Number",
+        "date": "Date",
+        "workplace": "Workplace",
+        "department": "Department",
+        "job_title": "Job Title",
+        "resign_reason": "Resign reason",
+        "memo": "Memo"
     }
 }
