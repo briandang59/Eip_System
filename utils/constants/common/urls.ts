@@ -51,4 +51,5 @@ export const urls = {
     range_date: 'range_date',
     member_data: 'member_data',
     photo: 'photo',
+    transfer_list: 'transfer_list',
 };

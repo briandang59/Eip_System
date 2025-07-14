@@ -313,5 +313,18 @@
         "contract_expire": "合約到期",
         "date_join_company": "加入公司日期",
         "date_join_company2": "加入公司 2 的日期"
+    },
+    "transfer": {
+        "card_number": "卡號",
+        "full_name": "姓名",
+        "gender": "性別",
+        "date_join_company": "入職日期",
+        "old_department": "原部門",
+        "old_factory": "原工廠",
+        "transfer_date": "調動日期",
+        "new_department": "新部門",
+        "transfer_factory": "新工廠",
+        "male": "男",
+        "female": "女"
     }
 }

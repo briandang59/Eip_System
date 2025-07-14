@@ -313,5 +313,18 @@
         "contract_expire": "Contract Expire",
         "date_join_company": "Date Join Company",
         "date_join_company2": "Date Join Company 2"
+    },
+    "transfer": {
+        "card_number": "Card Number",
+        "full_name": "Full Name",
+        "gender": "Gender",
+        "date_join_company": "Date Joined Company",
+        "old_department": "Old Department",
+        "old_factory": "Old Factory",
+        "transfer_date": "Transfer Date",
+        "new_department": "New Department",
+        "transfer_factory": "New Factory",
+        "male": "Male",
+        "female": "Female"
     }
 }

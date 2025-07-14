@@ -3,10 +3,141 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { DeleteOutlined, EditOutlined, EyeFilled } from '@ant-design/icons';
 import { Button, TableColumnsType } from 'antd';
 
-export const useEmployeeCols = (): TableColumnsType<any> => {
+interface params {
+    state?: number;
+}
+export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
     const { t } = useTranslationCustom();
+    const STATE = {
+        NORMAL: 1,
+        PROBATIONARY: 2,
+        PREGNANCY: 3,
+        CHILDREN: 4,
+        QUIT: 5,
+        RETIREMENT: 6,
+        TRANSFER: 7,
+    };
+    const filterColumnsByState = {
+        [STATE.NORMAL]: [
+            'stt',
+            'full_name',
+            'foreign_name',
+            'unit',
+            'gender',
+            'place_of_birth',
+            'birthday',
+            'date_join_company_1',
+            'date_join_company_2',
+            'address',
+            'province_city',
+            'workplace',
+            'id_card_number',
+            'id_card_date',
+            'id_card_place',
+            'education',
+            'vietnam_phone',
+            'nationality',
+            'marriage',
+            'pregnant_woman',
+            'children',
+            'date_start_pregnant',
+            'date_end_pregnant',
+            'date_start_take_care_child',
+            'date_end_take_care_child',
+            'job_class',
+            'work_description',
+            'ethnic',
+            'speak_language',
+            'join_insurance',
+            'init_deduction_date',
+            'refusal_insurance',
+            'contract_effect',
+            'contract_expiration_date',
+            'old_department',
+            'old_factory',
+            'transfer_date',
+            'new_department',
+            'new_factory',
+            'date_of_resignation',
+            'reason_of_resignation',
+            'actions',
+        ],
+        [STATE.PREGNANCY]: [
+            'stt',
+            'full_name',
+            'foreign_name',
+            'unit',
+            'nationality',
+            'date_start_pregnant',
+            'date_end_pregnant',
+            'job_class',
+            'work_description',
+            'actions',
+        ],
+        [STATE.CHILDREN]: [
+            'stt',
+            'full_name',
+            'foreign_name',
+            'unit',
+            'nationality',
+            'date_start_take_care_child',
+            'date_end_take_care_child',
+            'job_class',
+            'work_description',
+            'actions',
+        ],
+        [STATE.TRANSFER]: [],
+        [STATE.QUIT]: [
+            'stt',
+            'full_name',
+            'foreign_name',
+            'unit',
+            'gender',
+            'place_of_birth',
+            'birthday',
+            'date_join_company_1',
+            'date_join_company_2',
+            'address',
+            'province_city',
+            'workplace',
+            'id_card_number',
+            'id_card_date',
+            'id_card_place',
+            'education',
+            'vietnam_phone',
+            'nationality',
+            'job_class',
+            'date_of_resignation',
+            'reason_of_resignation',
+            'actions',
+        ],
+        [STATE.RETIREMENT]: [
+            'stt',
+            'full_name',
+            'foreign_name',
+            'unit',
+            'gender',
+            'place_of_birth',
+            'birthday',
+            'date_join_company_1',
+            'date_join_company_2',
+            'address',
+            'province_city',
+            'workplace',
+            'id_card_number',
+            'id_card_date',
+            'id_card_place',
+            'education',
+            'vietnam_phone',
+            'nationality',
+            'job_class',
+            'date_of_resignation',
+            'reason_of_resignation',
+            'actions',
+        ],
+    };
 
-    return [
+    const allCols: TableColumnsType<EmployeeResponseType> = [
         {
             title: 'Stt',
             width: 60,
@@ -20,15 +151,18 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             dataIndex: 'full_name',
             key: 'full_name',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record.fullname || '-'}</span>,
+            fixed: 'left',
+            render: (_, record: EmployeeResponseType) => <span>{record?.fullname || '-'}</span>,
         },
         {
             title: t.employee.foreign_name,
             dataIndex: 'foreign_name',
             key: 'foreign_name',
             width: 200,
+            fixed: 'left',
+
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.fullname_other || '-'}</span>
+                <span>{record?.fullname_other || '-'}</span>
             ),
         },
         {
@@ -36,7 +170,11 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             dataIndex: 'unit',
             key: 'unit',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record.unit?.name_en || '-'}</span>,
+            fixed: 'left',
+
+            render: (_, record: EmployeeResponseType) => (
+                <span>{record?.unit?.name_en || '-'}</span>
+            ),
         },
         {
             title: t.employee.gender,
@@ -44,7 +182,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'gender',
             width: 100,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.gender ? 'Male' : 'Female'}</span>
+                <span>{record?.gender ? 'Male' : 'Female'}</span>
             ),
         },
         {
@@ -53,7 +191,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'place_of_birth',
             width: 100,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.place_of_birth || '-'}</span>
+                <span>{record?.place_of_birth || '-'}</span>
             ),
         },
         {
@@ -61,7 +199,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             dataIndex: 'birthday',
             key: 'birthday',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record.birthday || '-'}</span>,
+            render: (_, record: EmployeeResponseType) => <span>{record?.birthday || '-'}</span>,
         },
         {
             title: t.employee.date_join_company_1,
@@ -69,7 +207,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'date_join_company_1',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.join_company_date1 || '-'}</span>
+                <span>{record?.join_company_date1 || '-'}</span>
             ),
         },
         {
@@ -78,7 +216,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'date_join_company_2',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.join_company_date2 || '-'}</span>
+                <span>{record?.join_company_date2 || '-'}</span>
             ),
         },
         {
@@ -86,14 +224,14 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             dataIndex: 'address',
             key: 'address',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record.address || '-'}</span>,
+            render: (_, record: EmployeeResponseType) => <span>{record?.address || '-'}</span>,
         },
         {
             title: t.employee.province_city,
             dataIndex: 'province_city',
             key: 'province_city',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record.province || '-'}</span>,
+            render: (_, record: EmployeeResponseType) => <span>{record?.province || '-'}</span>,
         },
         {
             title: t.employee.workplace,
@@ -101,7 +239,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'workplace',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.work_place?.name_en || '-'}</span>
+                <span>{record?.work_place?.name_en || '-'}</span>
             ),
         },
         {
@@ -110,7 +248,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'id_card_number',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.id_card_number || '-'}</span>
+                <span>{record?.id_card_number || '-'}</span>
             ),
         },
         {
@@ -119,7 +257,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'id_card_date',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.id_card_issue_date || '-'}</span>
+                <span>{record?.id_card_issue_date || '-'}</span>
             ),
         },
         {
@@ -128,7 +266,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'id_card_place',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.id_card_issue_by || '-'}</span>
+                <span>{record?.id_card_issue_by || '-'}</span>
             ),
         },
         {
@@ -137,7 +275,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'education',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.education?.name_en || '-'}</span>
+                <span>{record?.education?.name_en || '-'}</span>
             ),
         },
         {
@@ -146,7 +284,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'vietnam_phone',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.phone_vientnam || '-'}</span>
+                <span>{record?.phone_vientnam || '-'}</span>
             ),
         },
         {
@@ -155,7 +293,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'nationality',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.nation?.name_en || '-'}</span>
+                <span>{record?.nation?.name_en || '-'}</span>
             ),
         },
         {
@@ -164,7 +302,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'marriage',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.marriage_status ? 'Married' : 'Single'}</span>
+                <span>{record?.marriage_status ? 'Married' : 'Single'}</span>
             ),
         },
         {
@@ -173,7 +311,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'pregnant_woman',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.is_pregnant_woman ? 'Yes' : 'No'}</span>
+                <span>{record?.is_pregnant_woman ? 'Yes' : 'No'}</span>
             ),
         },
         {
@@ -181,7 +319,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             dataIndex: 'children',
             key: 'children',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record.has_children || '-'}</span>,
+            render: (_, record: EmployeeResponseType) => <span>{record?.has_children || '-'}</span>,
         },
         {
             title: t.employee.date_start_pregnant,
@@ -189,9 +327,9 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'date_start_pregnant',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const pregnancy = record.pregnancy;
+                const pregnancy = record?.pregnancy;
                 if (pregnancy && typeof pregnancy === 'object') {
-                    return <span>{(pregnancy as any).start_date || '-'}</span>;
+                    return <span>{(pregnancy as any)?.start_date || '-'}</span>;
                 }
                 return <span>{pregnancy || '-'}</span>;
             },
@@ -202,9 +340,9 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'date_end_pregnant',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const pregnancy = record.pregnancy;
+                const pregnancy = record?.pregnancy;
                 if (pregnancy && typeof pregnancy === 'object') {
-                    return <span>{(pregnancy as any).end_date || '-'}</span>;
+                    return <span>{(pregnancy as any)?.end_date || '-'}</span>;
                 }
                 return <span>{pregnancy || '-'}</span>;
             },
@@ -215,9 +353,9 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'date_start_take_care_child',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const takeCarePeriod = record.take_care_of_child;
+                const takeCarePeriod = record?.take_care_of_child;
                 if (takeCarePeriod && typeof takeCarePeriod === 'object') {
-                    return <span>{(takeCarePeriod as any).start_date || '-'}</span>;
+                    return <span>{(takeCarePeriod as any)?.start_date || '-'}</span>;
                 }
                 return <span>{takeCarePeriod || '-'}</span>;
             },
@@ -228,9 +366,9 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'date_end_take_care_child',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const takeCarePeriod = record.take_care_of_child;
+                const takeCarePeriod = record?.take_care_of_child;
                 if (takeCarePeriod && typeof takeCarePeriod === 'object') {
-                    return <span>{(takeCarePeriod as any).end_date || '-'}</span>;
+                    return <span>{(takeCarePeriod as any)?.end_date || '-'}</span>;
                 }
                 return <span>{takeCarePeriod || '-'}</span>;
             },
@@ -241,7 +379,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'job_class',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.class?.name_en || '-'}</span>
+                <span>{record?.class?.name_en || '-'}</span>
             ),
         },
         {
@@ -250,7 +388,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'work_description',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const workDescription = record.work_description;
+                const workDescription = record?.work_description;
                 if (workDescription && typeof workDescription === 'object') {
                     return <span>{JSON.stringify(workDescription)}</span>;
                 }
@@ -263,7 +401,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'ethnic',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.ethnic?.name_en || '-'}</span>
+                <span>{record?.ethnic?.name_en || '-'}</span>
             ),
         },
         {
@@ -272,9 +410,9 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'speak_language',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const speakLanguages = record.speak_languages;
+                const speakLanguages = record?.speak_languages;
                 if (speakLanguages && typeof speakLanguages === 'object') {
-                    return <span>{speakLanguages.languages.name_en || '-'}</span>;
+                    return <span>{speakLanguages?.languages?.name_en || '-'}</span>;
                 }
                 return <span>{speakLanguages || '-'}</span>;
             },
@@ -285,7 +423,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'join_insurance',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.insurance?.join_date || '-'}</span>
+                <span>{record?.insurance?.join_date || '-'}</span>
             ),
         },
         {
@@ -294,7 +432,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'init_deduction_date',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.insurance?.initial_deduction_date || '-'}</span>
+                <span>{record?.insurance?.initial_deduction_date || '-'}</span>
             ),
         },
         {
@@ -303,7 +441,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'refusal_insurance',
             width: 200,
             render: (_, record: EmployeeResponseType) => {
-                const refusalInsurance = record.refusal_insurance;
+                const refusalInsurance = record?.refusal_insurance;
                 if (refusalInsurance && typeof refusalInsurance === 'object') {
                     return <span>{JSON.stringify(refusalInsurance)}</span>;
                 }
@@ -316,7 +454,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'contract_effect',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.contract?.effect_date || '-'}</span>
+                <span>{record?.contract?.effect_date || '-'}</span>
             ),
         },
         {
@@ -325,7 +463,7 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             key: 'contract_expiration_date',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record.contract?.expir_date || '-'}</span>
+                <span>{record?.contract?.expir_date || '-'}</span>
             ),
         },
         {
@@ -392,4 +530,16 @@ export const useEmployeeCols = (): TableColumnsType<any> => {
             ),
         },
     ];
+
+    if (!state || !filterColumnsByState[state]) return allCols;
+
+    const filteredKeys = filterColumnsByState[state];
+
+    const result = allCols.filter(
+        (col) =>
+            'dataIndex' in col &&
+            typeof col.dataIndex === 'string' &&
+            filteredKeys.includes(col.dataIndex),
+    );
+    return result;
 };

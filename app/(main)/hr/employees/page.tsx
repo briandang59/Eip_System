@@ -2,12 +2,15 @@
 
 import { useEmployees } from '@/apis/useSwr/employees';
 import { useEmployeeState } from '@/apis/useSwr/employeeState';
+import { useTransferEmployee } from '@/apis/useSwr/transferEmployees';
 import { useUnits } from '@/apis/useSwr/units';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ClientOnly from '@/components/common/ClientOnly';
 import { GenericTable } from '@/components/common/GenericTable';
 import { EmployeeResponseType } from '@/types/response/employees';
+import { TransferEmployeesResponseType } from '@/types/response/transferEmployees';
 import { useEmployeeCols } from '@/utils/constants/cols/employeeCols';
+import { useTransferCols } from '@/utils/constants/cols/tranferCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -34,10 +37,13 @@ function EmployeesPage() {
             state: selectedState,
         },
     );
+    const { transferEmployee, isLoading: isLoadingTransfer } = useTransferEmployee({
+        place_id: selectedWorkPlace,
+    });
     const { units, isLoading: isLoadingUnits } = useUnits({ place_id: selectedWorkPlace });
 
-    const employeeCols = useEmployeeCols();
-
+    const employeeCols = useEmployeeCols({ state: selectedState });
+    const transferCols = useTransferCols();
     return (
         <ClientOnly>
             <div className="flex flex-wrap items-end gap-2 mb-4">
@@ -104,20 +110,37 @@ function EmployeesPage() {
                 <Button icon={<ExportOutlined />}>{t.employee.export}</Button>
                 <Button icon={<ImportOutlined />}>{t.employee.import}</Button>
             </div>
-            <GenericTable<EmployeeResponseType>
-                columns={employeeCols}
-                dataSource={employees || []}
-                rowKey="stt"
-                isLoading={isLoadingEmployees}
-                pagination={{
-                    defaultPageSize: 30,
-                    pageSizeOptions: ['30', '50'],
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-                    size: 'default',
-                }}
-            />
+            {selectedState === 7 ? (
+                <GenericTable<TransferEmployeesResponseType>
+                    columns={transferCols}
+                    dataSource={transferEmployee || []}
+                    rowKey="stt"
+                    isLoading={isLoadingTransfer}
+                    pagination={{
+                        defaultPageSize: 30,
+                        pageSizeOptions: ['30', '50'],
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        size: 'default',
+                    }}
+                />
+            ) : (
+                <GenericTable<EmployeeResponseType>
+                    columns={employeeCols}
+                    dataSource={employees || []}
+                    rowKey="stt"
+                    isLoading={isLoadingEmployees}
+                    pagination={{
+                        defaultPageSize: 30,
+                        pageSizeOptions: ['30', '50'],
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        size: 'default',
+                    }}
+                />
+            )}
         </ClientOnly>
     );
 }

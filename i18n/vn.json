@@ -313,5 +313,18 @@
         "contract_expire": "Hết hạn hợp đồng",
         "date_join_company": "Ngày tham gia công ty",
         "date_join_company2": "Ngày tham gia công ty 2"
+    },
+    "transfer": {
+        "card_number": "Số thẻ",
+        "full_name": "Họ tên",
+        "gender": "Giới tính",
+        "date_join_company": "Ngày tham gia công ty",
+        "old_department": "Phòng ban cũ",
+        "old_factory": "Nhà máy cũ",
+        "transfer_date": "Ngày chuyển công ty",
+        "new_department": "Phòng ban mới",
+        "transfer_factory": "Nhà máy mới",
+        "male": "Nam",
+        "female": "Nữ"
     }
 }
