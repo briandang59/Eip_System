@@ -54,4 +54,9 @@ export const urls = {
     transfer_list: 'transfer_list',
     career: 'career',
     records: 'records',
+    contract: 'contract',
+    ex_resource: 'x_resource',
+    provinces: 'provinces',
+    employee_class: 'employee_class',
+    visa_type: 'visa_type',
 };

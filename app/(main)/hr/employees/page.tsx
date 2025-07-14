@@ -8,6 +8,7 @@ import { useUnits } from '@/apis/useSwr/units';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ClientOnly from '@/components/common/ClientOnly';
 import { GenericTable } from '@/components/common/GenericTable';
+import ProfileForm from '@/components/forms/ProfileForm';
 import ProfileUI from '@/components/ui/profileUI';
 import { CareerHistoryResponseType } from '@/types/response/dailyCareerRecord';
 import { EmployeeResponseType } from '@/types/response/employees';
@@ -28,7 +29,7 @@ function EmployeesPage() {
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const { employeeState, isLoading: isLoadingEmployeeState } = useEmployeeState();
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
-    const [selectedState, setSelectedState] = useState<number | undefined>(undefined);
+    const [selectedState, setSelectedState] = useState<number | undefined>(employeeState[0]?.id);
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id || 0);
@@ -46,6 +47,12 @@ function EmployeesPage() {
                 setKey(key);
                 break;
             case 'profile':
+                setKey(key);
+                break;
+            case 'create_profile':
+                setKey(key);
+                break;
+            case 'modify_profile':
                 setKey(key);
                 break;
         }
@@ -145,6 +152,20 @@ function EmployeesPage() {
                     </div>
                 );
             }
+            case 'create_profile': {
+                return (
+                    <div className="min-h-[300px] flex flex-col gap-4">
+                        <ProfileForm />
+                    </div>
+                );
+            }
+            case 'modify_profile': {
+                return (
+                    <div className="min-h-[300px] flex flex-col gap-4">
+                        <ProfileForm />
+                    </div>
+                );
+            }
         }
     };
     return (
@@ -209,7 +230,10 @@ function EmployeesPage() {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-                <Button icon={<PlusOutlined className="!text-green-700" />}>
+                <Button
+                    icon={<PlusOutlined className="!text-green-700" />}
+                    onClick={() => hanldeToggleModal('create_profile')}
+                >
                     {t.employee.add}
                 </Button>
                 <Button
@@ -264,7 +288,7 @@ function EmployeesPage() {
                 footer={null}
                 centered
                 onCancel={() => hanldeToggleModal(key)}
-                width={1600}
+                width={1000}
             >
                 {renderModal()}
             </Modal>

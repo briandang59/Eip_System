@@ -558,7 +558,13 @@ export const useEmployeeCols = ({
                             >
                                 {t.employee.view}
                             </Button>
-                            <Button icon={<EditOutlined className="!text-blue-500" />}>
+                            <Button
+                                icon={<EditOutlined className="!text-blue-500" />}
+                                onClick={() => {
+                                    setSelectedKey('modify_profile');
+                                    setSelectedRecord(record);
+                                }}
+                            >
                                 {t.employee.edit}
                             </Button>
                             <Button icon={<DeleteOutlined className="!text-red-500" />}>
