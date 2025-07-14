@@ -214,7 +214,10 @@
         "add": "添加",
         "export": "導出",
         "import": "導入",
-        "refresh": "刷新"
+        "refresh": "刷新",
+        "view": "查看資料",
+        "edit": "編輯資料",
+        "delete": "刪除資料"
     },
     "take_leave": {
         "year": "年",

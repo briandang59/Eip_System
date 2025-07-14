@@ -214,7 +214,10 @@
         "add": "Thêm",
         "export": "Xuất excel",
         "import": "Nhập",
-        "refresh": "Làm mới"
+        "refresh": "Làm mới",
+        "view": "Xem hồ sơ",
+        "edit": "Sửa hồ sơ",
+        "delete": "Xoá hồ sơ"
     },
     "take_leave": {
         "year": "Năm",

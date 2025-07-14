@@ -214,7 +214,10 @@
         "add": "Add",
         "export": "Export",
         "import": "Import",
-        "refresh": "Refresh"
+        "refresh": "Refresh",
+        "view": "View Profile",
+        "edit": "Edit Profile",
+        "delete": "Delete Profile"
     },
     "take_leave": {
         "year": "Year",

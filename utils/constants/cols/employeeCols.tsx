@@ -549,14 +549,20 @@ export const useEmployeeCols = ({
                     trigger="click"
                     content={
                         <div className="flex flex-col gap-2">
-                            <Button icon={<EyeFilled className="!text-green-700" />}>
-                                Xem hồ sơ
+                            <Button
+                                icon={<EyeFilled className="!text-green-700" />}
+                                onClick={() => {
+                                    setSelectedKey('profile');
+                                    setSelectedRecord(record);
+                                }}
+                            >
+                                {t.employee.view}
                             </Button>
                             <Button icon={<EditOutlined className="!text-blue-500" />}>
-                                Sửa hồ sơ
+                                {t.employee.edit}
                             </Button>
                             <Button icon={<DeleteOutlined className="!text-red-500" />}>
-                                Xoá hồ sơ
+                                {t.employee.delete}
                             </Button>
                         </div>
                     }

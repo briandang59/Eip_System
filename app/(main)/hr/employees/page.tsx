@@ -8,6 +8,7 @@ import { useUnits } from '@/apis/useSwr/units';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ClientOnly from '@/components/common/ClientOnly';
 import { GenericTable } from '@/components/common/GenericTable';
+import ProfileUI from '@/components/ui/profileUI';
 import { CareerHistoryResponseType } from '@/types/response/dailyCareerRecord';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { TransferEmployeesResponseType } from '@/types/response/transferEmployees';
@@ -42,6 +43,9 @@ function EmployeesPage() {
         setIsOpenModal(!isOpenModal);
         switch (key) {
             case 'career_record':
+                setKey(key);
+                break;
+            case 'profile':
                 setKey(key);
                 break;
         }
@@ -131,6 +135,13 @@ function EmployeesPage() {
                                 size: 'default',
                             }}
                         />
+                    </div>
+                );
+            }
+            case 'profile': {
+                return (
+                    <div className="min-h-[300px] flex flex-col gap-4">
+                        <ProfileUI employee={selectedRecord} />
                     </div>
                 );
             }

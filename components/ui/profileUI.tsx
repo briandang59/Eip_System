@@ -68,7 +68,6 @@ function Section({
 export default function ProfileUI({ employee }: ProfileUIProps) {
     const { t } = useTranslationCustom();
 
-    // ✅ Hook phải được gọi ở đầu
     const { photos, isLoading } = useMemberDataPhoto({
         card_number: employee?.card_number ?? '',
     });
@@ -131,17 +130,17 @@ export default function ProfileUI({ employee }: ProfileUIProps) {
     return (
         <div className="grid grid-cols-[30%_70%] gap-4 bg-gray-50">
             <div className="rounded-[10px] p-4 flex flex-col items-center gap-4 shadow-sm bg-white">
-                <div className="rounded-full size-[150px] flex items-center justify-center bg-gray-800">
+                <div className="rounded-[4px] size-[200px] flex items-center justify-center bg-gray-800">
                     {isLoading ? (
                         <Spin />
                     ) : photos ? (
                         <Image
-                            width={150}
-                            height={150}
+                            width={200}
+                            height={200}
                             alt="Employee photo"
                             src={`data:image/jpeg;base64,${photos}`}
                             unoptimized
-                            className="rounded-full size-[150px] object-cover"
+                            className="rounded-[4px] size-[200px] object-cover"
                         />
                     ) : (
                         <UserIcon className="text-white" width={80} height={80} strokeWidth={1.5} />
