@@ -1,7 +1,8 @@
 import { EmployeeResponseType } from '@/types/response/employees';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { DeleteOutlined, EditOutlined, EyeFilled } from '@ant-design/icons';
-import { Button, TableColumnsType } from 'antd';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Folder, Settings } from 'lucide-react';
 
 interface params {
     state?: number;
@@ -21,7 +22,7 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
         [STATE.NORMAL]: [
             'stt',
             'full_name',
-            'foreign_name',
+            'fullname_other',
             'unit',
             'gender',
             'place_of_birth',
@@ -152,12 +153,19 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
             key: 'full_name',
             width: 200,
             fixed: 'left',
-            render: (_, record: EmployeeResponseType) => <span>{record?.fullname || '-'}</span>,
+            render: (_, record: EmployeeResponseType) => (
+                <span className="flex items-center gap-2">
+                    <button className="cursor-pointer">
+                        <Folder strokeWidth={1.5} className="size-4 text-blue-700" />{' '}
+                    </button>
+                    {record?.fullname || '-'}
+                </span>
+            ),
         },
         {
             title: t.employee.foreign_name,
-            dataIndex: 'foreign_name',
-            key: 'foreign_name',
+            dataIndex: ['fullname_other'],
+            key: 'fullname_other',
             width: 200,
             fixed: 'left',
 
@@ -167,7 +175,7 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
         },
         {
             title: t.employee.unit,
-            dataIndex: 'unit',
+            dataIndex: ['unit', 'name_en'],
             key: 'unit',
             width: 200,
             fixed: 'left',
@@ -178,7 +186,7 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
         },
         {
             title: t.employee.gender,
-            dataIndex: 'gender',
+            dataIndex: ['gender'],
             key: 'gender',
             width: 100,
             render: (_, record: EmployeeResponseType) => (
@@ -187,7 +195,7 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
         },
         {
             title: t.employee.place_of_birth,
-            dataIndex: 'place_of_birth',
+            dataIndex: ['place_of_birth'],
             key: 'place_of_birth',
             width: 100,
             render: (_, record: EmployeeResponseType) => (
@@ -196,7 +204,7 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
         },
         {
             title: t.employee.birthday,
-            dataIndex: 'birthday',
+            dataIndex: ['birthday'],
             key: 'birthday',
             width: 200,
             render: (_, record: EmployeeResponseType) => <span>{record?.birthday || '-'}</span>,
@@ -519,14 +527,29 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
             title: t.employee.actions,
             dataIndex: 'actions',
             key: 'actions',
-            width: 100,
+            width: 50,
             fixed: 'right',
             render: (_, record: EmployeeResponseType) => (
-                <div className="flex items-center gap-2">
-                    <Button icon={<EyeFilled className="!text-green-700" />} />
-                    <Button icon={<EditOutlined className="!text-blue-500" />} />
-                    <Button icon={<DeleteOutlined className="!text-red-500" />} />
-                </div>
+                <Popover
+                    trigger="click"
+                    content={
+                        <div className="flex flex-col gap-2">
+                            <Button icon={<EyeFilled className="!text-green-700" />}>
+                                Xem hồ sơ
+                            </Button>
+                            <Button icon={<EditOutlined className="!text-blue-500" />}>
+                                Sửa hồ sơ
+                            </Button>
+                            <Button icon={<DeleteOutlined className="!text-red-500" />}>
+                                Xoá hồ sơ
+                            </Button>
+                        </div>
+                    }
+                >
+                    <Button>
+                        <Settings className="size-4 text-green-700" />
+                    </Button>
+                </Popover>
             ),
         },
     ];
@@ -536,10 +559,7 @@ export const useEmployeeCols = ({ state }: params): TableColumnsType<any> => {
     const filteredKeys = filterColumnsByState[state];
 
     const result = allCols.filter(
-        (col) =>
-            'dataIndex' in col &&
-            typeof col.dataIndex === 'string' &&
-            filteredKeys.includes(col.dataIndex),
+        (col) => 'key' in col && typeof col.key === 'string' && filteredKeys.includes(col.key),
     );
     return result;
 };

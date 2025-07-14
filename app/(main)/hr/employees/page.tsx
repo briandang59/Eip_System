@@ -13,8 +13,9 @@ import { useEmployeeCols } from '@/utils/constants/cols/employeeCols';
 import { useTransferCols } from '@/utils/constants/cols/tranferCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { ExportOutlined, ImportOutlined, PlusOutlined } from '@ant-design/icons';
+import { FileOutlined, ImportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Input, Select } from 'antd';
 import { useState } from 'react';
 
@@ -27,7 +28,11 @@ function EmployeesPage() {
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id || 0);
-    const { employees, isLoading: isLoadingEmployees } = useEmployees(
+    const {
+        employees,
+        isLoading: isLoadingEmployees,
+        mutate: mutateEmployee,
+    } = useEmployees(
         {
             place_id: selectedWorkPlace,
             unit_id: selectedUnit,
@@ -40,10 +45,39 @@ function EmployeesPage() {
     const { transferEmployee, isLoading: isLoadingTransfer } = useTransferEmployee({
         place_id: selectedWorkPlace,
     });
-    const { units, isLoading: isLoadingUnits } = useUnits({ place_id: selectedWorkPlace });
+    const {
+        units,
+        isLoading: isLoadingUnits,
+        mutate: mutateTransfer,
+    } = useUnits({ place_id: selectedWorkPlace });
 
     const employeeCols = useEmployeeCols({ state: selectedState });
     const transferCols = useTransferCols();
+
+    const handleRefresh = () => {
+        mutateEmployee();
+        mutateTransfer();
+    };
+    const { exportWithoutSummary: employeeExport } = useExportToExcel(
+        employeeCols,
+        'Employees',
+        'Employees Data',
+    );
+    const { exportWithoutSummary: employeeTransferExport } = useExportToExcel(
+        transferCols,
+        'Transfer employee',
+        'Transfer employee Data',
+    );
+
+    const handleExportExcel = () => {
+        const filename = `Employees_data`;
+
+        if (selectedState === 7 && transferEmployee) {
+            employeeTransferExport(transferEmployee, filename);
+        } else if (selectedState !== 7 && employees) {
+            employeeExport(employeeCols, filename);
+        }
+    };
     return (
         <ClientOnly>
             <div className="flex flex-wrap items-end gap-2 mb-4">
@@ -106,9 +140,24 @@ function EmployeesPage() {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-                <Button icon={<PlusOutlined />}>{t.employee.add}</Button>
-                <Button icon={<ExportOutlined />}>{t.employee.export}</Button>
-                <Button icon={<ImportOutlined />}>{t.employee.import}</Button>
+                <Button icon={<PlusOutlined className="!text-green-700" />}>
+                    {t.employee.add}
+                </Button>
+                <Button
+                    icon={<FileOutlined className="!text-green-700" />}
+                    onClick={handleExportExcel}
+                >
+                    {t.employee.export}
+                </Button>
+                <Button icon={<ImportOutlined className="!text-green-700" />}>
+                    {t.employee.import}
+                </Button>
+                <Button
+                    icon={<ReloadOutlined className="!text-orange-500" />}
+                    onClick={handleRefresh}
+                >
+                    {t.employee.refresh}
+                </Button>
             </div>
             {selectedState === 7 ? (
                 <GenericTable<TransferEmployeesResponseType>

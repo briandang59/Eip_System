@@ -212,8 +212,9 @@
         "actions": "Hành động",
         "state": "Trạng thái",
         "add": "Thêm",
-        "export": "Xuất",
-        "import": "Nhập"
+        "export": "Xuất excel",
+        "import": "Nhập",
+        "refresh": "Làm mới"
     },
     "take_leave": {
         "year": "Năm",

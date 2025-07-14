@@ -24,7 +24,7 @@ export const useTransferEmployee = (params: params) => {
     );
 
     return {
-        transferEmployee: data?.data,
+        transferEmployee: data?.data || [],
         isLoading: !error && !data,
         isError: error,
         mutate,

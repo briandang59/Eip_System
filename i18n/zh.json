@@ -213,7 +213,8 @@
         "state": "狀態",
         "add": "添加",
         "export": "導出",
-        "import": "導入"
+        "import": "導入",
+        "refresh": "刷新"
     },
     "take_leave": {
         "year": "年",

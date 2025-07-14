@@ -213,7 +213,8 @@
         "state": "State",
         "add": "Add",
         "export": "Export",
-        "import": "Import"
+        "import": "Import",
+        "refresh": "Refresh"
     },
     "take_leave": {
         "year": "Year",
