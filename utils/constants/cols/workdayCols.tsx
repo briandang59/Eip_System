@@ -591,7 +591,13 @@ export const useWorkdayCols = ({
                                     <AlertCircle className="w-4 h-4 text-red-500" />
                                     <span>{t.workday.abnormal_process}</span>
                                 </button>
-                                <button className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300">
+                                <button
+                                    className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 duration-300"
+                                    onClick={() => {
+                                        handleOpenModalByKey('clock_edit');
+                                        handleSelectedAttendance(record);
+                                    }}
+                                >
                                     <ClockAlert className="w-4 h-4 text-blue-500" />
                                     <span>{t.workday.edit_clock}</span>
                                 </button>
