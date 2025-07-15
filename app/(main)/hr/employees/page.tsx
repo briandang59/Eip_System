@@ -130,7 +130,7 @@ function EmployeesPage() {
                         <GenericTable<CareerHistoryResponseType>
                             columns={dailyRecord}
                             dataSource={dailyCareerRecord || []}
-                            rowKey="stt"
+                            rowKey={'stt'}
                             isLoading={isLoadingDaily}
                             pagination={{
                                 defaultPageSize: 30,

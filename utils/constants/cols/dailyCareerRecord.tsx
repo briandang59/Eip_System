@@ -10,7 +10,6 @@ export const useDailyCareerRecordCols = (): TableColumnsType<CareerHistoryRespon
         {
             title: 'Stt',
             width: 60,
-            dataIndex: 'stt',
             key: 'stt',
             fixed: 'left',
             render: (_text, _record, index) => index + 1,
@@ -20,29 +19,27 @@ export const useDailyCareerRecordCols = (): TableColumnsType<CareerHistoryRespon
             key: 'career_event',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record.career_event?.name_en || '-'}</div>
+                <div className="line-clamp-2">{record?.career_event?.name_en || '-'}</div>
             ),
         },
         {
             title: t.record.card_number,
-            dataIndex: 'card_number',
             key: 'card_number',
             width: 200,
-            render: (text: string) => <div className="line-clamp-2">{text || '-'}</div>,
+            render: (_, record) => <div className="line-clamp-2">{record?.card_number || '-'}</div>,
         },
         {
             title: t.record.date,
-            dataIndex: 'event_date',
             key: 'event_date',
             width: 200,
-            render: (text: string) => <div className="line-clamp-2">{text || '-'}</div>,
+            render: (_, record) => <div className="line-clamp-2">{record?.event_date || '-'}</div>,
         },
         {
             title: t.record.workplace,
             key: 'work_place',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record.work_place?.name_en || '-'}</div>
+                <div className="line-clamp-2">{record?.work_place?.name_en || '-'}</div>
             ),
         },
         {
@@ -50,7 +47,7 @@ export const useDailyCareerRecordCols = (): TableColumnsType<CareerHistoryRespon
             key: 'service_unit',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record.service_unit?.name_en || '-'}</div>
+                <div className="line-clamp-2">{record?.service_unit?.name_en || '-'}</div>
             ),
         },
         {
@@ -58,22 +55,20 @@ export const useDailyCareerRecordCols = (): TableColumnsType<CareerHistoryRespon
             key: 'job_title',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record.job_title?.name_vn || '-'}</div>
+                <div className="line-clamp-2">{record?.job_title?.name_vn || '-'}</div>
             ),
         },
         {
             title: t.record.resign_reason,
-            dataIndex: 'reason',
             key: 'reason',
             width: 200,
-            render: (text: string) => <div className="line-clamp-2">{text || '-'}</div>,
+            render: (_, record) => <div className="line-clamp-2">{record?.reason || '-'}</div>,
         },
         {
             title: t.record.memo,
-            dataIndex: 'memo',
             key: 'memo',
             width: 200,
-            render: (text: string) => <div className="line-clamp-2">{text || '-'}</div>,
+            render: (_, record) => <div className="line-clamp-2">{record?.memo || '-'}</div>,
         },
 
         {
