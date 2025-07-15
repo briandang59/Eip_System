@@ -12,7 +12,7 @@ export function EditedClockTime({ selectedAttendance }: { selectedAttendance: At
         <div className="grid grid-cols-2 gap-4">
             <p className="text-[16px] font-bold">{t.workday.user_update}</p>
             <p className="text-[14px] text-blue-600 font-medium">
-                {selectedAttendance.fullname} – {selectedAttendance.card_number}
+                {selectedAttendance?.details[0]?.attendance[0]?.T1?.method}
             </p>
 
             <p className="text-[16px] font-bold">{t.workday.time_update}</p>
