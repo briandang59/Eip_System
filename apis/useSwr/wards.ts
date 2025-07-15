@@ -2,17 +2,17 @@ import useSWR from 'swr';
 import { fetcher } from '../fetcher';
 import { urls } from '@/utils/constants/common/urls';
 import { BaseResponse } from '@/types/response/baseResponse';
-import { ProvincesResponseType } from '@/types/response/provinces';
 import qs from 'qs';
-const API_URL = `/${urls.ex_resource}/${urls.vn}/${urls.provinces}`;
+import { WardsResponseType } from '@/types/response/wards';
+const API_URL = `/${urls.ex_resource}/${urls.vn}/${urls.wards}`;
 
 interface params {
-    code?: string;
+    district?: string;
 }
-export const useProvinces = (params?: params) => {
+export const useWards = (params?: params) => {
     const query = params ? `?${qs.stringify(params, { encodeValuesOnly: true })}` : '';
 
-    const { data, error, mutate } = useSWR<BaseResponse<ProvincesResponseType[]>>(
+    const { data, error, mutate } = useSWR<BaseResponse<WardsResponseType[]>>(
         `${API_URL}${query}`,
         fetcher,
         {
@@ -23,7 +23,7 @@ export const useProvinces = (params?: params) => {
     );
 
     return {
-        provinces: data?.data,
+        wards: data?.data,
         isLoading: !error && !data,
         isError: error,
         mutate,

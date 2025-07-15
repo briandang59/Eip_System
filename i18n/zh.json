@@ -391,6 +391,25 @@
         "visa_type": "簽證類型",
         "expired_date_visa": "簽證到期日",
         "cancel": "取消",
-        "save_info": "儲存資訊"
+        "save_info": "儲存資訊",
+        "provinces": "省/城市",
+        "districts": "區/縣",
+        "wards": "鄉/鎮/街道",
+        "male": "男",
+        "female": "女",
+        "ethnics": "倫理學",
+        "join_insurance_date": "加入保險日期",
+        "withholding_date": "扣除日期",
+        "refusal_insurance": "拒絕參加保險",
+        "refusal_reason": "拒絕原因",
+        "yes": "是",
+        "no": "否",
+        "pregnancy_status": "懷孕狀態",
+        "take_care_child_status": "照顧小孩狀態",
+        "start_pregnant_date": "開始懷孕日期",
+        "end_pregnant_date": "結束懷孕日期",
+        "start_take_care_child_date": "開始照顧小孩日期",
+        "end_take_care_child_date": "結束照顧小孩日期",
+        "insurance_information": "保險資訊"
     }
 }

@@ -391,6 +391,25 @@
         "visa_type": "Loại visa",
         "expired_date_visa": "Ngày hết hạn visa",
         "cancel": "Huỷ",
-        "save_info": "Lưu thông tin"
+        "save_info": "Lưu thông tin",
+        "provinces": "Tỉnh/Thành phố",
+        "districts": "Quận/Huyện",
+        "wards": "Xã/Phường",
+        "male": "Nam",
+        "female": "Nữ",
+        "ethnics": "Dân tộc",
+        "join_insurance_date": "Ngày tham gia bảo hiểm",
+        "withholding_date": "Ngày khấu trừ",
+        "refusal_insurance": "Từ chối tham gia bảo hiểm",
+        "refusal_reason": "Lý do từ chối",
+        "yes": "Có",
+        "no": "Không",
+        "pregnancy_status": "Tình trạng mang thai",
+        "take_care_child_status": "Tình trạng chăm con nhỏ",
+        "start_pregnant_date": "Ngày bắt đầu mang thai",
+        "end_pregnant_date": "Ngày kết thúc mang thai",
+        "start_take_care_child_date": "Ngày bắt đầu chăm con nhỏ",
+        "end_take_care_child_date": "Ngày kết thúc chăm con nhỏ",
+        "insurance_information": "Thông tin bảo hiểm"
     }
 }

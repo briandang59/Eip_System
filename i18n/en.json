@@ -391,6 +391,25 @@
         "visa_type": "Visa Type",
         "expired_date_visa": "Visa Expiry Date",
         "cancel": "Cancel",
-        "save_info": "Save Information"
+        "save_info": "Save Information",
+        "provinces": "Provinces/Cities",
+        "districts": "Districts",
+        "wards": "Wards",
+        "male": "Male",
+        "female": "Female",
+        "ethnics": "Ethnics",
+        "join_insurance_date": "Join Insurance Date",
+        "withholding_date": "WithHolding Date",
+        "refusal_insurance": "Refusal Insurance",
+        "refusal_reason": "Refusal Reason",
+        "yes": "Yes",
+        "no": "No",
+        "pregnancy_status": "Pregnancy Status",
+        "take_care_child_status": "Take Care Child Status",
+        "start_pregnant_date": "Start Pregnant Date",
+        "end_pregnant_date": "End Pregnant Date",
+        "start_take_care_child_date": "Start Take Care Child Date",
+        "end_take_care_child_date": "End Take Care Child Date",
+        "insurance_information": "Insurance Information"
     }
 }

@@ -24,18 +24,13 @@ import { useCheckCardNumber } from '@/apis/useSwr/checkCardNumber';
 import { useEffect } from 'react';
 import { useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useProvinces } from '@/apis/useSwr/provinces';
+import { useWards } from '@/apis/useSwr/wards';
+import { useDistricts } from '@/apis/useSwr/districts';
+import { employeeService } from '@/apis/services/employee';
+import { useEthnics } from '@/apis/useSwr/ethnic';
 
 function ProfileForm() {
-    const { nations, isLoading: isLoadingNations } = useNations();
-    const { educations, isLoading: isLoadingEducations } = useEducations();
-    const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
-    const { units, isLoading: isLoadingUnit } = useUnits();
-    const { languages, isLoading: isLoadingLanguage } = useLanguages();
-    const { shifts, isLoading: isLoadingShifts } = useShifts();
-    const { unitTypes, isLoading: isLoadingUnitType } = useUnitType();
-    const { jobTitles, isLoading: isLoadingJobtitle } = useJobTitle();
-    const { visaTypes, isLoading: isLoadingVisaType } = useVisaType();
-
     const { t } = useTranslationCustom();
     const schema = yup
         .object({
@@ -43,32 +38,36 @@ function ProfileForm() {
             fullname: yup.string().required(),
             fullname_other: yup.string().default(''),
             nation: yup.number().required(),
-            education: yup.number().required(),
+            education: yup.number().default(0),
             gender: yup.string().required(),
             phone_vn: yup.string().default(''),
             phone_tw: yup.string().default(''),
             address: yup.string().default(''),
+            provinces_id: yup.string().default(''),
+            districts_id: yup.string().default(''),
+            wards_id: yup.string().default(''),
             cccd: yup.string().required(),
             place_of_birth: yup.string().default(''),
             place_of_issue: yup.string().default(''),
             date_of_issue: yup.string().default(''),
             date_of_birth: yup.string().default(''),
+            ethnics: yup.number().default(0),
             marriage: yup.string().required(),
             number_of_children: yup.number().default(0),
-            type_of_work: yup.number().required(),
-            language: yup.number().required(),
+            type_of_work: yup.number().default(0),
+            language: yup.array().of(yup.number()).default([]),
             work_place: yup.number().required(),
             unit: yup.number().required(),
-            job_title: yup.number().required(),
+            job_title: yup.number().default(0),
             description: yup.string().default(''),
-            shift: yup.string().default(''),
+            shift: yup.number().default(0),
             start_date_shift: yup.string().default(''),
             end_date_shift: yup.string().default(''),
             active_contract_date: yup.string().default(''),
             expired_contract_date: yup.string().default(''),
             join_company_date1: yup.string().required(),
             join_company_date2: yup.string().default(''),
-            type_contract: yup.number().required(),
+            type_contract: yup.number().default(0),
             passport_number: yup.string().default(''),
             date_of_passport: yup.string().default(''),
             date_of_passport_expired: yup.string().default(''),
@@ -80,6 +79,16 @@ function ProfileForm() {
             residence_time: yup.number().default(0),
             type_visa: yup.number().default(0),
             memo_visa: yup.string().default(''),
+            join_insurance_date: yup.string().default(''),
+            withholding_date: yup.string().default(''),
+            refusal_insurance: yup.string().default(''),
+            refusal_reason: yup.string().default(''),
+            pregnancy: yup.string().default(''),
+            start_date_pregnant: yup.string().default(''),
+            end_date_pregnant: yup.string().default(''),
+            has_child: yup.string().default(''),
+            start_date_take_care_child: yup.string().default(''),
+            end_date_take_care_child: yup.string().default(''),
         })
         .required();
 
@@ -91,59 +100,126 @@ function ProfileForm() {
         formState: { errors },
     } = useForm<FormData>({
         resolver: yupResolver(schema),
-        defaultValues: {
-            card_number: '',
-            fullname: '',
-            fullname_other: '',
-            nation: 1,
-            education: 1,
-            gender: 'male',
-            phone_vn: '',
-            phone_tw: '',
-            address: '',
-            cccd: '',
-            place_of_birth: '',
-            place_of_issue: '',
-            date_of_issue: '',
-            date_of_birth: '',
-            marriage: '',
-            number_of_children: 1,
-            type_of_work: 1,
-            language: 1,
-            work_place: 1,
-            unit: 1,
-            job_title: 1,
-            description: '',
-            shift: '',
-            start_date_shift: '',
-            end_date_shift: '',
-            active_contract_date: '',
-            expired_contract_date: '',
-            join_company_date1: '',
-            join_company_date2: '',
-            type_contract: 1,
-            passport_number: '',
-            date_of_passport: '',
-            date_of_passport_expired: '',
-            visa_number: '',
-            date_created_visa: '',
-            date_expired_visa: '',
-            work_permit_number: '',
-            work_permit_number_expired: '',
-            residence_time: 1,
-            type_visa: 1,
-            memo_visa: '',
-        },
     });
     const cardNumber = useWatch({ control, name: 'card_number' });
+    const nation = useWatch({ control, name: 'nation' });
+    const place_id = useWatch({ control, name: 'work_place' });
+    const provinces_id = useWatch({ control, name: 'provinces_id' });
+    const district_id = useWatch({ control, name: 'districts_id' });
+    const gender_state = useWatch({ control, name: 'gender' });
+
+    const NATION_VN = 3;
 
     const { checkCardNumber } = useCheckCardNumber({ card: cardNumber });
-
+    const { nations, isLoading: isLoadingNations } = useNations();
+    const { educations, isLoading: isLoadingEducations } = useEducations();
+    const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
+    const { units, isLoading: isLoadingUnit } = useUnits({ place_id: place_id });
+    const { languages, isLoading: isLoadingLanguage } = useLanguages();
+    const { shifts, isLoading: isLoadingShifts } = useShifts();
+    const { unitTypes, isLoading: isLoadingUnitType } = useUnitType();
+    const { jobTitles, isLoading: isLoadingJobtitle } = useJobTitle();
+    const { visaTypes, isLoading: isLoadingVisaType } = useVisaType();
+    const { provinces, isLoading: isLoadingProvinces } = useProvinces();
+    const { districts, isLoading: isLoadingDistricts } = useDistricts({ province: provinces_id });
+    const { wards, isLoading: isLoadingWards } = useWards({ district: district_id });
+    const { ethnics, isLoading: isLoadingEthnics } = useEthnics();
     useEffect(() => {
         if (checkCardNumber?.data) {
             toast.error(checkCardNumber.message);
         }
     }, [checkCardNumber]);
+    const onSubmit = async (data: FormData) => {
+        console.log(data);
+        try {
+            const newData = {
+                fullname: data.fullname,
+                work_place_id: data.work_place,
+                employee: {
+                    card_number: data.card_number,
+                    fullname: data.fullname,
+                    fullname_other: data.fullname_other,
+                    gender: data.gender === 'male' ? true : false,
+                    national_id: data.nation,
+                    education_id: data.education,
+                    phone_vientnam: data.phone_vn,
+                    phone_taiwan: data.phone_tw,
+                    id_card_number: data.cccd,
+                    id_card_issue_by: data.place_of_issue,
+                    id_card_issue_date: data.date_of_issue,
+                    ethnic_id: data.ethnics,
+                    place_of_birth: data.place_of_birth,
+                    marriage_status: data.marriage === 'marriged' ? 'on' : null,
+                    is_pregnant_woman: false,
+                    is_taking_care_children: true,
+                    has_children: data.number_of_children,
+                    class_id: data.job_title,
+                    join_company_date1: data.join_company_date1,
+                    join_company_date2: data.join_company_date2,
+                    vn_address: {
+                        province_id: data.provinces_id,
+                        district_id: data.districts_id,
+                        ward_id: data.wards_id,
+                    },
+                    unit_id: data.unit,
+                    job_title_id: data.job_title,
+                    work_description: data.description,
+                    active: true,
+                    province: null,
+                    birthday: data.date_of_birth,
+                },
+                languages: (data.language ?? []).filter(
+                    (lang): lang is number => typeof lang === 'number',
+                ),
+                insurance: {
+                    join_date: data.join_insurance_date,
+                    initial_deduction_date: data.withholding_date,
+                    refusal_insurance: data.refusal_insurance === 'yes' ? true : false,
+                    refusal_reason: data.refusal_reason,
+                },
+                contract: {
+                    effect_date: data.active_contract_date,
+                    expir_date: data.expired_contract_date,
+                    type_id: data.type_contract,
+                },
+                visa: {
+                    passport_number: data.passport_number,
+                    passport_issue_date: data.date_of_passport,
+                    passport_expiration_date: data.date_of_passport_expired,
+                    work_permit_number: data.work_permit_number,
+                    work_permit_expiration_date: data.work_permit_number_expired,
+                    visa_number: data.visa_number,
+                    visa_type_id: data.type_visa,
+                    visa_expiration_date: data.date_expired_visa,
+                    visa_effective_date: data.date_created_visa,
+                    visa_duration_stay: data.residence_time,
+                    visa_note: data.memo_visa,
+                },
+                shift: {
+                    shift_id: data.shift,
+                    start: data.start_date_shift,
+                    end: data.end_date_shift,
+                },
+                has_child: {
+                    start_date: null,
+                    end_date: null,
+                },
+                pregnancy: {
+                    start_date: null,
+                    end_date: null,
+                },
+            };
+
+            console.log(newData);
+            // await employeeService.add(newData).then((res) => {
+            //     if (res) {
+            //         toast.success('success');
+            //     }
+            // });
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
     const items: CollapseProps['items'] = [
         {
             key: '1',
@@ -219,8 +295,8 @@ function ProfileForm() {
                             required
                             placeholder="Select a role"
                             options={[
-                                { value: 'male', label: 'Nam' },
-                                { value: 'female', label: 'Nữ' },
+                                { value: 'male', label: t.profile_form.male },
+                                { value: 'female', label: t.profile_form.female },
                             ]}
                         />
                     </div>
@@ -273,15 +349,65 @@ function ProfileForm() {
                         type="text"
                         error={errors.phone_tw?.message}
                     />
-                    <div className="col-span-2">
-                        <FormTextArea
-                            control={control}
-                            name="address"
-                            label={t.profile_form.address}
-                            placeholder="Enter your address"
-                            size="large"
-                        />
-                    </div>
+                    {nation !== NATION_VN ? (
+                        <div className="col-span-2">
+                            <FormTextArea
+                                control={control}
+                                name="address"
+                                label={t.profile_form.address}
+                                placeholder="Enter your address"
+                                size="large"
+                            />
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 col-span-2 gap-2">
+                            <FormSelect
+                                control={control}
+                                name="provinces_id"
+                                label={t.profile_form.provinces}
+                                size="large"
+                                required
+                                placeholder="Select a nation"
+                                options={
+                                    provinces?.map((item) => ({
+                                        value: item.code,
+                                        label: item.name,
+                                    })) || []
+                                }
+                                loading={isLoadingProvinces}
+                            />
+                            <FormSelect
+                                control={control}
+                                name="districts_id"
+                                label={t.profile_form.districts}
+                                size="large"
+                                required
+                                placeholder="Select a nation"
+                                options={
+                                    districts?.map((item) => ({
+                                        value: item.code,
+                                        label: item.name,
+                                    })) || []
+                                }
+                                loading={isLoadingDistricts}
+                            />
+                            <FormSelect
+                                control={control}
+                                name="wards_id"
+                                label={t.profile_form.wards}
+                                size="large"
+                                required
+                                placeholder="Select a nation"
+                                options={
+                                    wards?.map((item) => ({
+                                        value: item.code,
+                                        label: item.name,
+                                    })) || []
+                                }
+                                loading={isLoadingWards}
+                            />
+                        </div>
+                    )}
                 </div>
             ),
         },
@@ -310,23 +436,21 @@ function ProfileForm() {
                             type="text"
                             error={errors.place_of_issue?.message}
                         />
-                        <FormInput
+                        <FormDatePicker
                             control={control}
                             name="date_of_issue"
                             label={t.profile_form.date_of_issue}
                             placeholder="Enter your date of issue"
                             size="large"
                             type="text"
-                            error={errors.date_of_issue?.message}
                         />
-                        <FormInput
+                        <FormDatePicker
                             control={control}
                             name="date_of_birth"
                             label={t.profile_form.birthday}
                             placeholder="Enter your birthday"
                             size="large"
                             type="text"
-                            error={errors.date_of_birth?.message}
                         />
                         <FormInput
                             control={control}
@@ -346,8 +470,8 @@ function ProfileForm() {
                             size="large"
                             placeholder="Select a marriage"
                             options={[
-                                { value: '1', label: 'Chưa kết hôn' },
-                                { value: '2', label: 'Đã kết hôn' },
+                                { value: 'not_marriaged', label: t.profile_form.no },
+                                { value: 'marriaged', label: t.profile_form.yes },
                             ]}
                         />
                         <FormInput
@@ -359,6 +483,114 @@ function ProfileForm() {
                             type="text"
                             error={errors.number_of_children?.message}
                         />
+                        <FormSelect
+                            control={control}
+                            name="ethnics"
+                            label={t.profile_form.ethnics}
+                            size="large"
+                            placeholder="Select a education"
+                            options={
+                                ethnics?.map((item) => ({
+                                    value: item.id,
+                                    label: item.name,
+                                })) || []
+                            }
+                            loading={isLoadingEthnics}
+                        />
+                        {gender_state === 'female' ? (
+                            <div className="flex flex-col gap-2">
+                                <FormSelect
+                                    control={control}
+                                    name="pregnancy"
+                                    label={t.profile_form.pregnancy_status}
+                                    size="large"
+                                    placeholder="Select a marriage"
+                                    options={[
+                                        { value: 'yes', label: t.profile_form.yes },
+                                        { value: 'no', label: t.profile_form.no },
+                                    ]}
+                                />
+                                <div className="grid grid-cols-2 gap-2">
+                                    <FormDatePicker
+                                        control={control}
+                                        name="start_date_pregnant"
+                                        label={t.profile_form.start_pregnant_date}
+                                        placeholder="Enter your date of issue"
+                                        size="large"
+                                        type="text"
+                                    />
+                                    <FormDatePicker
+                                        control={control}
+                                        name="end_date_pregnant"
+                                        label={t.profile_form.end_pregnant_date}
+                                        placeholder="Enter your date of issue"
+                                        size="large"
+                                        type="text"
+                                    />
+                                </div>
+                                <FormSelect
+                                    control={control}
+                                    name="has_child"
+                                    label={t.profile_form.take_care_child_status}
+                                    size="large"
+                                    placeholder="Select a marriage"
+                                    options={[
+                                        { value: 'yes', label: t.profile_form.yes },
+                                        { value: 'no', label: t.profile_form.no },
+                                    ]}
+                                />
+                                <div className="grid grid-cols-2 gap-2">
+                                    <FormDatePicker
+                                        control={control}
+                                        name="start_date_take_care_child"
+                                        label={t.profile_form.start_pregnant_date}
+                                        placeholder="Enter your date of issue"
+                                        size="large"
+                                        type="text"
+                                    />
+                                    <FormDatePicker
+                                        control={control}
+                                        name="end_date_take_care_child"
+                                        label={t.profile_form.end_pregnant_date}
+                                        placeholder="Enter your date of issue"
+                                        size="large"
+                                        type="text"
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col gap-2">
+                                <FormSelect
+                                    control={control}
+                                    name="has_child"
+                                    label={t.profile_form.take_care_child_status}
+                                    size="large"
+                                    placeholder="Select a marriage"
+                                    options={[
+                                        { value: 'yes', label: t.profile_form.yes },
+                                        { value: 'no', label: t.profile_form.no },
+                                    ]}
+                                />
+                                <div className="grid grid-cols-2 gap-2">
+                                    <FormDatePicker
+                                        control={control}
+                                        name="start_date_take_care_child"
+                                        label={t.profile_form.start_pregnant_date}
+                                        placeholder="Enter your date of issue"
+                                        size="large"
+                                        type="text"
+                                    />
+                                    <FormDatePicker
+                                        control={control}
+                                        name="end_date_take_care_child"
+                                        label={t.profile_form.end_pregnant_date}
+                                        placeholder="Enter your date of issue"
+                                        size="large"
+                                        type="text"
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             ),
@@ -540,6 +772,47 @@ function ProfileForm() {
         },
         {
             key: '6',
+            label: t.profile_form.insurance_information,
+            children: (
+                <div className="grid grid-cols-2 gap-2">
+                    <FormDatePicker
+                        control={control}
+                        name="join_insurance_date"
+                        label={t.profile_form.join_insurance_date}
+                        size="large"
+                        placeholder="Chọn ngày bắt đầu"
+                    />
+                    <FormDatePicker
+                        control={control}
+                        name="withholding_date"
+                        label={t.profile_form.withholding_date}
+                        size="large"
+                        placeholder="Chọn ngày bắt đầu"
+                    />
+                    <FormSelect
+                        control={control}
+                        name="refusal_insurance"
+                        label={t.profile_form.refusal_insurance}
+                        size="large"
+                        placeholder="Select a visa type"
+                        options={[
+                            { value: 'yes', label: t.profile_form.yes },
+                            { value: 'no', label: t.profile_form.no },
+                        ]}
+                        loading={isLoadingVisaType}
+                    />
+                    <FormTextArea
+                        control={control}
+                        name="refusal_reason"
+                        label={t.profile_form.refusal_reason}
+                        placeholder="Enter your memo visa"
+                        size="large"
+                    />
+                </div>
+            ),
+        },
+        {
+            key: '7',
             label: t.profile_form.visa_information,
             children: (
                 <div className="grid grid-cols-2 gap-2">
@@ -639,9 +912,7 @@ function ProfileForm() {
             ),
         },
     ];
-    const onSubmit = async (data: FormData) => {
-        console.log(data);
-    };
+
     return (
         <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
             <Collapse
@@ -650,7 +921,7 @@ function ProfileForm() {
                 defaultActiveKey={['1', '2', '3', '4', '5', '6']}
             />
             <Form.Item>
-                <div className="flex items-center gap-2 justify-end">
+                <div className="flex items-center gap-2 justify-end mt-4">
                     <Button size="large">{t.profile_form.cancel}</Button>
                     <Button size="large" type="primary" htmlType="submit">
                         {t.profile_form.save_info}

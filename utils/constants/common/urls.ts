@@ -55,10 +55,12 @@ export const urls = {
     career: 'career',
     records: 'records',
     contract: 'contract',
-    ex_resource: 'x_resource',
+    ex_resource: 'ex_resource',
     provinces: 'provinces',
     employee_class: 'employee_class',
     visa_type: 'visa_type',
     check_card_number: 'check_card_number',
     append_employee: 'append_employee',
+    districts: 'districts',
+    wards: 'wards',
 };

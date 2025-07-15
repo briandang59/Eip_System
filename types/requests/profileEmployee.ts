@@ -1,50 +1,50 @@
 export type CreateEmployeeRequest = {
-    fullname: string;
-    work_place_id: number;
+    fullname: string | null;
+    work_place_id: number | null;
     employee: {
-        card_number: string;
-        fullname: string;
-        fullname_other: string;
+        card_number: string | null;
+        fullname: string | null;
+        fullname_other: string | null;
         gender: boolean;
-        national_id: number;
-        education_id: number;
-        phone_vientnam: string;
-        phone_taiwan: string;
-        id_card_number: string;
-        id_card_issue_by: string;
-        id_card_issue_date: string;
-        ethnic_id: number;
-        place_of_birth: string;
-        marriage_status: string;
-        is_pregnant_woman: boolean;
-        is_taking_care_children: boolean;
-        has_children: number;
-        class_id: number;
-        join_company_date1: string;
-        join_company_date2: string;
+        national_id: number | null;
+        education_id: number | null;
+        phone_vientnam: string | null;
+        phone_taiwan: string | null;
+        id_card_number: string | null;
+        id_card_issue_by: string | null;
+        id_card_issue_date: string | null;
+        ethnic_id: number | null;
+        place_of_birth: string | null;
+        marriage_status: string | null;
+        is_pregnant_woman: boolean | null;
+        is_taking_care_children: boolean | null;
+        has_children: number | null;
+        class_id: number | null;
+        join_company_date1: string | null;
+        join_company_date2: string | null;
         vn_address: {
-            province_id: string;
-            district_id: string;
-            ward_id: string;
+            province_id: string | null;
+            district_id: string | null;
+            ward_id: string | null;
         };
-        unit_id: number;
-        job_title_id: number;
-        work_description: string;
+        unit_id: number | null;
+        job_title_id: number | null;
+        work_description: string | null;
         active: boolean;
-        province: string;
-        birthday: string;
+        province: string | null;
+        birthday: string | null;
     };
-    languages: number[];
+    languages: number[] | null;
     insurance: {
-        join_date: string;
-        initial_deduction_date: string;
+        join_date: string | null;
+        initial_deduction_date: string | null;
         refusal_insurance: boolean;
-        refusal_reason: string;
+        refusal_reason: string | null;
     };
     contract: {
-        effect_date: string;
-        expir_date: string;
-        type_id: number;
+        effect_date: string | null;
+        expir_date: string | null;
+        type_id: number | null;
     };
     visa: {
         passport_number: string | null;
@@ -60,8 +60,16 @@ export type CreateEmployeeRequest = {
         visa_note: string | null;
     };
     shift: {
-        shift_id: number;
-        start: string;
-        end: string;
+        shift_id: number | null;
+        start: string | null;
+        end: string | null;
+    };
+    has_child: {
+        start_date: string | null;
+        end_date: string | null;
+    };
+    pregnancy: {
+        start_date: string | null;
+        end_date: string | null;
     };
 };

@@ -4,12 +4,12 @@ import { urls } from '@/utils/constants/common/urls';
 import { BaseResponse } from '@/types/response/baseResponse';
 import { ProvincesResponseType } from '@/types/response/provinces';
 import qs from 'qs';
-const API_URL = `/${urls.ex_resource}/${urls.vn}/${urls.provinces}`;
+const API_URL = `/${urls.ex_resource}/${urls.vn}/${urls.districts}`;
 
 interface params {
-    code?: string;
+    province?: string;
 }
-export const useProvinces = (params?: params) => {
+export const useDistricts = (params?: params) => {
     const query = params ? `?${qs.stringify(params, { encodeValuesOnly: true })}` : '';
 
     const { data, error, mutate } = useSWR<BaseResponse<ProvincesResponseType[]>>(
@@ -23,7 +23,7 @@ export const useProvinces = (params?: params) => {
     );
 
     return {
-        provinces: data?.data,
+        districts: data?.data,
         isLoading: !error && !data,
         isError: error,
         mutate,
