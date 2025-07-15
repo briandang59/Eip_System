@@ -1,15 +1,7 @@
 import { Button, Collapse, CollapseProps, Form } from 'antd';
-import {
-    FormDatePicker,
-    FormDateRangePicker,
-    FormInput,
-    FormSelect,
-    FormTextArea,
-} from '../formsComponent';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { UploadCloud } from 'lucide-react';
 import { useNations } from '@/apis/useSwr/nation';
 import { useEducations } from '@/apis/useSwr/educations';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
@@ -29,6 +21,14 @@ import { useWards } from '@/apis/useSwr/wards';
 import { useDistricts } from '@/apis/useSwr/districts';
 import { employeeService } from '@/apis/services/employee';
 import { useEthnics } from '@/apis/useSwr/ethnic';
+import GeneralInformationForm from './GeneralInformationForm';
+import ContactInformationForm from './ContactInformationForm';
+import SelfInformationForm from './SelfInformationForm';
+import WorkInformationForm from './WorkInformationForm';
+import ContractInformationForm from './ContractInformationForm';
+import InsuranceInformationForm from './InsuranceInformationForm';
+import VisaInformationForm from './VisaInformationForm';
+import { DistrictsResponseType } from '@/types/response/districts';
 
 function ProfileForm() {
     const { t } = useTranslationCustom();
@@ -225,690 +225,109 @@ function ProfileForm() {
             key: '1',
             label: t.profile_form.general_information,
             children: (
-                <div className="flex items-center gap-4">
-                    <div className="grid grid-cols-2 gap-2 w-[60%]">
-                        <FormInput
-                            control={control}
-                            name="card_number"
-                            label={t.profile_form.card_number}
-                            placeholder="Enter your card number"
-                            size="large"
-                            type="text"
-                            required
-                            error={errors.card_number?.message}
-                        />
-                        <FormInput
-                            control={control}
-                            name="fullname"
-                            label={t.profile_form.fullname}
-                            placeholder="Enter your full name"
-                            size="large"
-                            type="text"
-                            required
-                            error={errors.fullname?.message}
-                        />
-                        <FormInput
-                            control={control}
-                            name="fullname_other"
-                            label={t.profile_form.fullname_other}
-                            placeholder="Enter your full name orther"
-                            size="large"
-                            type="text"
-                            error={errors.fullname_other?.message}
-                        />
-                        <FormSelect
-                            control={control}
-                            name="nation"
-                            label={t.profile_form.nation}
-                            size="large"
-                            required
-                            placeholder="Select a nation"
-                            options={
-                                nations?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en,
-                                })) || []
-                            }
-                            loading={isLoadingNations}
-                        />
-
-                        <FormSelect
-                            control={control}
-                            name="education"
-                            label={t.profile_form.education}
-                            size="large"
-                            placeholder="Select a education"
-                            options={
-                                educations?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en,
-                                })) || []
-                            }
-                            loading={isLoadingEducations}
-                        />
-
-                        <FormSelect
-                            control={control}
-                            name="gender"
-                            label={t.profile_form.gender}
-                            size="large"
-                            required
-                            placeholder="Select a role"
-                            options={[
-                                { value: 'male', label: t.profile_form.male },
-                                { value: 'female', label: t.profile_form.female },
-                            ]}
-                        />
-                    </div>
-                    <div className="flex flex-col items-center justify-center w-[40%] space-y-3">
-                        <label
-                            htmlFor="imageUpload"
-                            className="w-full h-[200px] border border-dashed border-gray-400 rounded-lg flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition"
-                        >
-                            <UploadCloud className="w-8 h-8 text-gray-500 mb-2" />
-                            <p className="text-sm text-gray-600 font-medium">
-                                Click để tải ảnh lên
-                            </p>
-                            <p className="text-xs text-gray-400">Chỉ chấp nhận PNG, JPG, JPEG</p>
-                        </label>
-
-                        <input
-                            id="imageUpload"
-                            type="file"
-                            accept="image/png, image/jpeg, image/jpg"
-                            className="!hidden"
-                            onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                console.log(file);
-                            }}
-                        />
-                    </div>
-                </div>
+                <GeneralInformationForm
+                    control={control}
+                    errors={errors}
+                    nations={nations || []}
+                    isLoadingNations={isLoadingNations}
+                    educations={educations || []}
+                    isLoadingEducations={isLoadingEducations}
+                    t={t}
+                />
             ),
         },
         {
             key: '2',
             label: t.profile_form.contact_information,
             children: (
-                <div className="grid grid-cols-2 gap-2">
-                    <FormInput
-                        control={control}
-                        name="phone_vn"
-                        label={t.profile_form.phone_vn}
-                        placeholder="Enter your vietnam phone"
-                        size="large"
-                        type="text"
-                        error={errors.phone_vn?.message}
-                    />
-                    <FormInput
-                        control={control}
-                        name="phone_tw"
-                        label={t.profile_form.phone_tw}
-                        placeholder="Enter your taiwan phone"
-                        size="large"
-                        type="text"
-                        error={errors.phone_tw?.message}
-                    />
-                    {nation !== NATION_VN ? (
-                        <div className="col-span-2">
-                            <FormTextArea
-                                control={control}
-                                name="address"
-                                label={t.profile_form.address}
-                                placeholder="Enter your address"
-                                size="large"
-                            />
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-2 col-span-2 gap-2">
-                            <FormSelect
-                                control={control}
-                                name="provinces_id"
-                                label={t.profile_form.provinces}
-                                size="large"
-                                required
-                                placeholder="Select a nation"
-                                options={
-                                    provinces?.map((item) => ({
-                                        value: item.code,
-                                        label: item.name,
-                                    })) || []
-                                }
-                                loading={isLoadingProvinces}
-                            />
-                            <FormSelect
-                                control={control}
-                                name="districts_id"
-                                label={t.profile_form.districts}
-                                size="large"
-                                required
-                                placeholder="Select a nation"
-                                options={
-                                    districts?.map((item) => ({
-                                        value: item.code,
-                                        label: item.name,
-                                    })) || []
-                                }
-                                loading={isLoadingDistricts}
-                            />
-                            <FormSelect
-                                control={control}
-                                name="wards_id"
-                                label={t.profile_form.wards}
-                                size="large"
-                                required
-                                placeholder="Select a nation"
-                                options={
-                                    wards?.map((item) => ({
-                                        value: item.code,
-                                        label: item.name,
-                                    })) || []
-                                }
-                                loading={isLoadingWards}
-                            />
-                        </div>
-                    )}
-                </div>
+                <ContactInformationForm
+                    control={control}
+                    errors={errors}
+                    nation={nation}
+                    NATION_VN={NATION_VN}
+                    provinces={provinces || []}
+                    isLoadingProvinces={isLoadingProvinces}
+                    districts={(districts || []) as DistrictsResponseType[]}
+                    isLoadingDistricts={isLoadingDistricts}
+                    wards={wards || []}
+                    isLoadingWards={isLoadingWards}
+                    t={t}
+                />
             ),
         },
         {
             key: '3',
             label: t.profile_form.self_information,
             children: (
-                <div className="grid grid-cols-2 gap-2">
-                    <div className="flex flex-col gap-2">
-                        <FormInput
-                            control={control}
-                            name="cccd"
-                            label={t.profile_form.cccd_number}
-                            placeholder="Enter your cccd"
-                            size="large"
-                            type="text"
-                            required
-                            error={errors.cccd?.message}
-                        />
-                        <FormInput
-                            control={control}
-                            name="place_of_issue"
-                            label={t.profile_form.place_of_issuse}
-                            placeholder="Enter your place of issue"
-                            size="large"
-                            type="text"
-                            error={errors.place_of_issue?.message}
-                        />
-                        <FormDatePicker
-                            control={control}
-                            name="date_of_issue"
-                            label={t.profile_form.date_of_issue}
-                            placeholder="Enter your date of issue"
-                            size="large"
-                            type="text"
-                        />
-                        <FormDatePicker
-                            control={control}
-                            name="date_of_birth"
-                            label={t.profile_form.birthday}
-                            placeholder="Enter your birthday"
-                            size="large"
-                            type="text"
-                        />
-                        <FormInput
-                            control={control}
-                            name="place_of_birth"
-                            label={t.profile_form.place_of_birth}
-                            placeholder="Enter your place of birthday"
-                            size="large"
-                            type="text"
-                            error={errors.place_of_birth?.message}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <FormSelect
-                            control={control}
-                            name="marriage"
-                            label={t.profile_form.marriage}
-                            size="large"
-                            placeholder="Select a marriage"
-                            options={[
-                                { value: 'not_marriaged', label: t.profile_form.no },
-                                { value: 'marriaged', label: t.profile_form.yes },
-                            ]}
-                        />
-                        <FormInput
-                            control={control}
-                            name="number_of_children"
-                            label={t.profile_form.number_of_children}
-                            placeholder="Enter your number of children"
-                            size="large"
-                            type="text"
-                            error={errors.number_of_children?.message}
-                        />
-                        <FormSelect
-                            control={control}
-                            name="ethnics"
-                            label={t.profile_form.ethnics}
-                            size="large"
-                            placeholder="Select a education"
-                            options={
-                                ethnics?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name,
-                                })) || []
-                            }
-                            loading={isLoadingEthnics}
-                        />
-                        {gender_state === 'female' ? (
-                            <div className="flex flex-col gap-2">
-                                <FormSelect
-                                    control={control}
-                                    name="pregnancy"
-                                    label={t.profile_form.pregnancy_status}
-                                    size="large"
-                                    placeholder="Select a marriage"
-                                    options={[
-                                        { value: 'yes', label: t.profile_form.yes },
-                                        { value: 'no', label: t.profile_form.no },
-                                    ]}
-                                />
-                                <div className="grid grid-cols-2 gap-2">
-                                    <FormDatePicker
-                                        control={control}
-                                        name="start_date_pregnant"
-                                        label={t.profile_form.start_pregnant_date}
-                                        placeholder="Enter your date of issue"
-                                        size="large"
-                                        type="text"
-                                    />
-                                    <FormDatePicker
-                                        control={control}
-                                        name="end_date_pregnant"
-                                        label={t.profile_form.end_pregnant_date}
-                                        placeholder="Enter your date of issue"
-                                        size="large"
-                                        type="text"
-                                    />
-                                </div>
-                                <FormSelect
-                                    control={control}
-                                    name="has_child"
-                                    label={t.profile_form.take_care_child_status}
-                                    size="large"
-                                    placeholder="Select a marriage"
-                                    options={[
-                                        { value: 'yes', label: t.profile_form.yes },
-                                        { value: 'no', label: t.profile_form.no },
-                                    ]}
-                                />
-                                <div className="grid grid-cols-2 gap-2">
-                                    <FormDatePicker
-                                        control={control}
-                                        name="start_date_take_care_child"
-                                        label={t.profile_form.start_pregnant_date}
-                                        placeholder="Enter your date of issue"
-                                        size="large"
-                                        type="text"
-                                    />
-                                    <FormDatePicker
-                                        control={control}
-                                        name="end_date_take_care_child"
-                                        label={t.profile_form.end_pregnant_date}
-                                        placeholder="Enter your date of issue"
-                                        size="large"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="flex flex-col gap-2">
-                                <FormSelect
-                                    control={control}
-                                    name="has_child"
-                                    label={t.profile_form.take_care_child_status}
-                                    size="large"
-                                    placeholder="Select a marriage"
-                                    options={[
-                                        { value: 'yes', label: t.profile_form.yes },
-                                        { value: 'no', label: t.profile_form.no },
-                                    ]}
-                                />
-                                <div className="grid grid-cols-2 gap-2">
-                                    <FormDatePicker
-                                        control={control}
-                                        name="start_date_take_care_child"
-                                        label={t.profile_form.start_pregnant_date}
-                                        placeholder="Enter your date of issue"
-                                        size="large"
-                                        type="text"
-                                    />
-                                    <FormDatePicker
-                                        control={control}
-                                        name="end_date_take_care_child"
-                                        label={t.profile_form.end_pregnant_date}
-                                        placeholder="Enter your date of issue"
-                                        size="large"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                <SelfInformationForm
+                    control={control}
+                    errors={errors}
+                    gender_state={gender_state}
+                    ethnics={ethnics || []}
+                    isLoadingEthnics={isLoadingEthnics}
+                    t={t}
+                />
             ),
         },
         {
             key: '4',
             label: t.profile_form.work_information,
             children: (
-                <div className="grid grid-cols-2 gap-2">
-                    <div className="flex flex-col gap-2">
-                        <FormSelect
-                            control={control}
-                            name="type_of_work"
-                            label={t.profile_form.work_type}
-                            size="large"
-                            placeholder="Select a work type"
-                            options={
-                                unitTypes?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en,
-                                })) || []
-                            }
-                            loading={isLoadingUnitType}
-                        />
-                        <FormSelect
-                            control={control}
-                            name="work_place"
-                            label={t.profile_form.work_place}
-                            size="large"
-                            required
-                            placeholder="Select a workplace"
-                            options={
-                                workPlaces?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en,
-                                })) || []
-                            }
-                            loading={isLoadingWorkplace}
-                        />
-                        <FormSelect
-                            control={control}
-                            name="unit"
-                            label={t.profile_form.unit}
-                            size="large"
-                            required
-                            placeholder="Select a unit"
-                            options={
-                                units?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en ?? item.name_vn ?? item.name_zh,
-                                })) || []
-                            }
-                            loading={isLoadingUnit}
-                        />
-                        <FormSelect
-                            control={control}
-                            name="job_title"
-                            label={t.profile_form.job_title}
-                            size="large"
-                            placeholder="Select a job title"
-                            options={
-                                jobTitles?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en ?? item.name_vn ?? item.name_zh,
-                                })) || []
-                            }
-                            loading={isLoadingJobtitle}
-                        />
-                        <FormSelect
-                            control={control}
-                            name="language"
-                            label={t.profile_form.language}
-                            size="large"
-                            placeholder="Select a langguage"
-                            mode="multiple"
-                            allowClear
-                            options={
-                                languages?.map((item) => ({
-                                    value: item.id,
-                                    label: item.name_en,
-                                })) || []
-                            }
-                            loading={isLoadingLanguage}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <FormSelect
-                            control={control}
-                            name="shift"
-                            label={t.profile_form.shift}
-                            size="large"
-                            placeholder="Select a shift"
-                            options={
-                                shifts?.map((item) => ({
-                                    value: item.id,
-                                    label: item.tag,
-                                })) || []
-                            }
-                            loading={isLoadingShifts}
-                        />
-
-                        <div className="grid grid-cols-2 gap-2">
-                            <FormDatePicker
-                                control={control}
-                                name="start_date_shift"
-                                label={t.profile_form.from_date}
-                                size="large"
-                                placeholder="Chọn ngày bắt đầu"
-                            />
-                            <FormDatePicker
-                                control={control}
-                                name="end_date_shift"
-                                label={t.profile_form.end_date}
-                                size="large"
-                                placeholder="Chọn ngày bắt đầu"
-                            />
-                        </div>
-                        <FormTextArea
-                            control={control}
-                            name="description"
-                            label={t.profile_form.description}
-                            placeholder="Enter your description"
-                            size="large"
-                        />
-                    </div>
-                </div>
+                <WorkInformationForm
+                    control={control}
+                    errors={errors}
+                    unitTypes={unitTypes || []}
+                    isLoadingUnitType={isLoadingUnitType}
+                    workPlaces={workPlaces || []}
+                    isLoadingWorkplace={isLoadingWorkplace}
+                    units={units || []}
+                    isLoadingUnit={isLoadingUnit}
+                    jobTitles={jobTitles || []}
+                    isLoadingJobtitle={isLoadingJobtitle}
+                    languages={languages || []}
+                    isLoadingLanguage={isLoadingLanguage}
+                    shifts={shifts}
+                    isLoadingShifts={isLoadingShifts}
+                    t={t}
+                />
             ),
         },
         {
             key: '5',
             label: t.profile_form.contract_information,
             children: (
-                <div className="grid grid-cols-2 gap-2">
-                    <FormDatePicker
-                        control={control}
-                        name="active_contract_date"
-                        label={t.profile_form.active_contract_date}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="expired_contract_date"
-                        label={t.profile_form.expired_contract_date}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="join_company_date1"
-                        label={t.profile_form.join_company_date}
-                        required
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="join_company_date2"
-                        label={t.profile_form.join_company_date2}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormSelect
-                        control={control}
-                        name="type_contract"
-                        label={t.profile_form.contract_type}
-                        size="large"
-                        placeholder="Select a contract type"
-                        options={
-                            shifts?.map((item) => ({
-                                value: item.id,
-                                label: item.tag,
-                            })) || []
-                        }
-                        loading={isLoadingShifts}
-                    />
-                </div>
+                <ContractInformationForm
+                    control={control}
+                    errors={errors}
+                    shifts={shifts}
+                    isLoadingShifts={isLoadingShifts}
+                    t={t}
+                />
             ),
         },
         {
             key: '6',
             label: t.profile_form.insurance_information,
             children: (
-                <div className="grid grid-cols-2 gap-2">
-                    <FormDatePicker
-                        control={control}
-                        name="join_insurance_date"
-                        label={t.profile_form.join_insurance_date}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="withholding_date"
-                        label={t.profile_form.withholding_date}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormSelect
-                        control={control}
-                        name="refusal_insurance"
-                        label={t.profile_form.refusal_insurance}
-                        size="large"
-                        placeholder="Select a visa type"
-                        options={[
-                            { value: 'yes', label: t.profile_form.yes },
-                            { value: 'no', label: t.profile_form.no },
-                        ]}
-                        loading={isLoadingVisaType}
-                    />
-                    <FormTextArea
-                        control={control}
-                        name="refusal_reason"
-                        label={t.profile_form.refusal_reason}
-                        placeholder="Enter your memo visa"
-                        size="large"
-                    />
-                </div>
+                <InsuranceInformationForm
+                    control={control}
+                    errors={errors}
+                    isLoadingVisaType={isLoadingVisaType}
+                    t={t}
+                />
             ),
         },
         {
             key: '7',
             label: t.profile_form.visa_information,
             children: (
-                <div className="grid grid-cols-2 gap-2">
-                    <FormInput
-                        control={control}
-                        name="passport_number"
-                        label={t.profile_form.passport_number}
-                        placeholder="Enter your passport number"
-                        size="large"
-                        type="text"
-                        error={errors.passport_number?.message}
-                    />
-                    <FormInput
-                        control={control}
-                        name="work_permit_number"
-                        label={t.profile_form.work_permit_number}
-                        placeholder="Enter your work permit number"
-                        size="large"
-                        type="text"
-                        error={errors.work_permit_number?.message}
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="date_of_passport"
-                        label={t.profile_form.date_of_passport}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="work_permit_number_expired"
-                        label={t.profile_form.expired_work_date}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="date_of_passport_expired"
-                        label={t.profile_form.expired_date_passport}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormInput
-                        control={control}
-                        name="residence_time"
-                        label={t.profile_form.residence_time}
-                        placeholder="Enter your residence time"
-                        size="large"
-                        type="number"
-                        error={errors.residence_time?.message}
-                    />
-                    <FormInput
-                        control={control}
-                        name="visa_number"
-                        label={t.profile_form.visa_number}
-                        placeholder="Enter your visa number"
-                        size="large"
-                        type="text"
-                        error={errors.visa_number?.message}
-                    />
-                    <FormSelect
-                        control={control}
-                        name="type_visa"
-                        label={t.profile_form.visa_type}
-                        size="large"
-                        placeholder="Select a visa type"
-                        options={
-                            visaTypes?.map((item) => ({
-                                value: item.id,
-                                label: item.name,
-                            })) || []
-                        }
-                        loading={isLoadingVisaType}
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="date_created_visa"
-                        label={t.profile_form.date_create_visa}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormDatePicker
-                        control={control}
-                        name="date_expired_visa"
-                        label={t.profile_form.expired_date_visa}
-                        size="large"
-                        placeholder="Chọn ngày bắt đầu"
-                    />
-                    <FormTextArea
-                        control={control}
-                        name="memo_visa"
-                        label={t.profile_form.memo_visa}
-                        placeholder="Enter your memo visa"
-                        size="large"
-                    />
-                </div>
+                <VisaInformationForm
+                    control={control}
+                    errors={errors}
+                    visaTypes={visaTypes || []}
+                    isLoadingVisaType={isLoadingVisaType}
+                    t={t}
+                />
             ),
         },
     ];
@@ -918,7 +337,7 @@ function ProfileForm() {
             <Collapse
                 items={items}
                 bordered={false}
-                defaultActiveKey={['1', '2', '3', '4', '5', '6']}
+                defaultActiveKey={['1', '2', '3', '4', '5', '6', '7']}
             />
             <Form.Item>
                 <div className="flex items-center gap-2 justify-end mt-4">
