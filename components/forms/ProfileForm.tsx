@@ -17,6 +17,13 @@ import { useUnits } from '@/apis/useSwr/units';
 import { useLanguages } from '@/apis/useSwr/languages';
 import { useShifts } from '@/apis/useSwr/shift';
 import { useUnitType } from '@/apis/useSwr/unitType';
+import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { useJobTitle } from '@/apis/useSwr/jobTitle';
+import { useVisaType } from '@/apis/useSwr/visaType';
+import { useCheckCardNumber } from '@/apis/useSwr/checkCardNumber';
+import { useEffect } from 'react';
+import { useWatch } from 'react-hook-form';
+import { toast } from 'sonner';
 
 function ProfileForm() {
     const { nations, isLoading: isLoadingNations } = useNations();
@@ -26,49 +33,53 @@ function ProfileForm() {
     const { languages, isLoading: isLoadingLanguage } = useLanguages();
     const { shifts, isLoading: isLoadingShifts } = useShifts();
     const { unitTypes, isLoading: isLoadingUnitType } = useUnitType();
+    const { jobTitles, isLoading: isLoadingJobtitle } = useJobTitle();
+    const { visaTypes, isLoading: isLoadingVisaType } = useVisaType();
 
+    const { t } = useTranslationCustom();
     const schema = yup
         .object({
             card_number: yup.string().required(),
             fullname: yup.string().required(),
-            fullname_other: yup.string().required(),
+            fullname_other: yup.string().default(''),
             nation: yup.number().required(),
             education: yup.number().required(),
             gender: yup.string().required(),
-            phone_vn: yup.string().required(),
-            phone_tw: yup.string().required(),
-            address: yup.string().required(),
+            phone_vn: yup.string().default(''),
+            phone_tw: yup.string().default(''),
+            address: yup.string().default(''),
             cccd: yup.string().required(),
-            place_of_birth: yup.string().required(),
-            place_of_issue: yup.string().required(),
-            date_of_issue: yup.string().required(),
-            date_of_birth: yup.string().required(),
+            place_of_birth: yup.string().default(''),
+            place_of_issue: yup.string().default(''),
+            date_of_issue: yup.string().default(''),
+            date_of_birth: yup.string().default(''),
             marriage: yup.string().required(),
-            number_of_children: yup.number().required(),
+            number_of_children: yup.number().default(0),
             type_of_work: yup.number().required(),
             language: yup.number().required(),
             work_place: yup.number().required(),
             unit: yup.number().required(),
             job_title: yup.number().required(),
-            description: yup.string().required(),
-            shift: yup.string().required(),
-            date_shift: yup.string().required(),
-            active_contract_date: yup.string().required(),
-            expired_contract_date: yup.string().required(),
+            description: yup.string().default(''),
+            shift: yup.string().default(''),
+            start_date_shift: yup.string().default(''),
+            end_date_shift: yup.string().default(''),
+            active_contract_date: yup.string().default(''),
+            expired_contract_date: yup.string().default(''),
             join_company_date1: yup.string().required(),
-            join_company_date2: yup.string().required(),
+            join_company_date2: yup.string().default(''),
             type_contract: yup.number().required(),
-            passport_number: yup.string().required(),
-            date_of_passport: yup.string().required(),
-            date_of_passport_expired: yup.string().required(),
-            visa_number: yup.string().required(),
-            date_created_visa: yup.string().required(),
-            date_expired_visa: yup.string().required(),
-            work_permit_number: yup.string().required(),
-            work_permit_number_expired: yup.string().required(),
-            residence_time: yup.number().required(),
-            type_visa: yup.number().required(),
-            memo_visa: yup.string().required(),
+            passport_number: yup.string().default(''),
+            date_of_passport: yup.string().default(''),
+            date_of_passport_expired: yup.string().default(''),
+            visa_number: yup.string().default(''),
+            date_created_visa: yup.string().default(''),
+            date_expired_visa: yup.string().default(''),
+            work_permit_number: yup.string().default(''),
+            work_permit_number_expired: yup.string().default(''),
+            residence_time: yup.number().default(0),
+            type_visa: yup.number().default(0),
+            memo_visa: yup.string().default(''),
         })
         .required();
 
@@ -86,24 +97,65 @@ function ProfileForm() {
             fullname_other: '',
             nation: 1,
             education: 1,
-            gender: '',
+            gender: 'male',
             phone_vn: '',
             phone_tw: '',
             address: '',
+            cccd: '',
+            place_of_birth: '',
+            place_of_issue: '',
+            date_of_issue: '',
+            date_of_birth: '',
+            marriage: '',
+            number_of_children: 1,
+            type_of_work: 1,
+            language: 1,
+            work_place: 1,
+            unit: 1,
+            job_title: 1,
+            description: '',
+            shift: '',
+            start_date_shift: '',
+            end_date_shift: '',
+            active_contract_date: '',
+            expired_contract_date: '',
+            join_company_date1: '',
+            join_company_date2: '',
+            type_contract: 1,
+            passport_number: '',
+            date_of_passport: '',
+            date_of_passport_expired: '',
+            visa_number: '',
+            date_created_visa: '',
+            date_expired_visa: '',
+            work_permit_number: '',
+            work_permit_number_expired: '',
+            residence_time: 1,
+            type_visa: 1,
+            memo_visa: '',
         },
     });
+    const cardNumber = useWatch({ control, name: 'card_number' });
+
+    const { checkCardNumber } = useCheckCardNumber({ card: cardNumber });
+
+    useEffect(() => {
+        if (checkCardNumber?.data) {
+            toast.error(checkCardNumber.message);
+        }
+    }, [checkCardNumber]);
     const items: CollapseProps['items'] = [
         {
             key: '1',
-            label: 'Thông tin chung',
+            label: t.profile_form.general_information,
             children: (
                 <div className="flex items-center gap-4">
                     <div className="grid grid-cols-2 gap-2 w-[60%]">
                         <FormInput
                             control={control}
                             name="card_number"
-                            label="Mã nhân viên"
-                            placeholder="Enter your username"
+                            label={t.profile_form.card_number}
+                            placeholder="Enter your card number"
                             size="large"
                             type="text"
                             required
@@ -112,8 +164,8 @@ function ProfileForm() {
                         <FormInput
                             control={control}
                             name="fullname"
-                            label="Họ và tên"
-                            placeholder="Enter your username"
+                            label={t.profile_form.fullname}
+                            placeholder="Enter your full name"
                             size="large"
                             type="text"
                             required
@@ -122,20 +174,19 @@ function ProfileForm() {
                         <FormInput
                             control={control}
                             name="fullname_other"
-                            label="Tên gọi khác"
-                            placeholder="Enter your username"
+                            label={t.profile_form.fullname_other}
+                            placeholder="Enter your full name orther"
                             size="large"
                             type="text"
-                            required
                             error={errors.fullname_other?.message}
                         />
                         <FormSelect
                             control={control}
                             name="nation"
-                            label="Quốc tịch"
+                            label={t.profile_form.nation}
                             size="large"
                             required
-                            placeholder="Select a role"
+                            placeholder="Select a nation"
                             options={
                                 nations?.map((item) => ({
                                     value: item.id,
@@ -148,10 +199,9 @@ function ProfileForm() {
                         <FormSelect
                             control={control}
                             name="education"
-                            label="Học vấn"
+                            label={t.profile_form.education}
                             size="large"
-                            required
-                            placeholder="Select a role"
+                            placeholder="Select a education"
                             options={
                                 educations?.map((item) => ({
                                     value: item.id,
@@ -164,7 +214,7 @@ function ProfileForm() {
                         <FormSelect
                             control={control}
                             name="gender"
-                            label="Giới tính"
+                            label={t.profile_form.gender}
                             size="large"
                             required
                             placeholder="Select a role"
@@ -202,14 +252,14 @@ function ProfileForm() {
         },
         {
             key: '2',
-            label: 'Thông tin liên hệ',
+            label: t.profile_form.contact_information,
             children: (
                 <div className="grid grid-cols-2 gap-2">
                     <FormInput
                         control={control}
                         name="phone_vn"
-                        label="Số điện thoại Việt Nam"
-                        placeholder="Enter your username"
+                        label={t.profile_form.phone_vn}
+                        placeholder="Enter your vietnam phone"
                         size="large"
                         type="text"
                         error={errors.phone_vn?.message}
@@ -217,8 +267,8 @@ function ProfileForm() {
                     <FormInput
                         control={control}
                         name="phone_tw"
-                        label="Số điện thoại Đài Loan"
-                        placeholder="Enter your username"
+                        label={t.profile_form.phone_tw}
+                        placeholder="Enter your taiwan phone"
                         size="large"
                         type="text"
                         error={errors.phone_tw?.message}
@@ -227,8 +277,8 @@ function ProfileForm() {
                         <FormTextArea
                             control={control}
                             name="address"
-                            label="Địa chỉ"
-                            placeholder="Enter your username"
+                            label={t.profile_form.address}
+                            placeholder="Enter your address"
                             size="large"
                         />
                     </div>
@@ -237,24 +287,25 @@ function ProfileForm() {
         },
         {
             key: '3',
-            label: 'Thông tin cá nhân',
+            label: t.profile_form.self_information,
             children: (
                 <div className="grid grid-cols-2 gap-2">
                     <div className="flex flex-col gap-2">
                         <FormInput
                             control={control}
                             name="cccd"
-                            label="Số CCCD"
-                            placeholder="Enter your username"
+                            label={t.profile_form.cccd_number}
+                            placeholder="Enter your cccd"
                             size="large"
                             type="text"
+                            required
                             error={errors.cccd?.message}
                         />
                         <FormInput
                             control={control}
                             name="place_of_issue"
-                            label="Nơi cấp CCCD"
-                            placeholder="Enter your username"
+                            label={t.profile_form.place_of_issuse}
+                            placeholder="Enter your place of issue"
                             size="large"
                             type="text"
                             error={errors.place_of_issue?.message}
@@ -262,8 +313,8 @@ function ProfileForm() {
                         <FormInput
                             control={control}
                             name="date_of_issue"
-                            label="Ngày cấp CCCD"
-                            placeholder="Enter your username"
+                            label={t.profile_form.date_of_issue}
+                            placeholder="Enter your date of issue"
                             size="large"
                             type="text"
                             error={errors.date_of_issue?.message}
@@ -271,8 +322,8 @@ function ProfileForm() {
                         <FormInput
                             control={control}
                             name="date_of_birth"
-                            label="Ngày sinh"
-                            placeholder="Enter your username"
+                            label={t.profile_form.birthday}
+                            placeholder="Enter your birthday"
                             size="large"
                             type="text"
                             error={errors.date_of_birth?.message}
@@ -280,8 +331,8 @@ function ProfileForm() {
                         <FormInput
                             control={control}
                             name="place_of_birth"
-                            label="Nơi sinh"
-                            placeholder="Enter your username"
+                            label={t.profile_form.place_of_birth}
+                            placeholder="Enter your place of birthday"
                             size="large"
                             type="text"
                             error={errors.place_of_birth?.message}
@@ -291,10 +342,9 @@ function ProfileForm() {
                         <FormSelect
                             control={control}
                             name="marriage"
-                            label="Tình trạng hôn nhân"
+                            label={t.profile_form.marriage}
                             size="large"
-                            required
-                            placeholder="Select a role"
+                            placeholder="Select a marriage"
                             options={[
                                 { value: '1', label: 'Chưa kết hôn' },
                                 { value: '2', label: 'Đã kết hôn' },
@@ -303,8 +353,8 @@ function ProfileForm() {
                         <FormInput
                             control={control}
                             name="number_of_children"
-                            label="Số con nhỏ"
-                            placeholder="Enter your username"
+                            label={t.profile_form.number_of_children}
+                            placeholder="Enter your number of children"
                             size="large"
                             type="text"
                             error={errors.number_of_children?.message}
@@ -315,94 +365,92 @@ function ProfileForm() {
         },
         {
             key: '4',
-            label: 'Thông tin công việc',
+            label: t.profile_form.work_information,
             children: (
                 <div className="grid grid-cols-2 gap-2">
                     <div className="flex flex-col gap-2">
                         <FormSelect
                             control={control}
                             name="type_of_work"
-                            label="Loại công việc"
+                            label={t.profile_form.work_type}
                             size="large"
-                            required
-                            placeholder="Select a role"
+                            placeholder="Select a work type"
                             options={
                                 unitTypes?.map((item) => ({
                                     value: item.id,
                                     label: item.name_en,
                                 })) || []
                             }
-                            loading={isLoadingNations}
+                            loading={isLoadingUnitType}
                         />
                         <FormSelect
                             control={control}
                             name="work_place"
-                            label="Nơi làm việc"
+                            label={t.profile_form.work_place}
                             size="large"
                             required
-                            placeholder="Select a role"
+                            placeholder="Select a workplace"
                             options={
                                 workPlaces?.map((item) => ({
                                     value: item.id,
                                     label: item.name_en,
                                 })) || []
                             }
-                            loading={isLoadingNations}
+                            loading={isLoadingWorkplace}
                         />
                         <FormSelect
                             control={control}
                             name="unit"
-                            label="Đơn vị"
+                            label={t.profile_form.unit}
                             size="large"
                             required
-                            placeholder="Select a role"
+                            placeholder="Select a unit"
                             options={
                                 units?.map((item) => ({
                                     value: item.id,
                                     label: item.name_en ?? item.name_vn ?? item.name_zh,
                                 })) || []
                             }
-                            loading={isLoadingNations}
+                            loading={isLoadingUnit}
                         />
                         <FormSelect
                             control={control}
                             name="job_title"
-                            label="Chức vụ"
+                            label={t.profile_form.job_title}
                             size="large"
-                            required
-                            placeholder="Select a role"
+                            placeholder="Select a job title"
                             options={
-                                nations?.map((item) => ({
+                                jobTitles?.map((item) => ({
                                     value: item.id,
-                                    label: item.name_en,
+                                    label: item.name_en ?? item.name_vn ?? item.name_zh,
                                 })) || []
                             }
-                            loading={isLoadingNations}
+                            loading={isLoadingJobtitle}
                         />
                         <FormSelect
                             control={control}
                             name="language"
-                            label="Ngôn ngữ"
+                            label={t.profile_form.language}
                             size="large"
-                            required
-                            placeholder="Select a role"
+                            placeholder="Select a langguage"
+                            mode="multiple"
+                            allowClear
                             options={
                                 languages?.map((item) => ({
                                     value: item.id,
                                     label: item.name_en,
                                 })) || []
                             }
-                            loading={isLoadingNations}
+                            loading={isLoadingLanguage}
                         />
                     </div>
                     <div className="flex flex-col gap-2">
                         <FormSelect
                             control={control}
                             name="shift"
-                            label="Chọn ca làm"
+                            label={t.profile_form.shift}
                             size="large"
-                            required
-                            placeholder="Select a role"
+                            placeholder="Select a shift"
                             options={
                                 shifts?.map((item) => ({
                                     value: item.id,
@@ -411,19 +459,28 @@ function ProfileForm() {
                             }
                             loading={isLoadingShifts}
                         />
-                        <FormDateRangePicker
-                            control={control}
-                            name="date_shift"
-                            label="Khoảng ngày"
-                            size="large"
-                            required
-                            placeholder={['Từ ngày', 'Đến ngày']}
-                        />
+
+                        <div className="grid grid-cols-2 gap-2">
+                            <FormDatePicker
+                                control={control}
+                                name="start_date_shift"
+                                label={t.profile_form.from_date}
+                                size="large"
+                                placeholder="Chọn ngày bắt đầu"
+                            />
+                            <FormDatePicker
+                                control={control}
+                                name="end_date_shift"
+                                label={t.profile_form.end_date}
+                                size="large"
+                                placeholder="Chọn ngày bắt đầu"
+                            />
+                        </div>
                         <FormTextArea
                             control={control}
                             name="description"
-                            label="Mô tả công việc"
-                            placeholder="Enter your username"
+                            label={t.profile_form.description}
+                            placeholder="Enter your description"
                             size="large"
                         />
                     </div>
@@ -432,29 +489,27 @@ function ProfileForm() {
         },
         {
             key: '5',
-            label: 'Thông tin hợp đồng',
+            label: t.profile_form.contract_information,
             children: (
                 <div className="grid grid-cols-2 gap-2">
                     <FormDatePicker
                         control={control}
                         name="active_contract_date"
-                        label="Ngày hiệu lực hợp đồng"
-                        required
+                        label={t.profile_form.active_contract_date}
                         size="large"
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormDatePicker
                         control={control}
                         name="expired_contract_date"
-                        label="Ngày hết hạn hợp đồng"
-                        required
+                        label={t.profile_form.expired_contract_date}
                         size="large"
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormDatePicker
                         control={control}
                         name="join_company_date1"
-                        label="Ngày vào công ty"
+                        label={t.profile_form.join_company_date}
                         required
                         size="large"
                         placeholder="Chọn ngày bắt đầu"
@@ -462,18 +517,16 @@ function ProfileForm() {
                     <FormDatePicker
                         control={control}
                         name="join_company_date2"
-                        label="Ngày vào công ty 2"
-                        required
+                        label={t.profile_form.join_company_date2}
                         size="large"
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormSelect
                         control={control}
-                        name="shift"
-                        label="Loại hợp đồng"
+                        name="type_contract"
+                        label={t.profile_form.contract_type}
                         size="large"
-                        required
-                        placeholder="Select a role"
+                        placeholder="Select a contract type"
                         options={
                             shifts?.map((item) => ({
                                 value: item.id,
@@ -487,109 +540,99 @@ function ProfileForm() {
         },
         {
             key: '6',
-            label: 'Thông tin visa',
+            label: t.profile_form.visa_information,
             children: (
                 <div className="grid grid-cols-2 gap-2">
                     <FormInput
                         control={control}
-                        name="card_number"
-                        label="Số hộ chiếu"
-                        placeholder="Enter your username"
+                        name="passport_number"
+                        label={t.profile_form.passport_number}
+                        placeholder="Enter your passport number"
                         size="large"
                         type="text"
-                        required
-                        error={errors.card_number?.message}
+                        error={errors.passport_number?.message}
                     />
                     <FormInput
                         control={control}
-                        name="card_number"
-                        label="Số giấy phép lao động"
-                        placeholder="Enter your username"
+                        name="work_permit_number"
+                        label={t.profile_form.work_permit_number}
+                        placeholder="Enter your work permit number"
                         size="large"
                         type="text"
-                        required
-                        error={errors.card_number?.message}
+                        error={errors.work_permit_number?.message}
                     />
                     <FormDatePicker
                         control={control}
-                        name="join_company_date2"
-                        label="Ngày cấp hộ chiếu"
-                        required
+                        name="date_of_passport"
+                        label={t.profile_form.date_of_passport}
                         size="large"
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormDatePicker
                         control={control}
-                        name="join_company_date2"
-                        label="Ngày hết hạn giấy phép làm việc"
-                        required
+                        name="work_permit_number_expired"
+                        label={t.profile_form.expired_work_date}
                         size="large"
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormDatePicker
                         control={control}
-                        name="join_company_date2"
-                        label="Ngày hết hạn hộ chiếu"
+                        name="date_of_passport_expired"
+                        label={t.profile_form.expired_date_passport}
                         size="large"
-                        required
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormInput
                         control={control}
-                        name="card_number"
-                        label="Thời gian cư trú"
-                        placeholder="Enter your username"
+                        name="residence_time"
+                        label={t.profile_form.residence_time}
+                        placeholder="Enter your residence time"
                         size="large"
                         type="number"
-                        required
-                        error={errors.card_number?.message}
+                        error={errors.residence_time?.message}
                     />
                     <FormInput
                         control={control}
-                        name="card_number"
-                        label="Số visa"
-                        placeholder="Enter your username"
+                        name="visa_number"
+                        label={t.profile_form.visa_number}
+                        placeholder="Enter your visa number"
                         size="large"
                         type="text"
-                        required
-                        error={errors.card_number?.message}
+                        error={errors.visa_number?.message}
                     />
                     <FormSelect
                         control={control}
-                        name="shift"
-                        label="Loại visa"
+                        name="type_visa"
+                        label={t.profile_form.visa_type}
                         size="large"
-                        required
-                        placeholder="Select a role"
+                        placeholder="Select a visa type"
                         options={
-                            shifts?.map((item) => ({
+                            visaTypes?.map((item) => ({
                                 value: item.id,
-                                label: item.tag,
+                                label: item.name,
                             })) || []
                         }
-                        loading={isLoadingShifts}
+                        loading={isLoadingVisaType}
                     />
                     <FormDatePicker
                         control={control}
-                        name="join_company_date2"
-                        label="Ngày tạo visa"
+                        name="date_created_visa"
+                        label={t.profile_form.date_create_visa}
                         size="large"
-                        required
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormDatePicker
                         control={control}
-                        name="join_company_date2"
-                        label="Ngày hết visa"
+                        name="date_expired_visa"
+                        label={t.profile_form.expired_date_visa}
                         size="large"
-                        required
                         placeholder="Chọn ngày bắt đầu"
                     />
                     <FormTextArea
                         control={control}
-                        name="description"
-                        label="Ghi chú visa"
-                        placeholder="Enter your username"
+                        name="memo_visa"
+                        label={t.profile_form.memo_visa}
+                        placeholder="Enter your memo visa"
                         size="large"
                     />
                 </div>
@@ -608,9 +651,9 @@ function ProfileForm() {
             />
             <Form.Item>
                 <div className="flex items-center gap-2 justify-end">
-                    <Button size="large">Huỷ</Button>
+                    <Button size="large">{t.profile_form.cancel}</Button>
                     <Button size="large" type="primary" htmlType="submit">
-                        Lưu thông tin
+                        {t.profile_form.save_info}
                     </Button>
                 </div>
             </Form.Item>

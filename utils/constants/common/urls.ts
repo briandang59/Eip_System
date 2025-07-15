@@ -59,4 +59,6 @@ export const urls = {
     provinces: 'provinces',
     employee_class: 'employee_class',
     visa_type: 'visa_type',
+    check_card_number: 'check_card_number',
+    append_employee: 'append_employee',
 };
