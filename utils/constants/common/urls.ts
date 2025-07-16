@@ -64,4 +64,6 @@ export const urls = {
     districts: 'districts',
     wards: 'wards',
     speak_languages: 'speak_languages',
+    salary: 'salary',
+    salary_allowance: 'salary_allowance',
 };

@@ -411,5 +411,24 @@
         "start_take_care_child_date": "Ngày bắt đầu chăm con nhỏ",
         "end_take_care_child_date": "Ngày kết thúc chăm con nhỏ",
         "insurance_information": "Thông tin bảo hiểm"
+    },
+    "salary_allowance": {
+        "card_number": "Số thẻ",
+        "fullname": "Họ tên",
+        "date_join_company": "Ngày tham gia công ty",
+        "unit": "Đơn vị",
+        "probationary_salary": "Lương thử việc",
+        "base_salary": "Lương cơ bản",
+        "education_allowance": "Phụ cấp học vấn",
+        "environment_allowance": "Phụ cấp môi trường",
+        "special_allowance": "Phụ cấp đặc biệt",
+        "computer_allowance": "Phụ cấp máy tính",
+        "language_allowance": "Phụ cấp ngôn ngữ",
+        "machanical_repair_allowance": "Phụ cấp sửa chữa cơ khí",
+        "office_allowance": "Phụ cấp văn phòng",
+        "manage_allowance": "Phụ cấp quản lý",
+        "position_allowance": "Phụ cấp chức vụ",
+        "total_base_salary": "Tổng lương cơ bản",
+        "total_probationary_salary": "Tổng lương thử việc"
     }
 }

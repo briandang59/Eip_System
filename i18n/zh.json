@@ -411,5 +411,24 @@
         "start_take_care_child_date": "開始照顧小孩日期",
         "end_take_care_child_date": "結束照顧小孩日期",
         "insurance_information": "保險資訊"
+    },
+    "salary_allowance": {
+        "card_number": "員工編號",
+        "fullname": "姓名",
+        "date_join_company": "入職日期",
+        "unit": "部門",
+        "probationary_salary": "試用期薪資",
+        "base_salary": "基本薪資",
+        "education_allowance": "學歷津貼",
+        "environment_allowance": "環境津貼",
+        "special_allowance": "特殊津貼",
+        "computer_allowance": "電腦津貼",
+        "language_allowance": "語言津貼",
+        "machanical_repair_allowance": "機械維修津貼",
+        "office_allowance": "辦公津貼",
+        "manage_allowance": "管理津貼",
+        "position_allowance": "職務津貼",
+        "total_base_salary": "基本薪資總計",
+        "total_probationary_salary": "試用期薪資總計"
     }
 }

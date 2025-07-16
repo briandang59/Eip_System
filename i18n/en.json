@@ -411,5 +411,24 @@
         "start_take_care_child_date": "Start Take Care Child Date",
         "end_take_care_child_date": "End Take Care Child Date",
         "insurance_information": "Insurance Information"
+    },
+    "salary_allowance": {
+        "card_number": "Card Number",
+        "fullname": "Full Name",
+        "date_join_company": "Date Joined Company",
+        "unit": "Department",
+        "probationary_salary": "Probationary Salary",
+        "base_salary": "Base Salary",
+        "education_allowance": "Education Allowance",
+        "environment_allowance": "Environment Allowance",
+        "special_allowance": "Special Allowance",
+        "computer_allowance": "Computer Allowance",
+        "language_allowance": "Language Allowance",
+        "machanical_repair_allowance": "Mechanical Repair Allowance",
+        "office_allowance": "Office Allowance",
+        "manage_allowance": "Management Allowance",
+        "position_allowance": "Position Allowance",
+        "total_base_salary": "Total Base Salary",
+        "total_probationary_salary": "Total Probationary Salary"
     }
 }
