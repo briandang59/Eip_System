@@ -13,7 +13,7 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useJobTitle } from '@/apis/useSwr/jobTitle';
 import { useVisaType } from '@/apis/useSwr/visaType';
 import { useCheckCardNumber } from '@/apis/useSwr/checkCardNumber';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useProvinces } from '@/apis/useSwr/provinces';
@@ -29,9 +29,21 @@ import ContractInformationForm from './ContractInformationForm';
 import InsuranceInformationForm from './InsuranceInformationForm';
 import VisaInformationForm from './VisaInformationForm';
 import { DistrictsResponseType } from '@/types/response/districts';
+import { CreateEmployeeRequest } from '@/types/requests/profileEmployee';
+import { EmployeeResponseType } from '@/types/response/employees';
+import { RcFile } from 'antd/es/upload';
 
-function ProfileForm() {
+interface ProfileFormProps {
+    employee_modify?: EmployeeResponseType;
+    mutate: () => void;
+    close: () => void;
+}
+function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
     const { t } = useTranslationCustom();
+    const [uploadedFile, setUploadedFile] = useState<RcFile | null>(null);
+    const handleFileUploadSuccess = (file: RcFile | null) => {
+        setUploadedFile(file);
+    };
     const schema = yup
         .object({
             card_number: yup.string().required(),
@@ -101,6 +113,71 @@ function ProfileForm() {
     } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        if (employee_modify) {
+            reset({
+                card_number: employee_modify?.card_number || '',
+                fullname: employee_modify?.fullname || '',
+                fullname_other: employee_modify?.fullname_other || '',
+                nation: employee_modify?.national_id || 0,
+                education: employee_modify?.education_id || 0,
+                gender: employee_modify?.gender ? 'male' : 'female',
+                phone_vn: employee_modify?.phone_vietnam || '',
+                phone_tw: employee_modify?.phone_taiwan || '',
+                address: employee_modify?.address || '',
+                provinces_id: employee_modify?.vn_address?.province_id || '',
+                districts_id: employee_modify?.vn_address?.district_id || '',
+                wards_id: employee_modify?.vn_address?.ward_id || '',
+                cccd: employee_modify?.id_card_number || '',
+                place_of_birth: employee_modify?.place_of_birth || '',
+                place_of_issue: employee_modify?.id_card_issue_by || '',
+                date_of_issue: employee_modify?.id_card_issue_date || '',
+                date_of_birth: employee_modify?.birthday || '',
+                ethnics: employee_modify?.ethnic_id || 0,
+                marriage: employee_modify?.marriage_status === true ? 'yes' : 'no',
+                number_of_children: employee_modify?.has_children || 0,
+                type_of_work: employee_modify?.class?.id || 0,
+                language: employee_modify?.speak_languages?.language_id
+                    ? [employee_modify?.speak_languages?.language_id]
+                    : [],
+                work_place: employee_modify?.work_place_id || 0,
+                unit: employee_modify?.unit?.id || 0,
+                job_title: employee_modify?.job_title_id || 0,
+                description: employee_modify?.work_description || '',
+                shift: employee_modify?.shift?.id || 0,
+                // start_date_shift: employee_modify?.shift?.start || '',
+                // end_date_shift: employee_modify?.shift?.end || '',
+                active_contract_date: employee_modify?.contract?.effect_date || '',
+                expired_contract_date: employee_modify?.contract?.expir_date || '',
+                join_company_date1: employee_modify?.join_company_date1 || '',
+                join_company_date2: employee_modify?.join_company_date2 || '',
+                type_contract: employee_modify?.contract?.type_id || 0,
+                // passport_number: employee_modify?.visa?.passport_number || '',
+                // date_of_passport: employee_modify?.visa?.passport_issue_date || '',
+                // date_of_passport_expired: employee_modify?.visa?.passport_expiration_date || '',
+                // visa_number: employee_modify?.visa?.visa_number || '',
+                // date_created_visa: employee_modify?.visa?.visa_effective_date || '',
+                // date_expired_visa: employee_modify?.visa?.visa_expiration_date || '',
+                // work_permit_number: employee_modify?.visa?.work_permit_number || '',
+                // work_permit_number_expired: employee_modify?.visa?.work_permit_expiration_date || '',
+                // residence_time: employee_modify?.visa?.visa_duration_stay || 0,
+                // type_visa: employee_modify?.visa?.visa_type_id || 0,
+                // memo_visa: employee_modify?.visa?.visa_note || '',
+                join_insurance_date: employee_modify?.insurance?.join_date || '',
+                withholding_date: employee_modify?.insurance?.initial_deduction_date || '',
+                refusal_insurance: employee_modify?.refusal_insurance ? 'yes' : 'no',
+                refusal_reason: employee_modify?.refusal_insurance || '',
+                pregnancy: employee_modify?.is_pregnant_woman ? 'yes' : 'no',
+                start_date_pregnant: employee_modify?.pregnancy?.start_date || '',
+                end_date_pregnant: employee_modify?.pregnancy?.end_date || '',
+                has_child: employee_modify?.is_taking_care_children ? 'yes' : 'no',
+                start_date_take_care_child: employee_modify?.take_care_of_child?.start_date || '',
+                end_date_take_care_child: employee_modify?.take_care_of_child?.end_date || '',
+            });
+        }
+    }, [employee_modify, reset]);
+
     const cardNumber = useWatch({ control, name: 'card_number' });
     const nation = useWatch({ control, name: 'nation' });
     const place_id = useWatch({ control, name: 'work_place' });
@@ -130,92 +207,158 @@ function ProfileForm() {
         }
     }, [checkCardNumber]);
     const onSubmit = async (data: FormData) => {
-        console.log(data);
+        // Helper: chuyển '' hoặc 0 thành null
+        const toNull = (v: any) => (v === '' || v === 0 ? null : v);
         try {
-            const newData = {
-                fullname: data.fullname,
-                work_place_id: data.work_place,
-                employee: {
-                    card_number: data.card_number,
-                    fullname: data.fullname,
-                    fullname_other: data.fullname_other,
-                    gender: data.gender === 'male' ? true : false,
-                    national_id: data.nation,
-                    education_id: data.education,
-                    phone_vientnam: data.phone_vn,
-                    phone_taiwan: data.phone_tw,
-                    id_card_number: data.cccd,
-                    id_card_issue_by: data.place_of_issue,
-                    id_card_issue_date: data.date_of_issue,
-                    ethnic_id: data.ethnics,
-                    place_of_birth: data.place_of_birth,
-                    marriage_status: data.marriage === 'marriged' ? 'on' : null,
-                    is_pregnant_woman: false,
-                    is_taking_care_children: true,
-                    has_children: data.number_of_children,
-                    class_id: data.job_title,
-                    join_company_date1: data.join_company_date1,
-                    join_company_date2: data.join_company_date2,
-                    vn_address: {
-                        province_id: data.provinces_id,
-                        district_id: data.districts_id,
-                        ward_id: data.wards_id,
-                    },
-                    unit_id: data.unit,
-                    job_title_id: data.job_title,
-                    work_description: data.description,
-                    active: true,
-                    province: null,
-                    birthday: data.date_of_birth,
+            const newData: Partial<CreateEmployeeRequest> = {};
+
+            if (toNull(data.fullname) !== null) {
+                newData.fullname = toNull(data.fullname);
+            }
+            if (toNull(data.work_place) !== null) {
+                newData.work_place_id = toNull(data.work_place);
+            }
+
+            const employee: any = {
+                card_number: toNull(data.card_number),
+                fullname: toNull(data.fullname),
+                fullname_other: toNull(data.fullname_other),
+                gender: data.gender === 'male' ? true : false,
+                national_id: toNull(data.nation),
+                education_id: toNull(data.education),
+                phone_vientnam: toNull(data.phone_vn),
+                phone_taiwan: toNull(data.phone_tw),
+                id_card_number: toNull(data.cccd),
+                id_card_issue_by: toNull(data.place_of_issue),
+                id_card_issue_date: toNull(data.date_of_issue),
+                ethnic_id: toNull(data.ethnics),
+                place_of_birth: toNull(data.place_of_birth),
+                marriage_status: data.marriage === 'married' ? 'on' : null,
+                is_pregnant_woman: data.pregnancy === 'yes' ? true : false,
+                is_taking_care_children: data.has_child === 'yes' ? true : false,
+                has_children: toNull(data.number_of_children),
+                class_id: toNull(data.job_title),
+                join_company_date1: toNull(data.join_company_date1),
+                join_company_date2: toNull(data.join_company_date2),
+                vn_address: {
+                    province_id: toNull(data.provinces_id),
+                    district_id: toNull(data.districts_id),
+                    ward_id: toNull(data.wards_id),
                 },
+                unit_id: toNull(data.unit),
+                job_title_id: toNull(data.job_title),
+                work_description: toNull(data.description),
+                active: true,
+                province: null,
+                birthday: toNull(data.date_of_birth),
+            };
+            if (
+                Object.values(employee).some((val) => val !== null) ||
+                employee.active ||
+                employee.is_taking_care_children ||
+                employee.gender
+            ) {
+                newData.employee = employee;
+            }
+
+            const languages = {
                 languages: (data.language ?? []).filter(
                     (lang): lang is number => typeof lang === 'number',
                 ),
-                insurance: {
-                    join_date: data.join_insurance_date,
-                    initial_deduction_date: data.withholding_date,
-                    refusal_insurance: data.refusal_insurance === 'yes' ? true : false,
-                    refusal_reason: data.refusal_reason,
-                },
-                contract: {
-                    effect_date: data.active_contract_date,
-                    expir_date: data.expired_contract_date,
-                    type_id: data.type_contract,
-                },
-                visa: {
-                    passport_number: data.passport_number,
-                    passport_issue_date: data.date_of_passport,
-                    passport_expiration_date: data.date_of_passport_expired,
-                    work_permit_number: data.work_permit_number,
-                    work_permit_expiration_date: data.work_permit_number_expired,
-                    visa_number: data.visa_number,
-                    visa_type_id: data.type_visa,
-                    visa_expiration_date: data.date_expired_visa,
-                    visa_effective_date: data.date_created_visa,
-                    visa_duration_stay: data.residence_time,
-                    visa_note: data.memo_visa,
-                },
-                shift: {
-                    shift_id: data.shift,
-                    start: data.start_date_shift,
-                    end: data.end_date_shift,
-                },
-                has_child: {
-                    start_date: null,
-                    end_date: null,
-                },
-                pregnancy: {
-                    start_date: null,
-                    end_date: null,
-                },
             };
+            if (languages.languages.length > 0) {
+                newData.languages = languages;
+            }
 
-            console.log(newData);
-            // await employeeService.add(newData).then((res) => {
-            //     if (res) {
-            //         toast.success('success');
-            //     }
-            // });
+            const insurance = {
+                join_date: toNull(data.join_insurance_date),
+                initial_deduction_date: toNull(data.withholding_date),
+                refusal_insurance: data.refusal_insurance === 'yes' ? true : false,
+                refusal_reason: toNull(data.refusal_reason),
+            };
+            if (
+                Object.values(insurance).some((val) => val !== null) ||
+                insurance.refusal_insurance
+            ) {
+                newData.insurance = insurance;
+            }
+
+            const contract = {
+                effect_date: toNull(data.active_contract_date),
+                expir_date: toNull(data.expired_contract_date),
+                type_id: toNull(data.type_contract),
+            };
+            if (Object.values(contract).some((val) => val !== null)) {
+                newData.contract = contract;
+            }
+
+            const visa = {
+                passport_number: toNull(data.passport_number),
+                passport_issue_date: toNull(data.date_of_passport),
+                passport_expiration_date: toNull(data.date_of_passport_expired),
+                work_permit_number: toNull(data.work_permit_number),
+                work_permit_expiration_date: toNull(data.work_permit_number_expired),
+                visa_number: toNull(data.visa_number),
+                visa_type_id: toNull(data.type_visa),
+                visa_expiration_date: toNull(data.date_expired_visa),
+                visa_effective_date: toNull(data.date_created_visa),
+                visa_duration_stay: toNull(data.residence_time),
+                visa_note: toNull(data.memo_visa),
+            };
+            if (Object.values(visa).some((val) => val !== null)) {
+                newData.visa = visa;
+            }
+
+            const shift = {
+                shift_id: toNull(data.shift),
+                start: toNull(data.start_date_shift),
+                end: toNull(data.end_date_shift),
+            };
+            if (Object.values(shift).some((val) => val !== null)) {
+                newData.shift = shift;
+            }
+
+            const has_child = {
+                start_date: toNull(data.start_date_take_care_child),
+                end_date: toNull(data.end_date_take_care_child),
+            };
+            if (Object.values(has_child).some((val) => val !== null)) {
+                newData.has_child = has_child;
+            }
+
+            const pregnancy = {
+                start_date: toNull(data.start_date_pregnant),
+                end_date: toNull(data.end_date_pregnant),
+            };
+            if (Object.values(pregnancy).some((val) => val !== null)) {
+                newData.pregnancy = pregnancy;
+            }
+
+            if (employee_modify?.card_number) {
+                await employeeService.update(newData);
+                if (uploadedFile && data.card_number) {
+                    console.log('uploadedFile', uploadedFile);
+                    await employeeService.upload_image(data.card_number, uploadedFile);
+                }
+                toast.success('Employee updated successfully.');
+                reset();
+                setUploadedFile(null);
+            } else {
+                if (!data.card_number) {
+                    toast.error('Card number is required to add an employee.');
+                    return;
+                }
+                await employeeService.add(newData);
+                if (uploadedFile) {
+                    await employeeService.upload_image(data.card_number, uploadedFile);
+                }
+                toast.success('Employee added successfully.');
+                reset();
+                setUploadedFile(null);
+            }
+
+            mutate();
+            close();
         } catch (error) {
             toast.error(`${error}`);
         }
@@ -233,6 +376,7 @@ function ProfileForm() {
                     educations={educations || []}
                     isLoadingEducations={isLoadingEducations}
                     t={t}
+                    onUploadSuccess={handleFileUploadSuccess}
                 />
             ),
         },

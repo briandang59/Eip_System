@@ -48,11 +48,13 @@ async function handleResponse(response: Response) {
 export const fetcher = async (url: string, init?: RequestInit, timeout?: number) => {
     const token = typeof window !== 'undefined' ? Cookies.get(AUTH_COOKIE) : null;
 
+    const isFormData = init?.body instanceof FormData;
+
     const headers: HeadersInit = {
-        'Content-Type': 'application/json',
-        Accept: '*/*',
         ...(token && { Authorization: `${token}` }),
         ...(init?.headers || {}),
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+        Accept: '*/*',
     };
 
     const config: RequestInit = {

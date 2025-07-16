@@ -71,7 +71,7 @@ function ContactInformationForm({
                         required
                         placeholder="Select a nation"
                         options={
-                            provinces?.map((item: ProvinceResponseType) => ({
+                            provinces?.map((item: ProvincesResponseType) => ({
                                 value: item.code,
                                 label: item.name,
                             })) || []
@@ -84,9 +84,9 @@ function ContactInformationForm({
                         label={t.profile_form.districts}
                         size="large"
                         required
-                        placeholder="Select a nation"
+                        placeholder="Select a district"
                         options={
-                            districts?.map((item: DistrictResponseType) => ({
+                            districts?.map((item: DistrictsResponseType) => ({
                                 value: item.code,
                                 label: item.name,
                             })) || []
@@ -99,9 +99,9 @@ function ContactInformationForm({
                         label={t.profile_form.wards}
                         size="large"
                         required
-                        placeholder="Select a nation"
+                        placeholder="Select a ward"
                         options={
-                            wards?.map((item: WardResponseType) => ({
+                            wards?.map((item: WardsResponseType) => ({
                                 value: item.code,
                                 label: item.name,
                             })) || []

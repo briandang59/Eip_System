@@ -63,4 +63,5 @@ export const urls = {
     append_employee: 'append_employee',
     districts: 'districts',
     wards: 'wards',
+    speak_languages: 'speak_languages',
 };

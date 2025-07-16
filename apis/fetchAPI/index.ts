@@ -31,10 +31,16 @@ export const fetchAPI = {
 
     post: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {
         const url = buildUrl(endpoint, options.params);
+
+        const isFormData = options.body instanceof FormData;
+
         return fetcher(url, {
             method: 'POST',
-            body: JSON.stringify(options.body),
-            headers: options.headers,
+            body: isFormData ? options.body : JSON.stringify(options.body),
+            headers: {
+                ...options.headers,
+                ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+            },
         });
     },
 

@@ -1,8 +1,9 @@
-import { UploadCloud } from 'lucide-react';
 import { FormInput, FormSelect } from '../formsComponent';
 import { NationResponseType } from '@/types/response/nation';
 import { EducationResponseType } from '@/types/response/education';
 import { Control } from 'react-hook-form';
+import type { RcFile } from 'antd/es/upload';
+import CustomImageUpload from '../ui/CustomImageUpload';
 
 interface GeneralInformationFormProps {
     control: Control<any>;
@@ -12,6 +13,7 @@ interface GeneralInformationFormProps {
     educations: EducationResponseType[];
     isLoadingEducations: boolean;
     t: Record<string, any>;
+    onUploadSuccess: (file: RcFile | null) => void;
 }
 
 function GeneralInformationForm({
@@ -22,6 +24,7 @@ function GeneralInformationForm({
     educations,
     isLoadingEducations,
     t,
+    onUploadSuccess,
 }: GeneralInformationFormProps) {
     return (
         <div className="flex items-center gap-4">
@@ -50,7 +53,7 @@ function GeneralInformationForm({
                     control={control}
                     name="fullname_other"
                     label={t.profile_form.fullname_other}
-                    placeholder="Enter your full name orther"
+                    placeholder="Enter your full name other"
                     size="large"
                     type="text"
                     error={errors.fullname_other?.message}
@@ -75,7 +78,7 @@ function GeneralInformationForm({
                     name="education"
                     label={t.profile_form.education}
                     size="large"
-                    placeholder="Select a education"
+                    placeholder="Select an education"
                     options={
                         educations?.map((item: EducationResponseType) => ({
                             value: item.id,
@@ -98,24 +101,7 @@ function GeneralInformationForm({
                 />
             </div>
             <div className="flex flex-col items-center justify-center w-[40%] space-y-3">
-                <label
-                    htmlFor="imageUpload"
-                    className="w-full h-[200px] border border-dashed border-gray-400 rounded-lg flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition"
-                >
-                    <UploadCloud className="w-8 h-8 text-gray-500 mb-2" />
-                    <p className="text-sm text-gray-600 font-medium">Click để tải ảnh lên</p>
-                    <p className="text-xs text-gray-400">Chỉ chấp nhận PNG, JPG, JPEG</p>
-                </label>
-                <input
-                    id="imageUpload"
-                    type="file"
-                    accept="image/png, image/jpeg, image/jpg"
-                    className="!hidden"
-                    onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        console.log(file);
-                    }}
-                />
+                <CustomImageUpload onUploadSuccess={onUploadSuccess} />
             </div>
         </div>
     );

@@ -155,14 +155,21 @@ function EmployeesPage() {
             case 'create_profile': {
                 return (
                     <div className="min-h-[300px] flex flex-col gap-4">
-                        <ProfileForm />
+                        <ProfileForm
+                            close={() => hanldeToggleModal('create_profile')}
+                            mutate={mutateEmployee}
+                        />
                     </div>
                 );
             }
             case 'modify_profile': {
                 return (
                     <div className="min-h-[300px] flex flex-col gap-4">
-                        <ProfileForm />
+                        <ProfileForm
+                            employee_modify={selectedRecord}
+                            close={() => hanldeToggleModal('modify_profile')}
+                            mutate={mutateEmployee}
+                        />
                     </div>
                 );
             }
