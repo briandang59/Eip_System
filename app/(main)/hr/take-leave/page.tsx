@@ -57,6 +57,8 @@ function TakeLeavePage() {
     };
     const toggleModal = () => {
         setIsOpenModal(!isOpenModal);
+        setSelectedRecordRow([]);
+        setSelectedRowKeys([]);
     };
     const toggleModalConfirm = () => {
         setIsOpenModalConfirm(!isOpenModalConfirm);
@@ -150,7 +152,13 @@ function TakeLeavePage() {
                 rowSelection={rowSelection}
             />
             <Modal open={isOpenModal} onCancel={toggleModal} footer={null} width={1000} centered>
-                <TakeLeaveForm isOpen={isOpenModal} close={toggleModal} mutate={mutate} />
+                <TakeLeaveForm
+                    isOpen={isOpenModal}
+                    close={toggleModal}
+                    mutate={mutate}
+                    takeLeaveRecord={selectcedRecordRow[0]}
+                    card_number={selectcedRecordRow[0]?.card_number ?? ''}
+                />
             </Modal>
             <ModalConfirm
                 isOpen={isOpenModalConfirm}

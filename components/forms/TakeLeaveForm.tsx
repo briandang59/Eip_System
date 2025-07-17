@@ -5,7 +5,7 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Form, Input, Spin } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -15,10 +15,12 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { generateDayOffRequests } from '@/utils/functions/generateDayOffRequest';
 import { toast } from 'sonner';
 import { dayOffService } from '@/apis/services/dayOff';
+import { TakeLeaveResponseType } from '@/types/response/takeLeave';
 
 interface TakeLeaveFormProps {
     card_number?: string;
     isOpen: boolean;
+    takeLeaveRecord?: TakeLeaveResponseType;
     close: () => void;
     mutate?: () => void;
 }
@@ -33,7 +35,13 @@ interface FormValueProps {
     hours_D: number;
 }
 
-function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProps) {
+function TakeLeaveForm({
+    card_number,
+    isOpen,
+    close,
+    mutate,
+    takeLeaveRecord,
+}: TakeLeaveFormProps) {
     const { t, lang } = useTranslationCustom();
     const schema: yup.ObjectSchema<FormValueProps> = yup
         .object({
@@ -42,7 +50,7 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                 .of(yup.string().required())
                 .length(2, t.take_leave.required_range_date)
                 .required(),
-            type: yup.number().required('Hãy chọn loại nghỉ'),
+            type: yup.number().required(),
             subtitute: yup.string().optional(),
             hours_A: yup.number().required().min(0),
             hours_B: yup.number().required().min(0),
@@ -69,9 +77,64 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
         () =>
             debounce((value: string) => {
                 setCard(value.trim());
-            }, 500), // 500 ms
+            }, 500),
         [],
     );
+
+    const getHoursByCode = (code?: string, takeLeaveRecord?: TakeLeaveResponseType) => {
+        const defaultValues = {
+            hours_A: 0,
+            hours_B: 0,
+            hours_C: 0,
+            hours_D: 0,
+            type: 0,
+        };
+
+        if (!code || !takeLeaveRecord) return defaultValues;
+
+        const hours = takeLeaveRecord.hours ?? 0;
+
+        switch (code) {
+            case 'A':
+                return { ...defaultValues, hours_A: hours };
+            case 'B':
+                return { ...defaultValues, hours_B: hours };
+            case 'C':
+                return { ...defaultValues, hours_C: hours };
+            case 'D':
+            case 'E':
+            case 'F':
+            case 'G':
+            case 'H':
+            case 'I':
+                return {
+                    ...defaultValues,
+                    hours_D: hours,
+                    type: hours > 0 ? takeLeaveRecord.leave_type.id : undefined,
+                };
+            default:
+                return defaultValues;
+        }
+    };
+
+    useEffect(() => {
+        if (takeLeaveRecord && takeLeaveRecord.leave_type?.code) {
+            const formValues = getHoursByCode(takeLeaveRecord.leave_type.code, takeLeaveRecord);
+            reset({
+                ...formValues,
+                range_date: [takeLeaveRecord.start, takeLeaveRecord.end],
+            });
+        } else {
+            reset({
+                hours_A: 0,
+                hours_B: 0,
+                hours_C: 0,
+                hours_D: 0,
+                type: 0,
+            });
+        }
+    }, [takeLeaveRecord, reset]);
+    const hours_D_watch = useWatch({ control, name: 'hours_D' });
     useEffect(() => {
         if (card_number) {
             setInputValue(card_number);
@@ -145,6 +208,7 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
 
     const onSubmit = async (data: FormValueProps) => {
         if (data && employees) {
+            console.log('submit');
             const records = generateDayOffRequests(data, employees[0].uuid);
             const LIMIT_HOURS = 10;
             const dateKey = (ts: string) => ts.split(' ')[0];
@@ -164,18 +228,37 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                 toast.error(t.take_leave.err_2);
                 return;
             }
-
-            await dayOffService
-                .add(records)
-                .then((res) => {
-                    if (res) {
-                        toast.success(t.take_leave.success);
-                        reset();
-                        close();
-                        if (mutate) mutate();
-                    }
-                })
-                .catch(() => toast.error(t.take_leave.error));
+            console.log(records);
+            if (takeLeaveRecord?.id) {
+                const modifyData = {
+                    ...records[0],
+                    id: takeLeaveRecord.id,
+                };
+                console.log(modifyData);
+                await dayOffService
+                    .modify(modifyData)
+                    .then((res) => {
+                        if (res) {
+                            toast.success(t.take_leave.success);
+                            reset();
+                            close();
+                            if (mutate) mutate();
+                        }
+                    })
+                    .catch(() => toast.error(t.take_leave.error));
+            } else {
+                await dayOffService
+                    .add(records)
+                    .then((res) => {
+                        if (res) {
+                            toast.success(t.take_leave.success);
+                            reset();
+                            close();
+                            if (mutate) mutate();
+                        }
+                    })
+                    .catch(() => toast.error(t.take_leave.error));
+            }
         }
     };
     return (
@@ -295,25 +378,26 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                             format="DD/MM/YYYY"
                             className="col-span-1"
                         />
-                        <FormSelect
-                            control={control}
-                            name="type"
-                            label="Loại nghỉ phép"
-                            options={
-                                filterDayOffType?.map((item) => ({
-                                    value: item.id,
-                                    label: `${item.code} - ${getLocalizedName(
-                                        item.name_en,
-                                        item.name_zh,
-                                        item.name_vn,
-                                        lang,
-                                    )}`,
-                                })) ?? []
-                            }
-                            placeholder="Chọn loại nghỉ phép"
-                            loading={isLoadingDayOffType}
-                        />
-
+                        {hours_D_watch > 0 ? (
+                            <FormSelect
+                                control={control}
+                                name="type"
+                                label="Loại nghỉ phép"
+                                options={
+                                    filterDayOffType?.map((item) => ({
+                                        value: item.id,
+                                        label: `${item.code} - ${getLocalizedName(
+                                            item.name_en,
+                                            item.name_zh,
+                                            item.name_vn,
+                                            lang,
+                                        )}`,
+                                    })) ?? []
+                                }
+                                placeholder="Chọn loại nghỉ phép"
+                                loading={isLoadingDayOffType}
+                            />
+                        ) : null}
                         <FormSelect
                             control={control}
                             name="subtitute"

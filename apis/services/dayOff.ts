@@ -15,6 +15,17 @@ export const dayOffService = {
             throw error;
         }
     },
+    modify: async (data: DayoffRequestType): Promise<any> => {
+        try {
+            const url = `/${urls.hr}/${urls.dayoff}/`;
+            const response = await fetchAPI.patch<BaseResponse<any>>(url, {
+                body: data,
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
     remove: async (id: number): Promise<any> => {
         try {
             const url = `/${urls.hr}/${urls.dayoff}/?id=${id}`;
