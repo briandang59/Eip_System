@@ -13,32 +13,26 @@ import { IdCard } from 'lucide-react';
 import { UserInfo } from '@/types/response/auth';
 
 export default function PrintCardPage() {
-    /* ------------------- i18n ------------------- */
     const { lang } = useTranslationCustom();
 
-    /* ----------------- client‑side only info ---------------- */
     const [myInfo, setMyInfo] = useState<UserInfo | null>(null);
 
-    // Lấy thông tin localStorage sau khi đã vào browser
     useEffect(() => {
         setMyInfo(getInfomation());
     }, []);
 
-    /* ----------------------------- state ----------------------------- */
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(null);
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
     const [selectedType, setSelectedType] = useState<number>();
     const [pdfUrl, setPdfUrl] = useState<string>('/files/blank.pdf');
 
-    /* ---------- khi myInfo có thì cập nhật workplace mặc định ---------- */
     useEffect(() => {
         if (myInfo?.work_place?.id) {
             setSelectedWorkPlace(myInfo.work_place.id);
         }
     }, [myInfo]);
 
-    /* ----------------------- SWR hooks ----------------------- */
     const { workPlaces, isLoading: isLoadingWP } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace || undefined,
@@ -47,10 +41,8 @@ export default function PrintCardPage() {
         card_number: selectedCardNumber,
     });
 
-    /* ----------------- Demo nút Print: đặt lại blank.pdf ---------------- */
     const handlePrint = () => {
         setPdfUrl('/pdf/blank.pdf');
-        // 🔜 Sau này bạn tạo blob PDF rồi: const url = URL.createObjectURL(blob); setPdfUrl(url)
     };
 
     const typeOptions = [
@@ -58,7 +50,6 @@ export default function PrintCardPage() {
         { id: 2, name: 'Employee card' },
     ];
 
-    /* ------------------------------ render ------------------------------ */
     return (
         <div>
             <div className="flex items-end gap-2 mb-4">
@@ -91,14 +82,15 @@ export default function PrintCardPage() {
                     allowClear
                     style={{ width: 250 }}
                     placeholder="Select Employee"
-                    value={selectedCardNumber}
-                    onChange={setSelectedCardNumber}
+                    // value={selectedCardNumber}
+                    // onChange={setSelectedCardNumber}
                     loading={isLoadingEmp}
                     optionFilterProp="label"
                     options={employees?.map((e) => ({
                         label: `${e.card_number} - ${e.fullname}`,
                         value: e.card_number,
                     }))}
+                    mode="multiple"
                 />
 
                 <Select
@@ -117,7 +109,6 @@ export default function PrintCardPage() {
                 </Button>
             </div>
 
-            {/* 👉 truyền url để iframe hiển thị PDF */}
             <PdfViewer url={pdfUrl} />
         </div>
     );

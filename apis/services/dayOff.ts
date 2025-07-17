@@ -15,4 +15,13 @@ export const dayOffService = {
             throw error;
         }
     },
+    remove: async (id: number): Promise<any> => {
+        try {
+            const url = `/${urls.hr}/${urls.dayoff}/?id=${id}`;
+            const response = await fetchAPI.delete<BaseResponse<any>>(url);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 };

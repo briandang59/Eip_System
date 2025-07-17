@@ -3,6 +3,7 @@ import { Table } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
 import { createStyles } from 'antd-style';
 
+// Define styles for the table
 const useStyle = createStyles(({ css }) => ({
     customTable: css`
         .ant-table {
@@ -18,27 +19,20 @@ const useStyle = createStyles(({ css }) => ({
     `,
 }));
 
-/**
- * Generic props:
- *   - T là bất kỳ interface/tipe hàng dữ liệu nào (User, Product, ...).
- */
+// Extend the props interface to include rowSelection
 export interface GenericTableProps<T extends object> {
-    /** Cột hiển thị – buộc TableColumnsType khớp với T */
     columns: TableColumnsType<T>;
-    /** Dữ liệu – mỗi phần tử đúng kiểu T */
     dataSource: T[];
-    /** Cách lấy key duy nhất, nên truyền `rowKey` cho antd */
     rowKey: string | keyof T | ((record: T) => string);
-    /** Các props gốc khác của antd Table nếu cần */
     scroll?: Parameters<typeof Table>[0]['scroll'];
     isLoading?: boolean;
-    /** Summary/footer row for totals */
     summary?: (pageData: readonly T[]) => React.ReactNode;
-    /** Pagination configuration */
     pagination?: TableProps<T>['pagination'];
     virtual?: boolean;
+    rowSelection?: TableProps<T>['rowSelection']; // Add rowSelection prop
 }
 
+// GenericTable component with row selection support
 export function GenericTable<T extends object>({
     columns,
     dataSource,
@@ -48,6 +42,7 @@ export function GenericTable<T extends object>({
     summary,
     pagination,
     virtual = false,
+    rowSelection, // Destructure the new rowSelection prop
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 
@@ -63,6 +58,7 @@ export function GenericTable<T extends object>({
             loading={isLoading}
             summary={summary}
             pagination={pagination}
+            rowSelection={rowSelection} // Pass rowSelection to Ant Design Table
         />
     );
 }

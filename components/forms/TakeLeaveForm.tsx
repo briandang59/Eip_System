@@ -226,7 +226,17 @@ function TakeLeaveForm({ card_number, isOpen, close, mutate }: TakeLeaveFormProp
                         <div className="col-span-1">
                             <h4 className="text-[14px] font-medium">{t.take_leave.unit}</h4>
                             <p className="text-[14px]">
-                                {(card && employees?.[0]?.unit.name_en) ?? ''}
+                                {(() => {
+                                    if (
+                                        card &&
+                                        employees &&
+                                        employees.length > 0 &&
+                                        employees[0].unit
+                                    ) {
+                                        return employees[0].unit.name_en;
+                                    }
+                                    return '';
+                                })()}
                             </p>
                         </div>
                         <div className="col-span-1">

@@ -245,7 +245,14 @@
         "end_time": "結束時間",
         "hours": "小時",
         "leave_type": "休假類型",
-        "location": "位置"
+        "location": "位置",
+        "add": "新增",
+        "remove": "移除",
+        "modify": "修改",
+        "reload": "重新載入",
+        "delete_succcess": "成功刪除所有選中的記錄",
+        "partial_delete": "部分刪除成功",
+        "cannot_delete": "記錄無法刪除"
     },
     "role_and_permission": {
         "manage_role": "管理角色",

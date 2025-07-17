@@ -245,7 +245,14 @@
         "end_time": "End Time",
         "hours": "Hours",
         "leave_type": "Leave Type",
-        "location": "Location"
+        "location": "Location",
+        "add": "Add",
+        "remove": "Remove",
+        "modify": "Modify",
+        "reload": "Reload",
+        "delete_succcess": "Delete all selected records successed",
+        "partial_delete": "Partial deletion successful.",
+        "cannot_delete": "records can't delete"
     },
     "role_and_permission": {
         "manage_role": "Manage Role",

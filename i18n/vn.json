@@ -245,7 +245,14 @@
         "end_time": "Thời gian kết thúc",
         "hours": "Giờ",
         "leave_type": "Loại nghỉ phép",
-        "location": "Vị trí"
+        "location": "Vị trí",
+        "add": "Thêm",
+        "remove": "Xóa",
+        "modify": "Sửa",
+        "reload": "Tải lại",
+        "delete_succcess": "Xóa tất cả bản ghi đã chọn thành công",
+        "partial_delete": "Xóa một phần thành công",
+        "cannot_delete": "bản ghi không thể xóa"
     },
     "role_and_permission": {
         "manage_role": "Quản lý vai trò",
