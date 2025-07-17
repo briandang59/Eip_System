@@ -23,7 +23,7 @@ export default function PrintCardPage() {
 
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(null);
     const [selectedUnit, setSelectedUnit] = useState<number>();
-    const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
+    const [selectedCardNumber] = useState<string>('');
     const [selectedType, setSelectedType] = useState<number>();
     const [pdfUrl, setPdfUrl] = useState<string>('/files/blank.pdf');
 

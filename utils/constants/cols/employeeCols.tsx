@@ -307,7 +307,7 @@ export const useEmployeeCols = ({
             key: 'vietnam_phone',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record?.phone_vientnam || '-'}</span>
+                <span>{record?.phone_vietnam || '-'}</span>
             ),
         },
         {
@@ -423,9 +423,7 @@ export const useEmployeeCols = ({
             dataIndex: 'ethnic',
             key: 'ethnic',
             width: 200,
-            render: (_, record: EmployeeResponseType) => (
-                <span>{record?.ethnic?.name_en || '-'}</span>
-            ),
+            render: (_, record: EmployeeResponseType) => <span>{record?.ethnic?.name || '-'}</span>,
         },
         {
             title: t.employee.speak_language,

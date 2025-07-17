@@ -35,7 +35,10 @@ export const useEmployees = (params?: params, filterParams?: filterParams) => {
             [item.fullname, item.fullname_other, item.card_number]
                 .filter(Boolean)
                 .some((field) =>
-                    field.trim().toLowerCase().includes(filterParams.search!.trim().toLowerCase()),
+                    (field ?? '')
+                        .trim()
+                        .toLowerCase()
+                        .includes(filterParams.search!.trim().toLowerCase()),
                 );
 
         const matchesState = !filterParams?.state || item.employee_state?.id === filterParams.state;

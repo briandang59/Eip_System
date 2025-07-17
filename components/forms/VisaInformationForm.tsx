@@ -1,5 +1,5 @@
 import { FormInput, FormDatePicker, FormSelect, FormTextArea } from '../formsComponent';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface VisaInformationFormProps {
     control: any;
     errors: any;

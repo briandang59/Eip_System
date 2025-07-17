@@ -1,5 +1,5 @@
 import { FormDatePicker, FormSelect } from '../formsComponent';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ContractInformationFormProps {
     control: any;
     errors: any;
@@ -10,7 +10,6 @@ interface ContractInformationFormProps {
 
 function ContractInformationForm({
     control,
-    errors,
     shifts,
     isLoadingShifts,
     t,

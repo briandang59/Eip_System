@@ -1,5 +1,5 @@
-import { FormInput, FormSelect, FormDatePicker, FormTextArea } from '../formsComponent';
-
+import { FormInput, FormSelect, FormDatePicker } from '../formsComponent';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface SelfInformationFormProps {
     control: any;
     errors: any;

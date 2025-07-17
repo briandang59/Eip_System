@@ -9,7 +9,7 @@ interface CustomImageUploadProps {
 
 const CustomImageUpload: React.FC<CustomImageUploadProps> = ({ onUploadSuccess }) => {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
-    const [_selectedFile, setSelectedFile] = useState<RcFile | null>(null);
+    const [, setSelectedFile] = useState<RcFile | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const getBase64 = (file: File): Promise<string> =>

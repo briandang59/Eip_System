@@ -26,7 +26,7 @@ function Overtime({ attendance, mutate, close }: OvertimeProps) {
         ...(employees?.[0]?.work_place_id && {
             place_id: employees[0].work_place_id ?? 0,
             uuid: employees[0].uuid,
-            unit_id: employees[0].unit.id,
+            unit_id: employees[0].unit?.id ?? 0,
         }),
     };
 

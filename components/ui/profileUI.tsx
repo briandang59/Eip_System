@@ -90,11 +90,11 @@ export default function ProfileUI({ employee }: ProfileUIProps) {
     ];
 
     const contactRows = [
-        { label: t.user_information.phone, value: employee.phone_vientnam },
+        { label: t.user_information.phone, value: employee.phone_vietnam },
         { label: t.user_information.address, value: employee.address },
         { label: t.user_information.id_card_number, value: employee.id_card_number },
         { label: t.user_information.place_of_birth, value: employee.place_of_birth },
-        { label: t.user_information.ethnic, value: employee.ethnic?.name_en },
+        { label: t.user_information.ethnic, value: employee.ethnic?.name },
         { label: t.user_information.marriage, value: employee.marriage_status ? 'Yes' : 'No' },
         { label: t.user_information.pregnant_woman, value: employee.pregnancy ? 'Yes' : 'No' },
         {

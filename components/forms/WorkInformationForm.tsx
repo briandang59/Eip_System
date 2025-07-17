@@ -1,5 +1,5 @@
 import { FormSelect, FormTextArea, FormDatePicker } from '../formsComponent';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface WorkInformationFormProps {
     control: any;
     errors: any;
@@ -20,7 +20,6 @@ interface WorkInformationFormProps {
 
 function WorkInformationForm({
     control,
-    errors,
     unitTypes,
     isLoadingUnitType,
     workPlaces,

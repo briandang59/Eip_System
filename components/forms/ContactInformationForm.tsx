@@ -3,7 +3,7 @@ import { ProvincesResponseType } from '@/types/response/provinces';
 import { DistrictsResponseType } from '@/types/response/districts';
 import { WardsResponseType } from '@/types/response/wards';
 import { Control } from 'react-hook-form';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ContactInformationFormProps {
     control: Control<any>;
     errors: Record<string, { message?: string }>;

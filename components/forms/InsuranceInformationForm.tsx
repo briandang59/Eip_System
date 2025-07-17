@@ -1,5 +1,5 @@
 import { FormDatePicker, FormSelect, FormTextArea } from '../formsComponent';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface InsuranceInformationFormProps {
     control: any;
     errors: any;
@@ -9,7 +9,6 @@ interface InsuranceInformationFormProps {
 
 function InsuranceInformationForm({
     control,
-    errors,
     isLoadingVisaType,
     t,
 }: InsuranceInformationFormProps) {

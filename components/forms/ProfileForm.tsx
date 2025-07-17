@@ -32,7 +32,7 @@ import { DistrictsResponseType } from '@/types/response/districts';
 import { CreateEmployeeRequest } from '@/types/requests/profileEmployee';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { RcFile } from 'antd/es/upload';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface ProfileFormProps {
     employee_modify?: EmployeeResponseType;
     mutate: () => void;

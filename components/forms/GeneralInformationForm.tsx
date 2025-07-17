@@ -4,7 +4,7 @@ import { EducationResponseType } from '@/types/response/education';
 import { Control } from 'react-hook-form';
 import type { RcFile } from 'antd/es/upload';
 import CustomImageUpload from '../ui/CustomImageUpload';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface GeneralInformationFormProps {
     control: Control<any>;
     errors: Record<string, { message?: string }>;
