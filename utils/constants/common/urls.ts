@@ -66,4 +66,5 @@ export const urls = {
     speak_languages: 'speak_languages',
     salary: 'salary',
     salary_allowance: 'salary_allowance',
+    factory_inspection: 'factory_inspection',
 };

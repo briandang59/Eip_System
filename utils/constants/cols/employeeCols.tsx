@@ -29,6 +29,7 @@ export const useEmployeeCols = ({
     const filterColumnsByState = {
         [STATE.NORMAL]: [
             'stt',
+            'card_number',
             'full_name',
             'fullname_other',
             'unit',
@@ -73,6 +74,7 @@ export const useEmployeeCols = ({
         ],
         [STATE.PREGNANCY]: [
             'stt',
+            'card_number',
             'full_name',
             'foreign_name',
             'unit',
@@ -85,6 +87,7 @@ export const useEmployeeCols = ({
         ],
         [STATE.CHILDREN]: [
             'stt',
+            'card_number',
             'full_name',
             'foreign_name',
             'unit',
@@ -98,6 +101,7 @@ export const useEmployeeCols = ({
         [STATE.TRANSFER]: [],
         [STATE.QUIT]: [
             'stt',
+            'card_number',
             'full_name',
             'foreign_name',
             'unit',
@@ -122,6 +126,7 @@ export const useEmployeeCols = ({
         ],
         [STATE.RETIREMENT]: [
             'stt',
+            'card_number',
             'full_name',
             'foreign_name',
             'unit',
@@ -154,6 +159,13 @@ export const useEmployeeCols = ({
             key: 'stt',
             fixed: 'left',
             render: (_text, _record, index) => index + 1,
+        },
+        {
+            title: 'Card number',
+            width: 100,
+            dataIndex: 'card_number',
+            key: 'card_number',
+            fixed: 'left',
         },
         {
             title: t.employee.full_name,
