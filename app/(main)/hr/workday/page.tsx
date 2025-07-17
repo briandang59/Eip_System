@@ -172,9 +172,6 @@ function Workday() {
 
     const data: AttendanceV2Type[] = attendance || [];
 
-    const onChangeWorkPlace = (value: number) => {
-        setSelectWorkPlace(value);
-    };
     const onChangeDateRange = (value: [Dayjs | null, Dayjs | null] | null) => {
         if (value) {
             setDateRange({
@@ -313,7 +310,7 @@ function Workday() {
                             }))}
                             style={{ width: '150px' }}
                             value={selectWorkPlace}
-                            onChange={onChangeWorkPlace}
+                            onChange={setSelectWorkPlace}
                             loading={isLoadingWorkPlaces}
                         />
                     </div>

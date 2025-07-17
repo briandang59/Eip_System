@@ -2,8 +2,14 @@ export type FactoryInspectionAttendance = {
     fullname: string;
     card_number: string;
     unit: Unit;
-    pregnancy: null | boolean;
-    has_children: null | boolean;
+    pregnancy?: {
+        start_date?: string | null;
+        end_date?: string | null;
+    } | null;
+    has_children?: {
+        start_date?: string | null;
+        end_date?: string | null;
+    } | null;
     join_company_date1: string;
     employee_class: EmployeeClass;
     resign_date: null | string;
@@ -71,6 +77,7 @@ interface Workday {
     GDem: number;
     G200: number;
     G210: number;
+    KP: number;
     DT: number;
     VS: number;
     Tcom: number;
