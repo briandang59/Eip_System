@@ -45,7 +45,7 @@ function ResignForm({ card_number, mutate, close }: ResignFormProps) {
                 setReasonDetails(data?.reason_list ?? []);
             }
         }
-    }, [classIdReason]);
+    }, [classIdReason, reasonResigns?.length]);
     const onSubmit = async (data: FormData) => {
         try {
             const newData: ResignRequestType = {

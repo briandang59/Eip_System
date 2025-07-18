@@ -7,7 +7,6 @@ import { FactoryInspectionAttendance } from '@/types/response/factoryInspectionA
 import { useFactoryInspectionAttendanceCols } from '@/utils/constants/cols/factoryInspectionAttendanceCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
-import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileExcelOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Input, Select } from 'antd';
@@ -24,7 +23,7 @@ function WorkdayV1() {
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 2);
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [searchInput, setSearchInput] = useState<string>('');
-    const [searchText, setSearchText] = useState<string>('');
+    const [, setSearchText] = useState<string>('');
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs(),
         end: dayjs(),
