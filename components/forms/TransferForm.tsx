@@ -54,7 +54,7 @@ function TransferForm({ card_number, uuid, close, mutate }: ProfileFormProps) {
                 memo: data.memo,
             };
             await transferService.add(newData);
-            toast.success(`success`);
+            toast.success(t.resign_form.success);
             mutate();
             close();
         } catch (error) {

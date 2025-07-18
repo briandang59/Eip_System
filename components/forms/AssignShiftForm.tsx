@@ -42,7 +42,7 @@ function AssignShiftForm({ mutate, close, card_number }: AssignShiftProps) {
             await shiftService.add(newData);
             mutate();
             close();
-            toast.success('success');
+            toast.success(t.resign_form.success);
         } catch (error) {
             toast.error(`${error}`);
         }
