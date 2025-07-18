@@ -445,6 +445,7 @@
         "reason_detail": "原因詳情",
         "memo": "備註",
         "cancel": "取消",
-        "submit": "提交"
+        "submit": "提交",
+        "success": "請求提交成功"
     }
 }

@@ -445,6 +445,7 @@
         "reason_detail": "Reason Details",
         "memo": "Memo",
         "cancel": "Cancel",
-        "submit": "Submit"
+        "submit": "Submit",
+        "success": "Request sent successfully"
     }
 }

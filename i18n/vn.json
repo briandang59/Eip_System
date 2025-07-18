@@ -445,6 +445,7 @@
         "reason_detail": "Chi tiết lý do",
         "memo": "Ghi chú",
         "cancel": "Hủy",
-        "submit": "Gửi"
+        "submit": "Gửi",
+        "success": "Gửi yêu cầu thành công"
     }
 }

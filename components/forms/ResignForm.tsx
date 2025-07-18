@@ -24,17 +24,13 @@ function ResignForm({ card_number, mutate, close }: ResignFormProps) {
         .object({
             resign_type_id: yup.number().required(),
             quit_date: yup.string().required(),
-            resign_reason: yup.number().default(null),
-            resign_reason_detail: yup.number().default(null),
-            memo: yup.string().default(null),
+            resign_reason: yup.number().default(0),
+            resign_reason_detail: yup.number().default(0),
+            memo: yup.string().default(''),
         })
         .required();
     type FormData = yup.InferType<typeof schema>;
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<FormData>({
+    const { control, handleSubmit } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
     const { t, lang } = useTranslationCustom();
@@ -59,13 +55,10 @@ function ResignForm({ card_number, mutate, close }: ResignFormProps) {
                 memo: data.memo,
                 resign_reason_id: data?.resign_reason,
             };
-            await resignService.add(newData).then((res) => {
-                if (res) {
-                    toast.success('success');
-                    mutate();
-                    close();
-                }
-            });
+            await resignService.add(newData);
+            toast.success(t.resign_form.success);
+            mutate();
+            close();
         } catch (error) {
             toast.error(`${error}`);
         }
