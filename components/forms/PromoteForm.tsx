@@ -12,6 +12,7 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { toast } from 'sonner';
 import { PromoteRequestType } from '@/types/requests/promote';
 import { promoteService } from '@/apis/services/promote';
+import dayjs from 'dayjs';
 
 interface ProfileFormProps {
     card_number: string;
@@ -44,7 +45,7 @@ function PromoteForm({ card_number, uuid, close, mutate }: ProfileFormProps) {
             const newData: PromoteRequestType = {
                 card_number: card_number,
                 class_id: data.class_id,
-                effect_date: data.effect_date,
+                effect_date: dayjs(data.effect_date).format('YYYY-MM-DD'),
                 job_title_id: data.jobtitle_id,
                 unit_id: data.unit_id,
                 uuid: uuid,

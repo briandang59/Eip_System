@@ -69,4 +69,5 @@ export const urls = {
     factory_inspection: 'factory_inspection',
     resign: 'resign',
     promotion: 'promotion',
+    transfer: 'transfer',
 };

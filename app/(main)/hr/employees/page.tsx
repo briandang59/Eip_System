@@ -244,7 +244,18 @@ function EmployeesPage() {
                     {
                         key: '3',
                         label: `TransferForm`,
-                        children: <TransferForm />,
+                        children: (
+                            <>
+                                {selectcedRecordRow && (
+                                    <TransferForm
+                                        uuid={selectcedRecordRow[0]?.uuid}
+                                        card_number={selectcedRecordRow[0]?.card_number}
+                                        mutate={mutateEmployee}
+                                        close={() => hanldeToggleModal('process_multiple_task')}
+                                    />
+                                )}
+                            </>
+                        ),
                         icon: <User strokeWidth={1.5} />,
                     },
                     {
