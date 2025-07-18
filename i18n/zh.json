@@ -437,5 +437,14 @@
         "position_allowance": "職務津貼",
         "total_base_salary": "基本薪資總計",
         "total_probationary_salary": "試用期薪資總計"
+    },
+    "resign_form": {
+        "resign_type": "辭職類型",
+        "quit_date": "離職日期",
+        "reason": "原因",
+        "reason_detail": "原因詳情",
+        "memo": "備註",
+        "cancel": "取消",
+        "submit": "提交"
     }
 }

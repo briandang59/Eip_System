@@ -485,7 +485,9 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
             />
             <Form.Item>
                 <div className="flex items-center gap-2 justify-end mt-4">
-                    <Button size="large">{t.profile_form.cancel}</Button>
+                    <Button size="large" htmlType="button" onClick={close}>
+                        {t.profile_form.cancel}
+                    </Button>
                     <Button size="large" type="primary" htmlType="submit">
                         {t.profile_form.save_info}
                     </Button>

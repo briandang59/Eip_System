@@ -8,7 +8,11 @@ import { useUnits } from '@/apis/useSwr/units';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ClientOnly from '@/components/common/ClientOnly';
 import { GenericTable } from '@/components/common/GenericTable';
+import AssignShiftForm from '@/components/forms/AssignShiftForm';
 import ProfileForm from '@/components/forms/ProfileForm';
+import PromoteForm from '@/components/forms/PromoteForm';
+import ResignForm from '@/components/forms/ResignForm';
+import TransferForm from '@/components/forms/TransferForm';
 import ProfileUI from '@/components/ui/profileUI';
 import { CareerHistoryResponseType } from '@/types/response/dailyCareerRecord';
 import { EmployeeResponseType } from '@/types/response/employees';
@@ -21,7 +25,8 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileOutlined, ImportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Select } from 'antd';
+import { Button, Input, Modal, Select, Tabs } from 'antd';
+import { Brush, User } from 'lucide-react';
 import { useState } from 'react';
 
 function EmployeesPage() {
@@ -55,6 +60,9 @@ function EmployeesPage() {
             case 'modify_profile':
                 setKey(key);
                 break;
+            case 'process_multiple_task':
+                setKey(key);
+                break;
         }
     };
     const {
@@ -86,6 +94,22 @@ function EmployeesPage() {
         setSelectedUUID,
         setSelectedRecord,
     });
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>();
+    const [selectcedRecordRow, setSelectedRecordRow] = useState<EmployeeResponseType[]>();
+    const onSelectChange = (
+        newSelectedRowKeys: React.Key[],
+        selectedRows: EmployeeResponseType[],
+    ) => {
+        console.log(newSelectedRowKeys);
+        console.log(selectedRows);
+        setSelectedRowKeys(newSelectedRowKeys);
+        setSelectedRecordRow(selectedRows);
+    };
+    const rowSelection = {
+        type: 'checkbox' as const,
+        selectedRowKeys,
+        onChange: onSelectChange,
+    };
     const transferCols = useTransferCols();
     const dailyRecord = useDailyCareerRecordCols();
 
@@ -170,6 +194,59 @@ function EmployeesPage() {
                             close={() => hanldeToggleModal('modify_profile')}
                             mutate={mutateEmployee}
                         />
+                    </div>
+                );
+            }
+            case 'process_multiple_task': {
+                const tabs = [
+                    {
+                        key: '1',
+                        label: `AssignShiftForm`,
+                        children: <AssignShiftForm />,
+                        icon: <User strokeWidth={1.5} />,
+                    },
+                    {
+                        key: '2',
+                        label: `PromoteForm`,
+                        children: <PromoteForm />,
+                        icon: <User strokeWidth={1.5} />,
+                    },
+                    {
+                        key: '3',
+                        label: `TransferForm`,
+                        children: <TransferForm />,
+                        icon: <User strokeWidth={1.5} />,
+                    },
+                    {
+                        key: '4',
+                        label: `ResignForm`,
+                        children: (
+                            <>
+                                {selectcedRecordRow && (
+                                    <ResignForm
+                                        card_number={selectcedRecordRow[0]?.card_number}
+                                        mutate={mutateEmployee}
+                                        close={() => hanldeToggleModal('process_multiple_task')}
+                                    />
+                                )}
+                            </>
+                        ),
+                        icon: <User strokeWidth={1.5} />,
+                    },
+                ];
+                return (
+                    <div className="min-h-[500px] flex flex-col gap-4">
+                        {selectcedRecordRow && (
+                            <div className="flex items-center gap-2 bg-green-200 p-2 rounded-[10px] border border-green-700 w-fit">
+                                <p className="font-medium text-green-700">
+                                    {selectcedRecordRow[0]?.card_number}
+                                </p>
+                                <p className="font-medium text-green-700">
+                                    {selectcedRecordRow[0]?.fullname}
+                                </p>
+                            </div>
+                        )}
+                        <Tabs defaultActiveKey="1" items={tabs} />
                     </div>
                 );
             }
@@ -258,6 +335,14 @@ function EmployeesPage() {
                 >
                     {t.employee.refresh}
                 </Button>
+
+                <Button
+                    icon={<Brush className="!text-blue-500 size-[14px]" />}
+                    onClick={() => hanldeToggleModal('process_multiple_task')}
+                    disabled={selectcedRecordRow && selectcedRecordRow?.length === 0}
+                >
+                    {`Process`}
+                </Button>
             </div>
             {selectedState === 7 ? (
                 <GenericTable<TransferEmployeesResponseType>
@@ -278,7 +363,7 @@ function EmployeesPage() {
                 <GenericTable<EmployeeResponseType>
                     columns={employeeCols}
                     dataSource={employees || []}
-                    rowKey="stt"
+                    rowKey="uuid"
                     isLoading={isLoadingEmployees}
                     pagination={{
                         defaultPageSize: 30,
@@ -288,6 +373,7 @@ function EmployeesPage() {
                         showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                         size: 'default',
                     }}
+                    rowSelection={rowSelection}
                 />
             )}
             <Modal

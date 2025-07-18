@@ -437,5 +437,14 @@
         "position_allowance": "Position Allowance",
         "total_base_salary": "Total Base Salary",
         "total_probationary_salary": "Total Probationary Salary"
+    },
+    "resign_form": {
+        "resign_type": "Resign Type",
+        "quit_date": "Quit Date",
+        "reason": "Reason",
+        "reason_detail": "Reason Details",
+        "memo": "Memo",
+        "cancel": "Cancel",
+        "submit": "Submit"
     }
 }

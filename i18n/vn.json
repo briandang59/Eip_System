@@ -437,5 +437,14 @@
         "position_allowance": "Phụ cấp chức vụ",
         "total_base_salary": "Tổng lương cơ bản",
         "total_probationary_salary": "Tổng lương thử việc"
+    },
+    "resign_form": {
+        "resign_type": "Loại nghỉ việc",
+        "quit_date": "Ngày nghỉ việc",
+        "reason": "Lý do",
+        "reason_detail": "Chi tiết lý do",
+        "memo": "Ghi chú",
+        "cancel": "Hủy",
+        "submit": "Gửi"
     }
 }
