@@ -227,7 +227,18 @@ function EmployeesPage() {
                     {
                         key: '2',
                         label: `PromoteForm`,
-                        children: <PromoteForm />,
+                        children: (
+                            <>
+                                {selectcedRecordRow && (
+                                    <PromoteForm
+                                        uuid={selectcedRecordRow[0]?.uuid}
+                                        card_number={selectcedRecordRow[0]?.card_number}
+                                        mutate={mutateEmployee}
+                                        close={() => hanldeToggleModal('process_multiple_task')}
+                                    />
+                                )}
+                            </>
+                        ),
                         icon: <User strokeWidth={1.5} />,
                     },
                     {
@@ -257,11 +268,11 @@ function EmployeesPage() {
                     <div className="min-h-[500px] flex flex-col gap-4">
                         {selectcedRecordRow && (
                             <div className="flex items-center gap-2 bg-green-200 p-2 rounded-[10px] border border-green-700 w-fit">
-                                <p className="font-medium text-green-700">
-                                    {selectcedRecordRow[0]?.card_number}
-                                </p>
-                                <p className="font-medium text-green-700">
-                                    {selectcedRecordRow[0]?.fullname}
+                                <p className="font-medium text-green-700 flex items-center gap-2">
+                                    {selectcedRecordRow[0]?.fullname} -{' '}
+                                    {selectcedRecordRow[0]?.card_number} -{' '}
+                                    {selectcedRecordRow[0]?.work_place.name_en} -{' '}
+                                    {selectcedRecordRow[0]?.unit?.name_en}
                                 </p>
                             </div>
                         )}

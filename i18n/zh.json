@@ -453,5 +453,13 @@
         "start_date": "開始日期",
         "end_date": "結束日期",
         "note": "備註"
+    },
+    "promote_form": {
+        "position": "晉升職位",
+        "work_place": "工作地點",
+        "unit": "部門",
+        "promotion_title": "晉升頭銜",
+        "effect_date": "生效日期",
+        "memo": "備註"
     }
 }

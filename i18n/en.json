@@ -453,5 +453,13 @@
         "start_date": "Start Date",
         "end_date": "To Date",
         "note": "Note"
+    },
+    "promote_form": {
+        "position": "Promoted position",
+        "work_place": "Work Place",
+        "unit": "Unit",
+        "promotion_title": "Promotion Title",
+        "effect_date": "Effect Date",
+        "memo": "Memo"
     }
 }

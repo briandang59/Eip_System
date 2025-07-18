@@ -68,4 +68,5 @@ export const urls = {
     salary_allowance: 'salary_allowance',
     factory_inspection: 'factory_inspection',
     resign: 'resign',
+    promotion: 'promotion',
 };

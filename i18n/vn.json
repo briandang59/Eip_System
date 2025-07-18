@@ -453,5 +453,13 @@
         "start_date": "Ngày bắt đầu",
         "end_date": "Ngày kết thúc",
         "note": "Ghi chú"
+    },
+    "promote_form": {
+        "position": "Vị trí được thăng chức",
+        "work_place": "Nơi làm việc",
+        "unit": "Đơn vị",
+        "promotion_title": "Danh hiệu thăng chức",
+        "effect_date": "Ngày hiệu lực",
+        "memo": "Ghi chú"
     }
 }
