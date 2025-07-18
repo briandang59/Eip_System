@@ -447,5 +447,11 @@
         "cancel": "Cancel",
         "submit": "Submit",
         "success": "Request sent successfully"
+    },
+    "assign_shift": {
+        "shift_type": "Shift Type",
+        "start_date": "Start Date",
+        "end_date": "To Date",
+        "note": "Note"
     }
 }

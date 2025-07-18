@@ -447,5 +447,11 @@
         "cancel": "Hủy",
         "submit": "Gửi",
         "success": "Gửi yêu cầu thành công"
+    },
+    "assign_shift": {
+        "shift_type": "Loại ca",
+        "start_date": "Ngày bắt đầu",
+        "end_date": "Ngày kết thúc",
+        "note": "Ghi chú"
     }
 }

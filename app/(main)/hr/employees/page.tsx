@@ -27,14 +27,14 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileOutlined, ImportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Select, Tabs } from 'antd';
 import { Brush, User } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function EmployeesPage() {
     const { t, lang } = useTranslationCustom();
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const { employeeState, isLoading: isLoadingEmployeeState } = useEmployeeState();
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
-    const [selectedState, setSelectedState] = useState<number | undefined>(employeeState[0]?.id);
+    const [selectedState, setSelectedState] = useState<number>();
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id || 0);
@@ -45,6 +45,15 @@ function EmployeesPage() {
     const { dailyCareerRecord, isLoading: isLoadingDaily } = useDailyCareerRecord({
         uuid: selectedUUID,
     });
+
+    useEffect(() => {
+        if (employeeState && employeeState.length > 0) {
+            setSelectedState(employeeState[0].id);
+        } else {
+            setSelectedState(undefined);
+        }
+    }, [employeeState]);
+
     const hanldeToggleModal = (key: string) => {
         setIsOpenModal(!isOpenModal);
         switch (key) {
@@ -202,7 +211,17 @@ function EmployeesPage() {
                     {
                         key: '1',
                         label: `AssignShiftForm`,
-                        children: <AssignShiftForm />,
+                        children: (
+                            <>
+                                {selectcedRecordRow && (
+                                    <AssignShiftForm
+                                        card_number={selectcedRecordRow[0]?.card_number}
+                                        mutate={mutateEmployee}
+                                        close={() => hanldeToggleModal('process_multiple_task')}
+                                    />
+                                )}
+                            </>
+                        ),
                         icon: <User strokeWidth={1.5} />,
                     },
                     {

@@ -447,5 +447,11 @@
         "cancel": "取消",
         "submit": "提交",
         "success": "請求提交成功"
+    },
+    "assign_shift": {
+        "shift_type": "班次類型",
+        "start_date": "開始日期",
+        "end_date": "結束日期",
+        "note": "備註"
     }
 }
