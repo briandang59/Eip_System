@@ -177,7 +177,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces, close }: BookingF
                             </span>
                             <div className="grid grid-cols-2 gap-2">
                                 {item.rooms.map((room) => (
-                                    <Checkbox onChange={onChange} value={room.id}>
+                                    <Checkbox onChange={onChange} value={room.id} key={room.id}>
                                         {getLocalizedName(
                                             room?.name_en,
                                             room?.name_zh,
