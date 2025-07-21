@@ -1,5 +1,6 @@
 export type CreateBookingRequest = {
     meeting: {
+        id?: number;
         topic: string;
         content: string;
         date_book: string;
@@ -13,6 +14,12 @@ export type CreateBookingRequest = {
     book_meeting: {
         start: string;
         end: string;
+        id?: number;
     };
     meeting_rooms: number[];
+};
+
+export type DeleteBookingRequest = {
+    active: boolean;
+    id: number;
 };

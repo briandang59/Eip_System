@@ -75,4 +75,7 @@ export const urls = {
     meeting_type: 'meeting_type',
     meeting: 'meeting',
     book: 'book',
+    active_off: 'active_off',
+    detail: 'detail',
+    update_book: 'update_book',
 };
