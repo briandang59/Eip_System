@@ -465,5 +465,12 @@
     "reinstate_form": {
         "effect_date": "生效日期",
         "memo": "備註"
+    },
+    "tab_title": {
+        "assign_shift": "排班表單",
+        "promote": "晉升表單",
+        "transfer": "調職表單",
+        "resign": "離職表單",
+        "reinstatement": "復職表單"
     }
 }

@@ -465,5 +465,12 @@
     "reinstate_form": {
         "effect_date": "Ngày hiệu lực",
         "memo": "Ghi chú"
+    },
+    "tab_title": {
+        "assign_shift": "Biểu mẫu phân ca",
+        "promote": "Biểu mẫu thăng chức",
+        "transfer": "Biểu mẫu luân chuyển",
+        "resign": "Biểu mẫu thôi việc",
+        "reinstatement": "Biểu mẫu tái tuyển dụng"
     }
 }

@@ -209,7 +209,7 @@ function EmployeesPage() {
                 const tabs = [
                     {
                         key: '1',
-                        label: `AssignShiftForm`,
+                        label: t.tab_title.assign_shift,
                         children: (
                             <>
                                 {selectcedRecordRow && (
@@ -225,7 +225,7 @@ function EmployeesPage() {
                     },
                     {
                         key: '2',
-                        label: `PromoteForm`,
+                        label: t.tab_title.promote,
                         children: (
                             <>
                                 {selectcedRecordRow && (
@@ -242,7 +242,7 @@ function EmployeesPage() {
                     },
                     {
                         key: '3',
-                        label: `TransferForm`,
+                        label: t.tab_title.transfer,
                         children: (
                             <>
                                 {selectcedRecordRow && (
@@ -259,7 +259,7 @@ function EmployeesPage() {
                     },
                     {
                         key: '4',
-                        label: `ResignForm`,
+                        label: t.tab_title.resign,
                         children: (
                             <>
                                 {selectcedRecordRow && (
@@ -275,7 +275,7 @@ function EmployeesPage() {
                     },
                     {
                         key: '5',
-                        label: `Reinstate`,
+                        label: t.tab_title.reinstatement,
                         children: (
                             <>
                                 {selectcedRecordRow && (
@@ -290,6 +290,11 @@ function EmployeesPage() {
                         icon: <User strokeWidth={1.5} />,
                     },
                 ];
+
+                const reseinstate = tabs.filter((item) => item.key === '5');
+                const normal = tabs.filter((item) => item.key !== '5');
+
+                const arrayTabByState = selectedState !== 5 ? normal : reseinstate;
                 return (
                     <div className="min-h-[500px] flex flex-col gap-4">
                         {selectcedRecordRow && (
@@ -302,7 +307,7 @@ function EmployeesPage() {
                                 </p>
                             </div>
                         )}
-                        <Tabs defaultActiveKey="1" items={tabs} />
+                        <Tabs defaultActiveKey="1" items={arrayTabByState} />
                     </div>
                 );
             }

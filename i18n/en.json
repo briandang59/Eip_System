@@ -465,5 +465,12 @@
     "reinstate_form": {
         "effect_date": "Effect Date",
         "memo": "Memo"
+    },
+    "tab_title": {
+        "assign_shift": "Assign shift form",
+        "promote": "Promote form",
+        "transfer": "Transfer form",
+        "resign": "Resign form",
+        "reinstatement": "Reinstatement form"
     }
 }
