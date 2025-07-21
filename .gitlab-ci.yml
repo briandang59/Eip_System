@@ -1,14 +1,13 @@
 stages:
     - deploy
-    - notify
     - cleanup
 
 deploy:
   stage: deploy
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
   tags:
-    - docker-prod
+    - eip-ui-v2(dev)
   script:
     - echo "開始零停機部署, now deploying..."
     - cd $CI_PROJECT_DIR
@@ -16,45 +15,11 @@ deploy:
     - ./deploy.sh
     - echo "零停機部署完成, deploy job's done"
 
-notify_failure:
-    stage: notify
-    tags:
-        - docker-prod
-    rules:
-        - if: '$CI_COMMIT_BRANCH == "main"'
-    script:
-        - echo "Deployment failed! Sending notification..."
-        - |
-            curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
-            -H "Content-Type: application/json" \
-            -d '{
-              "card_number": "T24065", 
-              "message": "eip-ui-v2(prod) deploy failed!"
-            }'
-    when: on_failure
-    allow_failure: true
-
-notify_success:
-    stage: notify
-    tags:
-        - docker-prod
-    script:
-        - echo "Deployment success! Sending notification..."
-        - |
-            curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
-            -H "Content-Type: application/json" \
-            -d '{
-              "card_number": "T24065",
-              "message": "eip-ui-v2(prod) deploy success!"
-            }'
-    when: on_success
-    allow_failure: true
-
 # 自動清理 Docker Image
 cleanup:
     stage: cleanup
     tags:
-        - docker-prod
+        - eip-ui-v2(dev)
     script:
         - echo "Now cleanup Docker images"
         - sudo docker container prune -f
