@@ -481,6 +481,9 @@
         "department": "Proposing department",
         "person": "Proposer",
         "joins": "Participants",
-        "note": "Note"
+        "note": "Note",
+        "meeting_information": "Meeting Information",
+        "meeting_room": "Meeting Room",
+        "time": "Time"
     }
 }

@@ -481,6 +481,9 @@
         "department": "提議部門",
         "person": "提議人",
         "joins": "參與者",
-        "note": "備註"
+        "note": "備註",
+        "meeting_information": "會議資訊",
+        "meeting_room": "會議室",
+        "time": "時間"
     }
 }

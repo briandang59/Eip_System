@@ -17,6 +17,10 @@ import { FormInput, FormTextArea } from '../formsComponent';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { toast } from 'sonner';
+import { CreateBookingRequest } from '@/types/requests/booking';
+import { bookingService } from '@/apis/services/booking';
+import { getInfomation } from '@/utils/functions/getInfomation';
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
 const { RangePicker } = DatePicker;
@@ -27,6 +31,7 @@ interface BookingForm {
     meetingRooms: MeetingRoomResponseType[];
     meetingTypes: MeetingTypeResponseType[];
     workplaces: WorkPlaceType[];
+    close: () => void;
 }
 
 const schema = yup
@@ -41,9 +46,15 @@ const schema = yup
     .required();
 
 type FormData = yup.InferType<typeof schema>;
-function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
+function BookingForm({ meetingRooms, meetingTypes, workplaces, close }: BookingForm) {
     const { t, lang } = useTranslationCustom();
     const [selectedType, setSelectedType] = useState<number>();
+    const [selectedMeetingRoom, setSelectedMeetingRoom] = useState<number[]>([]);
+    const [selectedDate, setSelectedDate] = useState<{ start: string; end: string }>({
+        start: '',
+        end: '',
+    });
+    const myInfo = getInfomation();
     const mergedAndGroupedRooms = useMemo(() => {
         const workplaceMap = new Map();
         workplaces.forEach((wp) => {
@@ -70,22 +81,64 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
             rooms: groupedObject[factoryName],
         }));
     }, [meetingRooms, workplaces]);
+
+    const handleToggleMeetingRoom = (id: number) => {
+        const isExists = selectedMeetingRoom.some((roomId) => roomId === id);
+
+        if (isExists) {
+            const newArray = selectedMeetingRoom.filter((roomId) => roomId !== id);
+            setSelectedMeetingRoom(newArray);
+        } else {
+            setSelectedMeetingRoom([...selectedMeetingRoom, id]);
+        }
+    };
     const {
         control,
         handleSubmit,
-        setError,
         formState: { errors },
     } = useForm<FormData>({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = async (data: FormData) => {};
+    const onSubmit = async (data: FormData) => {
+        try {
+            if (!selectedType || !myInfo) {
+                toast.error(
+                    'Vui lòng chọn loại cuộc họp và đảm bảo thông tin cá nhân đã được tải.',
+                );
+                return;
+            }
+            const newData: CreateBookingRequest = {
+                book_meeting: {
+                    start: selectedDate.start,
+                    end: selectedDate.end,
+                },
+                meeting: {
+                    topic: data.topic,
+                    content: data.content,
+                    date_book: selectedDate.start.split(' ')[0],
+                    applicant: data.applicant,
+                    participants: data.participant,
+                    application_dept: data.application_department,
+                    note: data.note,
+                    meeting_type_id: selectedType,
+                    account_id: myInfo.account_id,
+                },
+                meeting_rooms: selectedMeetingRoom,
+            };
+            console.log('newData', newData);
+            await bookingService.add(newData);
+            toast.success('successed');
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
 
     const onOk = (value: DatePickerProps['value'] | RangePickerProps['value']) => {
         console.log('onOk: ', value);
     };
     const onChange: CheckboxProps['onChange'] = (e) => {
-        console.log(`checked = ${e.target.checked}`);
+        handleToggleMeetingRoom(e.target.value);
     };
     return (
         <div className="min-h-[500px] grid grid-cols-12">
@@ -108,9 +161,11 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                 <RangePicker
                     showTime={{ format: 'HH:mm' }}
                     format="YYYY-MM-DD HH:mm"
-                    onChange={(value, dateString) => {
-                        console.log('Selected Time: ', value);
-                        console.log('Formatted Selected Time: ', dateString);
+                    onChange={(_value, dateString) => {
+                        setSelectedDate({
+                            start: dateString[0],
+                            end: dateString[1],
+                        });
                     }}
                     onOk={onOk}
                 />
@@ -122,7 +177,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                             </span>
                             <div className="grid grid-cols-2 gap-2">
                                 {item.rooms.map((room) => (
-                                    <Checkbox onChange={onChange}>
+                                    <Checkbox onChange={onChange} value={room.id}>
                                         {getLocalizedName(
                                             room?.name_en,
                                             room?.name_zh,
@@ -147,7 +202,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                         control={control}
                         name="topic"
                         label={t.meeting_form.topic}
-                        placeholder="Enter your username"
+                        placeholder="Enter topic"
                         size="large"
                         required
                         error={errors.topic?.message}
@@ -157,7 +212,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                         control={control}
                         name="content"
                         label={t.meeting_form.content}
-                        placeholder="Enter memo"
+                        placeholder="Enter content"
                         size="large"
                         required
                     />
@@ -165,7 +220,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                         control={control}
                         name="application_department"
                         label={t.meeting_form.department}
-                        placeholder="Enter your username"
+                        placeholder="Enter department"
                         size="large"
                         error={errors.application_department?.message}
                         required
@@ -175,7 +230,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                         control={control}
                         name="applicant"
                         label={t.meeting_form.person}
-                        placeholder="Enter your username"
+                        placeholder="Enter person"
                         size="large"
                         error={errors.applicant?.message}
                         required
@@ -184,7 +239,7 @@ function BookingForm({ meetingRooms, meetingTypes, workplaces }: BookingForm) {
                         control={control}
                         name="participant"
                         label={t.meeting_form.joins}
-                        placeholder="Enter memo"
+                        placeholder="Enter participants"
                         size="large"
                         required
                     />

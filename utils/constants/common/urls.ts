@@ -73,4 +73,6 @@ export const urls = {
     reinstatement: 'reinstatement',
     meeting_room: 'meeting_room',
     meeting_type: 'meeting_type',
+    meeting: 'meeting',
+    book: 'book',
 };

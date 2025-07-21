@@ -481,6 +481,9 @@
         "department": "Phòng đề xuất",
         "person": "Người đề xuất",
         "joins": "Người tham gia",
-        "note": "Ghi chú"
+        "note": "Ghi chú",
+        "meeting_information": "Thông tin cuộc họp",
+        "meeting_room": "Phòng họp",
+        "time": "Thời gian"
     }
 }
