@@ -472,5 +472,15 @@
         "transfer": "Transfer form",
         "resign": "Resign form",
         "reinstatement": "Reinstatement form"
+    },
+    "meeting_form": {
+        "meeting_type": "Meeting type",
+        "date": "Date and time",
+        "topic": "Topic",
+        "content": "Content",
+        "department": "Proposing department",
+        "person": "Proposer",
+        "joins": "Participants",
+        "note": "Note"
     }
 }

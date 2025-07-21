@@ -472,5 +472,15 @@
         "transfer": "調職表單",
         "resign": "離職表單",
         "reinstatement": "復職表單"
+    },
+    "meeting_form": {
+        "meeting_type": "會議類型",
+        "date": "日期和時間",
+        "topic": "主題",
+        "content": "內容",
+        "department": "提議部門",
+        "person": "提議人",
+        "joins": "參與者",
+        "note": "備註"
     }
 }

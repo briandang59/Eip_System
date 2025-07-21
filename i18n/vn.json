@@ -472,5 +472,15 @@
         "transfer": "Biểu mẫu luân chuyển",
         "resign": "Biểu mẫu thôi việc",
         "reinstatement": "Biểu mẫu tái tuyển dụng"
+    },
+    "meeting_form": {
+        "meeting_type": "Loại họp",
+        "date": "Ngày và giờ",
+        "topic": "Chủ đề",
+        "content": "Nội dung",
+        "department": "Phòng đề xuất",
+        "person": "Người đề xuất",
+        "joins": "Người tham gia",
+        "note": "Ghi chú"
     }
 }

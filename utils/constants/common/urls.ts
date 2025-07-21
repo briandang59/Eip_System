@@ -71,4 +71,6 @@ export const urls = {
     promotion: 'promotion',
     transfer: 'transfer',
     reinstatement: 'reinstatement',
+    meeting_room: 'meeting_room',
+    meeting_type: 'meeting_type',
 };
