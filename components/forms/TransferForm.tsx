@@ -11,7 +11,6 @@ import { useEmployeeClass } from '@/apis/useSwr/employeeClass';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { toast } from 'sonner';
 import { PromoteRequestType } from '@/types/requests/promote';
-import { promoteService } from '@/apis/services/promote';
 import dayjs from 'dayjs';
 import { transferService } from '@/apis/services/transfer';
 

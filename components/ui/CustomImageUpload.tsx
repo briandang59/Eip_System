@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { message } from 'antd';
+import { Image, message } from 'antd';
 import type { RcFile } from 'antd/es/upload';
 
 interface CustomImageUploadProps {
@@ -98,7 +98,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({ onUploadSuccess }
         <div className="relative w-32 h-32 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center">
             {previewImage ? (
                 <div className="relative w-full h-full">
-                    <img
+                    <Image
                         src={previewImage}
                         alt="Preview"
                         className="w-full h-full object-cover rounded-md"
