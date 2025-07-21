@@ -70,4 +70,5 @@ export const urls = {
     resign: 'resign',
     promotion: 'promotion',
     transfer: 'transfer',
+    reinstatement: 'reinstatement',
 };

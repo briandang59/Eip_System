@@ -461,5 +461,9 @@
         "promotion_title": "Danh hiệu thăng chức",
         "effect_date": "Ngày hiệu lực",
         "memo": "Ghi chú"
+    },
+    "reinstate_form": {
+        "effect_date": "Ngày hiệu lực",
+        "memo": "Ghi chú"
     }
 }

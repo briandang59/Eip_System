@@ -461,5 +461,9 @@
         "promotion_title": "Promotion Title",
         "effect_date": "Effect Date",
         "memo": "Memo"
+    },
+    "reinstate_form": {
+        "effect_date": "Effect Date",
+        "memo": "Memo"
     }
 }

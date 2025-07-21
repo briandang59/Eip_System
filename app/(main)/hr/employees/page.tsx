@@ -11,6 +11,7 @@ import { GenericTable } from '@/components/common/GenericTable';
 import AssignShiftForm from '@/components/forms/AssignShiftForm';
 import ProfileForm from '@/components/forms/ProfileForm';
 import PromoteForm from '@/components/forms/PromoteForm';
+import ReinstateForm from '@/components/forms/ReinstateForm';
 import ResignForm from '@/components/forms/ResignForm';
 import TransferForm from '@/components/forms/TransferForm';
 import ProfileUI from '@/components/ui/profileUI';
@@ -47,12 +48,10 @@ function EmployeesPage() {
     });
 
     useEffect(() => {
-        if (employeeState && employeeState.length > 0) {
+        if (!selectedState && employeeState && employeeState.length > 0) {
             setSelectedState(employeeState[0].id);
-        } else {
-            setSelectedState(undefined);
         }
-    }, [employeeState]);
+    }, [employeeState, selectedState]);
 
     const hanldeToggleModal = (key: string) => {
         setIsOpenModal(!isOpenModal);
@@ -265,6 +264,22 @@ function EmployeesPage() {
                             <>
                                 {selectcedRecordRow && (
                                     <ResignForm
+                                        card_number={selectcedRecordRow[0]?.card_number}
+                                        mutate={mutateEmployee}
+                                        close={() => hanldeToggleModal('process_multiple_task')}
+                                    />
+                                )}
+                            </>
+                        ),
+                        icon: <User strokeWidth={1.5} />,
+                    },
+                    {
+                        key: '5',
+                        label: `Reinstate`,
+                        children: (
+                            <>
+                                {selectcedRecordRow && (
+                                    <ReinstateForm
                                         card_number={selectcedRecordRow[0]?.card_number}
                                         mutate={mutateEmployee}
                                         close={() => hanldeToggleModal('process_multiple_task')}

@@ -461,5 +461,9 @@
         "promotion_title": "晉升頭銜",
         "effect_date": "生效日期",
         "memo": "備註"
+    },
+    "reinstate_form": {
+        "effect_date": "生效日期",
+        "memo": "備註"
     }
 }
