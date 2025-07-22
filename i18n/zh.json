@@ -485,5 +485,18 @@
         "meeting_information": "會議資訊",
         "meeting_room": "會議室",
         "time": "時間"
+    },
+    "chart": {
+        "units": "單位",
+        "number_of_employee": "員工數量",
+        "day_shift": "白班",
+        "afternoon_shift": "午班",
+        "night_shift": "夜班"
+    },
+    "statistical_attendance": {
+        "unit": "單位",
+        "checkout_early": "提早離開",
+        "checkin_late": "遲到",
+        "take_leave": "請假"
     }
 }

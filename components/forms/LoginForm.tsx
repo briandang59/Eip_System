@@ -80,7 +80,11 @@ function LoginForm() {
     };
 
     return (
-        <Form layout="vertical" className="w-full" onFinish={handleSubmit(onSubmit)}>
+        <Form
+            layout="vertical"
+            className="w-full flex flex-col gap-4"
+            onFinish={handleSubmit(onSubmit)}
+        >
             <FormInput
                 control={control}
                 name="account"

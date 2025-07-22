@@ -15,7 +15,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
                     backgroundPosition: 'center',
                 }}
             >
-                <div className="w-full max-w-xl p-4 bg-white rounded-lg shadow-md">
+                <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
                     <h1 className="text-3xl font-bold mb-4 text-center bg-gradient-to-b from-green-700 to-blue-700 text-transparent bg-clip-text">
                         EIP System Management
                     </h1>

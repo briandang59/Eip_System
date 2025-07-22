@@ -78,4 +78,6 @@ export const urls = {
     active_off: 'active_off',
     detail: 'detail',
     update_book: 'update_book',
+    statistics: 'statistics',
+    date_range: 'date_range',
 };

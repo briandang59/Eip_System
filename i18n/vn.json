@@ -485,5 +485,18 @@
         "meeting_information": "Thông tin cuộc họp",
         "meeting_room": "Phòng họp",
         "time": "Thời gian"
+    },
+    "chart": {
+        "units": "Đơn vị",
+        "number_of_employee": "Số lượng nhân viên",
+        "day_shift": "Ca ngày",
+        "afternoon_shift": "Ca chiều",
+        "night_shift": "Ca đêm"
+    },
+    "statistical_attendance": {
+        "unit": "Đơn vị",
+        "checkout_early": "Về sớm",
+        "checkin_late": "Đến muộn",
+        "take_leave": "Nghỉ phép"
     }
 }

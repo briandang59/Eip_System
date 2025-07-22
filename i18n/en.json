@@ -485,5 +485,18 @@
         "meeting_information": "Meeting Information",
         "meeting_room": "Meeting Room",
         "time": "Time"
+    },
+    "chart": {
+        "units": "Units",
+        "number_of_employee": "Number of Employees",
+        "day_shift": "Day shift",
+        "afternoon_shift": "Afternoon shift",
+        "night_shift": "Night shift"
+    },
+    "statistical_attendance": {
+        "unit": "Unit",
+        "checkout_early": "Check-out early",
+        "checkin_late": "Check-in late",
+        "take_leave": "Take leave"
     }
 }
