@@ -497,6 +497,35 @@
         "unit": "單位",
         "checkout_early": "提早離開",
         "checkin_late": "遲到",
-        "take_leave": "請假"
+        "take_leave": "請假",
+        "reload": "重新載入",
+        "export": "匯出"
+    },
+    "contract": {
+        "card_number": "卡號",
+        "full_name": "全名",
+        "date_join_company1": "加入公司1日期",
+        "date_join_company2": "加入公司2日期",
+        "unit": "單位",
+        "now": "現在",
+        "year": "年份",
+        "count": "數量",
+        "base_salary": "基本工資",
+        "position": "職位",
+        "kpi": "關鍵績效指標",
+        "status": "狀態"
+    },
+    "social_insurance": {
+        "card_number": "卡號",
+        "full_name": "全名",
+        "date_join_company_1": "加入公司1日期",
+        "date_join_company_2": "加入公司2日期",
+        "join_insurance": "參加保險",
+        "initial_deduction_date": "首次扣除日期",
+        "unit": "單位",
+        "base_salary": "基本工資",
+        "social_insurance": "社會保險",
+        "unemployee_insurance": "失業保險",
+        "sum": "總計"
     }
 }

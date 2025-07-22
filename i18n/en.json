@@ -497,6 +497,35 @@
         "unit": "Unit",
         "checkout_early": "Check-out early",
         "checkin_late": "Check-in late",
-        "take_leave": "Take leave"
+        "take_leave": "Take leave",
+        "reload": "Reload",
+        "export": "Export"
+    },
+    "contract": {
+        "card_number": "Card Number",
+        "full_name": "Full Name",
+        "date_join_company1": "Date Join Company 1",
+        "date_join_company2": "Date Join Company 2",
+        "unit": "Unit",
+        "now": "Now",
+        "year": "Year",
+        "count": "Count",
+        "base_salary": "Base Salary",
+        "position": "Position",
+        "kpi": "KPI",
+        "status": "Status"
+    },
+    "social_insurance": {
+        "card_number": "Card Number",
+        "full_name": "Full Name",
+        "date_join_company_1": "Date Join Company 1",
+        "date_join_company_2": "Date Join Company 2",
+        "join_insurance": "Join Insurance",
+        "initial_deduction_date": "Initial Deduction Date",
+        "unit": "Unit",
+        "base_salary": "Base Salary",
+        "social_insurance": "Social Insurance",
+        "unemployee_insurance": "Unemployee Insurance",
+        "sum": "Sum"
     }
 }

@@ -131,10 +131,10 @@ export default function Home() {
                     format="YYYY-MM-DD"
                 />
                 <Button icon={<FileExcelOutlined />} onClick={handleExport}>
-                    Export
+                    {t.statistical_attendance.export}
                 </Button>
                 <Button icon={<ReloadOutlined />} onClick={handleReload}>
-                    Reload
+                    {t.statistical_attendance.reload}
                 </Button>
             </div>
             <div className="grid grid-cols-12 gap-4">

@@ -497,6 +497,35 @@
         "unit": "Đơn vị",
         "checkout_early": "Về sớm",
         "checkin_late": "Đến muộn",
-        "take_leave": "Nghỉ phép"
+        "take_leave": "Nghỉ phép",
+        "reload": "Tải lại",
+        "export": "Xuất excel"
+    },
+    "contract": {
+        "card_number": "Số thẻ",
+        "full_name": "Họ và tên",
+        "date_join_company1": "Ngày vào công ty 1",
+        "date_join_company2": "Ngày vào công ty 2",
+        "unit": "Đơn vị",
+        "now": "Hiện tại",
+        "year": "Năm",
+        "count": "Số lượng",
+        "base_salary": "Lương cơ bản",
+        "position": "Chức vụ",
+        "kpi": "KPI",
+        "status": "Trạng thái"
+    },
+    "social_insurance": {
+        "card_number": "Số thẻ",
+        "full_name": "Họ và tên",
+        "date_join_company_1": "Ngày vào công ty 1",
+        "date_join_company_2": "Ngày vào công ty 2",
+        "join_insurance": "Tham gia bảo hiểm",
+        "initial_deduction_date": "Ngày bắt đầu khấu trừ",
+        "unit": "Đơn vị",
+        "base_salary": "Lương cơ bản",
+        "social_insurance": "Bảo hiểm xã hội",
+        "unemployee_insurance": "Bảo hiểm thất nghiệp",
+        "sum": "Tổng cộng"
     }
 }
