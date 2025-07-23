@@ -31,7 +31,8 @@ export default function Home() {
         if (myInfo) {
             setSelectedWorkplace(myInfo.work_place_id);
         }
-    }, [myInfo]);
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const {
         statisticalOneDayAttendance,
