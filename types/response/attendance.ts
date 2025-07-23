@@ -153,9 +153,9 @@ export type StatisticalWorkdayType = {
     unit: {
         id: number;
         code: string;
-        name_en: string;
-        name_zh: string;
-        name_vn: string;
+        name_en: string | null;
+        name_zh: string | null;
+        name_vn: string | null;
     };
     total_GC: number;
     total_NLE: number;

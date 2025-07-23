@@ -71,7 +71,7 @@ interface TimeRecord {
 }
 
 interface Workday {
-    GC: number; // Giờ làm việc chính
+    GC: number;
     overtime: Overtime;
     nle: number;
     GDem: number;
@@ -91,6 +91,7 @@ interface Overtime {
     c200: number;
     c300: number;
     c390: number;
+    c400: number;
 }
 
 interface LeaveHours {

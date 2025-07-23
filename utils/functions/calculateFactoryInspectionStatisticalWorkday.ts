@@ -1,4 +1,3 @@
-import { AttendanceV2Type } from '@/types/response/attendance';
 import { StatisticalWorkdayType } from '@/types/response/attendance';
 import { calculateDTVS } from './calculateDTVS';
 import { calculateSGC } from './calculateSGC';
@@ -6,9 +5,10 @@ import { calculateAllH } from './calculateAllH';
 import { calculateMonthH } from './calculateMonthH';
 import { checkSunday } from './checkSunday';
 import { calculateCcanV2 } from './calculateCCAN_V2';
+import { FactoryInspectionAttendance } from '@/types/response/factoryInspectionAttendance';
 
-export const calculateStatisticalWorkday = (
-    attendance: AttendanceV2Type[],
+export const calculateFactoryInspectionStatisticalWorkday = (
+    attendance: FactoryInspectionAttendance[],
     year: number,
     month: number,
 ): StatisticalWorkdayType[] => {
@@ -21,7 +21,7 @@ export const calculateStatisticalWorkday = (
             groups[key].push(item);
             return groups;
         },
-        {} as Record<string, AttendanceV2Type[]>,
+        {} as Record<string, FactoryInspectionAttendance[]>,
     );
 
     return Object.values(employeeGroups).map((employeeAttendance) => {

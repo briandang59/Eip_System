@@ -48,7 +48,7 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             render: (_, record) => {
                 return <UnitCell unit={record.unit} />;
             },
-            sorter: (a, b) => a.unit.name_en.localeCompare(b.unit.name_en),
+            sorter: (a, b) => (a.unit.name_en || '').localeCompare(b.unit.name_en || ''),
         },
 
         {
