@@ -1,27 +1,67 @@
 version: '3.8'
 
 services:
-  eip-ui-v2:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: eip-ui-v2
-    ports:
-      - "3005:3000"  # 將容器的 3000 端口映射到主機的 3005 端口
-    environment:
-      - NODE_ENV=production
-      - TZ=Asia/Ho_Chi_Minh
-      - NEXT_TELEMETRY_DISABLED=1
-    restart: always  # 永遠自動重啟
-    networks:
-      - EipApps_network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
-      interval: 15s
-      timeout: 5s
-      retries: 5
-      start_period: 240s
+    eip-ui-v2-blue:
+        build: .
+        container_name: eip-ui-v2-blue
+        image: eip-ui-v2:blue
+        expose:
+            - '3000'
+        environment:
+            - NODE_ENV=production
+            - TZ=Asia/Ho_Chi_Minh
+            - NEXT_TELEMETRY_DISABLED=1
+        restart: always
+        networks:
+            - EipApps_network
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'wget',
+                    '--no-verbose',
+                    '--tries=1',
+                    '--spider',
+                    'http://localhost:3000/api/health',
+                ]
+            interval: 20s
+            timeout: 5s
+            retries: 5
+            start_period: 120s
+
+    eip-ui-v2-green:
+        build: .
+        container_name: eip-ui-v2-green
+        image: eip-ui-v2:green
+        expose:
+            - '3000'
+        environment:
+            - NODE_ENV=production
+            - TZ=Asia/Ho_Chi_Minh
+            - NEXT_TELEMETRY_DISABLED=1
+        restart: always # 永遠自動重啟
+        networks:
+            - EipApps_network
+        healthcheck:
+            test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3000']
+            interval: 20s
+            timeout: 5s
+            retries: 5
+            start_period: 240s
+
+    nginx:
+        image: nginx:1.25-alpine
+        container_name: eip-ui-proxy
+        ports:
+            - '80:80'
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+        depends_on:
+            - eip-ui-v2-blue
+            - eip-ui-v2-green
+        networks:
+            - EipApps_network
 
 networks:
-  EipApps_network:
-    external: true
+    EipApps_network:
+        external: true

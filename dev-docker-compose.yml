@@ -1,27 +1,27 @@
 version: '3.8'
 
 services:
-  eip-ui-v2:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: eip-ui-v2
-    ports:
-      - "3005:3000"  # 將容器的 3000 端口映射到主機的 80 端口
-    environment:
-      - NODE_ENV=production
-      - TZ=Asia/Ho_Chi_Minh
-      - NEXT_TELEMETRY_DISABLED=1
-    restart: always  # 永遠自動重啟
-    networks:
-      - EipApps_network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
-      interval: 15s
-      timeout: 5s
-      retries: 5
-      start_period: 240s
+    eip-ui-v2:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: eip-ui-v2
+        ports:
+            - '3005:3000' # 將容器的 3000 端口映射到主機的 80 端口
+        environment:
+            - NODE_ENV=production
+            - TZ=Asia/Ho_Chi_Minh
+            - NEXT_TELEMETRY_DISABLED=1
+        restart: always # 永遠自動重啟
+        networks:
+            - EipApps_network
+        healthcheck:
+            test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3000']
+            interval: 15s
+            timeout: 5s
+            retries: 5
+            start_period: 240s
 
 networks:
-  EipApps_network:
-    external: true
+    EipApps_network:
+        external: true

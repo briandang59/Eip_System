@@ -1,25 +1,26 @@
 stages:
     - deploy
+    - notify
     - cleanup
 
 deploy:
-  stage: deploy
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "dev"'
-  tags:
-    - eip-ui-v2(dev)
-  script:
-    - echo "開始零停機部署, now deploying..."
-    - cd $CI_PROJECT_DIR
-    - chmod +x deploy.sh
-    - ./deploy.sh
-    - echo "零停機部署完成, deploy job's done"
+    stage: deploy
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "main"'
+    tags:
+        - docker-prod
+    script:
+        - echo "開始零停機部署, now deploying..."
+        - cd $CI_PROJECT_DIR
+        - chmod +x deploy.sh
+        - ./deploy.sh
+        - echo "零停機部署完成, deploy job's done"
 
 # 自動清理 Docker Image
 cleanup:
     stage: cleanup
     tags:
-        - eip-ui-v2(dev)
+        - docker-prod
     script:
         - echo "Now cleanup Docker images"
         - sudo docker container prune -f
