@@ -6,5 +6,5 @@ export type JobtitleRequestType = {
     class_id: number;
     code: string;
     order: string;
-    place_id: number;
+    place_id?: number;
 };

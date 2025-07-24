@@ -554,5 +554,10 @@
         "name_vn": "Name Vn",
         "name_zh": "Name Zh",
         "level": "Level"
+    },
+    "jobtitle": {
+        "code": "Code",
+        "order": "Order",
+        "class": "Class"
     }
 }

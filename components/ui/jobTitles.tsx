@@ -1,4 +1,4 @@
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Modal, Select } from 'antd';
 import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
@@ -6,27 +6,46 @@ import { useState } from 'react';
 import { useJobTitle } from '@/apis/useSwr/jobTitle';
 import { JobTitleResponseType } from '@/types/response/jobTitle';
 import { useJobTitleCols } from '@/utils/constants/cols/jobTitleCols';
+import ModalConfirm from '../common/ModalConfirm';
+import JobtitleForm from '../forms/JobtitleForm';
 
 function JobTitles() {
     const { t } = useTranslationCustom();
-    const jobTitleCols = useJobTitleCols();
     const [search, setSearch] = useState('');
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState<JobTitleResponseType>();
+    const [key, setKey] = useState<string>('');
 
+    const openModal = (key: string, record?: JobTitleResponseType) => {
+        setKey(key);
+        setSelectedRecord(record);
+        setIsOpenModal(true);
+    };
+
+    const closeModal = () => {
+        setIsOpenModal(false);
+        setSelectedRecord(undefined);
+        setKey('');
+    };
     const typeOptions = [
         { label: 'Product', value: 1 },
         { label: 'Office', value: 2 },
     ];
     const [classId, setClassId] = useState<number>(typeOptions[0].value);
 
-    const { jobTitles, isLoading: isLoadingJobTitles } = useJobTitle(
-        { classid: classId },
-        { search },
-    );
+    const {
+        jobTitles,
+        isLoading: isLoadingJobTitles,
+        mutate,
+    } = useJobTitle({ classid: classId }, { search });
+    const jobTitleCols = useJobTitleCols({ open: openModal });
 
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
+                    {t.utils.add}
+                </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
@@ -65,6 +84,24 @@ function JobTitles() {
                     size: 'default',
                 }}
             />
+
+            {key !== 'delete' ? (
+                <Modal centered width={500} footer={null} onCancel={closeModal} open={isOpenModal}>
+                    <JobtitleForm
+                        close={closeModal}
+                        mutate={mutate}
+                        record={key === 'modify' ? selectedRecord : undefined}
+                    />
+                </Modal>
+            ) : (
+                <ModalConfirm
+                    isOpen={isOpenModal}
+                    toggleModal={closeModal}
+                    confirmAndClose={() => {
+                        closeModal();
+                    }}
+                />
+            )}
         </div>
     );
 }

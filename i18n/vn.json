@@ -554,5 +554,10 @@
         "name_vn": "Tên tiếng Việt",
         "name_zh": "Tên tiếng Trung",
         "level": "Trình độ"
+    },
+    "jobtitle": {
+        "code": "Mã",
+        "order": "Thứ tự",
+        "class": "Lớp"
     }
 }
