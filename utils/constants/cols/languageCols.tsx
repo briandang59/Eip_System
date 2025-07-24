@@ -1,8 +1,12 @@
 import { LanguageResponseType } from '@/types/response/languages';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { TableColumnsType } from 'antd';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Pen, Settings, Trash } from 'lucide-react';
 
-export const useLanguageCols = (): TableColumnsType<LanguageResponseType> => {
+interface params {
+    open: (key: string, record: LanguageResponseType) => void;
+}
+export const useLanguageCols = ({ open }: params): TableColumnsType<LanguageResponseType> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -45,8 +49,32 @@ export const useLanguageCols = (): TableColumnsType<LanguageResponseType> => {
             title: t.utils.actions,
             dataIndex: 'action',
             key: 'action',
-            width: 500,
-            render: (text: string) => <div className="line-clamp-2">{text}</div>,
+            width: 100,
+            render: (_, record: LanguageResponseType) => (
+                <div>
+                    <Popover
+                        trigger={'click'}
+                        content={
+                            <div className="flex flex-col gap-2">
+                                <Button
+                                    icon={<Pen className="size-[14px] !text-blue-700" />}
+                                    onClick={() => open('modify', record)}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    icon={<Trash className="size-[14px] !text-red-700" />}
+                                    onClick={() => open('delete', record)}
+                                >
+                                    Remove
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <Button icon={<Settings className="size-[14px] !text-green-700" />} />
+                    </Popover>
+                </div>
+            ),
             fixed: 'right',
         },
     ];

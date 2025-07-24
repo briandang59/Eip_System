@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Input, Modal } from 'antd';
 import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
@@ -8,18 +8,53 @@ import { useState } from 'react';
 import { useLanguages } from '@/apis/useSwr/languages';
 import { LanguageResponseType } from '@/types/response/languages';
 import { useLanguageCols } from '@/utils/constants/cols/languageCols';
+import ModalConfirm from '../common/ModalConfirm';
+import LanguageForm from '../forms/LanguageForm';
+import { toast } from 'sonner';
+import { languageService } from '@/apis/services/language';
 
 function Languages() {
     const { t } = useTranslationCustom();
-    const languageCols = useLanguageCols();
     const [search, setSearch] = useState('');
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [key, setKey] = useState<string>('');
+    const [selectedRecord, setSelectedRecord] = useState<LanguageResponseType>();
 
-    const { languages, isLoading: isLoadingLanguages } = useLanguages(undefined, { search });
+    const open = (key: string, record?: LanguageResponseType) => {
+        setKey(key);
+        setSelectedRecord(record);
+        setIsOpenModal(true);
+    };
+
+    const close = () => {
+        setKey('');
+        setSelectedRecord(undefined);
+        setIsOpenModal(false);
+    };
+
+    const {
+        languages,
+        isLoading: isLoadingLanguages,
+        mutate,
+    } = useLanguages(undefined, { search });
+    const languageCols = useLanguageCols({ open });
+
+    const handlerDelete = async () => {
+        try {
+            if (selectedRecord) await languageService.delete(selectedRecord?.id);
+            mutate();
+            toast.success('successed');
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
 
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<PlusOutlined />} onClick={() => open('create')}>
+                    {t.utils.add}
+                </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
@@ -46,6 +81,24 @@ function Languages() {
                     size: 'default',
                 }}
             />
+            {key !== 'delete' ? (
+                <Modal open={isOpenModal} centered footer={null} width={500} onCancel={close}>
+                    <LanguageForm
+                        close={close}
+                        mutate={mutate}
+                        record={key === 'modify' ? selectedRecord : undefined}
+                    />
+                </Modal>
+            ) : (
+                <ModalConfirm
+                    isOpen={isOpenModal}
+                    toggleModal={close}
+                    confirmAndClose={() => {
+                        handlerDelete();
+                        close();
+                    }}
+                />
+            )}
         </div>
     );
 }
