@@ -544,5 +544,9 @@
     "dormitory_form": {
         "note": "備註",
         "capacity": "容納人數"
+    },
+    "ethnic_form": {
+        "name": "民族名稱",
+        "nation": "國家"
     }
 }

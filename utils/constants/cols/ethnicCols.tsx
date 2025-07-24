@@ -1,8 +1,12 @@
 import { EthnicResponseType } from '@/types/response/ethnic';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { TableColumnsType } from 'antd';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Pen, Settings, Trash } from 'lucide-react';
 
-export const useEthnicCols = (): TableColumnsType<EthnicResponseType> => {
+interface params {
+    open: (key: string, record?: EthnicResponseType) => void;
+}
+export const useEthnicCols = ({ open }: params): TableColumnsType<EthnicResponseType> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -28,8 +32,32 @@ export const useEthnicCols = (): TableColumnsType<EthnicResponseType> => {
             title: t.utils.actions,
             dataIndex: 'action',
             key: 'action',
-            width: 100,
-            render: (text: string) => <div className="line-clamp-2">{text}</div>,
+            width: 50,
+            render: (_, record: EthnicResponseType) => (
+                <div>
+                    <Popover
+                        trigger={'click'}
+                        content={
+                            <div className="flex flex-col gap-2">
+                                <Button
+                                    icon={<Pen className="size-[14px] !text-blue-700" />}
+                                    onClick={() => open('modify', record)}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    icon={<Trash className="size-[14px] !text-red-700" />}
+                                    onClick={() => open('delete', record)}
+                                >
+                                    Remove
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <Button icon={<Settings className="size-[14px] !text-green-700" />} />
+                    </Popover>
+                </div>
+            ),
             fixed: 'right',
         },
     ];

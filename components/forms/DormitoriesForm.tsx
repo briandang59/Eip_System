@@ -144,13 +144,15 @@ function DormitoriesForm({ close, mutate, record }: DormitoriesFormProps) {
                 error={errors.code?.message}
                 required
             />
-            <FormTextArea
-                control={control}
-                name="note"
-                label={t.dormitory_form.note}
-                size="large"
-                required
-            />
+            <div className="col-span-2">
+                <FormTextArea
+                    control={control}
+                    name="note"
+                    label={t.dormitory_form.note}
+                    size="large"
+                    required
+                />
+            </div>
             <div className="col-span-2">
                 <Form.Item>
                     <div className="flex justify-end gap-2">

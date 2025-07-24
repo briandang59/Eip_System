@@ -544,5 +544,9 @@
     "dormitory_form": {
         "note": "Ghi chú",
         "capacity": "Sức chứa"
+    },
+    "ethnic_form": {
+        "name": "Tên dân tộc",
+        "nation": "Quốc giá"
     }
 }

@@ -19,7 +19,6 @@ function Dormitories() {
     const [selectedRecord, setSelectedRecord] = useState<DormitoriesResponseType>();
     const [key, setKey] = useState<string>('');
 
-    // Gộp logic mở modal vào một hàm duy nhất
     const openModal = (key: string, record?: DormitoriesResponseType) => {
         setKey(key);
         setSelectedRecord(record);
@@ -87,14 +86,7 @@ function Dormitories() {
                 />
             )}
             {(key === 'create' || key === 'modify') && (
-                <Modal
-                    open={isOpenModal}
-                    centered
-                    footer={null}
-                    onCancel={closeModal}
-                    width={700}
-                    destroyOnClose
-                >
+                <Modal open={isOpenModal} centered footer={null} onCancel={closeModal} width={700}>
                     <DormitoriesForm
                         close={closeModal}
                         mutate={mutate}

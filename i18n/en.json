@@ -544,5 +544,9 @@
     "dormitory_form": {
         "note": "Note",
         "capacity": "Capacity"
+    },
+    "ethnic_form": {
+        "name": "Ethnic Name",
+        "nation": "Country"
     }
 }
