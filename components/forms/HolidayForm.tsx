@@ -18,7 +18,7 @@ const schema = yup
         date: yup.string().required(),
     })
     .required();
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FormData = Omit<yup.InferType<typeof schema>, 'date'> & { date: any };
 
 interface HolidayFormProps {
