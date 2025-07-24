@@ -1,8 +1,16 @@
 import { DormitoriesResponseType } from '@/types/response/dormitories';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { TableColumnsType } from 'antd';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Pen, Settings, Trash } from 'lucide-react';
 
-export const useDormitoriesCols = (): TableColumnsType<DormitoriesResponseType> => {
+interface params {
+    selectedRecord: (record: DormitoriesResponseType) => void;
+    setKey: (key: string) => void;
+}
+export const useDormitoriesCols = ({
+    selectedRecord,
+    setKey,
+}: params): TableColumnsType<DormitoriesResponseType> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -41,13 +49,72 @@ export const useDormitoriesCols = (): TableColumnsType<DormitoriesResponseType> 
                 <div className="line-clamp-2">{text !== null ? text : '-'}</div>
             ),
         },
+        {
+            title: `${t.utils.code}`,
+            dataIndex: 'code',
+            key: 'code',
+            width: 200,
+            render: (text: string) => (
+                <div className="line-clamp-2">{text !== null ? text : '-'}</div>
+            ),
+        },
+        {
+            title: `${t.utils.capacity}`,
+            dataIndex: 'capacity',
+            key: 'capacity',
+            width: 200,
+            render: (text: string) => (
+                <div className="line-clamp-2">{text !== null ? text : '-'}</div>
+            ),
+        },
+        {
+            title: `${t.utils.note}`,
+            dataIndex: 'note',
+            key: 'note',
+            width: 200,
+            render: (text: string) => (
+                <div className="line-clamp-2">{text !== null ? text : '-'}</div>
+            ),
+        },
 
         {
             title: t.utils.actions,
             dataIndex: 'action',
             key: 'action',
-            width: 100,
-            render: (text: string) => <div className="line-clamp-2">{text}</div>,
+            width: 50,
+            render: (_, record: DormitoriesResponseType) => {
+                return (
+                    <div>
+                        <Popover
+                            content={
+                                <div className="flex flex-col gap-2">
+                                    <Button
+                                        icon={<Pen className="size-[14px] !text-blue-700" />}
+                                        onClick={() => {
+                                            selectedRecord(record);
+                                            setKey('modify');
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        icon={<Trash className="size-[14px] !text-red-700" />}
+                                        onClick={() => {
+                                            selectedRecord(record);
+                                            setKey('delete');
+                                        }}
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                            }
+                            trigger="click"
+                        >
+                            <Button icon={<Settings className="size-[14px] !text-green-700" />} />
+                        </Popover>
+                    </div>
+                );
+            },
             fixed: 'right',
         },
     ];

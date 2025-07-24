@@ -8,7 +8,6 @@ interface LanguageState {
     hydrate: () => void;
 }
 
-// Default language that will be used during SSR
 const DEFAULT_LANGUAGE: Language = 'en';
 
 export const useLanguageStore = create<LanguageState>((set) => ({

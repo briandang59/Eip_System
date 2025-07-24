@@ -166,7 +166,9 @@
         "location": "Địa điểm",
         "tag": "Tag",
         "education": "Giáo dục",
-        "level": "Trình độ"
+        "level": "Trình độ",
+        "note": "Ghi chú",
+        "capacity": "Sức chứa"
     },
     "employee": {
         "full_name": "Họ tên",
@@ -527,5 +529,20 @@
         "social_insurance": "Bảo hiểm xã hội",
         "unemployee_insurance": "Bảo hiểm thất nghiệp",
         "sum": "Tổng cộng"
+    },
+    "department_form": {
+        "name_en": "Tên tiếng Anh",
+        "name_vn": "Tên tiếng Việt",
+        "name_zh": "Tên tiếng Trung",
+        "code": "Mã",
+        "belonging_to": "Thuộc nơi làm việc",
+        "class_name": "Tên lớp",
+        "category": "Phân loại",
+        "submit": "Gửi",
+        "cancel": "Hủy"
+    },
+    "dormitory_form": {
+        "note": "Ghi chú",
+        "capacity": "Sức chứa"
     }
 }

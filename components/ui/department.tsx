@@ -1,4 +1,4 @@
-import { Button, Input, Select } from 'antd';
+import { Button, Input, Modal, Select } from 'antd';
 import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
@@ -7,11 +7,13 @@ import { UnitType } from '@/types/response/unit';
 import { useUnits } from '@/apis/useSwr/units';
 import { useState } from 'react';
 import { useCategory } from '@/apis/useSwr/unitCategory';
+import DepartmentForm from '../forms/DepartmentForm';
 
 function Department() {
     const { t } = useTranslationCustom();
     const departmentCols = useDepartmentCols();
     const [search, setSearch] = useState('');
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     const typeOptions = [
         { label: 'Product', value: 1 },
@@ -27,10 +29,15 @@ function Department() {
 
     const { categories, isLoading: isLoadingCategories } = useCategory();
 
+    const toggleModal = () => {
+        setIsOpenModal(!isOpenModal);
+    };
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<PlusOutlined />} onClick={toggleModal}>
+                    {t.utils.add}
+                </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
@@ -84,6 +91,9 @@ function Department() {
                     size: 'default',
                 }}
             />
+            <Modal open={isOpenModal} centered footer={null} width={700}>
+                {categories && <DepartmentForm close={toggleModal} categories={categories} />}
+            </Modal>
         </div>
     );
 }

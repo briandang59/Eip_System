@@ -166,7 +166,9 @@
         "location": "Location",
         "tag": "Tag",
         "education": "Education",
-        "level": "Level"
+        "level": "Level",
+        "note": "Note",
+        "capacity": "Capacity"
     },
     "employee": {
         "full_name": "Full Name",
@@ -527,5 +529,20 @@
         "social_insurance": "Social Insurance",
         "unemployee_insurance": "Unemployee Insurance",
         "sum": "Sum"
+    },
+    "department_form": {
+        "name_en": "Name En",
+        "name_vn": "Name Vn",
+        "name_zh": "Name Zh",
+        "code": "Code",
+        "belonging_to": "Belonging to the workplace",
+        "class_name": "Class name",
+        "category": "Category",
+        "submit": "Submit",
+        "cancel": "Cancel"
+    },
+    "dormitory_form": {
+        "note": "Note",
+        "capacity": "Capacity"
     }
 }
