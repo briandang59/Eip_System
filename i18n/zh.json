@@ -548,5 +548,11 @@
     "ethnic_form": {
         "name": "民族名稱",
         "nation": "國家"
+    },
+    "education_form": {
+        "name_en": "英文名稱",
+        "name_vn": "越南文名稱",
+        "name_zh": "中文名稱",
+        "level": "程度"
     }
 }

@@ -548,5 +548,11 @@
     "ethnic_form": {
         "name": "Ethnic Name",
         "nation": "Country"
+    },
+    "education_form": {
+        "name_en": "Name En",
+        "name_vn": "Name Vn",
+        "name_zh": "Name Zh",
+        "level": "Level"
     }
 }

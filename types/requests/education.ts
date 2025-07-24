@@ -3,5 +3,5 @@ export type EducationRequestType = {
     name_en: string;
     name_zh: string;
     name_vn: string;
-    level: string;
+    level: number;
 };

@@ -548,5 +548,11 @@
     "ethnic_form": {
         "name": "Tên dân tộc",
         "nation": "Quốc gia"
+    },
+    "education_form": {
+        "name_en": "Tên tiếng Anh",
+        "name_vn": "Tên tiếng Việt",
+        "name_zh": "Tên tiếng Trung",
+        "level": "Trình độ"
     }
 }

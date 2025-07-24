@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Input, Modal } from 'antd';
 import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
@@ -7,18 +7,46 @@ import { useState } from 'react';
 import { useEducations } from '@/apis/useSwr/educations';
 import { useEducationCols } from '@/utils/constants/cols/educationCols';
 import { EducationResponseType } from '@/types/response/education';
+import EducationForm from '../forms/EducationForm';
+import ModalConfirm from '../common/ModalConfirm';
+import { toast } from 'sonner';
+import { educationService } from '@/apis/services/education';
 
 function Educations() {
     const { t } = useTranslationCustom();
-    const educationCols = useEducationCols();
     const [search, setSearch] = useState('');
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [key, setKey] = useState<string>('');
+    const [selectedRecord, setSelectedRecord] = useState<EducationResponseType>();
 
-    const { educations, isLoading: isLoadingEducations } = useEducations({ search });
+    const open = (key: string, record?: EducationResponseType) => {
+        setKey(key);
+        setSelectedRecord(record);
+        setIsOpenModal(true);
+    };
 
+    const close = () => {
+        setKey('');
+        setSelectedRecord(undefined);
+        setIsOpenModal(false);
+    };
+    const educationCols = useEducationCols({ open });
+    const { educations, isLoading: isLoadingEducations, mutate } = useEducations({ search });
+
+    const handleDelete = async () => {
+        try {
+            if (selectedRecord) await educationService.delete(selectedRecord?.id);
+            toast.success('successed');
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<PlusOutlined />} onClick={() => open('create')}>
+                    {t.utils.add}
+                </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
@@ -45,6 +73,24 @@ function Educations() {
                     size: 'default',
                 }}
             />
+            {key !== 'delete' ? (
+                <Modal open={isOpenModal} centered width={500} footer={null} onCancel={close}>
+                    <EducationForm
+                        close={close}
+                        record={key === 'modify' ? selectedRecord : undefined}
+                        mutate={mutate}
+                    />
+                </Modal>
+            ) : (
+                <ModalConfirm
+                    isOpen={isOpenModal}
+                    toggleModal={close}
+                    confirmAndClose={() => {
+                        handleDelete();
+                        close();
+                    }}
+                />
+            )}
         </div>
     );
 }
