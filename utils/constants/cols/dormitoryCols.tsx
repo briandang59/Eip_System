@@ -4,12 +4,10 @@ import { Button, Popover, TableColumnsType } from 'antd';
 import { Pen, Settings, Trash } from 'lucide-react';
 
 interface params {
-    selectedRecord: (record: DormitoriesResponseType) => void;
-    setKey: (key: string) => void;
+    openModal: (key: string, record?: DormitoriesResponseType) => void;
 }
 export const useDormitoriesCols = ({
-    selectedRecord,
-    setKey,
+    openModal,
 }: params): TableColumnsType<DormitoriesResponseType> => {
     const { t } = useTranslationCustom();
 
@@ -90,21 +88,15 @@ export const useDormitoriesCols = ({
                                 <div className="flex flex-col gap-2">
                                     <Button
                                         icon={<Pen className="size-[14px] !text-blue-700" />}
-                                        onClick={() => {
-                                            selectedRecord(record);
-                                            setKey('modify');
-                                        }}
+                                        onClick={() => openModal('modify', record)}
                                     >
                                         Edit
                                     </Button>
                                     <Button
                                         icon={<Trash className="size-[14px] !text-red-700" />}
-                                        onClick={() => {
-                                            selectedRecord(record);
-                                            setKey('delete');
-                                        }}
+                                        onClick={() => openModal('delete', record)}
                                     >
-                                        Remove
+                                        Delete
                                     </Button>
                                 </div>
                             }

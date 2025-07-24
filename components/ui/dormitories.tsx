@@ -16,33 +16,24 @@ function Dormitories() {
     const { t } = useTranslationCustom();
     const [search, setSearch] = useState('');
     const [isOpenModal, setIsOpenModal] = useState(false);
-
-    const toggleModal = () => {
-        setIsOpenModal(!isOpenModal);
-    };
     const [selectedRecord, setSelectedRecord] = useState<DormitoriesResponseType>();
     const [key, setKey] = useState<string>('');
-    const handleSelectedRecord = (record: DormitoriesResponseType) => {
+
+    // Gộp logic mở modal vào một hàm duy nhất
+    const openModal = (key: string, record?: DormitoriesResponseType) => {
+        setKey(key);
         setSelectedRecord(record);
-        toggleModal();
+        setIsOpenModal(true);
     };
 
-    const handleOpenByKey = (key: string) => {
-        switch (key) {
-            case 'create':
-                setKey('create');
-                toggleModal();
-            case 'modify':
-                setKey('modify');
-                toggleModal();
-            case 'delete':
-                setKey('delete');
-                toggleModal();
-        }
+    const closeModal = () => {
+        setIsOpenModal(false);
+        setSelectedRecord(undefined);
+        setKey('');
     };
+
     const dormitoriesCols = useDormitoriesCols({
-        selectedRecord: handleSelectedRecord,
-        setKey: handleOpenByKey,
+        openModal,
     });
     const handleConfirm = async () => {
         try {
@@ -55,7 +46,7 @@ function Dormitories() {
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />} onClick={toggleModal}>
+                <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
                     {t.utils.add}
                 </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
@@ -85,15 +76,30 @@ function Dormitories() {
                 }}
             />
 
-            {key === 'delete' ? (
+            {key === 'delete' && (
                 <ModalConfirm
                     isOpen={isOpenModal}
-                    confirmAndClose={handleConfirm}
-                    toggleModal={toggleModal}
+                    confirmAndClose={async () => {
+                        await handleConfirm();
+                        closeModal();
+                    }}
+                    toggleModal={closeModal}
                 />
-            ) : (
-                <Modal open={isOpenModal} centered footer={null} onCancel={toggleModal} width={700}>
-                    <DormitoriesForm close={toggleModal} mutate={mutate} record={selectedRecord} />
+            )}
+            {(key === 'create' || key === 'modify') && (
+                <Modal
+                    open={isOpenModal}
+                    centered
+                    footer={null}
+                    onCancel={closeModal}
+                    width={700}
+                    destroyOnClose
+                >
+                    <DormitoriesForm
+                        close={closeModal}
+                        mutate={mutate}
+                        record={key === 'modify' ? selectedRecord : undefined}
+                    />
                 </Modal>
             )}
         </div>
