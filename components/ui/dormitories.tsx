@@ -30,10 +30,6 @@ function Dormitories() {
         setSelectedRecord(undefined);
         setKey('');
     };
-
-    const dormitoriesCols = useDormitoriesCols({
-        openModal,
-    });
     const handleConfirm = async () => {
         try {
             if (selectedRecord) await dormitoryService.remove(selectedRecord?.id);
@@ -41,6 +37,10 @@ function Dormitories() {
             toast.error(`${error}`);
         }
     };
+    const dormitoriesCols = useDormitoriesCols({
+        openModal,
+    });
+
     const { dormitories, isLoading: isLoadingDormitory, mutate } = useDormitories();
     return (
         <div>
