@@ -72,7 +72,7 @@ function EthnicForm({ record, close, mutate }: EthnicFormProps) {
             <FormInput
                 control={control}
                 name="name"
-                label={t.department_form.name_en}
+                label={t.ethnic_form.name}
                 size="large"
                 error={errors.name?.message}
                 required
@@ -81,7 +81,7 @@ function EthnicForm({ record, close, mutate }: EthnicFormProps) {
             <FormSelect
                 control={control}
                 name="nation_id"
-                label={t.department_form.belonging_to}
+                label={t.ethnic_form.nation}
                 size="large"
                 options={nations?.map((item) => ({
                     label: item.name_en,
