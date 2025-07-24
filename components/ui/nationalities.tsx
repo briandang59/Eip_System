@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Input, Modal } from 'antd';
 import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
@@ -7,18 +7,45 @@ import { useState } from 'react';
 import { useNations } from '@/apis/useSwr/nation';
 import { NationResponseType } from '@/types/response/nation';
 import { useNationCols } from '@/utils/constants/cols/nationCols';
+import ModalConfirm from '../common/ModalConfirm';
+import NationForm from '../forms/NationForm';
+import { nationService } from '@/apis/services/nation';
+import { toast } from 'sonner';
 
 function Nationalities() {
     const { t } = useTranslationCustom();
-    const nationCols = useNationCols();
     const [search, setSearch] = useState('');
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState<NationResponseType>();
+    const [key, setKey] = useState<string>('');
 
-    const { nations, isLoading: isLoadingNations } = useNations(undefined, { search });
+    const openModal = (key: string, record?: NationResponseType) => {
+        setKey(key);
+        setSelectedRecord(record);
+        setIsOpenModal(true);
+    };
+
+    const closeModal = () => {
+        setIsOpenModal(false);
+        setSelectedRecord(undefined);
+        setKey('');
+    };
+    const nationCols = useNationCols({ open: openModal });
+    const handleConfirm = async () => {
+        try {
+            if (selectedRecord) await nationService.delete(selectedRecord?.id);
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
+    const { nations, isLoading: isLoadingNations, mutate } = useNations(undefined, { search });
 
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
+                    {t.utils.add}
+                </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
@@ -45,6 +72,25 @@ function Nationalities() {
                     size: 'default',
                 }}
             />
+            {key === 'delete' && (
+                <ModalConfirm
+                    isOpen={isOpenModal}
+                    confirmAndClose={async () => {
+                        await handleConfirm();
+                        closeModal();
+                    }}
+                    toggleModal={closeModal}
+                />
+            )}
+            {(key === 'create' || key === 'modify') && (
+                <Modal open={isOpenModal} centered footer={null} onCancel={closeModal} width={700}>
+                    <NationForm
+                        close={closeModal}
+                        mutate={mutate}
+                        record={key === 'modify' ? selectedRecord : undefined}
+                    />
+                </Modal>
+            )}
         </div>
     );
 }
