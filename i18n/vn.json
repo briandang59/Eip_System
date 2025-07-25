@@ -559,5 +559,15 @@
         "code": "Mã",
         "order": "Thứ tự",
         "class": "Lớp"
+    },
+    "shift_type_form": {
+        "class_name": "Tên ca",
+        "clockin_time": "Giờ vào ca",
+        "clockout_time": "Giờ tan ca",
+        "break_start": "Bắt đầu nghỉ",
+        "break_end": "Kết thúc nghỉ",
+        "location": "Địa điểm",
+        "period": "Chu kỳ",
+        "allow_auto_overtime": "Cho phép tự động tăng ca"
     }
 }

@@ -80,4 +80,5 @@ export const urls = {
     update_book: 'update_book',
     statistics: 'statistics',
     date_range: 'date_range',
+    period: 'period',
 };

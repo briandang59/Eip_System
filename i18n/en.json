@@ -559,5 +559,15 @@
         "code": "Code",
         "order": "Order",
         "class": "Class"
+    },
+    "shift_type_form": {
+        "class_name": "Class name",
+        "clockin_time": "Clockin time",
+        "clockout_time": "Clockout time",
+        "break_start": "Break start",
+        "break_end": "Break end",
+        "location": "Location",
+        "period": "Period",
+        "allow_auto_overtime": "Allow auto overtime"
     }
 }

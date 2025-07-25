@@ -1,9 +1,13 @@
 import { ShiftType } from '@/types/response/shiftType';
 import { useChangeLanguage } from '@/utils/hooks/useChangeLanguage';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { TableColumnsType } from 'antd';
+import { Button, Popover, TableColumnsType } from 'antd';
+import { Pen, Settings, Trash } from 'lucide-react';
 
-export const useShiftCols = (): TableColumnsType<ShiftType> => {
+interface params {
+    open: (key: string, record: ShiftType) => void;
+}
+export const useShiftCols = ({ open }: params): TableColumnsType<ShiftType> => {
     const { t } = useTranslationCustom();
     const PeriodCell = ({ period }: { period: ShiftType['period_id'] }) => {
         if (!period) return <div>-</div>;
@@ -78,7 +82,31 @@ export const useShiftCols = (): TableColumnsType<ShiftType> => {
             dataIndex: 'action',
             key: 'action',
             width: 200,
-            render: (text: string) => <div className="line-clamp-2">{text}</div>,
+            render: (_, record: ShiftType) => (
+                <div>
+                    <Popover
+                        trigger={'click'}
+                        content={
+                            <div className="flex flex-col gap-2">
+                                <Button
+                                    icon={<Pen className="size-[14px] !text-blue-700" />}
+                                    onClick={() => open('modify', record)}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    icon={<Trash className="size-[14px] !text-red-700" />}
+                                    onClick={() => open('delete', record)}
+                                >
+                                    Remove
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <Button icon={<Settings className="size-[14px] !text-green-700" />} />
+                    </Popover>
+                </div>
+            ),
             fixed: 'right',
         },
     ];

@@ -1,4 +1,4 @@
-import { Button, Input } from 'antd';
+import { Button, Input, Modal } from 'antd';
 import { FileExcelOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { GenericTable } from '../common/GenericTable';
@@ -8,21 +8,37 @@ import { useState } from 'react';
 import { useShifts } from '@/apis/useSwr/shift';
 import { useShiftCols } from '@/utils/constants/cols/shiftCols';
 import { ShiftType } from '@/types/response/shiftType';
+import ShifTypeForm from '../forms/ShiftTypeForm';
 
 function ShiftTypes() {
     const { t } = useTranslationCustom();
-    const shiftCols = useShiftCols();
     const [search, setSearch] = useState('');
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState<ShiftType>();
+    const [key, setKey] = useState<string>('');
 
-    const { shifts, isLoading: isLoadingShifts } = useShifts({ search });
+    const openModal = (key: string, record?: ShiftType) => {
+        setKey(key);
+        setSelectedRecord(record);
+        setIsOpenModal(true);
+    };
 
-    // Convert object to array for table
+    const closeModal = () => {
+        setIsOpenModal(false);
+        setSelectedRecord(undefined);
+        setKey('');
+    };
+    const { shifts, isLoading: isLoadingShifts, mutate } = useShifts({ search });
+    const shiftCols = useShiftCols({ open: openModal });
+
     const shiftsArray = shifts ? Object.values(shifts) : [];
 
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
-                <Button icon={<PlusOutlined />}>{t.utils.add}</Button>
+                <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
+                    {t.utils.add}
+                </Button>
                 <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
@@ -49,6 +65,16 @@ function ShiftTypes() {
                     size: 'default',
                 }}
             />
+
+            {(key === 'create' || key === 'modify') && (
+                <Modal open={isOpenModal} centered footer={null} onCancel={closeModal} width={700}>
+                    <ShifTypeForm
+                        close={closeModal}
+                        mutate={mutate}
+                        record={key === 'modify' ? selectedRecord : undefined}
+                    />
+                </Modal>
+            )}
         </div>
     );
 }

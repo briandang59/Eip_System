@@ -559,5 +559,15 @@
         "code": "代碼",
         "order": "順序",
         "class": "等級"
+    },
+    "shift_type_form": {
+        "class_name": "班次名称",
+        "clockin_time": "上班时间",
+        "clockout_time": "下班时间",
+        "break_start": "休息开始",
+        "break_end": "休息结束",
+        "location": "地点",
+        "period": "周期",
+        "allow_auto_overtime": "允许自动加班"
     }
 }
