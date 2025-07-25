@@ -9,6 +9,7 @@ import { useShifts } from '@/apis/useSwr/shift';
 import { useShiftCols } from '@/utils/constants/cols/shiftCols';
 import { ShiftType } from '@/types/response/shiftType';
 import ShifTypeForm from '../forms/ShiftTypeForm';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function ShiftTypes() {
     const { t } = useTranslationCustom();
@@ -30,8 +31,12 @@ function ShiftTypes() {
     };
     const { shifts, isLoading: isLoadingShifts, mutate } = useShifts({ search });
     const shiftCols = useShiftCols({ open: openModal });
-
     const shiftsArray = shifts ? Object.values(shifts) : [];
+    const { exportBasic } = useExportToExcel(shiftCols, 'ShiftTypes', 'ShiftTypes');
+    const handleExportExcel = () => {
+        if (!shiftsArray || shiftsArray.length === 0) return;
+        exportBasic(shiftsArray);
+    };
 
     return (
         <div>
@@ -39,7 +44,9 @@ function ShiftTypes() {
                 <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

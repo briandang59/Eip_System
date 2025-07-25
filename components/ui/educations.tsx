@@ -11,6 +11,7 @@ import EducationForm from '../forms/EducationForm';
 import ModalConfirm from '../common/ModalConfirm';
 import { toast } from 'sonner';
 import { educationService } from '@/apis/services/education';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Educations() {
     const { t } = useTranslationCustom();
@@ -31,6 +32,11 @@ function Educations() {
         setIsOpenModal(false);
     };
     const educationCols = useEducationCols({ open });
+    const { exportBasic } = useExportToExcel(educationCols, 'Educations', 'Educations');
+    const handleExportExcel = () => {
+        if (!educations || educations.length === 0) return;
+        exportBasic(educations);
+    };
     const { educations, isLoading: isLoadingEducations, mutate } = useEducations({ search });
 
     const handleDelete = async () => {
@@ -47,7 +53,9 @@ function Educations() {
                 <Button icon={<PlusOutlined />} onClick={() => open('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

@@ -8,6 +8,7 @@ import { useUnits } from '@/apis/useSwr/units';
 import { useState } from 'react';
 import { useCategory } from '@/apis/useSwr/unitCategory';
 import DepartmentForm from '../forms/DepartmentForm';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Department() {
     const { t } = useTranslationCustom();
@@ -29,6 +30,12 @@ function Department() {
 
     const { categories, isLoading: isLoadingCategories } = useCategory();
 
+    const { exportBasic } = useExportToExcel(departmentCols, 'Department', 'Department');
+    const handleExportExcel = () => {
+        if (!units || units.length === 0) return;
+        exportBasic(units);
+    };
+
     const toggleModal = () => {
         setIsOpenModal(!isOpenModal);
     };
@@ -38,7 +45,9 @@ function Department() {
                 <Button icon={<PlusOutlined />} onClick={toggleModal}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

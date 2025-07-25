@@ -11,6 +11,7 @@ import ModalConfirm from '../common/ModalConfirm';
 import NationForm from '../forms/NationForm';
 import { nationService } from '@/apis/services/nation';
 import { toast } from 'sonner';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Nationalities() {
     const { t } = useTranslationCustom();
@@ -31,6 +32,11 @@ function Nationalities() {
         setKey('');
     };
     const nationCols = useNationCols({ open: openModal });
+    const { exportBasic } = useExportToExcel(nationCols, 'Nationalities', 'Nationalities');
+    const handleExportExcel = () => {
+        if (!nations || nations.length === 0) return;
+        exportBasic(nations);
+    };
     const handleConfirm = async () => {
         try {
             if (selectedRecord) await nationService.delete(selectedRecord?.id);
@@ -46,7 +52,9 @@ function Nationalities() {
                 <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

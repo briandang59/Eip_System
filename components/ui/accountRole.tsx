@@ -1,9 +1,10 @@
-import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, FileExcelOutlined } from '@ant-design/icons';
 import { Button, Input, Modal } from 'antd';
 import { useMemo, useState } from 'react';
 import { GenericTable } from '../common/GenericTable';
 
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 import { useAccountRoleIT } from '@/apis/useSwr/accountRoleIT';
 import { AccountRoleITResponse } from '@/types/response/accountRole';
@@ -29,6 +30,11 @@ function AccountRoles() {
         setIsOpenModal((prev) => !prev);
     };
     const cols = useAccountRoleCols({ toggleModal });
+    const { exportBasic } = useExportToExcel(cols, 'AccountRoles', 'AccountRoles');
+    const handleExportExcel = () => {
+        if (!accountRoles || accountRoles.length === 0) return;
+        exportBasic(accountRoles);
+    };
 
     function renderUI() {
         switch (key) {
@@ -50,6 +56,9 @@ function AccountRoles() {
             <div className="flex items-end gap-2 mb-4">
                 <Button icon={<PlusOutlined />}>{t.role_and_permission.add}</Button>
                 <Button icon={<ReloadOutlined />}>{t.role_and_permission.refresh}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.role_and_permission.refresh}
+                </Button>
                 <div className="w-[200px]">
                     <Input.Search
                         value={search}

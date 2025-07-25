@@ -12,6 +12,7 @@ import ModalConfirm from '../common/ModalConfirm';
 import LanguageForm from '../forms/LanguageForm';
 import { toast } from 'sonner';
 import { languageService } from '@/apis/services/language';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Languages() {
     const { t } = useTranslationCustom();
@@ -38,6 +39,11 @@ function Languages() {
         mutate,
     } = useLanguages(undefined, { search });
     const languageCols = useLanguageCols({ open });
+    const { exportBasic } = useExportToExcel(languageCols, 'Languages', 'Languages');
+    const handleExportExcel = () => {
+        if (!languages || languages.length === 0) return;
+        exportBasic(languages);
+    };
 
     const handlerDelete = async () => {
         try {
@@ -55,7 +61,9 @@ function Languages() {
                 <Button icon={<PlusOutlined />} onClick={() => open('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

@@ -3,13 +3,26 @@ import { useEmployeeSalaryAllowances } from '@/apis/useSwr/employeeSalaryAllowan
 import { GenericTable } from '@/components/common/GenericTable';
 import { SalaryAllowance } from '@/types/response/salaryAllowance';
 import { useSalaryAllowanceCols } from '@/utils/constants/cols/salaryAllowanceCols';
+import { FileExcelOutlined } from '@ant-design/icons';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
+import { Button } from 'antd';
 
 function BaseSalaryPage() {
     const salaryAllowanceCols = useSalaryAllowanceCols();
     const { employeeSalaryAllowance, isLoading: isLoadingSalaryAllowance } =
         useEmployeeSalaryAllowances({ place_id: 3 });
+    const { exportBasic } = useExportToExcel(salaryAllowanceCols, 'BaseSalary', 'BaseSalary');
+    const handleExportExcel = () => {
+        if (!employeeSalaryAllowance || employeeSalaryAllowance.length === 0) return;
+        exportBasic(employeeSalaryAllowance);
+    };
     return (
         <div>
+            <div className="flex flex-wrap items-end gap-2 mb-4">
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    Export
+                </Button>
+            </div>
             <GenericTable<SalaryAllowance>
                 columns={salaryAllowanceCols}
                 dataSource={employeeSalaryAllowance || []}

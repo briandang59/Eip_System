@@ -12,6 +12,7 @@ import { holidayService } from '@/apis/services/holiday';
 import { toast } from 'sonner';
 import ModalConfirm from '../common/ModalConfirm';
 import HolidayForm from '../forms/HolidayForm';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function NationalHolidays() {
     const { t } = useTranslationCustom();
@@ -41,6 +42,11 @@ function NationalHolidays() {
         }
     };
     const holidayCols = useHolidayCols({ open: openModal });
+    const { exportBasic } = useExportToExcel(holidayCols, 'NationalHolidays', 'NationalHolidays');
+    const handleExportExcel = () => {
+        if (!holidays || holidays.length === 0) return;
+        exportBasic(holidays);
+    };
 
     return (
         <div>
@@ -48,7 +54,9 @@ function NationalHolidays() {
                 <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

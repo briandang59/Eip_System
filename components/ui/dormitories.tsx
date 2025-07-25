@@ -11,6 +11,7 @@ import DormitoriesForm from '../forms/DormitoriesForm';
 import ModalConfirm from '../common/ModalConfirm';
 import { dormitoryService } from '@/apis/services/dormitory';
 import { toast } from 'sonner';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Dormitories() {
     const { t } = useTranslationCustom();
@@ -40,15 +41,22 @@ function Dormitories() {
     const dormitoriesCols = useDormitoriesCols({
         openModal,
     });
-
     const { dormitories, isLoading: isLoadingDormitory, mutate } = useDormitories();
+    const { exportBasic } = useExportToExcel(dormitoriesCols, 'Dormitories', 'Dormitories');
+    const handleExportExcel = () => {
+        if (!dormitories || dormitories.length === 0) return;
+        exportBasic(dormitories);
+    };
+
     return (
         <div>
             <div className="flex flex-wrap items-end gap-2 mb-4">
                 <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

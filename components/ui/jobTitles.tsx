@@ -8,6 +8,7 @@ import { JobTitleResponseType } from '@/types/response/jobTitle';
 import { useJobTitleCols } from '@/utils/constants/cols/jobTitleCols';
 import ModalConfirm from '../common/ModalConfirm';
 import JobtitleForm from '../forms/JobtitleForm';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function JobTitles() {
     const { t } = useTranslationCustom();
@@ -39,6 +40,11 @@ function JobTitles() {
         mutate,
     } = useJobTitle({ classid: classId }, { search });
     const jobTitleCols = useJobTitleCols({ open: openModal });
+    const { exportBasic } = useExportToExcel(jobTitleCols, 'JobTitles', 'JobTitles');
+    const handleExportExcel = () => {
+        if (!jobTitles || jobTitles.length === 0) return;
+        exportBasic(jobTitles);
+    };
 
     return (
         <div>
@@ -46,7 +52,9 @@ function JobTitles() {
                 <Button icon={<PlusOutlined />} onClick={() => openModal('create')}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

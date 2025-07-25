@@ -27,6 +27,8 @@ import {
 import { DayKey } from '@/types/response/dateKey';
 import { useLoadingWithDelay } from '@/utils/hooks/useLoadingWithTimeout';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import { FileExcelOutlined } from '@ant-design/icons';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 interface FormatAssignmentsReturnType {
     create: ShiftCreateRequestType[];
@@ -279,6 +281,12 @@ export default function ShiftSchedulingPage() {
         getAssignment: (card, day) => assignments[card]?.[day],
     });
 
+    const { exportBasic } = useExportToExcel(columns, 'ShiftScheduling', 'ShiftScheduling');
+    const handleExportExcel = () => {
+        if (!filteredRows || filteredRows.length === 0) return;
+        exportBasic(filteredRows);
+    };
+
     return (
         <ClientOnly>
             <Space className="mb-4" wrap>
@@ -345,6 +353,13 @@ export default function ShiftSchedulingPage() {
                     type="primary"
                 >
                     Lưu
+                </Button>
+                <Button
+                    icon={<FileExcelOutlined />}
+                    onClick={handleExportExcel}
+                    disabled={!filteredRows || filteredRows.length === 0}
+                >
+                    Export
                 </Button>
             </Space>
             {isLoading || isLoadingShiftDate ? (

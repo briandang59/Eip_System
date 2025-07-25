@@ -12,6 +12,7 @@ import EthnicForm from '../forms/EthnicForm';
 import ModalConfirm from '../common/ModalConfirm';
 import { dormitoryService } from '@/apis/services/dormitory';
 import { toast } from 'sonner';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Ethnicities() {
     const { t } = useTranslationCustom();
@@ -34,6 +35,11 @@ function Ethnicities() {
         setIsOpenModal(false);
     };
     const ethnicCols = useEthnicCols({ open: openModal });
+    const { exportBasic } = useExportToExcel(ethnicCols, 'Ethnicities', 'Ethnicities');
+    const handleExportExcel = () => {
+        if (!ethnics || ethnics.length === 0) return;
+        exportBasic(ethnics);
+    };
     const handleConfirm = async () => {
         try {
             if (selectedRecord) await dormitoryService.remove(selectedRecord?.id);
@@ -47,7 +53,9 @@ function Ethnicities() {
                 <Button icon={<PlusOutlined />} onClick={() => openModal('create', undefined)}>
                     {t.utils.add}
                 </Button>
-                <Button icon={<FileExcelOutlined />}>{t.utils.export}</Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    {t.utils.export}
+                </Button>
                 <Button icon={<ReloadOutlined />}>{t.utils.refresh}</Button>
                 <Input.Search
                     placeholder={t.utils.search}

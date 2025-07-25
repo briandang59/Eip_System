@@ -1,4 +1,4 @@
-import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, FileExcelOutlined } from '@ant-design/icons';
 import { Button, Input, Modal } from 'antd';
 import { useState } from 'react';
 import { GenericTable } from '../common/GenericTable';
@@ -8,6 +8,7 @@ import { RoleITResponseType } from '@/types/response/roleIT';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import RoleForm from '../forms/RoleForm';
 import RolePermissionUI from '../forms/RolePermissionUI';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function Roles() {
     const [search, setSearch] = useState<string>('');
@@ -32,6 +33,11 @@ function Roles() {
         setSelectedRole(role);
     };
     const cols = useRoleITCols({ toggleModal, handleGetRole });
+    const { exportBasic } = useExportToExcel(cols, 'Roles', 'Roles');
+    const handleExportExcel = () => {
+        if (!roles || roles.length === 0) return;
+        exportBasic(roles);
+    };
     const refresh = () => {
         mutate();
     };
@@ -63,6 +69,9 @@ function Roles() {
                 </Button>
                 <Button icon={<ReloadOutlined />} onClick={refresh}>
                     {t.role_and_permission.refresh}
+                </Button>
+                <Button icon={<FileExcelOutlined />} onClick={handleExportExcel}>
+                    Export
                 </Button>
                 <div className="w-[200px]">
                     <Input.Search
