@@ -3,6 +3,7 @@ export type LogEntry = {
     happenDate: string;
     happenTime: string;
     picUri: string;
+    work_place_id: number;
 };
 
 export type DateLogMap = {

@@ -11,12 +11,14 @@ export interface TimeUpdate {
         reason_vn: string;
     };
     time: string;
+    work_place_id: number;
 }
 export interface TimeNormal {
     system: string;
     method: string;
     face_photo: string;
     time: string;
+    work_place_id: number;
 }
 export interface BreakTime {
     start: string;

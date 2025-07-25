@@ -112,10 +112,14 @@ function Workday() {
                 key === 'image_scan_t1'
                     ? selectedAttendance?.details?.[0]?.workday?.T1?.face_photo
                     : selectedAttendance?.details?.[0]?.workday?.T2?.face_photo;
+            const work_place_id =
+                key === 'image_scan_t1'
+                    ? selectedAttendance?.details?.[0]?.attendance?.[0]?.T1?.work_place_id
+                    : selectedAttendance?.details?.[0]?.attendance?.[0]?.T2?.work_place_id;
 
             const payload = {
                 uri: facePhoto,
-                place_id: selectWorkPlace,
+                place_id: work_place_id,
             };
 
             faceScanService
