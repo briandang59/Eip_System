@@ -142,7 +142,7 @@ function EmployeesPage() {
         if (selectedState === 7 && transferEmployee) {
             employeeTransferExport(transferEmployee, filename);
         } else if (selectedState !== 7 && employees) {
-            employeeExport(employeeCols, filename);
+            employeeExport(employees, filename);
         }
     };
 
