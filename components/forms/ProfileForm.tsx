@@ -377,6 +377,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
                     isLoadingEducations={isLoadingEducations}
                     t={t}
                     onUploadSuccess={handleFileUploadSuccess}
+                    employee_modify={employee_modify}
                 />
             ),
         },

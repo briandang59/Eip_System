@@ -1,16 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, message } from 'antd';
 import type { RcFile } from 'antd/es/upload';
 
 interface CustomImageUploadProps {
     onUploadSuccess: (file: RcFile | null) => void;
+    initialImage?: string | null; // base64 hoặc url
 }
 
-const CustomImageUpload: React.FC<CustomImageUploadProps> = ({ onUploadSuccess }) => {
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
+const CustomImageUpload: React.FC<CustomImageUploadProps> = ({ onUploadSuccess, initialImage }) => {
+    const [previewImage, setPreviewImage] = useState<string | null>(initialImage || null);
     const [, setSelectedFile] = useState<RcFile | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        setPreviewImage(initialImage || null);
+    }, [initialImage]);
 
     const getBase64 = (file: File): Promise<string> =>
         new Promise((resolve, reject) => {
@@ -27,7 +32,7 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({ onUploadSuccess }
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) {
-            setPreviewImage(null);
+            setPreviewImage(initialImage || null);
             setSelectedFile(null);
             onUploadSuccess(null);
             return;
@@ -46,21 +51,15 @@ const CustomImageUpload: React.FC<CustomImageUploadProps> = ({ onUploadSuccess }
         }
 
         try {
-            const rcFile: RcFile = Object.assign({
-                uid: `${Date.now()}-${file.name}`,
-                lastModifiedDate: file.lastModified,
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                webkitRelativePath: file.webkitRelativePath,
-            });
+            // Không cần tạo RcFile thủ công, dùng luôn file gốc (File hoặc RcFile)
+            const rcFile: RcFile = file as RcFile;
 
             // Tạo preview base64
             const base64 = await getBase64(rcFile);
             setPreviewImage(base64);
             setSelectedFile(rcFile);
 
-            // Gọi callback truyền nguyên file RcFile (chứa data đầy đủ)
+            // Gọi callback truyền đúng file gốc (File/RcFile)
             onUploadSuccess(rcFile);
 
             message.success('Image selected, it will be uploaded on form submission.');

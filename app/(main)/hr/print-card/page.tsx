@@ -8,7 +8,7 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { Button, Select } from 'antd';
+import { Button, Select, Spin } from 'antd';
 import { IdCard } from 'lucide-react';
 import { UserInfo } from '@/types/response/auth';
 
@@ -23,6 +23,8 @@ export default function PrintCardPage() {
 
     const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(null);
     const [selectedUnit, setSelectedUnit] = useState<number>();
+    const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
     const [selectedCardNumber] = useState<string>('');
     const [selectedType, setSelectedType] = useState<number>();
     const [pdfUrl, setPdfUrl] = useState<string>('/files/blank.pdf');
@@ -41,8 +43,22 @@ export default function PrintCardPage() {
         card_number: selectedCardNumber,
     });
 
-    const handlePrint = () => {
-        setPdfUrl('/pdf/blank.pdf');
+    // Xử lý in thẻ
+    const handlePrint = async () => {
+        if (!selectedEmployees.length || !selectedWorkPlace) return;
+        setLoading(true);
+        // TODO: implement getBasicEmployee phù hợp backend của bạn
+        // const data = await getBasicEmployee(selectedWorkPlace, selectedEmployees, selectedUnit);
+        let pdf;
+        if (selectedType === 1) {
+            // pdf = await printLeaveDoc(data);
+            pdf = '/files/blank.pdf'; // placeholder
+        } else {
+            // pdf = await printCardEmployee(data);
+            pdf = '/files/blank.pdf'; // placeholder
+        }
+        setPdfUrl(pdf);
+        setLoading(false);
     };
 
     const typeOptions = [
@@ -80,10 +96,10 @@ export default function PrintCardPage() {
                 <Select
                     showSearch
                     allowClear
-                    style={{ width: 250 }}
+                    className="min-w-[250px]"
                     placeholder="Select Employee"
-                    // value={selectedCardNumber}
-                    // onChange={setSelectedCardNumber}
+                    value={selectedEmployees}
+                    onChange={setSelectedEmployees}
                     loading={isLoadingEmp}
                     optionFilterProp="label"
                     options={employees?.map((e) => ({
@@ -109,7 +125,9 @@ export default function PrintCardPage() {
                 </Button>
             </div>
 
-            <PdfViewer url={pdfUrl} />
+            <div className="bg-gray-100 rounded-2xl p-2">
+                {loading ? <Spin /> : pdfUrl && <PdfViewer url={pdfUrl} />}
+            </div>
         </div>
     );
 }

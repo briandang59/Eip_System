@@ -4,6 +4,7 @@ import { EducationResponseType } from '@/types/response/education';
 import { Control } from 'react-hook-form';
 import type { RcFile } from 'antd/es/upload';
 import CustomImageUpload from '../ui/CustomImageUpload';
+import { useMemberDataPhoto } from '@/apis/useSwr/photo';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface GeneralInformationFormProps {
     control: Control<any>;
@@ -25,7 +26,12 @@ function GeneralInformationForm({
     isLoadingEducations,
     t,
     onUploadSuccess,
-}: GeneralInformationFormProps) {
+    employee_modify, // thêm prop này để truyền card_number
+}: GeneralInformationFormProps & { employee_modify?: { card_number?: string } }) {
+    // Lấy ảnh từ API nếu có card_number
+    const card_number = employee_modify?.card_number || '';
+    const { photos } = useMemberDataPhoto({ card_number });
+    const initialImage = photos ? `data:image/jpeg;base64,${photos}` : undefined;
     return (
         <div className="flex items-center gap-4">
             <div className="grid grid-cols-2 gap-2 w-[60%]">
@@ -101,7 +107,7 @@ function GeneralInformationForm({
                 />
             </div>
             <div className="flex flex-col items-center justify-center w-[40%] space-y-3">
-                <CustomImageUpload onUploadSuccess={onUploadSuccess} />
+                <CustomImageUpload onUploadSuccess={onUploadSuccess} initialImage={initialImage} />
             </div>
         </div>
     );
