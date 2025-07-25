@@ -43,17 +43,22 @@ function Meeting() {
         }
     }, [workPlaces, selectedWorkplace]);
 
-    const toggleModal = () => {
-        setIsOpenModal(!isOpenModal);
+    // Thay thế toggleModal và handleSelectedRecord bằng openModal/closeModal
+    const openModal = (record?: MeetingBookingDetailResponseType) => {
+        setSelectedRecord(record);
+        setIsOpenModal(true);
+    };
+    const closeModal = () => {
+        setIsOpenModal(false);
+        setSelectedRecord(undefined);
     };
 
     const handleSelectedRecord = (record: MeetingBookingDetailResponseType) => {
-        toggleModal();
-        setSelectedRecord(record);
+        openModal(record);
     };
     const onSelect = (date: Dayjs) => {
         setSelectedDate(date);
-        toggleModal();
+        openModal(undefined);
     };
 
     const onChange: DatePickerProps['onChange'] = (date) => {
@@ -194,7 +199,10 @@ function Meeting() {
                                                         className="size-[16px] !text-red-600"
                                                     />
                                                 }
-                                                onClick={() => toggleModalConfirm(item.id)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleModalConfirm(item.id);
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -211,17 +219,18 @@ function Meeting() {
             <Modal
                 centered
                 title="Meeting Information"
-                onCancel={toggleModal}
+                onCancel={closeModal}
                 open={isOpenModal}
                 width={1000}
                 footer={null}
+                destroyOnClose
             >
                 {meetingRooms && meetingTypes && workPlaces && (
                     <BookingForm
                         meetingRooms={meetingRooms}
                         meetingTypes={meetingTypes}
                         workplaces={workPlaces}
-                        close={toggleModal}
+                        close={closeModal}
                         date={selectedDate}
                         record={selectedRecord}
                         mutate={bookingMutate}
