@@ -7,7 +7,9 @@
         },
         "forms": {
             "submit": "確認",
-            "cancel": "取消"
+            "cancel": "取消",
+            "export": "導出",
+            "refresh": "刷新"
         }
     },
     "sidebar": {
@@ -295,6 +297,10 @@
         "work_place": "工作場所",
         "overtime_hours": "加班時間",
         "success": "請求提交成功"
+    },
+    "overtime_page": {
+        "card_number": "卡號",
+        "full_name": "姓名"
     },
     "user_information": {
         "card_number": "卡號",

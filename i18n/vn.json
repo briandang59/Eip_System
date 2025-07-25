@@ -7,7 +7,9 @@
         },
         "forms": {
             "submit": "Xác nhận",
-            "cancel": "Huỷ"
+            "cancel": "Huỷ",
+            "export": "Xuất",
+            "refresh": "Làm mới"
         }
     },
     "sidebar": {
@@ -295,6 +297,10 @@
         "work_place": "Nơi làm việc",
         "overtime_hours": "Giờ tăng ca",
         "success": "Gửi yêu cầu thành công"
+    },
+    "overtime_page": {
+        "card_number": "Số thẻ",
+        "full_name": "Họ tên"
     },
     "user_information": {
         "card_number": "Số thẻ",
