@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { Button, Layout, Menu, Popover, theme } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import LanguageHydration from '../common/LanguageHydration';
 import { getInfomation } from '@/utils/functions/getInfomation';
+import images from '@/assets/images';
 
 const { Header, Content, Sider } = Layout;
 
@@ -34,6 +35,29 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const onMenuClick = ({ key }: { key: string }) => {
         handleMenuClick(key, router);
     };
+    const myInfo = getInfomation();
+    const [logo, setLogo] = useState<string>('');
+    const getLogoCompany = (id: number) => {
+        switch (id) {
+            case 3:
+                setLogo(images.huge_bamboo.src);
+                break;
+            case 4:
+                setLogo(images.jyulong.src);
+                break;
+            case 5:
+                setLogo(images.longtriumph.src);
+                break;
+            default:
+                setLogo('');
+        }
+    };
+
+    useEffect(() => {
+        if (myInfo?.work_place_id) {
+            getLogoCompany(myInfo.work_place_id);
+        }
+    }, [myInfo?.work_place_id]);
 
     return (
         <LocationProvider>
@@ -61,7 +85,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                                 collapsed ? 'hidden' : 'block',
                             )}
                         >
-                            EIP Huge Bamboo
+                            EIP System
                         </h2>
                         <ClientOnly>
                             <h3
@@ -93,7 +117,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                         className="sticky top-0 z-10 flex items-center justify-between"
                     >
                         <div className="flex items-center justify-center">
-                            <Image src={svgs.logo} alt="logo" width={250} height={200} />
+                            {logo ? (
+                                <Image src={logo} alt="logo" width={250} height={200} />
+                            ) : (
+                                <Image src={svgs.logo} alt="logo" width={250} height={200} />
+                            )}
                         </div>
                         <ClientOnly>
                             <div className="flex items-center gap-4">
