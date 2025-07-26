@@ -30,10 +30,8 @@ export default function FormDatePicker<T extends FieldValues>({
                     <DatePicker
                         {...field}
                         {...props}
-                        value={value ? dayjs(value, 'YYYY-MM-DD HH:mm:ss') : null}
-                        onChange={(date) =>
-                            onChange(date ? date.format('YYYY-MM-DD HH:mm:ss') : '')
-                        }
+                        value={value ? dayjs(value) : null}
+                        onChange={(date) => onChange(date ? date.format('YYYY-MM-DD') : '')}
                         showTime={showTime ? { format: 'HH:mm:ss' } : undefined}
                         format={showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'}
                         status={error ? 'error' : ''}

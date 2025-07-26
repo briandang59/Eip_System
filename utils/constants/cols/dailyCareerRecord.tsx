@@ -3,7 +3,9 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, TableColumnsType } from 'antd';
 import { Pen } from 'lucide-react';
 
-export const useDailyCareerRecordCols = (): TableColumnsType<CareerHistoryResponseType> => {
+export const useDailyCareerRecordCols = (
+    setSelectedRecord: (record: CareerHistoryResponseType) => void,
+): TableColumnsType<CareerHistoryResponseType> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -76,7 +78,12 @@ export const useDailyCareerRecordCols = (): TableColumnsType<CareerHistoryRespon
             dataIndex: 'action',
             key: 'action',
             width: 50,
-            render: () => <Button icon={<Pen className="size-4 !text-blue-700" />}></Button>,
+            render: (_, record: CareerHistoryResponseType) => (
+                <Button
+                    icon={<Pen className="size-4 !text-blue-700" />}
+                    onClick={() => setSelectedRecord(record)}
+                ></Button>
+            ),
             fixed: 'right',
         },
     ];

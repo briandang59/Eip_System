@@ -9,6 +9,7 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ClientOnly from '@/components/common/ClientOnly';
 import { GenericTable } from '@/components/common/GenericTable';
 import AssignShiftForm from '@/components/forms/AssignShiftForm';
+import { ModifyRecordForm } from '@/components/forms/ModifyRecordForm';
 import ProfileForm from '@/components/forms/ProfileForm';
 import PromoteForm from '@/components/forms/PromoteForm';
 import ReinstateForm from '@/components/forms/ReinstateForm';
@@ -42,8 +43,13 @@ function EmployeesPage() {
     const [selectedUUID, setSelectedUUID] = useState<string>('');
     const [key, setKey] = useState<string>('');
     const [selectedRecord, setSelectedRecord] = useState<EmployeeResponseType>();
+    const [selectedRecordCareer, setSelectedRecordCareer] = useState<CareerHistoryResponseType>();
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const { dailyCareerRecord, isLoading: isLoadingDaily } = useDailyCareerRecord({
+    const {
+        dailyCareerRecord,
+        isLoading: isLoadingDaily,
+        mutate: mutateDailyCareerRecord,
+    } = useDailyCareerRecord({
         uuid: selectedUUID,
     });
 
@@ -108,8 +114,6 @@ function EmployeesPage() {
         newSelectedRowKeys: React.Key[],
         selectedRows: EmployeeResponseType[],
     ) => {
-        console.log(newSelectedRowKeys);
-        console.log(selectedRows);
         setSelectedRowKeys(newSelectedRowKeys);
         setSelectedRecordRow(selectedRows);
     };
@@ -118,8 +122,13 @@ function EmployeesPage() {
         selectedRowKeys,
         onChange: onSelectChange,
     };
+    const [isOpenModalModifyRecord, setIsOpenModalModifyRecord] = useState(false);
+    const handleOpenModalModifyRecord = (record: CareerHistoryResponseType) => {
+        setSelectedRecordCareer(record);
+        setIsOpenModalModifyRecord(true);
+    };
     const transferCols = useTransferCols();
-    const dailyRecord = useDailyCareerRecordCols();
+    const dailyRecord = useDailyCareerRecordCols(handleOpenModalModifyRecord);
 
     const handleRefresh = () => {
         mutateEmployee();
@@ -445,6 +454,18 @@ function EmployeesPage() {
                 width={1000}
             >
                 {renderModal()}
+            </Modal>
+            <Modal
+                open={isOpenModalModifyRecord}
+                footer={null}
+                centered
+                onCancel={() => setIsOpenModalModifyRecord(false)}
+            >
+                <ModifyRecordForm
+                    record={selectedRecordCareer}
+                    close={() => setIsOpenModalModifyRecord(false)}
+                    mutate={mutateDailyCareerRecord}
+                />
             </Modal>
         </ClientOnly>
     );
