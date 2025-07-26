@@ -587,5 +587,27 @@
         "toast_error_message": "Please select employee and workplace",
         "employee_card": "Employee Card",
         "leave_card": "Leave Card"
+    },
+    "contract_page": {
+        "workplace": "Workplace",
+        "unit": "Unit",
+        "employee": "Employee",
+        "type": "Type",
+        "print": "Print",
+        "toast_success": "PDF has been created successfully",
+        "toast_error": "Error creating PDF",
+        "toast_error_message": "Please select employee and workplace",
+        "contract_salary": "Contract Salary",
+        "contract_list": "Contract List",
+        "print_contract": "Print Contract",
+        "contract_type": "Contract Type",
+        "unit_class": "Unit Class",
+        "date": "Date",
+        "cleaner_security": "Cleaner, Security",
+        "office_factory": "Office, Factory",
+        "labour_contract": "Labour contract",
+        "probationary_contract": "Probationary contract",
+        "export": "Export",
+        "refresh": "Refresh"
     }
 }

@@ -587,5 +587,27 @@
         "toast_error_message": "Vui lòng chọn nhân viên và nơi làm việc",
         "employee_card": "Thẻ nhân viên",
         "leave_card": "Thẻ nghỉ phép"
+    },
+    "contract_page": {
+        "workplace": "Nơi làm việc",
+        "unit": "Đơn vị",
+        "employee": "Nhân viên",
+        "type": "Loại",
+        "print": "In",
+        "toast_success": "PDF đã được tạo thành công",
+        "toast_error": "Lỗi tạo PDF",
+        "toast_error_message": "Vui lòng chọn nhân viên và nơi làm việc",
+        "contract_salary": "Lương hợp đồng",
+        "contract_list": "Danh sách hợp đồng",
+        "print_contract": "In hợp đồng",
+        "contract_type": "Loại hợp đồng",
+        "unit_class": "Lớp đơn vị",
+        "date": "Ngày",
+        "cleaner_security": "Nhân viên vệ sinh, bảo vệ",
+        "office_factory": "Nhân viên văn phòng, nhà máy",
+        "labour_contract": "Hợp đồng lao động",
+        "probationary_contract": "Hợp đồng thử việc",
+        "export": "Xuất excel",
+        "refresh": "Tải lại"
     }
 }

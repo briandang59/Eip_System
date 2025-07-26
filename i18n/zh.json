@@ -587,5 +587,27 @@
         "toast_error_message": "請選擇員工和工作場所",
         "employee_card": "員工卡",
         "leave_card": "請假卡"
+    },
+    "contract_page": {
+        "workplace": "工作場所",
+        "unit": "單位",
+        "employee": "員工",
+        "type": "類型",
+        "print": "打印",
+        "toast_success": "PDF 已成功創建",
+        "toast_error": "創建 PDF 時出錯",
+        "toast_error_message": "請選擇員工和工作場所",
+        "contract_salary": "合同工資",
+        "contract_list": "合同列表",
+        "print_contract": "打印合同",
+        "contract_type": "合同類型",
+        "unit_class": "單位類型",
+        "date": "日期",
+        "cleaner_security": "清潔工, 保安",
+        "office_factory": "辦公室, 工廠",
+        "labour_contract": "勞動合同",
+        "probationary_contract": "試用合同",
+        "export": "導出",
+        "refresh": "刷新"
     }
 }
