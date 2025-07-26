@@ -575,5 +575,17 @@
         "location": "Địa điểm",
         "period": "Chu kỳ",
         "allow_auto_overtime": "Cho phép tự động tăng ca"
+    },
+    "print_card": {
+        "workplace": "Nơi làm việc",
+        "unit": "Đơn vị",
+        "employee": "Nhân viên",
+        "type": "Loại",
+        "print": "In",
+        "toast_success": "PDF đã được tạo thành công",
+        "toast_error": "Lỗi tạo PDF",
+        "toast_error_message": "Vui lòng chọn nhân viên và nơi làm việc",
+        "employee_card": "Thẻ nhân viên",
+        "leave_card": "Thẻ nghỉ phép"
     }
 }

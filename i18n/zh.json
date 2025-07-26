@@ -575,5 +575,17 @@
         "location": "地点",
         "period": "周期",
         "allow_auto_overtime": "允许自动加班"
+    },
+    "print_card": {
+        "workplace": "工作場所",
+        "unit": "單位",
+        "employee": "員工",
+        "type": "類型",
+        "print": "打印",
+        "toast_success": "PDF 已成功創建",
+        "toast_error": "創建 PDF 時出錯",
+        "toast_error_message": "請選擇員工和工作場所",
+        "employee_card": "員工卡",
+        "leave_card": "請假卡"
     }
 }

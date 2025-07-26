@@ -575,5 +575,17 @@
     "overtime_page": {
         "card_number": "Card Number",
         "full_name": "Full Name"
+    },
+    "print_card": {
+        "workplace": "Workplace",
+        "unit": "Unit",
+        "employee": "Employee",
+        "type": "Type",
+        "print": "Print",
+        "toast_success": "PDF has been created successfully",
+        "toast_error": "Error creating PDF",
+        "toast_error_message": "Please select employee and workplace",
+        "employee_card": "Employee Card",
+        "leave_card": "Leave Card"
     }
 }
