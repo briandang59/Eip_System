@@ -14,6 +14,7 @@ import Cookies from 'js-cookie';
 import { AuthSignInRequest } from '@/types/response/auth';
 import { AUTH_COOKIE } from '@/apis/fetcher';
 import { toast } from 'sonner';
+import { systemModeService } from '@/apis/services/systemMode';
 
 const schema = yup
     .object({
@@ -50,13 +51,28 @@ function LoginForm() {
                 account: data.account.toUpperCase(),
             };
             const response = await authService.signin(loginData as AuthSignInRequest);
+
             if (response.token) {
+                // Lưu token trước để systemModeService có thể sử dụng
                 const roles = response.roles.map((role) => role.tag);
                 Cookies.set(AUTH_COOKIE, response.token);
+
                 Cookies.set('user-roles', JSON.stringify(roles));
                 localStorage.setItem('user_info', JSON.stringify(response.user_info));
                 localStorage.setItem('roles', JSON.stringify(response.roles));
                 localStorage.setItem('permission_map', JSON.stringify(response.permission_map));
+
+                // Kiểm tra token có trong cookie chưa
+                const tokenFromCookie = Cookies.get(AUTH_COOKIE);
+
+                // Sau khi có token, gọi systemModeService
+                try {
+                    const systemModeRes = await systemModeService.get();
+                    Cookies.set('inspection', JSON.stringify(systemModeRes.inspection));
+                } catch (systemModeError) {
+                    console.error('❌ System mode fetch failed:', systemModeError);
+                }
+
                 toast.success(t.form.login_success);
                 router.push(routes.home);
             } else {

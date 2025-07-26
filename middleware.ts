@@ -5,6 +5,23 @@ import { authMiddleware } from './middlewares/auth.middleware';
 import { roleMiddleware } from './middlewares/role.middleware';
 
 export function middleware(request: NextRequest) {
+    // --- Inspection redirect logic ---
+    const inspection = request.cookies.get('inspection')?.value;
+    // inspection có thể là 'true' (string)
+    if (inspection === 'true') {
+        const { pathname } = request.nextUrl;
+        if (pathname === '/hr/workday') {
+            const url = request.nextUrl.clone();
+            url.pathname = '/hr/workday/v1';
+            return NextResponse.redirect(url);
+        }
+        if (pathname === '/hr/statistical-workday') {
+            const url = request.nextUrl.clone();
+            url.pathname = '/hr/statistical-workday/v1';
+            return NextResponse.redirect(url);
+        }
+    }
+
     // First check authentication
     const authResponse = authMiddleware(request);
     if (authResponse.status !== 200) {

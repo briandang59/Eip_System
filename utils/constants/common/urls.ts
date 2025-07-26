@@ -83,4 +83,6 @@ export const urls = {
     period: 'period',
     doc: 'doc',
     basic_info: 'basic_info',
+    system: 'system',
+    mode: 'mode',
 };

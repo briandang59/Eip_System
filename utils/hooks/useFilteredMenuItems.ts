@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { useMenuItems } from '@/utils/constants/ui/menu-items';
 import { menuPermissions } from '@/utils/constants/common/menu-permissions';
+import Cookies from 'js-cookie';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -27,6 +28,9 @@ export const useFilteredMenuItems = () => {
     const [userRoles, setUserRoles] = useState<string[]>([]);
     const menuItems = useMenuItems();
 
+    // Đọc giá trị inspection từ cookie
+    const inspection = typeof window !== 'undefined' ? Cookies.get('inspection') : undefined;
+
     useEffect(() => {
         try {
             const rolesStr = localStorage.getItem('roles');
@@ -49,6 +53,62 @@ export const useFilteredMenuItems = () => {
         return userRoles.some((roleTag) =>
             menuPermissions[key].some((role) => role.toLowerCase() === roleTag.toLowerCase()),
         );
+    };
+
+    // Hàm thay thế workday/statistical-workday bằng v1 nếu inspection true
+    const transformMenuItemsForInspection = (items: MenuItem[]): MenuItem[] => {
+        return items
+            .filter((item) => {
+                if (!item) return false;
+                // Ẩn menu factory inspection nếu inspection true
+                if (inspection === 'true' && item.key === 'factoryInspection') return false;
+                return true;
+            })
+            .map((item) => {
+                if (!item) return item;
+                // Thay thế workday/statistical-workday trong menu HR nếu inspection true
+                if (
+                    inspection === 'true' &&
+                    item.key === 'hr' &&
+                    Array.isArray((item as any).children)
+                ) {
+                    const newChildren = (item as any).children
+                        .map((child: MenuItem) => {
+                            if (!child) return null;
+                            if (child.key === 'hr/workday') {
+                                return {
+                                    ...child,
+                                    key: 'hr/workday/v1',
+                                    label: 'Workday',
+                                };
+                            }
+                            if (child.key === 'hr/statistical-workday') {
+                                return {
+                                    ...child,
+                                    key: 'hr/statistical-workday/v1',
+                                    label: 'Statistical Workday',
+                                };
+                            }
+                            return child;
+                        })
+                        .filter(Boolean); // Bỏ qua null
+                    return {
+                        ...item,
+                        children: newChildren,
+                    };
+                }
+                // Đệ quy cho các menu khác
+                if ((item as any).children) {
+                    return {
+                        ...item,
+                        children: transformMenuItemsForInspection((item as any).children).filter(
+                            Boolean,
+                        ),
+                    };
+                }
+                return item;
+            })
+            .filter(Boolean); // Bỏ qua null
     };
 
     const filterMenuItems = (items: MenuItem[]): MenuItem[] => {
@@ -82,5 +142,11 @@ export const useFilteredMenuItems = () => {
             });
     };
 
-    return filterMenuItems(menuItems);
+    // Nếu inspection true thì transform menu trước khi filter
+    const finalMenu =
+        inspection === 'true'
+            ? filterMenuItems(transformMenuItemsForInspection(menuItems))
+            : filterMenuItems(menuItems);
+
+    return finalMenu;
 };
