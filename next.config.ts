@@ -1,10 +1,22 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-    turbopack: {
-        resolveAlias: {
-            '@': './',
-        },
+    async headers() {
+        return [
+            {
+                source: '/files/:path*',
+                headers: [
+                    {
+                        key: 'Content-Type',
+                        value: 'application/pdf',
+                    },
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=31536000, immutable',
+                    },
+                ],
+            },
+        ];
     },
 };
 

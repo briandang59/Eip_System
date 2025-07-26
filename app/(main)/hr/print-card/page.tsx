@@ -8,7 +8,7 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { Button, Select, Spin } from 'antd';
+import { Button, Select, Spin, message } from 'antd';
 import { IdCard } from 'lucide-react';
 import { UserInfo } from '@/types/response/auth';
 
@@ -27,13 +27,24 @@ export default function PrintCardPage() {
     const [loading, setLoading] = useState(false);
     const [selectedCardNumber] = useState<string>('');
     const [selectedType, setSelectedType] = useState<number>();
-    const [pdfUrl, setPdfUrl] = useState<string>('/files/blank.pdf');
+    const [pdfUrl, setPdfUrl] = useState<string>('');
 
     useEffect(() => {
         if (myInfo?.work_place?.id) {
             setSelectedWorkPlace(myInfo.work_place.id);
         }
     }, [myInfo]);
+
+    // Tự động load empty PDF khi vào trang
+    useEffect(() => {
+        const loadEmptyPdf = () => {
+            const timestamp = Date.now();
+            const pdfPath = `/api/pdf?type=empty&t=${timestamp}`;
+            setPdfUrl(pdfPath);
+        };
+
+        loadEmptyPdf();
+    }, []);
 
     const { workPlaces, isLoading: isLoadingWP } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits({
@@ -45,25 +56,30 @@ export default function PrintCardPage() {
 
     // Xử lý in thẻ
     const handlePrint = async () => {
-        if (!selectedEmployees.length || !selectedWorkPlace) return;
-        setLoading(true);
-        // TODO: implement getBasicEmployee phù hợp backend của bạn
-        // const data = await getBasicEmployee(selectedWorkPlace, selectedEmployees, selectedUnit);
-        let pdf;
-        if (selectedType === 1) {
-            // pdf = await printLeaveDoc(data);
-            pdf = '/files/blank.pdf'; // placeholder
-        } else {
-            // pdf = await printCardEmployee(data);
-            pdf = '/files/blank.pdf'; // placeholder
+        if (!selectedEmployees.length || !selectedWorkPlace) {
+            message.warning('Vui lòng chọn nhân viên và nơi làm việc');
+            return;
         }
-        setPdfUrl(pdf);
-        setLoading(false);
+
+        setLoading(true);
+        try {
+            // Sử dụng API route để serve PDF với cache-busting
+            const pdfType = selectedType === 1 ? 'test' : 'empty';
+            const timestamp = Date.now();
+            const pdfPath = `/api/pdf?type=${pdfType}&t=${timestamp}`;
+            setPdfUrl(pdfPath);
+            message.success('PDF đã được tải thành công');
+        } catch (error) {
+            console.error('Error loading PDF:', error);
+            message.error('Có lỗi xảy ra khi tải PDF');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const typeOptions = [
-        { id: 1, name: 'Leave card' },
-        { id: 2, name: 'Employee card' },
+        { id: 1, name: 'Test PDF' },
+        { id: 2, name: 'Empty PDF' },
     ];
 
     return (
@@ -120,13 +136,20 @@ export default function PrintCardPage() {
                 <Button
                     icon={<IdCard className="w-4 h-4 !text-green-700" strokeWidth={1.5} />}
                     onClick={handlePrint}
+                    loading={loading}
                 >
                     Print
                 </Button>
             </div>
 
             <div className="bg-gray-100 rounded-2xl p-2">
-                {loading ? <Spin /> : pdfUrl && <PdfViewer url={pdfUrl} />}
+                {loading ? (
+                    <div className="flex items-center justify-center h-96">
+                        <Spin size="large" />
+                    </div>
+                ) : (
+                    pdfUrl && <PdfViewer url={pdfUrl} />
+                )}
             </div>
         </div>
     );
