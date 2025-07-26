@@ -14,6 +14,9 @@ import { House, ListRestart, UserCheck, UsersRound, UserX, Wallpaper } from 'luc
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useDayoff } from '@/apis/useSwr/dayoff';
+import { ExportHrStatistical } from '@/utils/excels/exportHrStatistical';
+import { useDailyStatisticalAttendanceRangeDate } from '@/apis/useSwr/dailyStatisticalAttendanceRangeDate';
+import { getDateRangeArray } from '@/utils/functions/getDateRangeArray';
 
 const { RangePicker } = DatePicker;
 
@@ -23,7 +26,7 @@ export default function Home() {
     const myInfo = getInfomation();
     const [selectedWorkplace, setSelectedWorkplace] = useState<number>(0);
     const [rangeDate, setRangeDate] = useState<{ start: Dayjs; end: Dayjs }>({
-        start: dayjs(),
+        start: dayjs().subtract(1, 'day'),
         end: dayjs(),
     });
 
@@ -40,6 +43,11 @@ export default function Home() {
         mutate,
     } = useDailyStatisticalAttendance({
         date: dayjs(rangeDate.start).format('YYYY-MM-DD'),
+        place_id: selectedWorkplace,
+    });
+    const { statisticalRangeDayAttendance } = useDailyStatisticalAttendanceRangeDate({
+        start: dayjs(rangeDate.start).format('YYYY-MM-DD'),
+        end: dayjs(rangeDate.end).format('YYYY-MM-DD'),
         place_id: selectedWorkplace,
     });
     const { dayoff, isLoading: isLoadingDayoff } = useDayoff({
@@ -74,7 +82,19 @@ export default function Home() {
     };
 
     const handleExport = () => {
-        console.log('Export to Excel:');
+        if (statisticalRangeDayAttendance.length > 0) {
+            console.log(statisticalRangeDayAttendance);
+            const rangeDateArray = getDateRangeArray(
+                dayjs(rangeDate.start).format('YYYY-MM-DD'),
+                dayjs(rangeDate.end).format('YYYY-MM-DD'),
+            );
+            ExportHrStatistical(
+                selectedWorkplace,
+                statisticalRangeDayAttendance,
+                workPlaces || [],
+                rangeDateArray,
+            );
+        }
     };
     const tabs = [
         {

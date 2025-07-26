@@ -3,10 +3,7 @@ import { fetcher } from '../fetcher';
 import { urls } from '@/utils/constants/common/urls';
 import { BaseResponse } from '@/types/response/baseResponse';
 import qs from 'qs';
-import {
-    RangeDateStatisticalAttendance,
-    DailyStatisticalAttendance,
-} from '@/types/response/dailyStatisticalAttendance';
+import { RangeDateStatisticalAttendance } from '@/types/response/dailyStatisticalAttendance';
 
 const API_URL = `/${urls.statistics}/${urls.hr}/${urls.date_range}/${urls.attendance}`;
 
@@ -28,10 +25,7 @@ export const useDailyStatisticalAttendanceRangeDate = (params?: Params) => {
             revalidateOnReconnect: false,
         },
     );
-
-    const statisticalRangeDayAttendance: DailyStatisticalAttendance[] = data?.data
-        ? data.data.flatMap((item) => Object.values(item.statistic_data))
-        : [];
+    const statisticalRangeDayAttendance: RangeDateStatisticalAttendance[] = data?.data || [];
 
     return {
         statisticalRangeDayAttendance,
