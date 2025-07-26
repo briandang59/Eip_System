@@ -81,4 +81,6 @@ export const urls = {
     statistics: 'statistics',
     date_range: 'date_range',
     period: 'period',
+    doc: 'doc',
+    basic_info: 'basic_info',
 };

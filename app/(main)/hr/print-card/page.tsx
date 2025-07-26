@@ -5,9 +5,11 @@ import { PdfViewer } from '@/components/common/PdfViewer';
 import { useEmployees } from '@/apis/useSwr/employees';
 import { useUnits } from '@/apis/useSwr/units';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
+import { useBasicInforEmployee } from '@/apis/useSwr/basicInforEmployee';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { PrintCardEmployee } from '@/utils/printing/printCardEmployee';
 import { Button, Select, Spin, message } from 'antd';
 import { IdCard } from 'lucide-react';
 import { UserInfo } from '@/types/response/auth';
@@ -26,7 +28,7 @@ export default function PrintCardPage() {
     const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [selectedCardNumber] = useState<string>('');
-    const [selectedType, setSelectedType] = useState<number>();
+    const [selectedType, setSelectedType] = useState<number>(1);
     const [pdfUrl, setPdfUrl] = useState<string>('');
 
     useEffect(() => {
@@ -45,13 +47,26 @@ export default function PrintCardPage() {
 
         loadEmptyPdf();
     }, []);
-
+    useEffect(() => {
+        if (!selectedEmployees.length) {
+            const timestamp = Date.now();
+            const pdfPath = `/api/pdf?type=empty&t=${timestamp}`;
+            setPdfUrl(pdfPath);
+        }
+    }, [selectedEmployees]);
     const { workPlaces, isLoading: isLoadingWP } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace || undefined,
     });
     const { employees, isLoading: isLoadingEmp } = useEmployees({
         card_number: selectedCardNumber,
+    });
+
+    // Sử dụng basicInforEmployee để lấy dữ liệu cơ bản
+    const { basicInforEmployee, isLoading: isLoadingBasic } = useBasicInforEmployee({
+        place_id: selectedWorkPlace || 0,
+        card_number_list: selectedEmployees,
+        unit_id: selectedUnit,
     });
 
     // Xử lý in thẻ
@@ -63,23 +78,31 @@ export default function PrintCardPage() {
 
         setLoading(true);
         try {
-            // Sử dụng API route để serve PDF với cache-busting
-            const pdfType = selectedType === 1 ? 'test' : 'empty';
-            const timestamp = Date.now();
-            const pdfPath = `/api/pdf?type=${pdfType}&t=${timestamp}`;
-            setPdfUrl(pdfPath);
-            message.success('PDF đã được tải thành công');
+            if (!basicInforEmployee || basicInforEmployee.length === 0) {
+                message.error('Không tìm thấy dữ liệu nhân viên');
+                return;
+            }
+
+            // Tạo PDF sử dụng PrintCardEmployee với dữ liệu cơ bản
+            const pdfBlobUrl = await PrintCardEmployee(basicInforEmployee, selectedWorkPlace);
+
+            if (pdfBlobUrl) {
+                setPdfUrl(pdfBlobUrl);
+                message.success('PDF đã được tạo thành công');
+            } else {
+                message.error('Có lỗi xảy ra khi tạo PDF');
+            }
         } catch (error) {
-            console.error('Error loading PDF:', error);
-            message.error('Có lỗi xảy ra khi tải PDF');
+            console.error('Error generating PDF:', error);
+            message.error('Có lỗi xảy ra khi tạo PDF');
         } finally {
             setLoading(false);
         }
     };
 
     const typeOptions = [
-        { id: 1, name: 'Test PDF' },
-        { id: 2, name: 'Empty PDF' },
+        { id: 1, name: 'Employee Card' },
+        { id: 2, name: 'Leave Card' },
     ];
 
     return (
@@ -136,7 +159,7 @@ export default function PrintCardPage() {
                 <Button
                     icon={<IdCard className="w-4 h-4 !text-green-700" strokeWidth={1.5} />}
                     onClick={handlePrint}
-                    loading={loading}
+                    loading={loading || isLoadingBasic}
                 >
                     Print
                 </Button>
