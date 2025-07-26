@@ -234,6 +234,7 @@ function Meeting() {
                         date={selectedDate}
                         record={selectedRecord}
                         mutate={bookingMutate}
+                        bookings={bookings}
                     />
                 )}
             </Modal>

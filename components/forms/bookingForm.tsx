@@ -33,6 +33,7 @@ interface BookingForm {
     record?: MeetingBookingDetailResponseType;
     date: Dayjs;
     mutate: () => void;
+    bookings?: MeetingBookingDetailResponseType[];
 }
 
 const schema = yup
@@ -55,6 +56,7 @@ function BookingForm({
     record,
     date,
     mutate,
+    bookings,
 }: BookingForm) {
     const { t, lang } = useTranslationCustom();
     const [selectedType, setSelectedType] = useState<number | undefined>();
@@ -145,6 +147,31 @@ function BookingForm({
                 );
                 return;
             }
+
+            const now = dayjs();
+            if (dayjs(selectedDate.start).isBefore(now, 'minute')) {
+                toast.error(t.booking_form.err1);
+                return;
+            }
+
+            if (bookings && bookings.length > 0 && selectedMeetingRoom.length > 0) {
+                const otherBookings = bookings.filter((b) => !record || b.id !== record.id);
+                for (const roomId of selectedMeetingRoom) {
+                    for (const b of otherBookings) {
+                        for (const bm of b.book_meeting) {
+                            const isOverlap =
+                                bm.book_meeting_room.some((r) => r.meeting_room_id === roomId) &&
+                                dayjs(selectedDate.start).isBefore(dayjs(bm.end)) &&
+                                dayjs(selectedDate.end).isAfter(dayjs(bm.start));
+                            if (isOverlap) {
+                                toast.error(t.booking_form.err2);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             const newData: CreateBookingRequest = {
                 book_meeting: {
                     start: selectedDate.start,

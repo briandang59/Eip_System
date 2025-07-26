@@ -611,5 +611,9 @@
         "refresh": "刷新",
         "toast_success_contract": "打印合同成功",
         "toast_error_contract": "创建 PDF 时出错"
+    },
+    "booking_form": {
+        "err1": "無法預約早於目前時間！",
+        "err2": "會議室已經有重複的預約！"
     }
 }

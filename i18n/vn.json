@@ -611,5 +611,9 @@
         "refresh": "Tải lại",
         "toast_success_contract": "In hợp đồng thành công",
         "toast_error_contract": "Có lỗi xảy ra khi tạo PDF"
+    },
+    "booking_form": {
+        "err1": "Không thể đặt lịch trước thời điểm hiện tại!",
+        "err2": "Phòng họp đã có lịch trùng!"
     }
 }

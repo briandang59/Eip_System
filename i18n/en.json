@@ -611,5 +611,9 @@
         "refresh": "Refresh",
         "toast_success_contract": "Print contract successfully",
         "toast_error_contract": "Error creating PDF"
+    },
+    "booking_form": {
+        "err1": "Cannot book a time before the current moment!",
+        "err2": "The meeting room already has a conflicting booking!"
     }
 }
