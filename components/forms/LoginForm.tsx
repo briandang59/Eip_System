@@ -62,9 +62,6 @@ function LoginForm() {
                 localStorage.setItem('roles', JSON.stringify(response.roles));
                 localStorage.setItem('permission_map', JSON.stringify(response.permission_map));
 
-                // Kiểm tra token có trong cookie chưa
-                const tokenFromCookie = Cookies.get(AUTH_COOKIE);
-
                 // Sau khi có token, gọi systemModeService
                 try {
                     const systemModeRes = await systemModeService.get();
