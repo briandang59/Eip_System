@@ -49,7 +49,6 @@ function StatisticalWorkdayV1() {
     ];
     const {
         statisticalWorkday,
-        isError,
         isLoading: isLoadingAttendance,
         mutate: mutateAttendance,
     } = useFactoryInspectionAttendance(
@@ -66,9 +65,6 @@ function StatisticalWorkdayV1() {
             unit_id: selectedUnit,
         },
     );
-    if (isError) {
-        return <div className="text-red-500 text-center">{t.statistical.error}</div>;
-    }
 
     // Calculate totals for summary row
     const calculateTotals = (data: StatisticalWorkdayType[]) => {
