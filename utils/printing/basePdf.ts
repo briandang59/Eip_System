@@ -19,7 +19,32 @@ const loadFontChinese = async (pdfDoc: PDFDocument): Promise<PDFFont> => {
     const fontBytes = await fetch('/fonts/SIMSUN.ttf').then((res) => res.arrayBuffer());
     return await pdfDoc.embedFont(fontBytes, { subset: true });
 };
+const getLogoById = (id: number) => {
+    if (id === 2) {
+        return logos.huge_bamboo;
+    } else if (id === 3) {
+        return logos.jyulong;
+    } else {
+        return logos.longtriumph;
+    }
+};
 
+const getCompanyName = (code: number) => {
+    if (code === 2 || code === 3) {
+        return 'Huge-Bamboo Enterprise Co.Ltd';
+    } else if (code === 4) {
+        return 'JYULONG Enterprise Co.Ltd';
+    } else {
+        return 'Long Triumph Enterprise Co.Ltd';
+    }
+};
+const FontPickNote = (index: number, font_vn: PDFFont, font_tw: PDFFont): PDFFont => {
+    if ([1, 3, 5, 8, 10].includes(index)) {
+        return font_tw;
+    } else {
+        return font_vn;
+    }
+};
 const logos = {
     huge_bamboo: images.huge_bamboo.src,
     jyulong: images.jyulong.src,
@@ -27,4 +52,12 @@ const logos = {
     default_image_user: images.default_image_user.src,
 };
 
-export { loadFont, loadFontBold, loadFontChinese, logos };
+export {
+    loadFont,
+    loadFontBold,
+    loadFontChinese,
+    logos,
+    getLogoById,
+    getCompanyName,
+    FontPickNote,
+};

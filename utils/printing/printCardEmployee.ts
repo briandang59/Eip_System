@@ -1,17 +1,8 @@
 import dayjs from 'dayjs';
 import { PDFDocument, rgb } from 'pdf-lib';
-import { loadFont, logos } from './basePdf';
+import { getLogoById, loadFont, logos } from './basePdf';
 import { BasicEmployee } from '@/types/printing/baseEmployee';
 
-const getLogoById = (id: number) => {
-    if (id === 2) {
-        return logos.huge_bamboo;
-    } else if (id === 3) {
-        return logos.jyulong;
-    } else {
-        return logos.longtriumph;
-    }
-};
 export const PrintCardEmployee = async (
     data: BasicEmployee[],
     work_place_id: number,

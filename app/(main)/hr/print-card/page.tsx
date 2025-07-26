@@ -13,6 +13,8 @@ import { PrintCardEmployee } from '@/utils/printing/printCardEmployee';
 import { Button, Select, Spin, message } from 'antd';
 import { IdCard } from 'lucide-react';
 import { UserInfo } from '@/types/response/auth';
+import { PrintLeaveDocument } from '@/utils/printing/printLeaveDocument';
+import { toast } from 'sonner';
 
 export default function PrintCardPage() {
     const { lang } = useTranslationCustom();
@@ -79,22 +81,24 @@ export default function PrintCardPage() {
         setLoading(true);
         try {
             if (!basicInforEmployee || basicInforEmployee.length === 0) {
-                message.error('Không tìm thấy dữ liệu nhân viên');
+                toast.error('Không tìm thấy dữ liệu nhân viên');
                 return;
             }
-
-            // Tạo PDF sử dụng PrintCardEmployee với dữ liệu cơ bản
-            const pdfBlobUrl = await PrintCardEmployee(basicInforEmployee, selectedWorkPlace);
-
-            if (pdfBlobUrl) {
-                setPdfUrl(pdfBlobUrl);
-                message.success('PDF đã được tạo thành công');
-            } else {
-                message.error('Có lỗi xảy ra khi tạo PDF');
+            let pdfBlobUrl: string;
+            switch (selectedType) {
+                case 1:
+                    pdfBlobUrl = await PrintCardEmployee(basicInforEmployee, selectedWorkPlace);
+                    setPdfUrl(pdfBlobUrl);
+                    break;
+                case 2:
+                    pdfBlobUrl = await PrintLeaveDocument(basicInforEmployee, selectedWorkPlace);
+                    setPdfUrl(pdfBlobUrl);
+                    break;
             }
+
+            toast.success('PDF đã được tạo thành công');
         } catch (error) {
-            console.error('Error generating PDF:', error);
-            message.error('Có lỗi xảy ra khi tạo PDF');
+            toast.error(`${error}`);
         } finally {
             setLoading(false);
         }
