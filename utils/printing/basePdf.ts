@@ -1,4 +1,4 @@
-import { PDFDocument, PDFFont } from 'pdf-lib';
+import { PDFDocument, PDFFont, rgb } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import images from '@/assets/images';
 
@@ -51,13 +51,15 @@ const logos = {
     longtriumph: images.longtriumph.src,
     default_image_user: images.default_image_user.src,
 };
+const COLOR_BLUE = rgb(0, 0, 0.9);
 
 export {
     loadFont,
     loadFontBold,
     loadFontChinese,
-    logos,
     getLogoById,
     getCompanyName,
     FontPickNote,
+    logos,
+    COLOR_BLUE,
 };

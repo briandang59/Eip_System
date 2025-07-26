@@ -608,6 +608,8 @@
         "labour_contract": "勞動合同",
         "probationary_contract": "試用合同",
         "export": "導出",
-        "refresh": "刷新"
+        "refresh": "刷新",
+        "toast_success_contract": "打印合同成功",
+        "toast_error_contract": "创建 PDF 时出错"
     }
 }

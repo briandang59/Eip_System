@@ -1,4 +1,6 @@
-interface JobTitle {
+import { I_INSURANCE } from '../printing/IEmployee';
+
+export interface JobTitle {
     id: number;
     created_at: string; // ISO date string
     name_en: string | null;
@@ -13,7 +15,7 @@ interface JobTitle {
     belongs_to_workplace: number[];
 }
 
-interface Unit {
+export interface Unit {
     id: number;
     code: string | null;
     manager: string | null;
@@ -35,7 +37,7 @@ interface Unit {
     organization_unit_category: string | null;
 }
 
-interface Employee {
+export interface Employee {
     card_number: string;
     fullname: string;
     gender: boolean;
@@ -52,10 +54,56 @@ interface Employee {
 }
 
 export type SalaryAllowance = {
-    employee: Employee;
-    social_insurance: unknown | null;
-    probationary_salary: unknown | null;
-    base_salary: unknown | null;
-    allowance: unknown | null;
-    kpi: unknown | null;
+    employee: {
+        card_number: string;
+        fullname: string;
+        uuid: string;
+        join_company_date1: string;
+        join_company_date2: string;
+        job_title: JobTitle;
+        unit: Unit | null;
+    };
+    social_insurance: I_INSURANCE | null;
+    probationary_salary: null | {
+        id: number;
+        uuid: string;
+        salary: number;
+        currency_unit: any;
+        created_at: string;
+        created_by: string;
+    };
+    base_salary: {
+        id: number;
+        uuid: string;
+        salary: number;
+        currency_unit: string;
+        created_at: string;
+        created_by: string;
+        updated_at: null | string;
+        updated_by: null | string;
+    } | null;
+    allowance: null | Allowance | Allowance[];
+    contract: Icontract | null;
+    kpi: null;
 };
+export interface Allowance {
+    id: number;
+    uuid: string;
+    allowance_id: number;
+    amount: number;
+    currency_unit: string;
+    active: boolean;
+    created_at: string;
+    created_by: string;
+    updated_at: null | string;
+    updated_by: null | string;
+}
+export interface Icontract {
+    id?: number;
+    card_number: string;
+    effect_date: string;
+    expir_date: string;
+    type_id?: null | number;
+    created_at?: string;
+    created_by?: null | string;
+}

@@ -608,6 +608,8 @@
         "labour_contract": "Hợp đồng lao động",
         "probationary_contract": "Hợp đồng thử việc",
         "export": "Xuất excel",
-        "refresh": "Tải lại"
+        "refresh": "Tải lại",
+        "toast_success_contract": "In hợp đồng thành công",
+        "toast_error_contract": "Có lỗi xảy ra khi tạo PDF"
     }
 }

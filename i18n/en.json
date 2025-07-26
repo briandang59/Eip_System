@@ -608,6 +608,8 @@
         "labour_contract": "Labour contract",
         "probationary_contract": "Probationary contract",
         "export": "Export",
-        "refresh": "Refresh"
+        "refresh": "Refresh",
+        "toast_success_contract": "Print contract successfully",
+        "toast_error_contract": "Error creating PDF"
     }
 }
