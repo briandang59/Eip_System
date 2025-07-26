@@ -47,15 +47,6 @@ function ContractPage() {
     const [selectedUnitClassOption, setSelectedUnitClassOption] = useState<number>(1);
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs().tz('Asia/Ho_Chi_Minh'));
 
-    useEffect(() => {
-        console.log('Current date from dayjs():', dayjs().format('DD/MM/YYYY'));
-        console.log(
-            'Current date with timezone:',
-            dayjs().tz('Asia/Ho_Chi_Minh').format('DD/MM/YYYY'),
-        );
-        console.log('Current date from new Date():', new Date().toLocaleDateString('vi-VN'));
-        console.log('Selected date:', selectedDate.format('DD/MM/YYYY'));
-    }, []);
     const [loading, setLoading] = useState(false);
     const { employeeSalaryAllowance, isLoading: isLoadingSalaryAllowance } =
         useEmployeeSalaryAllowances({ place_id: selectedWorkPlace || 0 });
