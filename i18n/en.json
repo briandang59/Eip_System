@@ -39,6 +39,11 @@
             "roles_permissions": "Roles and Permissions",
             "tracking_log": "Tracking Log"
         },
+        "rd": {
+            "title": "Laboratory",
+            "fabric_rd": "Fabric Testing"
+        },
+
         "others": {
             "title": "Others",
             "meeting": "Meeting"

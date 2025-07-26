@@ -24,6 +24,8 @@ import {
     UserRound,
     Users,
     UserSearch,
+    FlaskConical,
+    PaintBucket,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -153,6 +155,18 @@ export const useMenuItems = (): MenuItem[] => {
                     t?.sidebar?.it?.tracking_log || 'Tracking Log',
                     'it/tracking-log',
                     <Cloud strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+            ],
+        ),
+        getItem(
+            t?.sidebar?.rd?.title || 'R&D',
+            'rd',
+            <FlaskConical strokeWidth={1.5} className="w-4 h-4" />,
+            [
+                getItem(
+                    t?.sidebar?.rd?.fabric_rd || '',
+                    'rd/fabric',
+                    <PaintBucket strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),

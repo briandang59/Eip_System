@@ -39,6 +39,10 @@
             "roles_permissions": "Vai trò và quyền hạn",
             "tracking_log": "Nhật ký theo dõi"
         },
+        "rd": {
+            "title": "Phòng thí nghiệm",
+            "fabric_rd": "Thí nghiệm vải"
+        },
         "others": {
             "title": "Khác",
             "meeting": "Cuộc họp"
