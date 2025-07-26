@@ -57,6 +57,9 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'it/tracking-log':
             router.push(routes.it.trackingLog);
             break;
+        case 'rd/fabric':
+            router.push(routes.rd.fabric);
+            break;
         case 'others/meeting':
             router.push(routes.others.meeting);
             break;

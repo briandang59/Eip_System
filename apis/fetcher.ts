@@ -47,11 +47,6 @@ async function handleResponse(response: Response) {
 
 export const fetcher = async (url: string, init?: RequestInit, timeout?: number) => {
     const token = typeof window !== 'undefined' ? Cookies.get(AUTH_COOKIE) : null;
-    console.log('🔍 Fetcher - Token from cookie:', token);
-    console.log(
-        '🔍 Fetcher - All cookies:',
-        typeof window !== 'undefined' ? document.cookie : 'Server side',
-    );
 
     const isFormData = init?.body instanceof FormData;
 
@@ -61,8 +56,6 @@ export const fetcher = async (url: string, init?: RequestInit, timeout?: number)
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         Accept: '*/*',
     };
-
-    console.log('🔍 Fetcher - Headers:', headers);
 
     const config: RequestInit = {
         ...init,

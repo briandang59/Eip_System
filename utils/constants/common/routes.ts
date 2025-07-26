@@ -25,6 +25,10 @@ export const routes = {
         rolesAndPermissions: '/it/roles-and-permissions',
         trackingLog: '/it/tracking-log',
     },
+    rd: {
+        root: '/it',
+        fabric: '/rd/fabric',
+    },
     others: {
         root: '/others',
         meeting: '/others/meeting',

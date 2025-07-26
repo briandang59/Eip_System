@@ -58,7 +58,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             getLogoCompany(myInfo.work_place_id);
         }
     }, [myInfo?.work_place_id]);
-
     return (
         <LocationProvider>
             <LanguageHydration />
