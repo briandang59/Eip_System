@@ -21,9 +21,7 @@ function StatisticalWorkday() {
     const [selectedMonth, setSelectedMonth] = useState<Dayjs>(dayjs().startOf('month'));
     const myInfo = getInfomation();
     const { t, lang } = useTranslationCustom();
-    const [selectWorkPlace, setSelectWorkPlace] = useState<number | null>(
-        myInfo?.work_place?.id || null,
-    );
+    const [selectWorkPlace, setSelectWorkPlace] = useState<number>(myInfo?.work_place?.id || 0);
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs().startOf('month'),
         end: dayjs().endOf('month'),
@@ -51,7 +49,6 @@ function StatisticalWorkday() {
     ];
     const {
         statisticalWorkday,
-        isError,
         isLoading: isLoadingAttendance,
         mutate: mutateAttendance,
     } = useAttendanceV2(
@@ -68,9 +65,6 @@ function StatisticalWorkday() {
             unit_id: selectedUnit,
         },
     );
-    if (isError) {
-        return <div className="text-red-500 text-center">{t.statistical.error}</div>;
-    }
 
     // Calculate totals for summary row
     const calculateTotals = (data: StatisticalWorkdayType[]) => {
