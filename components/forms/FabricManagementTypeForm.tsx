@@ -11,16 +11,16 @@ import { useEffect } from 'react';
 const schema = yup
     .object({
         fabric_code: yup.string().required(),
-        customer_id: yup.string().required(),
-        fabric_name: yup.string().required(),
-        fabric_width: yup.number().required(),
-        fabric_weight: yup.number().required(),
-        warp_density: yup.number().required(),
-        weft_density: yup.number().required(),
-        machine_warp_density: yup.number().required(),
-        machine_weft_density: yup.number().required(),
-        raw_fabric_warp_density: yup.number().required(),
-        raw_fabric_weft_density: yup.number().required(),
+        customer_id: yup.string().nullable().default(null),
+        fabric_name: yup.string().nullable().default(null),
+        fabric_width: yup.number().nullable().default(null),
+        fabric_weight: yup.number().nullable().default(null),
+        warp_density: yup.number().nullable().default(null),
+        weft_density: yup.number().nullable().default(null),
+        machine_warp_density: yup.number().nullable().default(null),
+        machine_weft_density: yup.number().nullable().default(null),
+        raw_fabric_warp_density: yup.number().nullable().default(null),
+        raw_fabric_weft_density: yup.number().nullable().default(null),
         raw_fabric_spec: yup.string().nullable().default(null),
         finished_product_spec: yup.string().nullable().default(null),
     })
@@ -32,8 +32,14 @@ interface FabricManagementTypeFormProps {
     close: () => void;
     mutate: () => void;
     record?: FabricManagementTypeResponseType;
+    setSelectedRecord?: (record: FabricManagementTypeResponseType) => void;
 }
-function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTypeFormProps) {
+function FabricManagementTypeForm({
+    close,
+    mutate,
+    record,
+    setSelectedRecord,
+}: FabricManagementTypeFormProps) {
     const { t } = useTranslationCustom();
     const {
         control,
@@ -66,7 +72,12 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
     }, [record, reset]);
     const onSubmit = async (data: FormData) => {
         try {
-            await fabricManagementTypeServices.add(data);
+            if (record && setSelectedRecord) {
+                await fabricManagementTypeServices.modify(data, record.fabric_code);
+                setSelectedRecord(record);
+            } else {
+                await fabricManagementTypeServices.add(data);
+            }
             toast.success('successed');
             mutate();
             reset();
@@ -97,7 +108,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.customer}
                     size="large"
                     error={errors.customer_id?.message}
-                    required
                     type="number"
                 />
                 <FormInput
@@ -106,7 +116,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.fabric_name}
                     size="large"
                     error={errors.fabric_name?.message}
-                    required
                 />
                 <FormInput
                     control={control}
@@ -114,7 +123,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.fabric_width}
                     size="large"
                     error={errors.fabric_width?.message}
-                    required
                     type="number"
                 />
                 <FormInput
@@ -123,7 +131,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.fabric_weight}
                     size="large"
                     error={errors.fabric_weight?.message}
-                    required
                     type="number"
                 />
             </div>
@@ -134,7 +141,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.warp_density}
                     size="large"
                     error={errors.warp_density?.message}
-                    required
                 />
                 <FormInput
                     control={control}
@@ -142,7 +148,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.weft_density}
                     size="large"
                     error={errors.weft_density?.message}
-                    required
                 />
                 <FormInput
                     control={control}
@@ -150,7 +155,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.machine_warp_density}
                     size="large"
                     error={errors.machine_warp_density?.message}
-                    required
                 />
                 <FormInput
                     control={control}
@@ -158,7 +162,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.machine_weft_density}
                     size="large"
                     error={errors.machine_weft_density?.message}
-                    required
                 />
                 <FormInput
                     control={control}
@@ -166,7 +169,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.raw_fabric_warp_density}
                     size="large"
                     error={errors.raw_fabric_warp_density?.message}
-                    required
                 />
                 <FormInput
                     control={control}
@@ -174,7 +176,6 @@ function FabricManagementTypeForm({ close, mutate, record }: FabricManagementTyp
                     label={t.fabric_management_type.form.raw_fabric_weft_density}
                     size="large"
                     error={errors.raw_fabric_weft_density?.message}
-                    required
                 />
             </div>
             <div className="grid grid-cols-2 gap-2">

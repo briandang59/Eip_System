@@ -657,7 +657,8 @@
             "export_test": "匯出資料",
             "data_analysis": "資料分析",
             "create_fabric_test": "新增測試",
-            "modify_fabric_test": "編輯測試"
+            "modify_fabric_test": "編輯測試",
+            "remove": "刪除布料"
         }
     }
 }

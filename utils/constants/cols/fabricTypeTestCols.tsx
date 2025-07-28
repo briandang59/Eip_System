@@ -10,9 +10,11 @@ interface params {
         recordFabric?: FabricManagementTypeResponseType,
         record?: FabricTypeTestResponseType,
     ) => void;
+    openModalConfirm: (key: string, record?: FabricTypeTestResponseType) => void;
 }
 export const useFabricTypeTestCols = ({
     open,
+    openModalConfirm,
 }: params): TableColumnsType<FabricTypeTestResponseType> => {
     const { t } = useTranslationCustom();
 
@@ -29,14 +31,14 @@ export const useFabricTypeTestCols = ({
             title: t.fabric_management_type.form.temperature,
             dataIndex: 'temperature',
             key: 'temperature',
-            width: 50,
+            width: 60,
             render: (_, record: FabricTypeTestResponseType) => <p>{record?.temperature}°C</p>,
         },
         {
             title: t.fabric_management_type.form.duration,
             dataIndex: 'duration',
             key: 'duration',
-            width: 50,
+            width: 60,
             render: (_, record: FabricTypeTestResponseType) => <p>{record?.duration}'</p>,
         },
         {
@@ -57,20 +59,20 @@ export const useFabricTypeTestCols = ({
                                 <p className="text-gray-500 font-medium">
                                     {t.fabric_management_type.page.pre_wash}
                                 </p>
-                                <p className="font-medium">{record?.pre_wash_weight}</p>
+                                <p className="font-medium">{record?.pre_wash_weight ?? '-'}</p>
                             </div>
                             <div className="flex items-center justify-between gap-2">
                                 <p className="text-gray-500 font-medium">
                                     {t.fabric_management_type.page.post_wash}
                                 </p>
-                                <p className="font-medium">{record?.post_wash_weight}</p>
+                                <p className="font-medium">{record?.post_wash_weight ?? '-'}</p>
                             </div>
                         </div>
                         <div className="flex items-center justify-between gap-2">
                             <p className="text-gray-500 font-medium">
                                 {t.fabric_management_type.page.ratio}
                             </p>
-                            <p className="font-medium text-red-500">{ratio.toFixed(2)}%</p>
+                            <p className="font-medium text-red-500">{`${ratio.toFixed(2) ?? '-'}%`}</p>
                         </div>
                     </div>
                 );
@@ -93,20 +95,20 @@ export const useFabricTypeTestCols = ({
                                 <p className="text-gray-500 font-medium">
                                     {t.fabric_management_type.page.pre_wash}
                                 </p>
-                                <p className="font-medium">{record?.pre_wash_warp}</p>
+                                <p className="font-medium">{record?.pre_wash_warp ?? '-'}</p>
                             </div>
                             <div className="flex items-center justify-between gap-2">
                                 <p className="text-gray-500 font-medium">
                                     {t.fabric_management_type.page.post_wash}
                                 </p>
-                                <p className="font-medium">{record?.post_wash_warp}</p>
+                                <p className="font-medium">{record?.post_wash_warp ?? '-'}</p>
                             </div>
                         </div>
                         <div className="flex items-center justify-between gap-2">
                             <p className="text-gray-500 font-medium">
                                 {t.fabric_management_type.page.ratio}
                             </p>
-                            <p className="font-medium text-red-500">{ratio.toFixed(2)}%</p>
+                            <p className="font-medium text-red-500">{`${ratio.toFixed(2) ?? '-'}%`}</p>
                         </div>
                     </div>
                 );
@@ -129,20 +131,20 @@ export const useFabricTypeTestCols = ({
                                 <p className="text-gray-500 font-medium">
                                     {t.fabric_management_type.page.pre_wash}
                                 </p>
-                                <p className="font-medium">{record?.pre_wash_weft}</p>
+                                <p className="font-medium">{record?.pre_wash_weft ?? '-'}</p>
                             </div>
                             <div className="flex items-center justify-between gap-2">
                                 <p className="text-gray-500 font-medium">
                                     {t.fabric_management_type.page.post_wash}
                                 </p>
-                                <p className="font-medium">{record?.post_wash_weft}</p>
+                                <p className="font-medium">{record?.post_wash_weft ?? '-'}</p>
                             </div>
                         </div>
                         <div className="flex items-center justify-between gap-2">
                             <p className="text-gray-500 font-medium">
                                 {t.fabric_management_type.page.ratio}
                             </p>
-                            <p className="font-medium text-red-500">{ratio.toFixed(2)}%</p>
+                            <p className="font-medium text-red-500">{`${ratio.toFixed(2) ?? '-'}%`}</p>
                         </div>
                     </div>
                 );
@@ -174,7 +176,7 @@ export const useFabricTypeTestCols = ({
                                 </Button>
                                 <Button
                                     icon={<Trash className="size-[14px] !text-red-700" />}
-                                    onClick={() => open('delete', undefined, record)}
+                                    onClick={() => openModalConfirm('delete_fabric_test', record)}
                                 >
                                     Remove
                                 </Button>

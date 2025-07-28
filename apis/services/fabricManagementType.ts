@@ -15,4 +15,24 @@ export const fabricManagementTypeServices = {
             throw error;
         }
     },
+    modify: async (data: FabricManagementTypeRequestType, code: string): Promise<any> => {
+        try {
+            const url = `/${urls.fabric_management}/${urls.types}/${code}`;
+            const response = await fetchAPI.put<BaseResponse<any>>(url, {
+                body: data,
+            });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    remove: async (code: string): Promise<any> => {
+        try {
+            const url = `/${urls.fabric_management}/${urls.types}/${code}`;
+            const response = await fetchAPI.delete<BaseResponse<any>>(url);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 };

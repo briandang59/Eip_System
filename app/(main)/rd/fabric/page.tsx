@@ -1,7 +1,10 @@
 'use client';
+import { fabricManagementTypeServices } from '@/apis/services/fabricManagementType';
+import { fabricManagementTypeTestServices } from '@/apis/services/fabricManagementTypeTest';
 import { useFabricManagementTypes } from '@/apis/useSwr/fabricManagementType';
 import { useFabricManagementTypesTests } from '@/apis/useSwr/fabricManagementTypeTest';
 import { GenericTable } from '@/components/common/GenericTable';
+import ModalConfirm from '@/components/common/ModalConfirm';
 import FabricManagementTypeForm from '@/components/forms/FabricManagementTypeForm';
 import FabricManagementTypeTestForm from '@/components/forms/FabricManagementTypeTestForm';
 import { FabricManagementTypeResponseType } from '@/types/response/fabricManagementType';
@@ -10,8 +13,9 @@ import { useFabricTypeTestCols } from '@/utils/constants/cols/fabricTypeTestCols
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileExcelFilled } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
-import { ChartArea, Pen, Plus } from 'lucide-react';
+import { ChartArea, Pen, Plus, Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface RenderItemProps {
     label: string;
@@ -34,6 +38,7 @@ function FabricRd() {
     } = useFabricManagementTypes();
 
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const [key, setKey] = useState<string>('');
     const [selectedFabric, setSelectedFabric] = useState<
         FabricManagementTypeResponseType | undefined
@@ -58,6 +63,37 @@ function FabricRd() {
         FabricTypeTestResponseType | undefined
     >(fabricManagemnentTypesTests?.[0]);
 
+    const openModalConfirm = (key: string, record?: FabricTypeTestResponseType) => {
+        setKey(key);
+        setIsOpenModalConfirm(true);
+        setSelectedFabricTest(record);
+    };
+    const closeModalConfirm = () => {
+        setIsOpenModalConfirm(false);
+        setKey('');
+        setSelectedFabricTest(undefined);
+    };
+
+    const handleConfirm = async () => {
+        try {
+            switch (key) {
+                case 'delete_fabric':
+                    if (!selectedFabric) return;
+                    await fabricManagementTypeServices.remove(selectedFabric?.fabric_code);
+                    toast.success('successed');
+                    mutateFabricManagementType();
+                    closeModalConfirm();
+                case 'delete_fabric_test':
+                    if (!selectedFabricTest) return;
+                    await fabricManagementTypeTestServices.remove(selectedFabricTest?.id);
+                    toast.success('successed');
+                    mutatefabricManagemnentTypesTests();
+                    closeModalConfirm();
+            }
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
     const openModal = (
         key: string,
         record?: FabricManagementTypeResponseType,
@@ -74,7 +110,7 @@ function FabricRd() {
         setSelectedFabricTest(undefined);
         setKey('');
     };
-    const fabricTypeCols = useFabricTypeTestCols({ open: openModal });
+    const fabricTypeCols = useFabricTypeTestCols({ open: openModal, openModalConfirm });
 
     useEffect(() => {
         switch (key) {
@@ -113,6 +149,7 @@ function FabricRd() {
                         close={closeModal}
                         mutate={mutateFabricManagementType}
                         record={selectedFabric}
+                        setSelectedRecord={setSelectedFabric}
                     />
                 );
             }
@@ -185,6 +222,12 @@ function FabricRd() {
                         onClick={() => openModal('modify_fabric', selectedFabric)}
                     >
                         {t.fabric_management_type.page.modify}
+                    </Button>
+                    <Button
+                        icon={<Trash className="!text-red-700 size-[14px]" />}
+                        onClick={() => openModalConfirm('delete_fabric')}
+                    >
+                        {t.fabric_management_type.page.remove}
                     </Button>
                 </div>
                 {selectedFabric && (
@@ -286,6 +329,13 @@ function FabricRd() {
             >
                 {renderContent()}
             </Modal>
+            <ModalConfirm
+                isOpen={isOpenModalConfirm}
+                confirmAndClose={() => {
+                    handleConfirm();
+                }}
+                toggleModal={closeModalConfirm}
+            />
         </div>
     );
 }

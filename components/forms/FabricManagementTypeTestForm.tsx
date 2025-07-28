@@ -66,7 +66,11 @@ function FabricManagementTypeTestForm({
     }, [record, reset]);
     const onSubmit = async (data: FormData) => {
         try {
-            await fabricManagementTypeTestServices.add(data, code);
+            if (record) {
+                await fabricManagementTypeTestServices.modify(data, record.id);
+            } else {
+                await fabricManagementTypeTestServices.add(data, code);
+            }
             toast.success('successed');
             mutate();
             reset();

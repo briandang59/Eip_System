@@ -658,7 +658,8 @@
             "export_test": "Export data",
             "data_analysis": "Data analysis",
             "create_fabric_test": "Add test",
-            "modify_fabric_test": "Edit test"
+            "modify_fabric_test": "Edit test",
+            "remove": "Remove fabric"
         }
     }
 }

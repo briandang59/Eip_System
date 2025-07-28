@@ -657,7 +657,8 @@
             "export_test": "Xuất dữ liệu",
             "data_analysis": "Phân tích dữ liệu",
             "create_fabric_test": "Thêm thử nghiệm",
-            "modify_fabric_test": "Chỉnh sửa thử nghiệm"
+            "modify_fabric_test": "Chỉnh sửa thử nghiệm",
+            "remove": "Xóa vải"
         }
     }
 }
