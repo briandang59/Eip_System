@@ -30,6 +30,20 @@ const RenderBlockAnalysis = ({ icon, label, value, color, bgcolor }: RenderBlock
 };
 function AnalysisDataFabricTest({ analysis, isLoading }: AnalysisDataFabricTestProps) {
     const { t } = useTranslationCustom();
+    const { count, horizontalRatio, maxTemp, minTemp, verticalRatio } = useMemo(() => {
+        if (!analysis) {
+            return {
+                count: 0,
+                horizontalRatio: 0,
+                maxTemp: 0,
+                minTemp: 0,
+                verticalRatio: 0,
+            };
+        }
+
+        return CalculateAnalysisDatFabric(analysis.fabric_test_data);
+    }, [analysis]);
+
     if (isLoading || !analysis) {
         return (
             <div className="p-4 text-center">
@@ -37,9 +51,6 @@ function AnalysisDataFabricTest({ analysis, isLoading }: AnalysisDataFabricTestP
             </div>
         );
     }
-    const { count, horizontalRatio, maxTemp, minTemp, verticalRatio } = useMemo(() => {
-        return CalculateAnalysisDatFabric(analysis.fabric_test_data);
-    }, [analysis.fabric_code]);
 
     const arrayAnalysis = [
         {

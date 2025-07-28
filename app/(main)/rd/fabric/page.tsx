@@ -41,7 +41,7 @@ function FabricRd() {
         if (!selectedFabric && fabricManagemnentTypes && fabricManagemnentTypes.length > 0) {
             setSelectedFabric(fabricManagemnentTypes[0]);
         }
-    }, [fabricManagemnentTypes]);
+    }, [fabricManagemnentTypes, selectedFabric]);
 
     const code = useMemo(() => selectedFabric?.fabric_code, [selectedFabric]);
 
