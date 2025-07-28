@@ -17,7 +17,7 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileExcelFilled, ReloadOutlined } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
 import { ChartArea, Pen, Plus, Trash } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 function FabricRd() {
@@ -43,7 +43,8 @@ function FabricRd() {
         }
     }, [fabricManagemnentTypes, selectedFabric]);
 
-    const code = selectedFabric?.fabric_code || fabricManagemnentTypes?.[0]?.fabric_code;
+    const code = useMemo(() => selectedFabric?.fabric_code, [selectedFabric]);
+
     const {
         fabricManagemnentTypesTests,
         isLoading: isLoadingfabricManagemnentTypesTests,

@@ -43,8 +43,8 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.SYSTEM_ADMINISTRATOR,
         Roles.PRODUCTIVITY_SUPERVISOR,
     ],
-    rd: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
-    'rd/fabric': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
+    rd: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FABRIC_EXPERIMENT_MANAGER],
+    'rd/fabric': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FABRIC_EXPERIMENT_MANAGER],
 
     // Others
     others: [Roles.SUPER_USER, Roles.MEETING_ROOM_USER],
