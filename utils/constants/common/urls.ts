@@ -85,4 +85,9 @@ export const urls = {
     basic_info: 'basic_info',
     system: 'system',
     mode: 'mode',
+    fabric_management: 'fabric-management',
+    types: 'types',
+    test: 'test',
+    analysis: 'analysis',
+    import: 'import',
 };

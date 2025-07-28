@@ -619,5 +619,27 @@
     "booking_form": {
         "err1": "Không thể đặt lịch trước thời điểm hiện tại!",
         "err2": "Phòng họp đã có lịch trùng!"
+    },
+    "fabric_management_type": {
+        "form": {
+            "fabric_code": "Mã vải",
+            "customer": "Khách hàng",
+            "fabric_name": "Tên vải",
+            "fabric_width": "Khổ vải",
+            "fabric_weight": "Trọng lượng vải",
+            "warp_density": "Mật độ sợi dọc",
+            "weft_density": "Mật độ sợi ngang",
+            "machine_warp_density": "Mật độ sợi dọc (máy)",
+            "machine_weft_density": "Mật độ sợi ngang (máy)",
+            "raw_fabric_warp_density": "Mật độ sợi dọc (vải mộc)",
+            "raw_fabric_weft_density": "Mật độ sợi ngang (vải mộc)",
+            "raw_fabric_spec": "Thông số vải mộc",
+            "finished_product_spec": "Thông số vải thành phẩm"
+        },
+        "page": {
+            "add": "Thêm vải",
+            "modify": "Chỉnh sửa vải",
+            "choose_fabric": "Lựa chọn vải"
+        }
     }
 }

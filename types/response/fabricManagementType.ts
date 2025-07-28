@@ -1,0 +1,19 @@
+export type FabricManagementTypeResponseType = {
+    fabric_code: string;
+    customer_id: string;
+    fabric_name: string;
+    fabric_width: number;
+    fabric_weight: number;
+    warp_density: number;
+    weft_density: number;
+    machine_warp_density: number;
+    machine_weft_density: number;
+    raw_fabric_warp_density: number;
+    raw_fabric_weft_density: number;
+    raw_fabric_spec: string;
+    finished_product_spec: string;
+    created_at: string;
+    updated_at: string | null;
+    raw_fabric_width: string | null;
+    raw_fabric_weight: string | null;
+};

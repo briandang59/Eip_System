@@ -57,7 +57,7 @@ function ChangePasswordForm() {
         <div className="flex items-center justify-center mt-10">
             <Form
                 layout="vertical"
-                className="w-full"
+                className="w-full flex flex-col gap-2"
                 onFinish={handleSubmit(onSubmit)}
                 style={{
                     width: '500px',

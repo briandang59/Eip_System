@@ -619,5 +619,27 @@
     "booking_form": {
         "err1": "無法預約早於目前時間！",
         "err2": "會議室已經有重複的預約！"
+    },
+    "fabric_management_type": {
+        "form": {
+            "fabric_code": "布料代碼",
+            "customer": "客戶",
+            "fabric_name": "布料名稱",
+            "fabric_width": "布料寬度",
+            "fabric_weight": "布料克重",
+            "warp_density": "經紗密度",
+            "weft_density": "緯紗密度",
+            "machine_warp_density": "機織經紗密度",
+            "machine_weft_density": "機織緯紗密度",
+            "raw_fabric_warp_density": "胚布經紗密度",
+            "raw_fabric_weft_density": "胚布緯紗密度",
+            "raw_fabric_spec": "胚布規格",
+            "finished_product_spec": "成品規格"
+        },
+        "page": {
+            "add": "新增布料",
+            "modify": "編輯布料",
+            "choose_fabric": "選擇布料"
+        }
     }
 }

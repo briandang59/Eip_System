@@ -620,5 +620,27 @@
     "booking_form": {
         "err1": "Cannot book a time before the current moment!",
         "err2": "The meeting room already has a conflicting booking!"
+    },
+    "fabric_management_type": {
+        "form": {
+            "fabric_code": "Fabric code",
+            "customer": "Customer",
+            "fabric_name": "Fabric name",
+            "fabric_width": "Fabric width",
+            "fabric_weight": "Fabric weight",
+            "warp_density": "Warp density",
+            "weft_density": "Weft density",
+            "machine_warp_density": "Machine warp density",
+            "machine_weft_density": "Machine weft density",
+            "raw_fabric_warp_density": "Raw fabric warp density",
+            "raw_fabric_weft_density": "Raw fabric weft density",
+            "raw_fabric_spec": "Raw fabric sepcific",
+            "finished_product_spec": "Finished product specific"
+        },
+        "page": {
+            "add": "Add fabric",
+            "modify": "Edit fabric",
+            "choose_fabric": "Choose fabric"
+        }
     }
 }
