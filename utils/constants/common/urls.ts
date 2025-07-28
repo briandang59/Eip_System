@@ -90,4 +90,5 @@ export const urls = {
     test: 'test',
     analysis: 'analysis',
     import: 'import',
+    tests: 'tests',
 };

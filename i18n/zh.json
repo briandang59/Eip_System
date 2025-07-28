@@ -634,12 +634,30 @@
             "raw_fabric_warp_density": "胚布經紗密度",
             "raw_fabric_weft_density": "胚布緯紗密度",
             "raw_fabric_spec": "胚布規格",
-            "finished_product_spec": "成品規格"
+            "finished_product_spec": "成品規格",
+            "temperature": "溫度",
+            "duration": "時間",
+            "pre_wash_weight": "洗前重量",
+            "post_wash_weight": "洗後重量",
+            "pre_wash_warp": "洗前經密",
+            "post_wash_warp": "洗後經密",
+            "pre_wash_weft": "洗前緯密",
+            "post_wash_weft": "洗後緯密",
+            "test_date": "檢測日期",
+            "notes": "備註"
         },
         "page": {
             "add": "新增布料",
             "modify": "編輯布料",
-            "choose_fabric": "選擇布料"
+            "choose_fabric": "選擇布料",
+            "pre_wash": "洗前",
+            "post_wash": "洗後",
+            "ratio": "縮水比例",
+            "add_test": "新增測試",
+            "export_test": "匯出資料",
+            "data_analysis": "資料分析",
+            "create_fabric_test": "新增測試",
+            "modify_fabric_test": "編輯測試"
         }
     }
 }

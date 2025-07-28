@@ -635,12 +635,30 @@
             "raw_fabric_warp_density": "Raw fabric warp density",
             "raw_fabric_weft_density": "Raw fabric weft density",
             "raw_fabric_spec": "Raw fabric sepcific",
-            "finished_product_spec": "Finished product specific"
+            "finished_product_spec": "Finished product specific",
+            "temperature": "Temperature",
+            "duration": "Duration",
+            "pre_wash_weight": "Pre-wash Weight",
+            "post_wash_weight": "Post-wash Weight",
+            "pre_wash_warp": "Pre-wash Warp Density",
+            "post_wash_warp": "Post-wash Warp Density",
+            "pre_wash_weft": "Pre-wash Weft Density",
+            "post_wash_weft": "Post-wash Weft Density",
+            "test_date": "Test Date",
+            "notes": "Notes"
         },
         "page": {
             "add": "Add fabric",
             "modify": "Edit fabric",
-            "choose_fabric": "Choose fabric"
+            "choose_fabric": "Choose fabric",
+            "pre_wash": "Pre-wash",
+            "post_wash": "Post-wash",
+            "ratio": "Shrinkage ratio",
+            "add_test": "Add test",
+            "export_test": "Export data",
+            "data_analysis": "Data analysis",
+            "create_fabric_test": "Add test",
+            "modify_fabric_test": "Edit test"
         }
     }
 }

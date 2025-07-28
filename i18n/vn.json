@@ -634,12 +634,30 @@
             "raw_fabric_warp_density": "Mật độ sợi dọc (vải mộc)",
             "raw_fabric_weft_density": "Mật độ sợi ngang (vải mộc)",
             "raw_fabric_spec": "Thông số vải mộc",
-            "finished_product_spec": "Thông số vải thành phẩm"
+            "finished_product_spec": "Thông số vải thành phẩm",
+            "temperature": "Nhiệt độ",
+            "duration": "Thời gian",
+            "pre_wash_weight": "Trọng lượng trước giặt",
+            "post_wash_weight": "Trọng lượng sau giặt",
+            "pre_wash_warp": "Mật độ sợi dọc trước giặt",
+            "post_wash_warp": "Mật độ sợi dọc sau giặt",
+            "pre_wash_weft": "Mật độ sợi ngang trước giặt",
+            "post_wash_weft": "Mật độ sợi ngang sau giặt",
+            "test_date": "Ngày kiểm tra",
+            "notes": "Ghi chú"
         },
         "page": {
             "add": "Thêm vải",
             "modify": "Chỉnh sửa vải",
-            "choose_fabric": "Lựa chọn vải"
+            "choose_fabric": "Lựa chọn vải",
+            "pre_wash": "Trước giặt",
+            "post_wash": "Sau giặt",
+            "ratio": "Tỉ lệ co ngót",
+            "add_test": "Thêm thử nghiệm",
+            "export_test": "Xuất dữ liệu",
+            "data_analysis": "Phân tích dữ liệu",
+            "create_fabric_test": "Thêm thử nghiệm",
+            "modify_fabric_test": "Chỉnh sửa thử nghiệm"
         }
     }
 }

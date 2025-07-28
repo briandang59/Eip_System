@@ -1,10 +1,16 @@
 'use client';
 import { useFabricManagementTypes } from '@/apis/useSwr/fabricManagementType';
+import { useFabricManagementTypesTests } from '@/apis/useSwr/fabricManagementTypeTest';
+import { GenericTable } from '@/components/common/GenericTable';
 import FabricManagementTypeForm from '@/components/forms/FabricManagementTypeForm';
+import FabricManagementTypeTestForm from '@/components/forms/FabricManagementTypeTestForm';
 import { FabricManagementTypeResponseType } from '@/types/response/fabricManagementType';
+import { FabricTypeTestResponseType } from '@/types/response/fabricTest';
+import { useFabricTypeTestCols } from '@/utils/constants/cols/fabricTypeTestCols';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { FileExcelFilled } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
-import { Pen, Plus } from 'lucide-react';
+import { ChartArea, Pen, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface RenderItemProps {
@@ -24,13 +30,16 @@ function FabricRd() {
     const {
         fabricManagemnentTypes,
         isLoading: isLoadingFabricManagementType,
-        mutate,
+        mutate: mutateFabricManagementType,
     } = useFabricManagementTypes();
+
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [key, setKey] = useState<string>('');
     const [selectedFabric, setSelectedFabric] = useState<
         FabricManagementTypeResponseType | undefined
     >(fabricManagemnentTypes?.[0]);
+
+    const [title, setTitle] = useState<string>('');
 
     useEffect(() => {
         if (fabricManagemnentTypes && fabricManagemnentTypes.length > 0 && !selectedFabric) {
@@ -38,17 +47,106 @@ function FabricRd() {
         }
     }, [fabricManagemnentTypes, selectedFabric]);
 
-    const openModal = (key: string, record?: FabricManagementTypeResponseType) => {
+    const code = selectedFabric?.fabric_code || fabricManagemnentTypes?.[0]?.fabric_code;
+    const {
+        fabricManagemnentTypesTests,
+        isLoading: isLoadingfabricManagemnentTypesTests,
+        mutate: mutatefabricManagemnentTypesTests,
+    } = useFabricManagementTypesTests({ code: code });
+
+    const [selectedFabricTest, setSelectedFabricTest] = useState<
+        FabricTypeTestResponseType | undefined
+    >(fabricManagemnentTypesTests?.[0]);
+
+    const openModal = (
+        key: string,
+        record?: FabricManagementTypeResponseType,
+        recordTest?: FabricTypeTestResponseType,
+    ) => {
         setIsOpenModal(true);
         setSelectedFabric(record);
         setKey(key);
+        setSelectedFabricTest(recordTest);
     };
     const closeModal = () => {
         setIsOpenModal(false);
         setSelectedFabric(undefined);
+        setSelectedFabricTest(undefined);
         setKey('');
     };
+    const fabricTypeCols = useFabricTypeTestCols({ open: openModal });
 
+    useEffect(() => {
+        switch (key) {
+            case 'create_fabric':
+                setTitle(`${t.fabric_management_type.page.add}`);
+                break;
+            case 'modify_fabric':
+                setTitle(`${t.fabric_management_type.page.modify}`);
+                break;
+            case 'create_fabric_test':
+                setTitle(`${t.fabric_management_type.page.create_fabric_test}`);
+                break;
+            case 'modify_fabric_test':
+                setTitle(`${t.fabric_management_type.page.modify_fabric_test}`);
+                break;
+            default:
+                setTitle('');
+        }
+    }, [key, t]);
+
+    const renderContent = () => {
+        switch (key) {
+            case 'create_fabric': {
+                return (
+                    <FabricManagementTypeForm
+                        key={key + (selectedFabric?.fabric_code ?? '')}
+                        close={closeModal}
+                        mutate={mutateFabricManagementType}
+                    />
+                );
+            }
+            case 'modify_fabric': {
+                return (
+                    <FabricManagementTypeForm
+                        key={key + (selectedFabric?.fabric_code ?? '')}
+                        close={closeModal}
+                        mutate={mutateFabricManagementType}
+                        record={selectedFabric}
+                    />
+                );
+            }
+            case 'create_fabric_test': {
+                return (
+                    <>
+                        {selectedFabric && (
+                            <FabricManagementTypeTestForm
+                                key={key + (selectedFabric?.fabric_code ?? '')}
+                                close={closeModal}
+                                mutate={mutatefabricManagemnentTypesTests}
+                                code={selectedFabric?.fabric_code}
+                            />
+                        )}
+                    </>
+                );
+            }
+            case 'modify_fabric_test': {
+                return (
+                    <>
+                        {selectedFabric && (
+                            <FabricManagementTypeTestForm
+                                key={key + (selectedFabric?.fabric_code ?? '')}
+                                close={closeModal}
+                                mutate={mutatefabricManagemnentTypesTests}
+                                record={selectedFabricTest}
+                                code={selectedFabric?.fabric_code}
+                            />
+                        )}
+                    </>
+                );
+            }
+        }
+    };
     return (
         <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-[10px]">
@@ -146,24 +244,47 @@ function FabricRd() {
                     </div>
                 )}
             </div>
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                        <Button
+                            icon={<Plus className="!text-green-700 size-[14px]" />}
+                            onClick={() => openModal('create_fabric_test')}
+                        >
+                            {t.fabric_management_type.page.add_test}
+                        </Button>
+                        <Button icon={<FileExcelFilled className="!text-purple-700 size-[14px]" />}>
+                            {t.fabric_management_type.page.export_test}
+                        </Button>
+                    </div>
+                    <Button icon={<ChartArea className="!text-purple-700 size-[14px]" />}>
+                        {t.fabric_management_type.page.data_analysis}
+                    </Button>
+                </div>
+                <GenericTable<FabricTypeTestResponseType>
+                    columns={fabricTypeCols}
+                    dataSource={fabricManagemnentTypesTests || []}
+                    rowKey="stt"
+                    isLoading={isLoadingfabricManagemnentTypesTests}
+                    pagination={{
+                        defaultPageSize: 30,
+                        pageSizeOptions: ['30', '50'],
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        size: 'default',
+                    }}
+                />
+            </div>
             <Modal
                 centered
                 open={isOpenModal}
                 onCancel={closeModal}
                 footer={false}
                 width={1200}
-                title={
-                    key === 'create_fabric'
-                        ? `${t.fabric_management_type.page.add}`
-                        : `${t.fabric_management_type.page.modify}`
-                }
+                title={title}
             >
-                <FabricManagementTypeForm
-                    key={key + (selectedFabric?.fabric_code ?? '')}
-                    close={closeModal}
-                    mutate={mutate}
-                    record={key === 'modify_fabric' ? selectedFabric : undefined}
-                />
+                {renderContent()}
             </Modal>
         </div>
     );
