@@ -1,34 +1,25 @@
 'use client';
 import { fabricManagementTypeServices } from '@/apis/services/fabricManagementType';
 import { fabricManagementTypeTestServices } from '@/apis/services/fabricManagementTypeTest';
+import { useAnalysisDataFabricTest } from '@/apis/useSwr/analysisDataFabric';
 import { useFabricManagementTypes } from '@/apis/useSwr/fabricManagementType';
 import { useFabricManagementTypesTests } from '@/apis/useSwr/fabricManagementTypeTest';
 import { GenericTable } from '@/components/common/GenericTable';
 import ModalConfirm from '@/components/common/ModalConfirm';
 import FabricManagementTypeForm from '@/components/forms/FabricManagementTypeForm';
 import FabricManagementTypeTestForm from '@/components/forms/FabricManagementTypeTestForm';
+import AnalysisDataFabricTest from '@/components/ui/AnalysisDataFabricTest';
+import FabricSectionInformation from '@/components/ui/FabricSectionInformation';
 import { FabricManagementTypeResponseType } from '@/types/response/fabricManagementType';
 import { FabricTypeTestResponseType } from '@/types/response/fabricTest';
 import { useFabricTypeTestCols } from '@/utils/constants/cols/fabricTypeTestCols';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { FileExcelFilled } from '@ant-design/icons';
+import { FileExcelFilled, ReloadOutlined } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
 import { ChartArea, Pen, Plus, Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-interface RenderItemProps {
-    label: string;
-    recordText: string | number;
-}
-const RenderItem = ({ label, recordText }: RenderItemProps) => {
-    return (
-        <div className="flex flex-col">
-            <p className="text-[12px] text-gray-500 font-medium">{label}</p>
-            <p className="text-[14px] font-medium">{recordText ?? '-'}</p>
-        </div>
-    );
-};
 function FabricRd() {
     const { t } = useTranslationCustom();
     const {
@@ -58,6 +49,9 @@ function FabricRd() {
         isLoading: isLoadingfabricManagemnentTypesTests,
         mutate: mutatefabricManagemnentTypesTests,
     } = useFabricManagementTypesTests({ code: code });
+
+    const { analysisDataFabricTest, isLoading: isLoadingAnalysisDataFabricTest } =
+        useAnalysisDataFabricTest({ code: code });
 
     const [selectedFabricTest, setSelectedFabricTest] = useState<
         FabricTypeTestResponseType | undefined
@@ -126,6 +120,9 @@ function FabricRd() {
             case 'modify_fabric_test':
                 setTitle(`${t.fabric_management_type.page.modify_fabric_test}`);
                 break;
+            case 'analysis':
+                setTitle(`${t.fabric_management_type.analysis.title}`);
+                break;
             default:
                 setTitle('');
         }
@@ -182,14 +179,38 @@ function FabricRd() {
                     </>
                 );
             }
+            case 'analysis': {
+                return (
+                    <>
+                        {analysisDataFabricTest && (
+                            <AnalysisDataFabricTest
+                                analysis={analysisDataFabricTest}
+                                isLoading={isLoadingAnalysisDataFabricTest}
+                            />
+                        )}
+                    </>
+                );
+            }
         }
+    };
+
+    const handleReload = () => {
+        mutateFabricManagementType();
+        mutatefabricManagemnentTypesTests();
+        setSelectedFabric(fabricManagemnentTypes?.[0]);
     };
     return (
         <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-[10px]">
-                <p className="font-medium text-[16px]">
-                    {t.fabric_management_type.page.choose_fabric}
-                </p>
+                <div className="flex items-center justify-between gap-2">
+                    <p className="font-medium text-[16px]">
+                        {t.fabric_management_type.page.choose_fabric}
+                    </p>
+                    <Button
+                        icon={<ReloadOutlined className="!text-orange-500 size-[14px]" />}
+                        onClick={() => handleReload()}
+                    />
+                </div>
                 <div className="flex items-end gap-2">
                     <div className="flex flex-col gap-2">
                         <span className="font-medium">
@@ -230,62 +251,7 @@ function FabricRd() {
                         {t.fabric_management_type.page.remove}
                     </Button>
                 </div>
-                {selectedFabric && (
-                    <div className="bg-white min-h-[100px] rounded-[10px] grid grid-cols-6 gap-2 p-2">
-                        <RenderItem
-                            label={t.fabric_management_type.form.fabric_code}
-                            recordText={selectedFabric?.fabric_code}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.customer}
-                            recordText={selectedFabric?.customer_id}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.fabric_name}
-                            recordText={selectedFabric?.fabric_name}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.fabric_width}
-                            recordText={selectedFabric?.fabric_width}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.fabric_weight}
-                            recordText={selectedFabric?.fabric_weight}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.warp_density}
-                            recordText={selectedFabric?.warp_density}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.weft_density}
-                            recordText={selectedFabric?.weft_density}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.machine_warp_density}
-                            recordText={selectedFabric?.machine_warp_density}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.machine_weft_density}
-                            recordText={selectedFabric?.machine_weft_density}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.raw_fabric_warp_density}
-                            recordText={selectedFabric?.raw_fabric_warp_density}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.raw_fabric_weft_density}
-                            recordText={selectedFabric?.raw_fabric_weft_density}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.raw_fabric_spec}
-                            recordText={selectedFabric?.raw_fabric_spec}
-                        />
-                        <RenderItem
-                            label={t.fabric_management_type.form.finished_product_spec}
-                            recordText={selectedFabric?.finished_product_spec}
-                        />
-                    </div>
-                )}
+                {selectedFabric && <FabricSectionInformation selectedFabric={selectedFabric} />}
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
@@ -297,10 +263,14 @@ function FabricRd() {
                             {t.fabric_management_type.page.add_test}
                         </Button>
                         <Button icon={<FileExcelFilled className="!text-purple-700 size-[14px]" />}>
-                            {t.fabric_management_type.page.export_test}
+                            {t.fabric_management_type.page.import_test}
                         </Button>
                     </div>
-                    <Button icon={<ChartArea className="!text-purple-700 size-[14px]" />}>
+                    <Button
+                        icon={<ChartArea className="!text-purple-700 size-[14px]" />}
+                        onClick={() => openModal('analysis')}
+                        disabled={analysisDataFabricTest?.fabric_test_data.length === 0}
+                    >
                         {t.fabric_management_type.page.data_analysis}
                     </Button>
                 </div>

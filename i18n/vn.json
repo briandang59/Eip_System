@@ -643,7 +643,7 @@
             "post_wash_warp": "Mật độ sợi dọc sau giặt",
             "pre_wash_weft": "Mật độ sợi ngang trước giặt",
             "post_wash_weft": "Mật độ sợi ngang sau giặt",
-            "test_date": "Ngày kiểm tra",
+            "test_date": "Ngày thử nghiệm",
             "notes": "Ghi chú"
         },
         "page": {
@@ -654,11 +654,23 @@
             "post_wash": "Sau giặt",
             "ratio": "Tỉ lệ co ngót",
             "add_test": "Thêm thử nghiệm",
-            "export_test": "Xuất dữ liệu",
+            "import_test": "Nhập dữ liệu",
             "data_analysis": "Phân tích dữ liệu",
             "create_fabric_test": "Thêm thử nghiệm",
             "modify_fabric_test": "Chỉnh sửa thử nghiệm",
             "remove": "Xóa vải"
+        },
+        "analysis": {
+            "title": "Thống kê thử nghiệm",
+            "total_test": "Tổng số thử nghiệm",
+            "weft": "Độ co ngót ngang trung bình",
+            "warp": "Độ co ngót dọc trung bình",
+            "temp": "Phạm vi nhiệt độ",
+            "test_date": "Ngày thử nghiệm",
+            "warp_shrinkage_rate": "Độ co ngót dọc",
+            "weft_shrinkage_rate": "Độ co ngót ngang",
+            "comment": "Nhận xét phân tích",
+            "shrinkage_rate": "Độ co ngót"
         }
     }
 }

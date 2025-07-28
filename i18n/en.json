@@ -655,11 +655,23 @@
             "post_wash": "Post-wash",
             "ratio": "Shrinkage ratio",
             "add_test": "Add test",
-            "export_test": "Export data",
+            "import_test": "Import data",
             "data_analysis": "Data analysis",
             "create_fabric_test": "Add test",
             "modify_fabric_test": "Edit test",
             "remove": "Remove fabric"
+        },
+        "analysis": {
+            "title": "Test Analysis",
+            "total_test": "Total Tests",
+            "weft": "Average Weft Shrinkage",
+            "warp": "Average Warp Shrinkage",
+            "temp": "Temperature Range",
+            "test_date": "Test Date",
+            "warp_shrinkage_rate": "Warp Shrinkage",
+            "weft_shrinkage_rate": "Weft Shrinkage",
+            "comment": "Analysis Comments",
+            "shrinkage_rate": "Shrinkage Rate"
         }
     }
 }

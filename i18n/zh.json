@@ -654,11 +654,23 @@
             "post_wash": "洗後",
             "ratio": "縮水比例",
             "add_test": "新增測試",
-            "export_test": "匯出資料",
+            "import_test": "匯入資料",
             "data_analysis": "資料分析",
             "create_fabric_test": "新增測試",
             "modify_fabric_test": "編輯測試",
             "remove": "刪除布料"
+        },
+        "analysis": {
+            "title": "測試分析",
+            "total_test": "測試總數",
+            "weft": "平均緯向縮率",
+            "warp": "平均經向縮率",
+            "temp": "溫度範圍",
+            "test_date": "測試日期",
+            "warp_shrinkage_rate": "經向縮率",
+            "weft_shrinkage_rate": "緯向縮率",
+            "comment": "分析備註",
+            "shrinkage_rate": "縮率"
         }
     }
 }

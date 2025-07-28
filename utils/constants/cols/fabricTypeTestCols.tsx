@@ -151,6 +151,13 @@ export const useFabricTypeTestCols = ({
             },
         },
         {
+            title: t.fabric_management_type.form.test_date,
+            dataIndex: 'test-date',
+            key: 'test-date',
+            width: 100,
+            render: (_, record: FabricTypeTestResponseType) => <p>{record?.test_date ?? '-'}</p>,
+        },
+        {
             title: t.fabric_management_type.form.notes,
             dataIndex: 'notes',
             key: 'notes',
