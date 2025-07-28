@@ -1,7 +1,7 @@
 import { AnalysisDataFabricTestResponseType } from '@/types/response/analysisDataFabricTest';
 import { CalculateAnalysisDatFabric } from '@/utils/functions/calculateAnalysDataFabric';
 import { FlaskRound, ThermometerSnowflake, UnfoldHorizontal, UnfoldVertical } from 'lucide-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import ShrinkageRateChart from '../charts/ShrinkageRateChart';
 import { Spin } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -37,9 +37,10 @@ function AnalysisDataFabricTest({ analysis, isLoading }: AnalysisDataFabricTestP
             </div>
         );
     }
-    const { count, horizontalRatio, maxTemp, minTemp, verticalRatio } = CalculateAnalysisDatFabric(
-        analysis.fabric_test_data,
-    );
+    const { count, horizontalRatio, maxTemp, minTemp, verticalRatio } = useMemo(() => {
+        return CalculateAnalysisDatFabric(analysis.fabric_test_data);
+    }, [analysis.fabric_code]);
+
     const arrayAnalysis = [
         {
             icon: <FlaskRound className="!text-blue-700" />,

@@ -38,10 +38,10 @@ function FabricRd() {
     const [title, setTitle] = useState<string>('');
 
     useEffect(() => {
-        if (fabricManagemnentTypes && fabricManagemnentTypes.length > 0 && !selectedFabric) {
+        if (!selectedFabric && fabricManagemnentTypes && fabricManagemnentTypes.length > 0) {
             setSelectedFabric(fabricManagemnentTypes[0]);
         }
-    }, [fabricManagemnentTypes, selectedFabric]);
+    }, [fabricManagemnentTypes]);
 
     const code = useMemo(() => selectedFabric?.fabric_code, [selectedFabric]);
 
@@ -95,13 +95,12 @@ function FabricRd() {
         recordTest?: FabricTypeTestResponseType,
     ) => {
         setIsOpenModal(true);
-        setSelectedFabric(record);
+        if (record) setSelectedFabric(record);
         setKey(key);
         setSelectedFabricTest(recordTest);
     };
     const closeModal = () => {
         setIsOpenModal(false);
-        setSelectedFabric(undefined);
         setSelectedFabricTest(undefined);
         setKey('');
     };
@@ -185,6 +184,7 @@ function FabricRd() {
                     <>
                         {analysisDataFabricTest && (
                             <AnalysisDataFabricTest
+                                key={key + (analysisDataFabricTest?.fabric_code ?? '')}
                                 analysis={analysisDataFabricTest}
                                 isLoading={isLoadingAnalysisDataFabricTest}
                             />
@@ -198,7 +198,6 @@ function FabricRd() {
     const handleReload = () => {
         mutateFabricManagementType();
         mutatefabricManagemnentTypesTests();
-        setSelectedFabric(fabricManagemnentTypes?.[0]);
     };
     return (
         <div className="flex flex-col gap-2">
