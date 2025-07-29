@@ -19,8 +19,8 @@
             "daily_attendance_satistics": "Daily Attendance Statistics"
         },
         "bulletins": {
-            "title": "Bulletins",
-            "manage_bulletins": "Manage Bulletins"
+            "title": "Management",
+            "manage_bulletins": "Bulletin Board"
         },
         "hr": {
             "title": "Human Resources",
@@ -681,5 +681,9 @@
             "comment": "Analysis Comments",
             "shrinkage_rate": "Shrinkage Rate"
         }
+    },
+    "bulletins": {
+        "pin": "Pin",
+        "pinned": "Pinned"
     }
 }

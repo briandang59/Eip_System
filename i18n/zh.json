@@ -19,8 +19,8 @@
             "daily_attendance_satistics": "每日出勤統計"
         },
         "bulletins": {
-            "title": "公告",
-            "manage_bulletins": "管理公告"
+            "title": "管理",
+            "manage_bulletins": "公告欄"
         },
         "hr": {
             "title": "人力資源",
@@ -680,5 +680,9 @@
             "comment": "分析備註",
             "shrinkage_rate": "縮率"
         }
+    },
+    "bulletins": {
+        "pin": "釘選",
+        "pinned": "已釘選"
     }
 }

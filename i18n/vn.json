@@ -19,8 +19,8 @@
             "daily_attendance_satistics": "Thống kê chấm công hàng ngày"
         },
         "bulletins": {
-            "title": "Thông báo",
-            "manage_bulletins": "Quản lý thông báo"
+            "title": "Quản lý",
+            "manage_bulletins": "Bảng thông báo"
         },
         "hr": {
             "title": "Nhân sự",
@@ -680,5 +680,9 @@
             "comment": "Nhận xét phân tích",
             "shrinkage_rate": "Độ co ngót"
         }
+    },
+    "bulletins": {
+        "pin": "Ghim",
+        "pinned": "Đã ghim"
     }
 }

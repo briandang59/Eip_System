@@ -3,14 +3,17 @@ import { fetcher } from '../fetcher';
 import { urls } from '@/utils/constants/common/urls';
 import { BaseResponse } from '@/types/response/baseResponse';
 import qs from 'qs';
+import { BulletinsResponseType } from '@/types/response/bulletins';
 
 const API_URL = `/${urls.manage}/${urls.bulletins}`;
 
 interface Params {
-    card: string;
+    pageNum?: number;
+    pageSize?: number;
+    work_places?: string;
 }
 
-export const useManageBulletins = (params: Params) => {
+export const useManageBulletins = (params?: Params) => {
     const queryString = params ? `?${qs.stringify(params)}` : '';
 
     const customFetcher = (url: string) =>
@@ -18,7 +21,7 @@ export const useManageBulletins = (params: Params) => {
             baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
         });
 
-    const { data, error, mutate } = useSWR<BaseResponse<any>>(
+    const { data, error, mutate } = useSWR<BaseResponse<BulletinsResponseType[]>>(
         `${API_URL}${queryString}`,
         customFetcher,
         {
@@ -27,9 +30,9 @@ export const useManageBulletins = (params: Params) => {
             revalidateOnReconnect: false,
         },
     );
-
+    const filterData = data?.data?.filter((item) => item.active);
     return {
-        checkCardNumber: data,
+        bulletins: filterData,
         isLoading: !error && !data,
         isError: error,
         mutate,

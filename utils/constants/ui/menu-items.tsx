@@ -28,6 +28,7 @@ import {
     PaintBucket,
     LayoutDashboard,
     Captions,
+    Newspaper,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -181,7 +182,7 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.bulletins?.manage_bulletins || '',
                     'bulletins/manage-bulletins',
-                    <PaintBucket strokeWidth={1.5} className="w-4 h-4" />,
+                    <Newspaper strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),

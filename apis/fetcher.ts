@@ -3,7 +3,6 @@
 import Cookies from 'js-cookie';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://10.1.1.155:5588';
-const secondBaseURL = process.env.NEXT_PUBLIC_API_URL_2 || 'http://another-api.example.com';
 export const AUTH_COOKIE = 'auth_token';
 
 interface FetcherError extends Error {
@@ -49,13 +48,17 @@ export const fetcher = async (
 
     const isFormData = init?.body instanceof FormData;
 
+    const selectedBaseURL = init?.baseURL || baseURL;
+    const isSameBaseURL = selectedBaseURL === baseURL;
+
     const headers: HeadersInit = {
-        ...(token && { Authorization: `${token}` }),
+        ...(token && {
+            Authorization: isSameBaseURL ? `${token}` : `Bearer ${token}`,
+        }),
         ...(init?.headers || {}),
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         Accept: '*/*',
     };
-
     const config: RequestInit = {
         ...init,
         headers,
@@ -63,7 +66,6 @@ export const fetcher = async (
     };
 
     const requestTimeout = timeout || DEFAULT_TIMEOUT;
-    const selectedBaseURL = init?.baseURL || baseURL;
 
     try {
         const controller = new AbortController();
