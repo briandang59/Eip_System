@@ -16,14 +16,13 @@ interface FabricTestData {
 
 interface ShrinkageRateChartProps {
     data: FabricTestData[];
+    categories: number[];
 }
 
-const ShrinkageRateChart: React.FC<ShrinkageRateChartProps> = ({ data }) => {
+const ShrinkageRateChart: React.FC<ShrinkageRateChartProps> = ({ data, categories }) => {
     const { t } = useTranslationCustom();
-    const categories = data.map((d) => d.test_date);
     const warpData = data.map((d) => parseFloat(d.warp_shrinkage_rate.toFixed(2)));
     const weftData = data.map((d) => parseFloat(d.weft_shrinkage_rate.toFixed(2)));
-
     const options: ApexOptions = {
         chart: {
             type: 'area',

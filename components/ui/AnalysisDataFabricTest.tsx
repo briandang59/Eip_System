@@ -30,19 +30,22 @@ const RenderBlockAnalysis = ({ icon, label, value, color, bgcolor }: RenderBlock
 };
 function AnalysisDataFabricTest({ analysis, isLoading }: AnalysisDataFabricTestProps) {
     const { t } = useTranslationCustom();
-    const { count, horizontalRatio, maxTemp, minTemp, verticalRatio } = useMemo(() => {
-        if (!analysis) {
-            return {
-                count: 0,
-                horizontalRatio: 0,
-                maxTemp: 0,
-                minTemp: 0,
-                verticalRatio: 0,
-            };
-        }
+    const { count, horizontalRatio, maxTemp, minTemp, verticalRatio, arrayTemp, testDataSorted } =
+        useMemo(() => {
+            if (!analysis) {
+                return {
+                    count: 0,
+                    horizontalRatio: 0,
+                    maxTemp: 0,
+                    minTemp: 0,
+                    verticalRatio: 0,
+                    arrayTemp: [],
+                    testDataSorted: [],
+                };
+            }
 
-        return CalculateAnalysisDatFabric(analysis.fabric_test_data);
-    }, [analysis]);
+            return CalculateAnalysisDatFabric(analysis.fabric_test_data);
+        }, [analysis]);
 
     if (isLoading || !analysis) {
         return (
@@ -97,7 +100,7 @@ function AnalysisDataFabricTest({ analysis, isLoading }: AnalysisDataFabricTestP
                     />
                 ))}
             </div>
-            <ShrinkageRateChart data={analysis.fabric_test_data} />
+            <ShrinkageRateChart data={testDataSorted} categories={arrayTemp} />
             <div className="p-4 rounded-[10px] border border-green-700 min-h-[100px]">
                 <h2 className="font-bold">{t.fabric_management_type.analysis.comment}</h2>
                 <p>Comments will be here</p>
