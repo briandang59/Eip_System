@@ -1,16 +1,25 @@
 import { BulletinsResponseType } from '@/types/response/bulletins';
+import { routes } from '@/utils/constants/common/routes';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, Pin } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface BulletinUIProps {
     record: BulletinsResponseType;
 }
 function BulletinUI({ record }: BulletinUIProps) {
-    const isPinned = true;
+    const router = useRouter();
+    const handleRedirect = () => {
+        router.replace(`${routes.bulletins.root}/${record.id}`);
+    };
+    const isPinned = record?.is_pinned;
     const { lang, t } = useTranslationCustom();
     return (
-        <div className="p-4 min-w-4xl rounded-[10px] border border-gray-200 shadow-md h-[200px] flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300">
+        <div
+            className="p-4 min-w-4xl rounded-[10px] border border-gray-200 shadow-md h-[200px] flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300"
+            onClick={() => handleRedirect()}
+        >
             <div className="flex items-center justify-between gap-2">
                 <h3 className="text-[20px] font-bold">
                     {getLocalizedName(record?.title_en, record?.title_zh, record?.title_vn, lang)}

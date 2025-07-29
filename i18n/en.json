@@ -684,6 +684,7 @@
     },
     "bulletins": {
         "pin": "Pin",
-        "pinned": "Pinned"
+        "pinned": "Pinned",
+        "attachments": "Attachments"
     }
 }

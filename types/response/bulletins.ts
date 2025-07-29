@@ -13,6 +13,7 @@ export type BulletinsResponseType = {
     end_date: string;
     work_places: string;
     is_global: boolean;
+    is_pinned: boolean;
     attachments: AttachmentsResponseType[];
 };
 

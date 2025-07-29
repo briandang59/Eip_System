@@ -93,5 +93,6 @@ export const urls = {
     tests: 'tests',
     manage: 'manage',
     bulletins: 'bulletins',
+    bulletin: 'bulletin',
     user_preferences: 'user-preferences',
 };

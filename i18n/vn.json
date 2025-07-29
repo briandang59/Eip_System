@@ -683,6 +683,7 @@
     },
     "bulletins": {
         "pin": "Ghim",
-        "pinned": "Đã ghim"
+        "pinned": "Đã ghim",
+        "attachments": "Tệp đính kèm"
     }
 }

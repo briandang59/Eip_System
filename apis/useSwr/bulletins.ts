@@ -5,8 +5,6 @@ import { BaseResponse } from '@/types/response/baseResponse';
 import qs from 'qs';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 
-const API_URL = `/${urls.manage}/${urls.bulletins}`;
-
 interface Params {
     pageNum?: number;
     pageSize?: number;
@@ -20,6 +18,7 @@ export const useManageBulletins = (params?: Params) => {
         fetcher(url, {
             baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
         });
+    const API_URL = `/${urls.manage}/${urls.bulletins}`;
 
     const { data, error, mutate } = useSWR<BaseResponse<BulletinsResponseType[]>>(
         `${API_URL}${queryString}`,
@@ -33,6 +32,30 @@ export const useManageBulletins = (params?: Params) => {
     const filterData = data?.data?.filter((item) => item.active);
     return {
         bulletins: filterData,
+        isLoading: !error && !data,
+        isError: error,
+        mutate,
+    };
+};
+
+export const useManageBulletinsDetails = (id: string) => {
+    const customFetcher = (url: string) =>
+        fetcher(url, {
+            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
+        });
+    const API_URL = `/${urls.bulletin}/${id}`;
+
+    const { data, error, mutate } = useSWR<BaseResponse<BulletinsResponseType>>(
+        `${API_URL}`,
+        customFetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateIfStale: false,
+            revalidateOnReconnect: false,
+        },
+    );
+    return {
+        bulletinsDetail: data?.data,
         isLoading: !error && !data,
         isError: error,
         mutate,
