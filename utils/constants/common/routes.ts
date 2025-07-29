@@ -1,6 +1,10 @@
 export const routes = {
     home: '/',
     login: '/login',
+    dashboard: {
+        root: '/dashboard',
+        dailyAttendanceStatistics: '/dashboard/daily-attendaces-statistics',
+    },
     hr: {
         root: '/hr',
         employees: '/hr/employees',
@@ -28,6 +32,10 @@ export const routes = {
     rd: {
         root: '/it',
         fabric: '/rd/fabric',
+    },
+    bulletins: {
+        root: '/bulletins',
+        manageBulletins: '/bulletins/manage-bulletins',
     },
     others: {
         root: '/others',

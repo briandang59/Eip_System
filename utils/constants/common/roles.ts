@@ -8,4 +8,5 @@ export enum Roles {
     DEPARTMENT_SHIFT_SCHEDULER = 'department_shift_scheduler',
     SYSTEM_ADMINISTRATOR = 'system_administrator',
     FABRIC_EXPERIMENT_MANAGER = 'rd_fabric_experiment_manager',
+    BULLETINS_BOARD_MANAGER = 'bulletin_board_manager',
 }

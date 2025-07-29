@@ -14,6 +14,14 @@
     },
     "sidebar": {
         "home": "首頁",
+        "dashboard": {
+            "title": "儀表板",
+            "daily_attendance_satistics": "每日出勤統計"
+        },
+        "bulletins": {
+            "title": "公告",
+            "manage_bulletins": "管理公告"
+        },
         "hr": {
             "title": "人力資源",
             "employees": "員工",

@@ -2,7 +2,7 @@ import { Roles } from './roles';
 
 export const menuPermissions: Record<string, Roles[]> = {
     // Dashboard
-    dashboard: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
+    home: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT, Roles.EMPLOYEE],
     '/': [
         Roles.SUPER_USER,
         Roles.HR_MANAGER,
@@ -11,6 +11,12 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.DEPARTMENT_SHIFT_SCHEDULER,
     ],
 
+    dashboard: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
+    'dashboard/daily-attendaces-statistics': [
+        Roles.SUPER_USER,
+        Roles.HR_MANAGER,
+        Roles.HR_ASSISTANT,
+    ],
     // HR Section
     hr: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/employees': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
@@ -45,6 +51,13 @@ export const menuPermissions: Record<string, Roles[]> = {
     ],
     rd: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FABRIC_EXPERIMENT_MANAGER],
     'rd/fabric': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FABRIC_EXPERIMENT_MANAGER],
+
+    bulletins: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.BULLETINS_BOARD_MANAGER],
+    'bulletins/manage-bulletins': [
+        Roles.SUPER_USER,
+        Roles.SYSTEM_ADMINISTRATOR,
+        Roles.BULLETINS_BOARD_MANAGER,
+    ],
 
     // Others
     others: [Roles.SUPER_USER, Roles.MEETING_ROOM_USER],

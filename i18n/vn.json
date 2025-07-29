@@ -14,6 +14,14 @@
     },
     "sidebar": {
         "home": "Trang chủ",
+        "dashboard": {
+            "title": "Bảng điều khiển",
+            "daily_attendance_satistics": "Thống kê chấm công hàng ngày"
+        },
+        "bulletins": {
+            "title": "Thông báo",
+            "manage_bulletins": "Quản lý thông báo"
+        },
         "hr": {
             "title": "Nhân sự",
             "employees": "Nhân viên",

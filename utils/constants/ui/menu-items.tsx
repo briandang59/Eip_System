@@ -26,6 +26,8 @@ import {
     UserSearch,
     FlaskConical,
     PaintBucket,
+    LayoutDashboard,
+    Captions,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -50,14 +52,15 @@ export const useMenuItems = (): MenuItem[] => {
     const { t } = useTranslationCustom();
 
     return [
+        getItem(t?.sidebar?.home || 'home', 'home', <Home strokeWidth={1.5} className="w-4 h-4" />),
         getItem(
-            t?.sidebar?.home || 'Home',
+            t?.sidebar?.dashboard.title || 'Dashboard',
             'dashboard',
-            <Home strokeWidth={1.5} className="w-4 h-4" />,
+            <LayoutDashboard strokeWidth={1.5} className="w-4 h-4" />,
             [
                 getItem(
-                    'Daily Attendance Statistics',
-                    '/',
+                    t.sidebar.dashboard.daily_attendance_satistics,
+                    'dashboard/daily-attendaces-statistics',
                     <ChartBar strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
@@ -166,6 +169,18 @@ export const useMenuItems = (): MenuItem[] => {
                 getItem(
                     t?.sidebar?.rd?.fabric_rd || '',
                     'rd/fabric',
+                    <PaintBucket strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+            ],
+        ),
+        getItem(
+            t?.sidebar?.bulletins?.title || 'Bulletins',
+            'bulletins',
+            <Captions strokeWidth={1.5} className="w-4 h-4" />,
+            [
+                getItem(
+                    t?.sidebar?.bulletins?.manage_bulletins || '',
+                    'bulletins/manage-bulletins',
                     <PaintBucket strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],

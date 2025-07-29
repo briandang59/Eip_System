@@ -11,6 +11,9 @@ const handleLogout = () => {
 
 export const handleMenuClick = (key: string, router: AppRouterInstance) => {
     switch (key) {
+        case 'dashboard/daily-attendaces-statistics':
+            router.push(routes.dashboard.dailyAttendanceStatistics);
+            break;
         case 'hr/employees':
             router.push(routes.hr.employees);
             break;
@@ -59,6 +62,9 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
             break;
         case 'rd/fabric':
             router.push(routes.rd.fabric);
+            break;
+        case 'bulletins/manage-bulletins':
+            router.push(routes.bulletins.manageBulletins);
             break;
         case 'others/meeting':
             router.push(routes.others.meeting);

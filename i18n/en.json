@@ -14,6 +14,14 @@
     },
     "sidebar": {
         "home": "Home",
+        "dashboard": {
+            "title": "Dashboard",
+            "daily_attendance_satistics": "Daily Attendance Statistics"
+        },
+        "bulletins": {
+            "title": "Bulletins",
+            "manage_bulletins": "Manage Bulletins"
+        },
         "hr": {
             "title": "Human Resources",
             "employees": "Employees",

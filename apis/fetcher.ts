@@ -1,6 +1,9 @@
+// fetcher.ts
+
 import Cookies from 'js-cookie';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://10.1.1.155:5588';
+const secondBaseURL = process.env.NEXT_PUBLIC_API_URL_2 || 'http://another-api.example.com';
 export const AUTH_COOKIE = 'auth_token';
 
 interface FetcherError extends Error {
@@ -8,26 +11,21 @@ interface FetcherError extends Error {
     info?: any;
 }
 
-const DEFAULT_TIMEOUT = 60000; // 60 seconds
+const DEFAULT_TIMEOUT = 60000;
 
 async function handleResponse(response: Response) {
     if (!response.ok) {
         const error = new Error('An error occurred while fetching the data.') as FetcherError;
         error.status = response.status;
 
-        if (response.status === 401) {
-            if (typeof window !== 'undefined') {
-                Cookies.remove(AUTH_COOKIE);
-                window.location.href = '/login';
-            }
+        if (response.status === 401 && typeof window !== 'undefined') {
+            Cookies.remove(AUTH_COOKIE);
+            window.location.href = '/login';
         }
 
         try {
             error.info = await response.json();
-            // Add more specific error message if available
-            if (error.info?.message) {
-                error.message = error.info.message;
-            }
+            if (error.info?.message) error.message = error.info.message;
         } catch {
             error.info = await response.text();
         }
@@ -37,15 +35,16 @@ async function handleResponse(response: Response) {
     try {
         return await response.json();
     } catch (error) {
-        // Handle empty response
-        if (response.status === 204) {
-            return null;
-        }
+        if (response.status === 204) return null;
         throw error;
     }
 }
 
-export const fetcher = async (url: string, init?: RequestInit, timeout?: number) => {
+export const fetcher = async (
+    url: string,
+    init?: RequestInit & { baseURL?: string },
+    timeout?: number,
+) => {
     const token = typeof window !== 'undefined' ? Cookies.get(AUTH_COOKIE) : null;
 
     const isFormData = init?.body instanceof FormData;
@@ -64,12 +63,13 @@ export const fetcher = async (url: string, init?: RequestInit, timeout?: number)
     };
 
     const requestTimeout = timeout || DEFAULT_TIMEOUT;
+    const selectedBaseURL = init?.baseURL || baseURL;
 
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), requestTimeout);
 
-        const response = await fetch(`${baseURL}${url}`, {
+        const response = await fetch(`${selectedBaseURL}${url}`, {
             ...config,
             signal: controller.signal,
         });
@@ -81,7 +81,6 @@ export const fetcher = async (url: string, init?: RequestInit, timeout?: number)
             if (error.name === 'AbortError') {
                 throw new Error(`Request timeout (${requestTimeout / 1000}s)`);
             }
-            // Log network errors for debugging
             console.error('Network Error:', error);
             throw error;
         }
@@ -89,10 +88,20 @@ export const fetcher = async (url: string, init?: RequestInit, timeout?: number)
     }
 };
 
-export const fetcherWithBody = async <T>(url: string, { arg }: { arg: any }): Promise<T> => {
+export const fetcherWithBody = async <T>(
+    url: string,
+    {
+        arg,
+        baseURL,
+    }: {
+        arg: any;
+        baseURL?: string;
+    },
+): Promise<T> => {
     return fetcher(url, {
         method: 'POST',
         body: JSON.stringify(arg),
+        baseURL,
     });
 };
 
