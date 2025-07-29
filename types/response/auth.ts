@@ -180,6 +180,9 @@ export interface AuthResponse {
     class: string;
     roles: Role[];
     permission_map: PermissionMap;
+    preferences: {
+        language: string;
+    };
 }
 
 export interface AuthSignInRequest {

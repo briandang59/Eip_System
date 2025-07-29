@@ -91,4 +91,7 @@ export const urls = {
     analysis: 'analysis',
     import: 'import',
     tests: 'tests',
+    manage: 'manage',
+    bulletins: 'bulletins',
+    user_preferences: 'user-preferences',
 };

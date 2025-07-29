@@ -29,6 +29,7 @@ function LoginForm() {
     const router = useRouter();
     const { t } = useTranslationCustom();
     const [isLoading, setIsLoading] = useState(false);
+    const { setLanguage } = useTranslationCustom();
 
     const {
         control,
@@ -53,7 +54,6 @@ function LoginForm() {
             const response = await authService.signin(loginData as AuthSignInRequest);
 
             if (response.token) {
-                // Lưu token trước để systemModeService có thể sử dụng
                 const roles = response.roles.map((role) => role.tag);
                 Cookies.set(AUTH_COOKIE, response.token);
 
@@ -61,8 +61,13 @@ function LoginForm() {
                 localStorage.setItem('user_info', JSON.stringify(response.user_info));
                 localStorage.setItem('roles', JSON.stringify(response.roles));
                 localStorage.setItem('permission_map', JSON.stringify(response.permission_map));
+                const lang = response.preferences.language;
 
-                // Sau khi có token, gọi systemModeService
+                if (lang === 'en' || lang === 'vn' || lang === 'zh') {
+                    setLanguage(lang);
+                    localStorage.setItem('language', lang);
+                }
+
                 try {
                     const systemModeRes = await systemModeService.get();
                     Cookies.set('inspection', JSON.stringify(systemModeRes.inspection));
@@ -71,12 +76,11 @@ function LoginForm() {
                 }
 
                 toast.success(t.form.login_success);
-                router.push(routes.home);
+                router.replace(routes.home);
             } else {
                 toast.error(t.form.login_failed);
             }
         } catch (error: unknown) {
-            console.error('Login error:', error);
             const errorObj = error as { status?: number; message?: string };
             if (errorObj.status === 401) {
                 toast.error(t.form.login_failed_message);
