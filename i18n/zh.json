@@ -41,7 +41,7 @@
         },
         "rd": {
             "title": "實驗室",
-            "fabric_rd": "布料基礎實驗"
+            "fabric_rd": "布種基礎實驗"
         },
         "others": {
             "title": "其他",
@@ -622,11 +622,11 @@
     },
     "fabric_management_type": {
         "form": {
-            "fabric_code": "布料代碼",
+            "fabric_code": "布種代碼",
             "customer": "客戶",
-            "fabric_name": "布料名稱",
-            "fabric_width": "布料寬度",
-            "fabric_weight": "布料克重",
+            "fabric_name": "布種名稱",
+            "fabric_width": "布種寬度",
+            "fabric_weight": "布種克重",
             "warp_density": "經紗密度",
             "weft_density": "緯紗密度",
             "machine_warp_density": "機織經紗密度",
@@ -647,9 +647,9 @@
             "notes": "備註"
         },
         "page": {
-            "add": "新增布料",
-            "modify": "編輯布料",
-            "choose_fabric": "選擇布料",
+            "add": "新增布種",
+            "modify": "編輯布種",
+            "choose_fabric": "選擇布種",
             "pre_wash": "洗前",
             "post_wash": "洗後",
             "ratio": "縮水比例",
@@ -658,7 +658,7 @@
             "data_analysis": "資料分析",
             "create_fabric_test": "新增測試",
             "modify_fabric_test": "編輯測試",
-            "remove": "刪除布料"
+            "remove": "刪除布種"
         },
         "analysis": {
             "title": "測試分析",
