@@ -16,4 +16,5 @@ export type FabricManagementTypeResponseType = {
     updated_at: string | null;
     raw_fabric_width: string | null;
     raw_fabric_weight: string | null;
+    data_source: string | null;
 };

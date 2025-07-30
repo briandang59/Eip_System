@@ -74,10 +74,12 @@ function FabricRd() {
             switch (key) {
                 case 'delete_fabric':
                     if (!selectedFabric) return;
-                    await fabricManagementTypeServices.remove(selectedFabric?.fabric_code);
-                    toast.success('successed');
-                    mutateFabricManagementType();
-                    closeModalConfirm();
+                    if (selectedFabric.data_source !== 'ttri') {
+                        await fabricManagementTypeServices.remove(selectedFabric?.fabric_code);
+                        toast.success('successed');
+                        mutateFabricManagementType();
+                        closeModalConfirm();
+                    }
                 case 'delete_fabric_test':
                     if (!selectedFabricTest) return;
                     await fabricManagementTypeTestServices.remove(selectedFabricTest?.id);
@@ -230,6 +232,7 @@ function FabricRd() {
                                 value: item.fabric_code,
                                 label: item.fabric_code,
                             }))}
+                            showSearch
                         />
                     </div>
                     <Button
@@ -241,6 +244,7 @@ function FabricRd() {
                     <Button
                         icon={<Pen className="!text-blue-700 size-[14px]" />}
                         onClick={() => openModal('modify_fabric', selectedFabric)}
+                        disabled={!selectedFabric || selectedFabric.data_source === 'ttri'}
                     >
                         {t.fabric_management_type.page.modify}
                     </Button>
