@@ -25,30 +25,12 @@ function buildUrl(endpoint: string, params?: Record<string, string>): string {
 export const fetchAPI = {
     get: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {
         const url = buildUrl(endpoint, options.params);
-        const response = await fetcher(url, {
+        // fetcher đã trả về dữ liệu parse sẵn (JSON/object)
+        return fetcher(url, {
             method: 'GET',
             headers: options.headers,
             baseURL: options.baseURL,
         });
-
-        // Nếu là tải file blob
-        if (options.responseType === 'blob') {
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || `HTTP error! status: ${response.status}`);
-            }
-
-            return (await response.blob()) as unknown as T;
-        }
-
-        // Nếu là json hoặc text
-        const text = await response.text();
-
-        if (!response.ok) {
-            throw new Error(text || `HTTP error! status: ${response.status}`);
-        }
-
-        return JSON.parse(text) as T;
     },
 
     post: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {

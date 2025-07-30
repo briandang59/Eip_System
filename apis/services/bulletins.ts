@@ -2,6 +2,7 @@ import { urls } from '@/utils/constants/common/urls';
 import { fetchAPI } from '../fetchAPI';
 import { BaseResponse } from '@/types/response/baseResponse';
 import { BulletinsCreateRequestType, BulletinsModifyRequestType } from '@/types/requests/bulletins';
+import { DownLoadFileResponseType } from '@/types/response/download';
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499';
 export const bulletinsService = {
@@ -92,20 +93,13 @@ export const bulletinsService = {
         }
     },
 
-    download: async (file_name: string): Promise<Blob> => {
+    download: async (file_name: string): Promise<DownLoadFileResponseType> => {
         try {
             const url = `/${urls.manage}/${urls.bulletins}/${urls.download}/${file_name}`;
             const response = await fetchAPI.get(url, {
                 baseURL: baseUrl,
-                responseType: 'blob',
             });
-
-            if (!response.ok) {
-                const text = await response.text(); // Nếu lỗi, đọc lỗi text
-                throw new Error(`HTTP error ${response.status}: ${text}`);
-            }
-
-            return await response.blob(); // Trả về blob
+            return response.data;
         } catch (error) {
             console.error('Fetch error:', error);
             throw error;

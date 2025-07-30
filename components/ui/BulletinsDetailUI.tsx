@@ -1,5 +1,6 @@
 import { bulletinsService } from '@/apis/services/bulletins';
 import { BulletinsResponseType } from '@/types/response/bulletins';
+import { downloadBase64File } from '@/utils/functions/downloadBase64File';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, File } from 'lucide-react';
@@ -14,23 +15,10 @@ function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDeta
 
     const handleDownload = async (name: string) => {
         try {
-            const blob = await bulletinsService.download(name); // blob đã được trả về
-
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-
-            // Lấy tên file mặc định
-            const filename = `${name}.html`; // hoặc để mặc định: 'bulletin.html'
-
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        } catch (err: any) {
-            console.error('❌ Download error:', err.message);
-            alert('Tải file thất bại. Vui lòng thử lại.');
+            const blob = await bulletinsService.download(name);
+            downloadBase64File(blob.base64, blob.filename, blob.mimeType);
+        } catch (error) {
+            toast.error(`${error}`);
         }
     };
 
