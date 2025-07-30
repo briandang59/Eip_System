@@ -5,6 +5,7 @@ type RequestOptions = {
     body?: any;
     headers?: HeadersInit;
     baseURL?: string;
+    responseType?: 'blob' | 'json' | 'text' | 'arraybuffer';
 };
 
 function buildUrl(endpoint: string, params?: Record<string, string>): string {
@@ -24,11 +25,22 @@ function buildUrl(endpoint: string, params?: Record<string, string>): string {
 export const fetchAPI = {
     get: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {
         const url = buildUrl(endpoint, options.params);
-        return fetcher(url, {
+        const response = await fetcher(url, {
             method: 'GET',
             headers: options.headers,
             baseURL: options.baseURL,
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        if (options.responseType === 'blob') {
+            return (await response.blob()) as unknown as T;
+        }
+
+        const text = await response.text();
+        return JSON.parse(text) as T;
     },
 
     post: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {

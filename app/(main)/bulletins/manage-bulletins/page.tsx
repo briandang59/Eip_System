@@ -1,14 +1,16 @@
 'use client';
 import { bulletinsService } from '@/apis/services/bulletins';
 import { useManageBulletins } from '@/apis/useSwr/bulletins';
+import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { GenericTable } from '@/components/common/GenericTable';
 import ModalConfirm from '@/components/common/ModalConfirm';
 import BulletinsForm from '@/components/forms/BulletinsForm';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useBulletinsCols } from '@/utils/constants/cols/bulletinsCols';
-import { Button, Modal } from 'antd';
+import { getInfomation } from '@/utils/functions/getInfomation';
+import { Button, Modal, Select } from 'antd';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 function ManageBulletins() {
@@ -16,12 +18,21 @@ function ManageBulletins() {
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const [selectedBulletin, setSelectedBulletin] = useState<BulletinsResponseType>();
     const [key, setKey] = useState('');
+    const myInfor = useMemo(() => getInfomation(), []);
+
+    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number[]>([]);
+    const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const {
         bulletins,
         isLoading: isLoadingBulletins,
         mutate: mutateBulletins,
-    } = useManageBulletins();
+    } = useManageBulletins({ work_places: `[${selectedWorkPlace.join(',')}]` });
 
+    useEffect(() => {
+        if (myInfor?.work_place_id) {
+            setSelectedWorkPlace([myInfor.work_place_id]);
+        }
+    }, [myInfor]);
     const openModal = (bulletin?: BulletinsResponseType) => {
         setIsOpenModal(true);
         setKey('create');
@@ -45,6 +56,9 @@ function ManageBulletins() {
         setIsOpenModalConfirm(false);
         setSelectedBulletin(undefined);
     };
+    const handleWorkPlaceChange = (value: number[]) => {
+        setSelectedWorkPlace(value);
+    };
 
     const handleConfirmDelete = async () => {
         try {
@@ -63,6 +77,18 @@ function ManageBulletins() {
     return (
         <div className="flex flex-col gap-4">
             <div className="flex items-end gap-2">
+                <Select
+                    className="w-[300px]"
+                    options={workPlaces?.map((item) => ({
+                        label: item.name_en,
+                        value: item.id,
+                    }))}
+                    mode="multiple"
+                    onChange={handleWorkPlaceChange}
+                    loading={isLoadingWorkplace}
+                    placeholder="Select Work Places"
+                    allowClear
+                />
                 <Button
                     onClick={() => openModal()}
                     icon={<Plus className="!text-green-700 size-[14px]" />}

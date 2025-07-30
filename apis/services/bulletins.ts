@@ -95,9 +95,10 @@ export const bulletinsService = {
     download: async (file_name: string): Promise<any> => {
         try {
             const url = `/${urls.manage}/${urls.bulletins}/${urls.download}/${file_name}`;
-            const response = await fetchAPI.get<BaseResponse<any>>(url, {
+            const response = await fetchAPI.get(url, {
                 baseURL: baseUrl,
             });
+            console.log('Download response:', response);
             return response.data;
         } catch (error) {
             throw error;

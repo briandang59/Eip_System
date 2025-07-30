@@ -11,13 +11,28 @@ interface BulletinsDetailUIProps {
 }
 function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDetailUIProps) {
     const { lang, t } = useTranslationCustom();
+
     const handleDownload = async (file_name: string) => {
         try {
-            await bulletinsService.download(file_name);
+            const res = await bulletinsService.download(file_name);
+            console.log('Download response:', res);
+            if (!res) return;
+            const decodedData = atob(res.base64);
+
+            const blob = new Blob([decodedData], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = res.file_name;
+            a.click();
+
+            URL.revokeObjectURL(url);
         } catch (error) {
             toast.error(`Failed to download file: ${error}`);
         }
     };
+
     return (
         <div
             className={`${viewType === 'modal' ? 'min-h-[500px]' : 'shadow-md border-gray-200 min-h-[500px] min-w-[1200px]  border'} flex flex-col justify-between gap-2 mb-4 p-4 rounded-lg bg-white `}
