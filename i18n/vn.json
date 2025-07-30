@@ -684,6 +684,28 @@
     "bulletins": {
         "pin": "Ghim",
         "pinned": "Đã ghim",
-        "attachments": "Tệp đính kèm"
+        "attachments": "Tệp đính kèm",
+        "form": {
+            "title_vn": "Tiêu đề (VN)",
+            "title_en": "Tiêu đề (EN)",
+            "title_zh": "Tiêu đề (ZH)",
+            "content_vn": "Nội dung (VN)",
+            "content_en": "Nội dung (EN)",
+            "content_zh": "Nội dung (ZH)",
+            "start_date": "Ngày bắt đầu",
+            "end_date": "Ngày kết thúc",
+            "status": "Trạng thái",
+            "workplace": "Nơi làm việc",
+            "is_global": "Không cần đăng nhập để xem",
+            "is_not_global": "Cần đăng nhập để xem",
+
+            "global_label": "Có cần đăng nhập để xem không?",
+            "status_active": "Đang hoạt động",
+            "status_inactive": "Không hoạt động",
+            "submit": "Gửi",
+            "cancel": "Hủy",
+            "success": "Gửi yêu cầu thành công",
+            "error": "Gửi yêu cầu thất bại"
+        }
     }
 }

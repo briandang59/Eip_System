@@ -4,6 +4,7 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, Pin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
 
 interface BulletinUIProps {
     record: BulletinsResponseType;
@@ -43,7 +44,14 @@ function BulletinUI({ record }: BulletinUIProps) {
                 </p>
             </div>
             <p className="text-gray-600 line-clamp-4">
-                {getLocalizedName(record?.content_en, record?.content_zh, record?.content_vn, lang)}
+                <ReactMarkdown>
+                    {getLocalizedName(
+                        record?.content_en,
+                        record?.content_zh,
+                        record?.content_vn,
+                        lang,
+                    )}
+                </ReactMarkdown>
             </p>
         </div>
     );

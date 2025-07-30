@@ -4,6 +4,7 @@ type RequestOptions = {
     params?: Record<string, string>;
     body?: any;
     headers?: HeadersInit;
+    baseURL?: string;
 };
 
 function buildUrl(endpoint: string, params?: Record<string, string>): string {
@@ -26,6 +27,7 @@ export const fetchAPI = {
         return fetcher(url, {
             method: 'GET',
             headers: options.headers,
+            baseURL: options.baseURL,
         });
     },
 
@@ -37,6 +39,7 @@ export const fetchAPI = {
         return fetcher(url, {
             method: 'POST',
             body: isFormData ? options.body : JSON.stringify(options.body),
+            baseURL: options.baseURL,
             headers: {
                 ...options.headers,
                 ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
@@ -49,6 +52,7 @@ export const fetchAPI = {
         return fetcher(url, {
             method: 'PUT',
             body: JSON.stringify(options.body),
+            baseURL: options.baseURL,
             headers: options.headers,
         });
     },
@@ -58,6 +62,7 @@ export const fetchAPI = {
         return fetcher(url, {
             method: 'DELETE',
             body: JSON.stringify(options.body),
+            baseURL: options.baseURL,
             headers: options.headers,
         });
     },
@@ -67,6 +72,7 @@ export const fetchAPI = {
         return fetcher(url, {
             method: 'PATCH',
             body: JSON.stringify(options.body),
+            baseURL: options.baseURL,
             headers: options.headers,
         });
     },

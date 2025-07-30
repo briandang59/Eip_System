@@ -38,6 +38,7 @@
         "react-hook-form": "^7.59.0",
         "react-i18next": "^15.5.3",
         "react-json-view-lite": "^2.4.1",
+        "react-markdown": "^10.1.0",
         "sass": "^1.89.2",
         "sonner": "^2.0.5",
         "swr": "^2.3.3",

@@ -685,6 +685,27 @@
     "bulletins": {
         "pin": "Pin",
         "pinned": "Pinned",
-        "attachments": "Attachments"
+        "attachments": "Attachments",
+        "form": {
+            "title_vn": "Title (VN)",
+            "title_en": "Title (EN)",
+            "title_zh": "Title (ZH)",
+            "content_vn": "Content (VN)",
+            "content_en": "Content (EN)",
+            "content_zh": "Content (ZH)",
+            "start_date": "Start Date",
+            "end_date": "End Date",
+            "status": "Status",
+            "workplace": "Workplace",
+            "is_global": "Viewable without login",
+            "is_not_global": "Login required to view",
+            "global_label": "Is login required to view?",
+            "status_active": "Active",
+            "status_inactive": "Inactive",
+            "submit": "Submit",
+            "cancel": "Cancel",
+            "success": "Request submitted successfully",
+            "error": "Request submission failed"
+        }
     }
 }

@@ -31,8 +31,8 @@ function Home() {
         );
     }
     return (
-        <div>
-            <div className="flex items-end gap-2">
+        <div className="flex flex-col gap-4">
+            <div className="flex items-end gap-2 mb-4">
                 <Select
                     options={workPlaces?.map((item) => ({
                         label: item.name_en,
