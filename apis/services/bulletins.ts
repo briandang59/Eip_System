@@ -92,15 +92,22 @@ export const bulletinsService = {
         }
     },
 
-    download: async (file_name: string): Promise<any> => {
+    download: async (file_name: string): Promise<Blob> => {
         try {
             const url = `/${urls.manage}/${urls.bulletins}/${urls.download}/${file_name}`;
             const response = await fetchAPI.get(url, {
                 baseURL: baseUrl,
+                responseType: 'blob',
             });
-            console.log('Download response:', response);
-            return response.data;
+
+            if (!response.ok) {
+                const text = await response.text(); // Nếu lỗi, đọc lỗi text
+                throw new Error(`HTTP error ${response.status}: ${text}`);
+            }
+
+            return await response.blob(); // Trả về blob
         } catch (error) {
+            console.error('Fetch error:', error);
             throw error;
         }
     },

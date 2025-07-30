@@ -31,15 +31,23 @@ export const fetchAPI = {
             baseURL: options.baseURL,
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        // Nếu là tải file blob
         if (options.responseType === 'blob') {
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || `HTTP error! status: ${response.status}`);
+            }
+
             return (await response.blob()) as unknown as T;
         }
 
+        // Nếu là json hoặc text
         const text = await response.text();
+
+        if (!response.ok) {
+            throw new Error(text || `HTTP error! status: ${response.status}`);
+        }
+
         return JSON.parse(text) as T;
     },
 

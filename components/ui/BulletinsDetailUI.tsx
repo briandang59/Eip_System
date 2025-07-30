@@ -12,24 +12,25 @@ interface BulletinsDetailUIProps {
 function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDetailUIProps) {
     const { lang, t } = useTranslationCustom();
 
-    const handleDownload = async (file_name: string) => {
+    const handleDownload = async (name: string) => {
         try {
-            const res = await bulletinsService.download(file_name);
-            console.log('Download response:', res);
-            if (!res) return;
-            const decodedData = atob(res.base64);
+            const blob = await bulletinsService.download(name); // blob đã được trả về
 
-            const blob = new Blob([decodedData], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = res.file_name;
-            a.click();
 
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            toast.error(`Failed to download file: ${error}`);
+            // Lấy tên file mặc định
+            const filename = `${name}.html`; // hoặc để mặc định: 'bulletin.html'
+
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err: any) {
+            console.error('❌ Download error:', err.message);
+            alert('Tải file thất bại. Vui lòng thử lại.');
         }
     };
 

@@ -244,13 +244,13 @@ function FabricRd() {
                     <Button
                         icon={<Pen className="!text-blue-700 size-[14px]" />}
                         onClick={() => openModal('modify_fabric', selectedFabric)}
-                        disabled={!selectedFabric || selectedFabric.data_source === 'ttri'}
                     >
                         {t.fabric_management_type.page.modify}
                     </Button>
                     <Button
                         icon={<Trash className="!text-red-700 size-[14px]" />}
                         onClick={() => openModalConfirm('delete_fabric')}
+                        disabled={!selectedFabric || selectedFabric.data_source === 'ttri'}
                     >
                         {t.fabric_management_type.page.remove}
                     </Button>
