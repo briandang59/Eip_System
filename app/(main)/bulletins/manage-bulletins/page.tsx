@@ -95,6 +95,7 @@ function ManageBulletins() {
                 <BulletinsForm
                     close={closeModal}
                     bulletin={key === 'modify' ? selectedBulletin : undefined}
+                    mutate={mutateBulletins}
                 />
             </Modal>
             <ModalConfirm

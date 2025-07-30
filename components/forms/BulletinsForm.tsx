@@ -9,7 +9,6 @@ import DragAndDropUpload from '../common/DragAndDropUpLoad';
 import { useEffect, useState } from 'react';
 import { RcFile } from 'antd/es/upload';
 import { bulletinsService } from '@/apis/services/bulletins';
-import { plainTextToMarkdown } from '@/utils/functions/plainTextToMarkdown';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useAttachmentsStore } from '@/stores/useAttachmentsStore';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,8 +23,9 @@ const schema = yup
         content_zh: yup.string().required(),
         start_date: yup.string().required(),
         end_date: yup.string().required(),
-        work_places: yup.string().required(),
+        work_places: yup.array(yup.number()).required(),
         is_global: yup.string().required(),
+        is_pinned: yup.string().required(),
     })
     .required();
 
@@ -34,8 +34,9 @@ type FormData = yup.InferType<typeof schema>;
 interface BulletinsFormProps {
     close: () => void;
     bulletin?: BulletinsResponseType;
+    mutate: () => void;
 }
-function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
+function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
     const { t } = useTranslationCustom();
     const [files, setFiles] = useState<RcFile[]>([]);
     const { workPlaces, isLoading: isLoadingWorkPlace } = useWorkPlaces();
@@ -60,8 +61,9 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
                 content_zh: bulletin.content_zh,
                 start_date: bulletin.start_date,
                 end_date: bulletin.end_date,
-                work_places: bulletin.work_places,
+                work_places: bulletin.work_places || [],
                 is_global: String(bulletin.is_global),
+                is_pinned: String(bulletin.is_pinned),
             });
             setAttachments(bulletin.attachments || []);
         }
@@ -71,12 +73,15 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
         try {
             const newData = {
                 ...data,
-                content_vn: plainTextToMarkdown(data.content_vn),
-                content_en: plainTextToMarkdown(data.content_en),
-                content_zh: plainTextToMarkdown(data.content_zh),
+                content_vn: data.content_vn,
+                content_en: data.content_en,
+                content_zh: data.content_zh,
                 is_global: data.is_global === 'true',
-                is_pinned: false,
+                is_pinned: data.is_pinned === 'true',
                 files: files,
+                work_places: (data.work_places || []).filter(
+                    (id): id is number => typeof id === 'number',
+                ),
             };
             if (bulletin) {
                 const modifydBulletin = {
@@ -90,6 +95,7 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
             toast.success(t.bulletins.form.success);
             reset();
             close();
+            mutate();
         } catch (error) {
             toast.error(`${error}`);
         }
@@ -98,6 +104,10 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
     const isGlobalOptions = [
         { label: t.bulletins.form.is_global, value: 'true' },
         { label: t.bulletins.form.is_not_global, value: 'false' },
+    ];
+    const isPinnedOptions = [
+        { label: t.bulletins.yes, value: 'true' },
+        { label: t.bulletins.no, value: 'false' },
     ];
     return (
         <Form
@@ -129,7 +139,7 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
                 error={errors.title_vn?.message}
                 required
             />
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
                 <FormSelect
                     control={control}
                     name="work_places"
@@ -139,6 +149,7 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
                         label: item.name_en,
                         value: item.id,
                     }))}
+                    mode="multiple"
                     loading={isLoadingWorkPlace}
                     required
                 />
@@ -148,6 +159,14 @@ function BulletinsForm({ close, bulletin }: BulletinsFormProps) {
                     label={t.bulletins.form.global_label}
                     size="large"
                     options={isGlobalOptions}
+                    required
+                />
+                <FormSelect
+                    control={control}
+                    name="is_pinned"
+                    label={t.bulletins.is_pinned}
+                    size="large"
+                    options={isPinnedOptions}
                     required
                 />
                 <FormDatePicker

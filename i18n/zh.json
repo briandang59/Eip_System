@@ -685,6 +685,15 @@
         "pin": "釘選",
         "pinned": "已釘選",
         "attachments": "附件",
+        "title": "標題",
+        "content": "內容",
+        "start_date": "開始日期",
+        "end_date": "結束日期",
+        "is_pinned": "置頂",
+        "yes": "是",
+        "no": "否",
+        "back": "返回",
+        "is_global": "需要登入才能查看",
         "form": {
             "title_vn": "標題（越南語）",
             "title_en": "標題（英文）",
@@ -706,5 +715,12 @@
             "success": "提交成功",
             "error": "提交失敗"
         }
+    },
+    "login": {
+        "account_login": "帳號登入",
+        "account": "帳號",
+        "password": "密碼",
+        "please_sign_in": "請登入以繼續",
+        "bulletins_boards": "公告欄"
     }
 }

@@ -686,6 +686,15 @@
         "pin": "Pin",
         "pinned": "Pinned",
         "attachments": "Attachments",
+        "title": "Title",
+        "content": "Content",
+        "start_date": "Start Date",
+        "end_date": "End Date",
+        "is_pinned": "Pinned",
+        "yes": "Yes",
+        "no": "No",
+        "back": "Back",
+        "is_global": "Login required to view",
         "form": {
             "title_vn": "Title (VN)",
             "title_en": "Title (EN)",
@@ -707,5 +716,12 @@
             "success": "Request submitted successfully",
             "error": "Request submission failed"
         }
+    },
+    "login": {
+        "account_login": "Account Login",
+        "account": "Account",
+        "password": "Password",
+        "please_sign_in": " Please sign in to continue",
+        "bulletins_boards": "Bulletin Boards"
     }
 }

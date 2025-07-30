@@ -2,23 +2,35 @@ import { BulletinsResponseType } from '@/types/response/bulletins';
 import { routes } from '@/utils/constants/common/routes';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { Calendar, Pin } from 'lucide-react';
+import { Calendar, File, Pin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
 
 interface BulletinUIProps {
     record: BulletinsResponseType;
+    width?: string;
+    height?: string;
+    viewType?: 'redirect' | 'modal';
+    setSelectedBulletin?: (bulletin: BulletinsResponseType) => void;
 }
-function BulletinUI({ record }: BulletinUIProps) {
+function BulletinUI({
+    record,
+    width = 'min-w-4xl',
+    height,
+    viewType = 'redirect',
+    setSelectedBulletin,
+}: BulletinUIProps) {
     const router = useRouter();
     const handleRedirect = () => {
-        router.replace(`${routes.bulletins.root}/${record.id}`);
+        if (viewType) router.replace(`${routes.bulletins.root}/${record.id}`);
+        if (viewType === 'modal' && setSelectedBulletin) {
+            setSelectedBulletin(record);
+        }
     };
     const isPinned = record?.is_pinned;
     const { lang, t } = useTranslationCustom();
     return (
         <div
-            className="p-4 min-w-4xl rounded-[10px] border border-gray-200 shadow-md h-[200px] flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300"
+            className={`p-4 rounded-[10px] border bg-white border-gray-200 shadow-md h-[200px] flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300 ${width} ${height}`}
             onClick={() => handleRedirect()}
         >
             <div className="flex items-center justify-between gap-2">
@@ -30,12 +42,7 @@ function BulletinUI({ record }: BulletinUIProps) {
                         <Pin className="size-[14px] !text-white" />{' '}
                         <p className="font-medium text-white text-[12px]">{t.bulletins.pinned}</p>
                     </button>
-                ) : (
-                    <button className="rounded-full border border-gray-200 p-[4px_10px] cursor-pointer flex items-center gap-2">
-                        <Pin className="size-[14px] !text-black" />{' '}
-                        <p className="font-medium text-black text-[12px]">{t.bulletins.pin}</p>
-                    </button>
-                )}
+                ) : null}
             </div>
             <div className="flex items-center gap-2">
                 <Calendar className="size-[14px] !text-blue-600" />
@@ -44,15 +51,16 @@ function BulletinUI({ record }: BulletinUIProps) {
                 </p>
             </div>
             <p className="text-gray-600 line-clamp-4">
-                <ReactMarkdown>
-                    {getLocalizedName(
-                        record?.content_en,
-                        record?.content_zh,
-                        record?.content_vn,
-                        lang,
-                    )}
-                </ReactMarkdown>
+                {getLocalizedName(record?.content_en, record?.content_zh, record?.content_vn, lang)}
             </p>
+            {record?.attachments?.length > 0 && (
+                <div className="flex items-center gap-2">
+                    <File className="size-[14px] !text-green-600" />
+                    <p className="text-green-700">
+                        {t.bulletins.attachments} ({record?.attachments?.length}){' '}
+                    </p>
+                </div>
+            )}
         </div>
     );
 }

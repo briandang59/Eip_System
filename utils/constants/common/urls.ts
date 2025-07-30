@@ -95,4 +95,5 @@ export const urls = {
     bulletins: 'bulletins',
     bulletin: 'bulletin',
     user_preferences: 'user-preferences',
+    download: 'download',
 };

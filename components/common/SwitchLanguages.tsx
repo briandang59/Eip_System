@@ -5,13 +5,14 @@ import svgs from '@/assets/svgs';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { toast } from 'sonner';
 import { languagePreferencesService } from '@/apis/services/languagePreferences';
+import { getInfomation } from '@/utils/functions/getInfomation';
 
 const VALID_LANGUAGES = ['en', 'vn', 'zh'] as const;
 type Language = (typeof VALID_LANGUAGES)[number];
 
 const SwitchLanguages = () => {
     const { lang, setLanguage } = useTranslationCustom();
-
+    const myInfo = getInfomation();
     const handleChangeLang = async (value: string) => {
         if (!VALID_LANGUAGES.includes(value as Language)) {
             toast.error('Invalid language selected');
@@ -23,8 +24,12 @@ const SwitchLanguages = () => {
         if (newLang === lang) return;
 
         try {
-            await languagePreferencesService.modify({ language: newLang });
-            setLanguage(newLang);
+            if (myInfo) {
+                await languagePreferencesService.modify({ language: newLang });
+                setLanguage(newLang);
+            } else {
+                setLanguage(newLang);
+            }
         } catch (error) {
             toast.error(`Failed to change language: ${error}`);
         }

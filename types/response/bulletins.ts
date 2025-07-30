@@ -11,7 +11,7 @@ export type BulletinsResponseType = {
     active: boolean;
     start_date: string;
     end_date: string;
-    work_places: string;
+    work_places: number[];
     is_global: boolean;
     is_pinned: boolean;
     attachments: AttachmentsResponseType[];

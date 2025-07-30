@@ -61,3 +61,27 @@ export const useManageBulletinsDetails = (id: string) => {
         mutate,
     };
 };
+
+export const useManageBulletinsPublic = () => {
+    const customFetcher = (url: string) =>
+        fetcher(url, {
+            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
+        });
+    const API_URL = `/${urls.bulletins}`;
+
+    const { data, error, mutate } = useSWR<BaseResponse<BulletinsResponseType[]>>(
+        `${API_URL}`,
+        customFetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateIfStale: false,
+            revalidateOnReconnect: false,
+        },
+    );
+    return {
+        bulletinsPublic: data?.data,
+        isLoading: !error && !data,
+        isError: error,
+        mutate,
+    };
+};

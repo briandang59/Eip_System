@@ -49,11 +49,16 @@ export const fetchAPI = {
 
     put: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {
         const url = buildUrl(endpoint, options.params);
+        const isFormData = options.body instanceof FormData;
+
         return fetcher(url, {
             method: 'PUT',
-            body: JSON.stringify(options.body),
+            body: isFormData ? options.body : JSON.stringify(options.body),
             baseURL: options.baseURL,
-            headers: options.headers,
+            headers: {
+                ...options.headers,
+                ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+            },
         });
     },
 
@@ -69,11 +74,16 @@ export const fetchAPI = {
 
     patch: async <T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> => {
         const url = buildUrl(endpoint, options.params);
+        const isFormData = options.body instanceof FormData;
+
         return fetcher(url, {
             method: 'PATCH',
-            body: JSON.stringify(options.body),
+            body: isFormData ? options.body : JSON.stringify(options.body),
             baseURL: options.baseURL,
-            headers: options.headers,
+            headers: {
+                ...options.headers,
+                ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+            },
         });
     },
 };

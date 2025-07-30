@@ -24,8 +24,8 @@ export const useBulletinsCols = ({
             render: (_text, _record, index) => index + 1,
         },
         {
-            title: t.bulletins.form.title_en,
-            key: 'title_en',
+            title: t.bulletins.title,
+            key: 'title',
             width: 200,
             render: (record: BulletinsResponseType) => (
                 <div className="line-clamp-3">
@@ -34,8 +34,8 @@ export const useBulletinsCols = ({
             ),
         },
         {
-            title: t.bulletins.form.content_en,
-            key: 'content_en',
+            title: t.bulletins.content,
+            key: 'content',
             width: 500,
             render: (record: BulletinsResponseType) => (
                 <div className="line-clamp-3">
@@ -49,21 +49,22 @@ export const useBulletinsCols = ({
                 </div>
             ),
         },
-
         {
-            title: t.bulletins.form.global_label,
+            title: t.bulletins.is_global,
             dataIndex: ['is_global'],
             key: 'is_global',
             width: 200,
-            render: (text: boolean) => <div className="line-clamp-3">{text ? 'yes' : 'no'}</div>,
+            render: (text: boolean) => (
+                <div className="line-clamp-3">{text ? t.bulletins.yes : t.bulletins.no}</div>
+            ),
         },
         {
-            title: t.bulletins.form.global_label,
+            title: t.bulletins.is_pinned,
             dataIndex: ['is_pinned'],
             key: 'is_pinned',
             width: 200,
             render: (text: boolean) => (
-                <div className="line-clamp-3">{text ? 'pinned' : 'not-pin'}</div>
+                <div className="line-clamp-3">{text ? t.bulletins.yes : t.bulletins.no}</div>
             ),
         },
         {
