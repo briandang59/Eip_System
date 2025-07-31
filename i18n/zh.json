@@ -656,7 +656,16 @@
             "err1": "無法取得表格資料",
             "success": "請求發送成功",
             "cancel": "取消",
-            "submit": "送出"
+            "submit": "送出",
+            "save": "保存",
+            "no_selected_fabric": "未選擇布料",
+            "success_new": "新增成功",
+            "success_updated": "更新成功",
+            "success_deleted": "刪除成功",
+            "add_row": "新增列",
+            "delete": "刪除",
+            "confirm_delete": "您確定要刪除嗎？",
+            "ok": "確定"
         },
         "page": {
             "add": "新增布種",
@@ -670,7 +679,9 @@
             "data_analysis": "資料分析",
             "create_fabric_test": "新增測試",
             "modify_fabric_test": "編輯測試",
-            "remove": "刪除布種"
+            "remove": "刪除布種",
+            "normal_table": "一般表格",
+            "excel_table": "Excel 輸入表格"
         },
         "analysis": {
             "title": "測試分析",

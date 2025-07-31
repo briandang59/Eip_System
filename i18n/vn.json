@@ -656,7 +656,16 @@
             "err1": "Không thể lấy dữ liệu bảng",
             "success": "Gửi yêu cầu thành công",
             "cancel": "Huỷ",
-            "submit": "Gửi"
+            "submit": "Gửi",
+            "save": "Lưu",
+            "no_selected_fabric": "Không có vải được chọn",
+            "success_new": "Thêm mới thành công",
+            "success_updated": "Cập nhật thành công",
+            "success_deleted": "Xóa thành công",
+            "add_row": "Thêm dòng mới",
+            "delete": "Xóa",
+            "confirm_delete": "Bạn có chắc muốn xóa?",
+            "ok": "Xác nhận"
         },
         "page": {
             "add": "Thêm vải",
@@ -670,7 +679,9 @@
             "data_analysis": "Phân tích dữ liệu",
             "create_fabric_test": "Thêm thử nghiệm",
             "modify_fabric_test": "Chỉnh sửa thử nghiệm",
-            "remove": "Xóa vải"
+            "remove": "Xóa vải",
+            "normal_table": "Bảng thường",
+            "excel_table": "Nhập liệu excel"
         },
         "analysis": {
             "title": "Thống kê thử nghiệm",

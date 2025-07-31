@@ -657,7 +657,16 @@
             "err1": "Unable to retrieve table data",
             "success": "Request sent successfully",
             "cancel": "Cancel",
-            "submit": "Submit"
+            "submit": "Submit",
+            "save": "Save",
+            "no_selected_fabric": "No fabric selected",
+            "success_new": "Added successfully",
+            "success_updated": "Updated successfully",
+            "success_deleted": "Deleted successfully",
+            "add_row": "Add new row",
+            "delete": "Delete",
+            "confirm_delete": "Are you sure you want to delete?",
+            "ok": "OK"
         },
         "page": {
             "add": "Add fabric",
@@ -671,7 +680,9 @@
             "data_analysis": "Data analysis",
             "create_fabric_test": "Add test",
             "modify_fabric_test": "Edit test",
-            "remove": "Remove fabric"
+            "remove": "Remove fabric",
+            "normal_table": "Normal Table",
+            "excel_table": "Excel Input Table"
         },
         "analysis": {
             "title": "Test Analysis",
