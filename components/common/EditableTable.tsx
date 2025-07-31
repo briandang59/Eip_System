@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useRef, useState, ReactNod
 import type { GetRef, InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import { Button, Form, Input, Popconfirm, Table } from 'antd';
+import { Plus, Save } from 'lucide-react';
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -103,8 +104,10 @@ interface EditableTableProps<T extends { key: React.Key }> {
     onSave: (updatedRow: T) => void;
     onDelete?: (key: React.Key) => void;
     onAdd?: () => void;
+    onSaveAllWithApi: () => void;
     addButtonText?: string;
     removeButtonText?: string;
+    saveButtonText?: string;
     titleDelete?: string;
     okText?: string;
     cancelText?: string;
@@ -115,8 +118,10 @@ export function EditableTable<T extends { key: React.Key }>({
     dataSource,
     onSave,
     onDelete,
+    onSaveAllWithApi,
     onAdd,
     addButtonText = 'Add a row',
+    saveButtonText = 'Save',
     removeButtonText = 'Delete',
     titleDelete = 'Sure to delete?',
     okText = 'Ok',
@@ -168,11 +173,24 @@ export function EditableTable<T extends { key: React.Key }>({
 
     return (
         <div>
-            {onAdd && (
-                <Button onClick={onAdd} type="primary" style={{ marginBottom: 16 }}>
-                    {addButtonText}
+            <div className="flex items-center gap-2 mb-4">
+                {onAdd && (
+                    <Button
+                        onClick={onAdd}
+                        type="primary"
+                        icon={<Plus className="!text-white size-[14px]" />}
+                    >
+                        {addButtonText}
+                    </Button>
+                )}
+                <Button
+                    onClick={onSaveAllWithApi}
+                    type="primary"
+                    icon={<Save className="!text-white size-[14px]" />}
+                >
+                    {saveButtonText}
                 </Button>
-            )}
+            </div>
             <Table<T>
                 components={components}
                 rowClassName={() => 'editable-row'}

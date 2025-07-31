@@ -7,7 +7,6 @@ import { useFabricTestEditTableCols } from '@/utils/constants/cols/fabricTestEdi
 import { toast } from 'sonner';
 import { fabricManagementTypeTestServices } from '@/apis/services/fabricManagementTypeTest';
 import { FabricTypesTestRequestType } from '@/types/requests/fabricTest';
-import { Button } from 'antd';
 
 interface EditableFabricTypeTestResponseType extends FabricTypeTestResponseType {
     key: React.Key;
@@ -179,22 +178,19 @@ function FabricTestMultiImportTable({
 
     return (
         <div className="flex flex-col gap-4 min-h-[400px]">
-            <div className="flex items-start justify-start">
-                <Button onClick={handleSave} type="primary" className="w-[95px]">
-                    {t.fabric_management_type.form.save}
-                </Button>
-            </div>
             <EditableTable
                 columns={columns}
                 dataSource={dataSource}
                 onSave={handleRowEdit}
                 onDelete={handleDelete}
                 onAdd={handleAdd}
+                onSaveAllWithApi={handleSave}
                 titleDelete={t.fabric_management_type.form.confirm_delete}
                 addButtonText={t.fabric_management_type.form.add_row}
                 removeButtonText={t.fabric_management_type.form.delete}
                 okText={t.fabric_management_type.form.ok}
                 cancelText={t.fabric_management_type.form.cancel}
+                saveButtonText={t.fabric_management_type.form.save}
             />
         </div>
     );
