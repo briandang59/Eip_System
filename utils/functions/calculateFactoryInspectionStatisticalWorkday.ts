@@ -4,8 +4,8 @@ import { calculateSGC } from './calculateSGC';
 import { calculateAllH } from './calculateAllH';
 import { calculateMonthH } from './calculateMonthH';
 import { checkSunday } from './checkSunday';
-import { calculateCcanV2 } from './calculateCCAN_V2';
 import { FactoryInspectionAttendance } from '@/types/response/factoryInspectionAttendance';
+import { calculateCcan } from './calculateCCAN';
 
 export const calculateFactoryInspectionStatisticalWorkday = (
     attendance: FactoryInspectionAttendance[],
@@ -100,7 +100,15 @@ export const calculateFactoryInspectionStatisticalWorkday = (
             }
         });
 
-        total_CCAN = calculateCcanV2(total_SGC > 0 ? total_SGC : 0, total_MonthH);
+        // total_CCAN = calculateCcanV2(total_SGC > 0 ? total_SGC : 0, total_MonthH);
+        total_CCAN = calculateCcan(
+            total_SGC > 0 ? total_SGC : 0,
+            total_KP,
+            total_A,
+            total_C,
+            undefined,
+            total_MonthH,
+        );
         return {
             card_number: employeeAttendance[0]?.card_number || '',
             fullname: employeeAttendance[0]?.fullname || '',

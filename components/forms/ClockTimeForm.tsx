@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { useAttendanceModifyReasonList } from '@/apis/useSwr/attendanceModifyReasonList';
 import { attendanceService } from '@/apis/services/attendance';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 interface Params {
     attendance: AttendanceV2Type | null;
@@ -34,7 +35,7 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 function ClockTimeForm({ attendance, mutate, close }: Params) {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
     const { reasonList, isLoading: isLoadingReasonList } = useAttendanceModifyReasonList();
     const [selectedRemoveOption, setSelectedRemoveOption] = useState<number | null>(null);
     const {
@@ -158,7 +159,7 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
                 required
                 options={reasonList?.map((item) => ({
                     value: item.id,
-                    label: item.reason_en,
+                    label: `${getLocalizedName(item?.reason_en, item?.reason_zh, item?.reason_vn, lang)}`,
                 }))}
                 placeholder="Chọn loại nghỉ phép"
                 loading={isLoadingReasonList}

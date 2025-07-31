@@ -16,7 +16,7 @@ export const useManageBulletins = (params?: Params) => {
 
     const customFetcher = (url: string) =>
         fetcher(url, {
-            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
+            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499/api',
         });
     const API_URL = `/${urls.manage}/${urls.bulletins}`;
 
@@ -41,7 +41,7 @@ export const useManageBulletins = (params?: Params) => {
 export const useManageBulletinsDetails = (id: string) => {
     const customFetcher = (url: string) =>
         fetcher(url, {
-            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
+            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499/api',
         });
     const API_URL = `/${urls.bulletin}/${id}`;
 
@@ -65,7 +65,7 @@ export const useManageBulletinsDetails = (id: string) => {
 export const useManageBulletinsPublic = () => {
     const customFetcher = (url: string) =>
         fetcher(url, {
-            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499',
+            baseURL: process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499/api',
         });
     const API_URL = `/${urls.bulletins}`;
 

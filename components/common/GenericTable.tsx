@@ -30,6 +30,7 @@ export interface GenericTableProps<T extends object> {
     pagination?: TableProps<T>['pagination'];
     virtual?: boolean;
     rowSelection?: TableProps<T>['rowSelection']; // Add rowSelection prop
+    className?: string;
 }
 
 // GenericTable component with row selection support
@@ -43,22 +44,25 @@ export function GenericTable<T extends object>({
     pagination,
     virtual = false,
     rowSelection, // Destructure the new rowSelection prop
+    className,
 }: GenericTableProps<T>): JSX.Element {
     const { styles } = useStyle();
 
     return (
-        <Table<T>
-            className={`${styles.customTable} primary-table`}
-            columns={columns}
-            dataSource={dataSource}
-            rowKey={rowKey}
-            scroll={scroll}
-            bordered
-            virtual={virtual}
-            loading={isLoading}
-            summary={summary}
-            pagination={pagination}
-            rowSelection={rowSelection} // Pass rowSelection to Ant Design Table
-        />
+        <div className={`ant-table-wrapper ${className}`}>
+            <Table<T>
+                className={`${styles.customTable} primary-table ${className}`}
+                columns={columns}
+                dataSource={dataSource}
+                rowKey={rowKey}
+                scroll={scroll}
+                bordered
+                virtual={virtual}
+                loading={isLoading}
+                summary={summary}
+                pagination={pagination}
+                rowSelection={rowSelection}
+            />
+        </div>
     );
 }

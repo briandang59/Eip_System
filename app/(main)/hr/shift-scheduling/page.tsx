@@ -376,6 +376,7 @@ export default function ShiftSchedulingPage() {
                         showSizeChanger: true,
                         showQuickJumper: true,
                     }}
+                    className="shift-table"
                 />
             )}
         </ClientOnly>

@@ -4,7 +4,7 @@ import { BaseResponse } from '@/types/response/baseResponse';
 import { BulletinsCreateRequestType, BulletinsModifyRequestType } from '@/types/requests/bulletins';
 import { DownLoadFileResponseType } from '@/types/response/download';
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL_2 || 'http://10.2.1.159:4499/api';
 export const bulletinsService = {
     add: async (data: BulletinsCreateRequestType): Promise<any> => {
         try {

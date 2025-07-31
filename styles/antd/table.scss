@@ -7,3 +7,19 @@
         padding: 4px !important;
     }
 }
+
+.shift-table {
+    .ant-table-wrapper
+        .ant-table.ant-table-bordered
+        > .ant-table-container
+        > .ant-table-body
+        > table
+        > tbody
+        > tr
+        > td {
+        border-inline-end: 1px solid #bfbdbd !important;
+    }
+    .ant-table-wrapper .ant-table-tbody > tr > td {
+        border-bottom: 1px solid #bfbdbd !important;
+    }
+}
