@@ -5,19 +5,22 @@ import { useAnalysisDataFabricTest } from '@/apis/useSwr/analysisDataFabric';
 import { useFabricManagementTypes } from '@/apis/useSwr/fabricManagementType';
 import { useFabricManagementTypesTests } from '@/apis/useSwr/fabricManagementTypeTest';
 import { GenericTable } from '@/components/common/GenericTable';
+import HotTableComponent, { HotTableRef } from '@/components/common/HotTableComponent';
 import ModalConfirm from '@/components/common/ModalConfirm';
 import FabricManagementTypeForm from '@/components/forms/FabricManagementTypeForm';
 import FabricManagementTypeTestForm from '@/components/forms/FabricManagementTypeTestForm';
 import AnalysisDataFabricTest from '@/components/ui/AnalysisDataFabricTest';
 import FabricSectionInformation from '@/components/ui/FabricSectionInformation';
+import { FabricTypesTestRequestType } from '@/types/requests/fabricTest';
 import { FabricManagementTypeResponseType } from '@/types/response/fabricManagementType';
 import { FabricTypeTestResponseType } from '@/types/response/fabricTest';
 import { useFabricTypeTestCols } from '@/utils/constants/cols/fabricTypeTestCols';
+import { useFabricGrid } from '@/utils/constants/grids/fabricGridCols';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileExcelFilled, ReloadOutlined } from '@ant-design/icons';
 import { Button, Modal, Select } from 'antd';
 import { ChartArea, Pen, Plus, Trash } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 function FabricRd() {
@@ -129,6 +132,64 @@ function FabricRd() {
                 setTitle('');
         }
     }, [key, t]);
+    const hotTableRef = useRef<HotTableRef>(null);
+    const { cols, datas, headers } = useFabricGrid();
+    const handleSaveTestFabric = async () => {
+        try {
+            const tableData = hotTableRef.current?.getTableData();
+            if (!tableData) {
+                toast.error(t.fabric_management_type.form.err1);
+                return;
+            }
+
+            const testRecords: FabricTypesTestRequestType[] = [];
+            tableData.forEach((data) => {
+                const isEmptyRow = data.every(
+                    (cell) => cell === '' || cell === null || cell === undefined,
+                );
+                if (isEmptyRow) return;
+                const temperature = Number(data[0]);
+                const duration = Number(data[1]);
+                const pre_wash_weight = Number(data[2]);
+                const post_wash_weight = Number(data[3]);
+                const pre_wash_warp = Number(data[4]);
+                const post_wash_warp = Number(data[5]);
+                const pre_wash_weft = Number(data[6]);
+                const post_wash_weft = Number(data[7]);
+                const test_date = data[8];
+                const notes = data[9];
+                testRecords.push({
+                    temperature,
+                    duration,
+                    pre_wash_warp,
+                    pre_wash_weight,
+                    post_wash_weight,
+                    post_wash_warp,
+                    pre_wash_weft,
+                    post_wash_weft,
+                    test_date,
+                    notes,
+                });
+            });
+
+            if (testRecords.length > 0 && selectedFabric) {
+                try {
+                    await Promise.all(
+                        testRecords.map((item) =>
+                            fabricManagementTypeTestServices.add(item, selectedFabric.fabric_code),
+                        ),
+                    );
+                    toast.success(t.fabric_management_type.form.success);
+                    mutateFabricManagementType();
+                    closeModal();
+                } catch (err) {
+                    toast.error(`${err}`);
+                }
+            }
+        } catch (error) {
+            toast.error(`${error}`);
+        }
+    };
 
     const renderContent = () => {
         switch (key) {
@@ -155,14 +216,30 @@ function FabricRd() {
             case 'create_fabric_test': {
                 return (
                     <>
-                        {selectedFabric && (
+                        {/* {selectedFabric && (
                             <FabricManagementTypeTestForm
                                 key={key + (selectedFabric?.fabric_code ?? '')}
                                 close={closeModal}
                                 mutate={mutatefabricManagemnentTypesTests}
                                 code={selectedFabric?.fabric_code}
                             />
-                        )}
+                        )} */}
+                        <div className="flex flex-col gap-4 overflow-x-auto min-h-[400px]">
+                            <HotTableComponent
+                                ref={hotTableRef}
+                                data={datas}
+                                colHeaders={headers}
+                                columns={cols}
+                            />
+                            <div className="flex justify-end gap-2">
+                                <Button onClick={closeModal}>
+                                    {t.fabric_management_type.form.cancel}
+                                </Button>
+                                <Button type="primary" onClick={handleSaveTestFabric}>
+                                    {t.fabric_management_type.form.submit}
+                                </Button>
+                            </div>
+                        </div>
                     </>
                 );
             }

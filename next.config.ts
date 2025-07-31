@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+    // transpilePackages: ['handsontable', '@handsontable/react'],
+    // swcMinify: false,
     async headers() {
         return [
             {

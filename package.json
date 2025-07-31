@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@ant-design/icons": "5.x",
+        "@handsontable/react": "^16.0.1",
         "@hookform/resolvers": "^5.1.1",
         "@pdf-lib/fontkit": "^1.1.1",
         "@types/lodash": "^4.17.19",
@@ -23,6 +24,7 @@
         "apexcharts": "^5.3.0",
         "clsx": "^2.1.1",
         "dayjs": "^1.11.13",
+        "handsontable": "^16.0.1",
         "i18next": "^25.2.1",
         "js-cookie": "^3.0.5",
         "lodash": "^4.17.21",

@@ -653,7 +653,11 @@
             "pre_wash_weft": "Pre-wash Weft Density",
             "post_wash_weft": "Post-wash Weft Density",
             "test_date": "Test Date",
-            "notes": "Notes"
+            "notes": "Notes",
+            "err1": "Unable to retrieve table data",
+            "success": "Request sent successfully",
+            "cancel": "Cancel",
+            "submit": "Submit"
         },
         "page": {
             "add": "Add fabric",

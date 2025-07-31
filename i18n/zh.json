@@ -652,7 +652,11 @@
             "pre_wash_weft": "洗前緯密",
             "post_wash_weft": "洗後緯密",
             "test_date": "檢測日期",
-            "notes": "備註"
+            "notes": "備註",
+            "err1": "無法取得表格資料",
+            "success": "請求發送成功",
+            "cancel": "取消",
+            "submit": "送出"
         },
         "page": {
             "add": "新增布種",

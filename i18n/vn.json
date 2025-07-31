@@ -652,7 +652,11 @@
             "pre_wash_weft": "Mật độ sợi ngang trước giặt",
             "post_wash_weft": "Mật độ sợi ngang sau giặt",
             "test_date": "Ngày thử nghiệm",
-            "notes": "Ghi chú"
+            "notes": "Ghi chú",
+            "err1": "Không thể lấy dữ liệu bảng",
+            "success": "Gửi yêu cầu thành công",
+            "cancel": "Huỷ",
+            "submit": "Gửi"
         },
         "page": {
             "add": "Thêm vải",
