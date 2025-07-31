@@ -3,11 +3,10 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import { HotTable, HotTableClass } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.min.css';
+import 'handsontable/styles/ht-theme-main.css';
 import { registerAllModules } from 'handsontable/registry';
 registerAllModules();
-// // Định nghĩa interface cho ref
-// import 'handsontable/styles/handsontable.css';
-// import 'handsontable/styles/ht-theme-main.css';
+
 export interface HotTableRef {
     getTableData: () => string[][]; // Phương thức để lấy dữ liệu
 }
