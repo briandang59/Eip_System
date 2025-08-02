@@ -208,8 +208,8 @@ function TakeLeaveForm({
 
     const onSubmit = async (data: FormValueProps) => {
         if (data && employees) {
-            console.log('submit');
             const records = generateDayOffRequests(data, employees[0].uuid);
+
             const LIMIT_HOURS = 10;
             const dateKey = (ts: string) => ts.split(' ')[0];
 
@@ -228,13 +228,11 @@ function TakeLeaveForm({
                 toast.error(t.take_leave.err_2);
                 return;
             }
-            console.log(records);
             if (takeLeaveRecord?.id) {
                 const modifyData = {
                     ...records[0],
                     id: takeLeaveRecord.id,
                 };
-                console.log(modifyData);
                 await dayOffService
                     .modify(modifyData)
                     .then((res) => {
@@ -441,7 +439,7 @@ function TakeLeaveForm({
                         />
                     </div>
                     <Form.Item>
-                        <div className="flex items-center gap-2 justify-end">
+                        <div className="flex items-center gap-2 justify-end mt-4">
                             <Button
                                 htmlType="button"
                                 onClick={() => {

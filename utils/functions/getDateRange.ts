@@ -1,30 +1,50 @@
-/**
- * Trả về mảng ngày liên tiếp giữa startISO và endISO (bao gồm 2 đầu mút)
- * @param isoRange Tuple gồm 2 chuỗi ISO‑8601: [startISO, endISO]
- * @returns string[] Ví dụ: ["2025-07-02", "2025-07-03", "2025-07-04"]
- */
-export function getDateRange(isoRange: string[]): string[] {
-    const [startStr, endStr] = isoRange;
+import dayjs from 'dayjs';
 
-    // Chuẩn hoá thành Date UTC (cắt bỏ giờ‑phút‑giây)
-    const toUTCDate = (iso: string) => {
-        const d = new Date(iso);
-        return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+/**
+ * Trả về mảng ngày liên tiếp giữa startDate và endDate (bao gồm 2 đầu mút)
+ * @param dateRange Tuple gồm 2 chuỗi date: [startDate, endDate] format "YYYY-MM-DD"
+ * @returns string[] Ví dụ: ["2025-07-02", "2025-07-03", "2025-07-04"]
+ *
+ * Fix timezone issue: Sử dụng string manipulation để tránh hoàn toàn timezone issues
+ */
+export function getDateRange(dateRange: string[]): string[] {
+    const [startStr, endStr] = dateRange;
+
+    // Parse date string thành components
+    const parseDate = (dateStr: string) => {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        return { year, month, day };
     };
 
-    let current = toUTCDate(startStr);
-    const end = toUTCDate(endStr);
+    const start = parseDate(startStr);
+    const end = parseDate(endStr);
 
     const result: string[] = [];
-    while (current <= end) {
-        const yyyy = current.getUTCFullYear();
-        const mm = String(current.getUTCMonth() + 1).padStart(2, '0');
-        const dd = String(current.getUTCDate()).padStart(2, '0');
-        result.push(`${yyyy}-${mm}-${dd}`);
+    let current = { ...start };
 
-        // sang ngày kế tiếp (UTC) để tránh lệch múi giờ
-        current.setUTCDate(current.getUTCDate() + 1);
+    while (
+        current.year < end.year ||
+        (current.year === end.year && current.month < end.month) ||
+        (current.year === end.year && current.month === end.month && current.day <= end.day)
+    ) {
+        const dateStr = `${current.year}-${String(current.month).padStart(2, '0')}-${String(current.day).padStart(2, '0')}`;
+        result.push(dateStr);
+
+        // Move to next day
+        const daysInMonth = new Date(current.year, current.month, 0).getDate();
+        current.day++;
+        if (current.day > daysInMonth) {
+            current.day = 1;
+            current.month++;
+            if (current.month > 12) {
+                current.month = 1;
+                current.year++;
+            }
+        }
     }
+
+    // Debug: Log output
+    console.log('getDateRange output:', result);
 
     return result;
 }

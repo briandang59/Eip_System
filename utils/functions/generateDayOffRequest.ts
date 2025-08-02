@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { getDateRange } from './getDateRange';
 
 type ShiftKey = 'A' | 'B' | 'C' | 'D';
@@ -36,7 +37,8 @@ export function generateDayOffRequests(input: InputType, uuid: string): DayoffRe
     const result: DayoffRequestType[] = [];
 
     for (const date of dateList) {
-        const year = new Date(date).getFullYear();
+        // Sử dụng dayjs để lấy year một cách nhất quán
+        const year = dayjs(date).year();
 
         for (const shift of ['A', 'B', 'C', 'D'] as ShiftKey[]) {
             const { hours, time, type_id } = shiftMap[shift];
@@ -44,17 +46,13 @@ export function generateDayOffRequests(input: InputType, uuid: string): DayoffRe
                 const [startTime, endTime] = time;
 
                 const start = `${date} ${startTime}`;
-                const endDate =
-                    endTime < startTime
-                        ? new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000)
-                        : new Date(date);
-                const endStr = `${endDate.toISOString().split('T')[0]} ${endTime}`;
+                const end = `${date} ${endTime}`;
 
                 result.push({
                     uuid,
                     type_id: type_id,
                     start,
-                    end: endStr,
+                    end,
                     hours,
                     memo: '',
                     stay_id: null,

@@ -31,11 +31,18 @@ export default function FormDateRangePicker<T extends FieldValues>({
                         {...field}
                         {...props}
                         value={value ? [dayjs(value[0]), dayjs(value[1])] : null}
-                        onChange={(dates) =>
-                            onChange(
-                                dates ? [dates[0]?.toISOString(), dates[1]?.toISOString()] : null,
-                            )
-                        }
+                        onChange={(dates) => {
+                            if (dates) {
+                                const formattedDates = [
+                                    dates[0]?.format('YYYY-MM-DD'),
+                                    dates[1]?.format('YYYY-MM-DD'),
+                                ];
+
+                                onChange(formattedDates);
+                            } else {
+                                onChange(null);
+                            }
+                        }}
                         status={error ? 'error' : ''}
                         className="w-full"
                     />
