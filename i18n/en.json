@@ -256,6 +256,7 @@
         "required_range_date": "Please select a full 2-day range",
         "err_1": "Leave hours must be greater than 0",
         "err_2": "Leave hours exceed one working day",
+        "err_3": "Please select 1 record to edit",
         "err_insufficient_hours": "Insufficient remaining hours for type B leave",
         "err_exceed_remaining": "Requested hours exceed remaining hours",
         "success": "Request submitted successfully",
@@ -271,7 +272,8 @@
         "reload": "Reload",
         "delete_succcess": "Delete all selected records successed",
         "partial_delete": "Partial deletion successful.",
-        "cannot_delete": "records can't delete"
+        "cannot_delete": "records can't delete",
+        "please_enter_card_number": "Please enter card number to view information"
     },
     "role_and_permission": {
         "manage_role": "Manage Role",

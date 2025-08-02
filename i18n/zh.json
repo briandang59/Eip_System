@@ -255,6 +255,7 @@
         "required_range_date": "請選擇完整的兩天區間",
         "err_1": "請假時數必須大於 0",
         "err_2": "請假時數超過一天工時",
+        "err_3": "請選擇一筆記錄進行編輯",
         "err_insufficient_hours": "B類假期剩餘時數不足",
         "err_exceed_remaining": "請求時數超過剩餘時數",
         "success": "請求提交成功",
@@ -270,7 +271,8 @@
         "reload": "重新載入",
         "delete_succcess": "成功刪除所有選中的記錄",
         "partial_delete": "部分刪除成功",
-        "cannot_delete": "記錄無法刪除"
+        "cannot_delete": "記錄無法刪除",
+        "please_enter_card_number": "請輸入卡號以查看資訊"
     },
     "role_and_permission": {
         "manage_role": "管理角色",

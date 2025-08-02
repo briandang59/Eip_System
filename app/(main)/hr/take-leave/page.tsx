@@ -57,11 +57,29 @@ function TakeLeavePage() {
     };
     const toggleModal = () => {
         setIsOpenModal(!isOpenModal);
-        setSelectedRecordRow([]);
-        setSelectedRowKeys([]);
+        if (!isOpenModal) {
+            setSelectedRecordRow([]);
+            setSelectedRowKeys([]);
+        }
     };
+
     const toggleModalConfirm = () => {
         setIsOpenModalConfirm(!isOpenModalConfirm);
+    };
+
+    const handleAdd = () => {
+        setSelectedRecordRow([]);
+        setSelectedRowKeys([]);
+        setIsOpenModal(true);
+    };
+
+    const handleEdit = () => {
+        if (selectedRowKeys.length !== 1) {
+            toast.error(t.take_leave.err_3);
+            return;
+        }
+
+        setIsOpenModal(true);
     };
 
     const handleConfirm = async () => {
@@ -119,10 +137,10 @@ function TakeLeavePage() {
                     onChange={onChangeDateRange}
                     allowClear={false}
                 />
-                <Button icon={<PlusOutlined className="!text-green-800" />} onClick={toggleModal}>
+                <Button icon={<PlusOutlined className="!text-green-800" />} onClick={handleAdd}>
                     {t.take_leave.add}
                 </Button>
-                <Button icon={<Pen className="!text-blue-800 size-[14px]" />} onClick={toggleModal}>
+                <Button icon={<Pen className="!text-blue-800 size-[14px]" />} onClick={handleEdit}>
                     {t.take_leave.modify}
                 </Button>
                 <Button
@@ -158,8 +176,6 @@ function TakeLeavePage() {
                     mutate={mutate}
                     takeLeaveRecord={selectcedRecordRow[0]}
                     card_number={selectcedRecordRow[0]?.card_number ?? ''}
-                    start={dayjs(dateRange.start).format('YYYY-MM-DD')}
-                    end={dayjs(dateRange.end).format('YYYY-MM-DD')}
                 />
             </Modal>
             <ModalConfirm

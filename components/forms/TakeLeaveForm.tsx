@@ -25,8 +25,7 @@ interface TakeLeaveFormProps {
     takeLeaveRecord?: TakeLeaveResponseType;
     close: () => void;
     mutate?: () => void;
-    start?: string;
-    end?: string;
+    existingDayoffRecords?: TakeLeaveResponseType[];
 }
 
 interface FormValueProps {
@@ -45,8 +44,6 @@ function TakeLeaveForm({
     close,
     mutate,
     takeLeaveRecord,
-    start,
-    end,
 }: TakeLeaveFormProps) {
     const { t, lang } = useTranslationCustom();
     const schema: yup.ObjectSchema<FormValueProps> = yup
@@ -206,22 +203,21 @@ function TakeLeaveForm({
             return undefined;
         }
 
-        // Tính toán range rộng hơn để bao gồm tất cả records
         const now = new Date();
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
-        const endOfYear = new Date(now.getFullYear(), 11, 31);
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
         const params = {
             uuid: employees[0]?.uuid || '',
             work_place_id: employees[0]?.work_place_id || 0,
-            start: startOfYear.toISOString(),
-            end: endOfYear.toISOString(),
+            start: startOfMonth.toISOString(),
+            end: endOfMonth.toISOString(),
         };
 
         return params;
     }, [hasValidCard, employees]);
 
-    const { dayoff, isLoading: isLoadingDayoff } = useDayoff(dayoffParams);
+    const { dayoff } = useDayoff(dayoffParams);
 
     if (!hasValidCard) {
         return (
@@ -244,7 +240,7 @@ function TakeLeaveForm({
                             </div>
                         </div>
                     </div>
-                    <p className="text-gray-500">Vui lòng nhập card number để xem thông tin</p>
+                    <p className="text-gray-500">{t.take_leave.please_enter_card_number}</p>
                 </div>
             </div>
         );
@@ -319,60 +315,31 @@ function TakeLeaveForm({
 
             const totalHoursByDate: Record<string, number> = {};
 
-            console.log('=== DEBUG: Checking existing dayoff records ===');
-            console.log('Dayoff records:', dayoff);
-            console.log('Dayoff records length:', dayoff?.length || 0);
-            console.log('TakeLeaveRecord being edited:', takeLeaveRecord?.id);
-
-            // If no dayoff data, show warning
-            if (!dayoff || dayoff.length === 0) {
-                console.log('WARNING: No dayoff data available for validation');
-            }
-
             if (dayoff) {
                 dayoff.forEach((existingRecord: DayoffType) => {
                     if (takeLeaveRecord?.id && existingRecord.id === takeLeaveRecord.id) {
-                        console.log('Skipping record being edited:', existingRecord.id);
                         return;
                     }
 
                     const key = dateKey(existingRecord.start);
                     const existingHours = existingRecord.hours || 0;
-                    console.log(
-                        `Existing record: ${existingRecord.id}, Date: ${existingRecord.start} -> ${key}, Hours: ${existingHours}`,
-                    );
 
                     totalHoursByDate[key] = (totalHoursByDate[key] || 0) + existingHours;
                 });
             }
 
-            console.log('Total hours after existing records:', totalHoursByDate);
-
-            console.log('=== DEBUG: Adding new records ===');
             records.forEach((rec) => {
                 const key = dateKey(rec.start);
-                console.log(`New record: Date: ${rec.start} -> ${key}, Hours: ${rec.hours}`);
 
                 totalHoursByDate[key] = (totalHoursByDate[key] || 0) + rec.hours;
             });
-
-            console.log('Final total hours by date:', totalHoursByDate);
-
-            console.log('=== DEBUG: Checking limits ===');
-            const exceededDates = Object.entries(totalHoursByDate).filter(([date, hours]) => {
-                const isExceeded = hours > LIMIT_HOURS;
-                console.log(
-                    `Date ${date}: ${hours}h / ${LIMIT_HOURS}h limit - ${isExceeded ? 'EXCEEDED' : 'OK'}`,
-                );
-                return isExceeded;
+            const exceededDates = Object.entries(totalHoursByDate).filter(([, hours]) => {
+                return hours > LIMIT_HOURS;
             });
 
             if (exceededDates.length) {
-                console.log('EXCEEDED DATES:', exceededDates);
                 toast.error(t.take_leave.err_2);
                 return;
-            } else {
-                console.log('All dates are within limit');
             }
 
             if (takeLeaveRecord?.id) {
