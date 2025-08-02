@@ -28,6 +28,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
             render: (_, record: TakeLeaveResponseType) => (
                 <div className="line-clamp-2">{record?.card_number || '-'}</div>
             ),
+            sorter: (a, b) => a.card_number.localeCompare(b.card_number),
         },
         {
             title: t.take_leave.full_name,
@@ -37,6 +38,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
             render: (_, record: TakeLeaveResponseType) => (
                 <div className="line-clamp-2">{record?.applicant.fullname || '-'}</div>
             ),
+            sorter: (a, b) => a.applicant.fullname.localeCompare(b.applicant.fullname),
         },
         {
             title: t.take_leave.unit,
@@ -46,6 +48,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
             render: (_, record: TakeLeaveResponseType) => (
                 <div className="line-clamp-2">{record?.applicant.unit.name_en || '-'}</div>
             ),
+            sorter: (a, b) => a.applicant.unit.name_en.localeCompare(b.applicant.unit.name_en),
         },
         {
             title: t.take_leave.start_time,
@@ -57,6 +60,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
                     {dayjs(record?.start).format('YYYY/MM/DD HH:mm') || '-'}
                 </div>
             ),
+            sorter: (a, b) => a.start.localeCompare(b.start),
         },
         {
             title: t.take_leave.end_time,
@@ -68,6 +72,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
                     {dayjs(record?.end).format('YYYY/MM/DD HH:mm') || '-'}
                 </div>
             ),
+            sorter: (a, b) => a.end.localeCompare(b.end),
         },
         {
             title: t.take_leave.hours,
@@ -77,6 +82,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
             render: (_, record: TakeLeaveResponseType) => (
                 <div className="line-clamp-2">{record?.hours || '-'}</div>
             ),
+            sorter: (a, b) => a.hours - b.hours,
         },
         {
             title: t.take_leave.leave_type,
@@ -88,6 +94,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
                     {record?.leave_type?.code} - {record?.leave_type?.name_vn}
                 </div>
             ),
+            sorter: (a, b) => a.leave_type.code.localeCompare(b.leave_type.code),
         },
         {
             title: t.take_leave.location,
@@ -97,6 +104,8 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
             render: (_, record: TakeLeaveResponseType) => (
                 <div className="line-clamp-2">{record?.applicant?.job_title?.location || '-'}</div>
             ),
+            sorter: (a, b) =>
+                a.applicant.job_title.name_en.localeCompare(b.applicant.job_title.name_en),
         },
         {
             title: t.take_leave.job_title,
@@ -115,6 +124,7 @@ export const useTakeLeaveCols = (): TableColumnsType<TakeLeaveResponseType> => {
             render: (_, record: TakeLeaveResponseType) => (
                 <div className="line-clamp-2">{record?.applicant?.nation?.name_en || '-'}</div>
             ),
+            sorter: (a, b) => a.applicant.nation.name_en.localeCompare(b.applicant.nation.name_en),
         },
     ];
 };

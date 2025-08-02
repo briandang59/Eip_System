@@ -31,7 +31,7 @@ export function generateDateColumns<T>({
             title: dayStr,
             dataIndex: dayStr,
             key: dayStr,
-            width: 40,
+            width: 50,
             onHeaderCell: () => ({
                 className: clsx({
                     '!bg-red-500 !text-white': isSunday,
@@ -54,6 +54,11 @@ export function generateDateColumns<T>({
                 if (manual) return manual;
                 const origin = record[dayStr];
                 return origin ? <span className="text-green-700">{origin}</span> : '';
+            },
+            sorter: (a: T, b: T) => {
+                const aValue = (a as any)[dayStr] || '';
+                const bValue = (b as any)[dayStr] || '';
+                return aValue.localeCompare(bValue);
             },
         });
     }

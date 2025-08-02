@@ -37,6 +37,7 @@ export const useShiftHrCols = ({
             key: 'card_number',
             width: 100,
             fixed: 'left',
+            sorter: (a, b) => a.card_number.localeCompare(b.card_number),
         },
         {
             title: t.role_and_permission.fullname,
@@ -44,6 +45,7 @@ export const useShiftHrCols = ({
             key: 'fullname',
             width: 150,
             fixed: 'left',
+            sorter: (a, b) => a.fullname.localeCompare(b.fullname),
         },
     ];
 
