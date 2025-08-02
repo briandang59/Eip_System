@@ -14,7 +14,7 @@ import FabricTestMultiImportTable from '@/components/ui/FabricTestMultiImportTab
 import { FabricManagementTypeResponseType } from '@/types/response/fabricManagementType';
 import { FabricTypeTestResponseType } from '@/types/response/fabricTest';
 import { useFabricTypeTestCols } from '@/utils/constants/cols/fabricTypeTestCols';
-import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { useTranslationCustom, useFabricTestState } from '@/utils/hooks';
 import { FileExcelFilled, ReloadOutlined } from '@ant-design/icons';
 import { Button, Modal, Select, Tabs } from 'antd';
 import { AppWindow, ChartArea, FileSpreadsheet, Pen, Plus, Trash } from 'lucide-react';
@@ -55,9 +55,10 @@ function FabricRd() {
     const { analysisDataFabricTest, isLoading: isLoadingAnalysisDataFabricTest } =
         useAnalysisDataFabricTest({ code: code });
 
-    const [selectedFabricTest, setSelectedFabricTest] = useState<
-        FabricTypeTestResponseType | undefined
-    >(fabricManagemnentTypesTests?.[0]);
+    // Use custom hook for fabric test state management
+    const { selectedFabricTest, setSelectedFabricTest } = useFabricTestState(
+        fabricManagemnentTypesTests,
+    );
 
     const openModalConfirm = (key: string, record?: FabricTypeTestResponseType) => {
         setKey(key);
@@ -81,12 +82,15 @@ function FabricRd() {
                         mutateFabricManagementType();
                         closeModalConfirm();
                     }
+                    break;
                 case 'delete_fabric_test':
                     if (!selectedFabricTest) return;
                     await fabricManagementTypeTestServices.remove(selectedFabricTest?.id);
                     toast.success('successed');
-                    mutatefabricManagemnentTypesTests();
+                    // Force revalidate the data
+                    await mutatefabricManagemnentTypesTests();
                     closeModalConfirm();
+                    break;
             }
         } catch (error) {
             toast.error(`${error}`);
@@ -107,6 +111,16 @@ function FabricRd() {
         setSelectedFabricTest(undefined);
         setKey('');
     };
+
+    // Enhanced mutate function that ensures proper cache invalidation
+    const handleMutateFabricTests = async () => {
+        try {
+            await mutatefabricManagemnentTypesTests();
+        } catch (error) {
+            console.error('Error mutating fabric tests:', error);
+        }
+    };
+
     const fabricTypeCols = useFabricTypeTestCols({ open: openModal, openModalConfirm });
 
     useEffect(() => {
@@ -160,7 +174,7 @@ function FabricRd() {
                             <FabricManagementTypeTestForm
                                 key={key + (selectedFabric?.fabric_code ?? '')}
                                 close={closeModal}
-                                mutate={mutatefabricManagemnentTypesTests}
+                                mutate={handleMutateFabricTests}
                                 code={selectedFabric?.fabric_code}
                             />
                         )}
@@ -174,7 +188,7 @@ function FabricRd() {
                             <FabricManagementTypeTestForm
                                 key={key + (selectedFabric?.fabric_code ?? '')}
                                 close={closeModal}
-                                mutate={mutatefabricManagemnentTypesTests}
+                                mutate={handleMutateFabricTests}
                                 record={selectedFabricTest}
                                 code={selectedFabric?.fabric_code}
                             />
@@ -229,7 +243,10 @@ function FabricRd() {
                             <Button
                                 icon={<ChartArea className="!text-purple-700 size-[14px]" />}
                                 onClick={() => openModal('analysis')}
-                                disabled={analysisDataFabricTest?.fabric_test_data.length === 0}
+                                disabled={
+                                    analysisDataFabricTest?.fabric_test_data.length === 0 ||
+                                    fabricManagemnentTypesTests?.length === 0
+                                }
                             >
                                 {t.fabric_management_type.page.data_analysis}
                             </Button>
@@ -237,7 +254,7 @@ function FabricRd() {
                         <GenericTable<FabricTypeTestResponseType>
                             columns={fabricTypeCols}
                             dataSource={fabricManagemnentTypesTests || []}
-                            rowKey="stt"
+                            rowKey={(record) => record.id?.toString() || `temp_${Math.random()}`}
                             isLoading={isLoadingfabricManagemnentTypesTests}
                             pagination={{
                                 defaultPageSize: 30,
@@ -261,8 +278,9 @@ function FabricRd() {
                 <>
                     {selectedFabric && fabricManagemnentTypesTests && (
                         <FabricTestMultiImportTable
+                            key={selectedFabric.fabric_code} // Add key to force re-render when fabric changes
                             selectedFabric={selectedFabric}
-                            mutate={mutatefabricManagemnentTypesTests}
+                            mutate={handleMutateFabricTests}
                             fabricManagemnentTypesTests={fabricManagemnentTypesTests}
                         />
                     )}

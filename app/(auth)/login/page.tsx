@@ -51,6 +51,7 @@ function LoginPage() {
                                 key={item.id}
                                 viewType="modal"
                                 setSelectedBulletin={handleClickBulletin}
+                                width="w-full"
                             />
                         ))
                     ) : (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FabricManagementTypeResponseType } from '@/types/response/fabricManagementType';
 import { FabricTypeTestResponseType } from '@/types/response/fabricTest';
@@ -26,16 +26,22 @@ function FabricTestMultiImportTable({
     const { t } = useTranslationCustom();
     const columns = useFabricTestEditTableCols();
 
-    const [dataSource, setDataSource] = useState<EditableFabricTypeTestResponseType[]>(
-        fabricManagemnentTypesTests.map((item, index) => ({
-            ...item,
-            key: item.id.toString() || index.toString(),
-        })),
-    );
-
+    const [dataSource, setDataSource] = useState<EditableFabricTypeTestResponseType[]>([]);
     const [newData, setNewData] = useState<EditableFabricTypeTestResponseType[]>([]);
     const [updatedData, setUpdatedData] = useState<EditableFabricTypeTestResponseType[]>([]);
     const [deletedKeys, setDeletedKeys] = useState<React.Key[]>([]);
+
+    // Reset all state when fabric changes or fabricManagemnentTypesTests changes
+    useEffect(() => {
+        const formattedData = fabricManagemnentTypesTests.map((item, index) => ({
+            ...item,
+            key: item.id ? item.id.toString() : `new_${Date.now()}_${index}`,
+        }));
+        setDataSource(formattedData);
+        setNewData([]);
+        setUpdatedData([]);
+        setDeletedKeys([]);
+    }, [selectedFabric.fabric_code, fabricManagemnentTypesTests]);
 
     const handleRowEdit = (row: EditableFabricTypeTestResponseType) => {
         const isNew = newData.some((item) => item.key === row.key);
@@ -141,15 +147,17 @@ function FabricTestMultiImportTable({
             setNewData([]);
             setUpdatedData([]);
             setDeletedKeys([]);
-            mutate();
+            await mutate();
         } catch (error) {
             toast.error(`${error}`);
         }
     };
 
     const handleAdd = () => {
+        const timestamp = Date.now();
+        const randomId = Math.random().toString(36).substr(2, 9);
         const newRow: EditableFabricTypeTestResponseType = {
-            key: Date.now().toString(),
+            key: `new_${timestamp}_${randomId}`,
             id: 0,
             fabric_code: selectedFabric?.fabric_code || '',
             temperature: 0,

@@ -68,11 +68,14 @@ function FabricManagementTypeTestForm({
         try {
             if (record) {
                 await fabricManagementTypeTestServices.modify(data, record.id);
+                toast.success('Updated successfully');
             } else {
                 await fabricManagementTypeTestServices.add(data, code);
+                toast.success('Created successfully');
             }
-            toast.success('successed');
-            mutate();
+
+            // Ensure mutate is called after successful operation
+            await mutate();
             reset();
             close();
         } catch (error) {

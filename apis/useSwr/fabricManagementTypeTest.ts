@@ -20,6 +20,7 @@ export const useFabricManagementTypesTests = ({ code }: Params) => {
             revalidateOnFocus: false,
             revalidateIfStale: false,
             revalidateOnReconnect: false,
+            dedupingInterval: 0, // Disable deduping to ensure fresh data
         },
     );
 
