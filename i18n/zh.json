@@ -741,5 +741,21 @@
         "password": "密碼",
         "please_sign_in": "請登入以繼續",
         "bulletins_boards": "公告欄"
+    },
+    "shift_scheduling": {
+        "warning_1": "選擇班次前！",
+        "warning_2": "沒有班次被分配！",
+        "success_1": "班次保存成功",
+        "err_1": "保存班次失敗！",
+        "cancel": "取消",
+        "save": "保存",
+        "export": "導出",
+        "date": "日期",
+        "search": "搜索",
+        "workplace": "工作地點",
+        "shift": "班次",
+        "day": "天",
+        "search_employee": "搜索員工…",
+        "unit": "單位"
     }
 }

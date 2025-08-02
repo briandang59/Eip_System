@@ -48,8 +48,11 @@ export const useEmployees = (params?: params, filterParams?: filterParams) => {
         return matchesSearch && matchesState;
     });
 
+    const activeEmployees = filterData?.filter((item) => item.active);
+
     return {
         employees: filterData,
+        activeEmployees,
         isLoading: !error && !data,
         isError: error,
         mutate,

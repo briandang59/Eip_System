@@ -742,5 +742,21 @@
         "password": "Password",
         "please_sign_in": " Please sign in to continue",
         "bulletins_boards": "Bulletin Boards"
+    },
+    "shift_scheduling": {
+        "warning_1": "Select shift before!",
+        "warning_2": "No shift assigned!",
+        "success_1": "Shift saved successfully",
+        "err_1": "Failed to save shift!",
+        "cancel": "Cancel",
+        "save": "Save",
+        "export": "Export excel",
+        "date": "Date",
+        "search": "Search",
+        "workplace": "Workplace",
+        "shift": "Shift",
+        "day": "day",
+        "search_employee": "Search employee…",
+        "unit": "Unit"
     }
 }

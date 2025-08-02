@@ -741,5 +741,21 @@
         "password": "Mật khẩu",
         "please_sign_in": "Vui lòng đăng nhập để tiếp tục",
         "bulletins_boards": "Bảng tin"
+    },
+    "shift_scheduling": {
+        "warning_1": "Chọn ca trước!",
+        "warning_2": "Không có ca nào được gán!",
+        "success_1": "Đã lưu các ca thành công",
+        "err_1": "Lưu ca thất bại!",
+        "cancel": "Huỷ",
+        "save": "Lưu",
+        "export": "Xuất excel",
+        "date": "Ngày",
+        "search": "Tìm kiếm",
+        "workplace": "Nơi làm việc",
+        "shift": "Ca",
+        "day": "ngày",
+        "search_employee": "Tìm nhân viên…",
+        "unit": "Đơn vị"
     }
 }

@@ -29,6 +29,9 @@ import { useLoadingWithDelay } from '@/utils/hooks/useLoadingWithTimeout';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
+import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { useUnits } from '@/apis/useSwr/units';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 interface FormatAssignmentsReturnType {
     create: ShiftCreateRequestType[];
@@ -37,6 +40,7 @@ interface FormatAssignmentsReturnType {
 }
 
 export default function ShiftSchedulingPage() {
+    const { t, lang } = useTranslationCustom();
     const [monthValue, setMonthValue] = useState<Dayjs>(dayjs());
     const [step, setStep] = useState<number>(1);
     const [search, setSearch] = useState<string>('');
@@ -51,7 +55,7 @@ export default function ShiftSchedulingPage() {
     const year = monthValue.year();
     const month = monthValue.month() + 1;
     const daysInMonth = monthValue.daysInMonth();
-
+    const [selectedUnitId, setSelectedUnitId] = useState<number | undefined>(126);
     const { shiftForShiftPage, isLoading: loadingShift } = useShifts();
     const { workPlaces, isLoading: loadingWp } = useWorkPlaces();
     const dateRange = useMemo(
@@ -69,10 +73,13 @@ export default function ShiftSchedulingPage() {
         ...dateRange,
         work_place_id: selectedWorkPlace ?? 0,
     });
-    const { employees, isLoading: loadingEmployees } = useEmployees({
+    const { activeEmployees, isLoading: loadingEmployees } = useEmployees({
+        place_id: selectedWorkPlace ?? 0,
+        unit_id: selectedUnitId ?? 0,
+    });
+    const { units, isLoading: loadingUnits } = useUnits({
         place_id: selectedWorkPlace ?? 0,
     });
-
     const selectedShift = useMemo(
         () => shiftForShiftPage?.find((s) => s.id === selectedShiftId),
         [shiftForShiftPage, selectedShiftId],
@@ -81,19 +88,13 @@ export default function ShiftSchedulingPage() {
     const mergedRows = useMemo(
         () =>
             mergeShiftDates({
-                employees: employees ?? [],
+                employees: activeEmployees ?? [],
                 shifts: shiftsDate ?? [],
                 year,
                 month,
             }),
-        [employees, shiftsDate, year, month],
+        [activeEmployees, shiftsDate, year, month],
     );
-
-    // Debug logs
-    console.log('Selected workplace:', selectedWorkPlace);
-    console.log('Employees:', employees);
-    console.log('Shifts date:', shiftsDate);
-    console.log('Merged rows:', mergedRows);
 
     const filteredRows = useMemo(() => {
         if (!search.trim()) return mergedRows;
@@ -106,7 +107,7 @@ export default function ShiftSchedulingPage() {
     const handleCellClick = useCallback(
         (card: string, day: string) => {
             if (selectedShiftId === undefined || !selectedShift) {
-                toast.warning('Chọn ca trước!');
+                toast.warning(t.shift_scheduling.warning_1);
                 return;
             }
             setAssignments((prev) => {
@@ -123,7 +124,7 @@ export default function ShiftSchedulingPage() {
                 return newAssignments;
             });
         },
-        [selectedShift, selectedShiftId, step, daysInMonth],
+        [selectedShift, selectedShiftId, step, daysInMonth, t],
     );
 
     const handleClear = useCallback(() => {
@@ -239,10 +240,8 @@ export default function ShiftSchedulingPage() {
                 modify,
             }: FormatAssignmentsReturnType = formatAssignments();
 
-            console.log('formatAssignments result:', { create, toDelete, modify });
-
             if (create.length === 0 && toDelete.length === 0 && modify.length === 0) {
-                toast.warning('Không có ca nào được gán!');
+                toast.warning(t.shift_scheduling.warning_2);
                 return;
             }
 
@@ -257,15 +256,22 @@ export default function ShiftSchedulingPage() {
                     await Promise.all(modify.map((item) => shiftService.modify(item)));
                 }
 
-                toast.success('Đã lưu các ca thành công!');
+                toast.success(t.shift_scheduling.success_1);
                 setAssignments({});
                 mutate();
             } catch (err) {
-                toast.error('Lưu ca thất bại!');
+                toast.error(t.shift_scheduling.err_1);
                 console.error(err);
             }
         });
-    }, [run, formatAssignments, mutate]);
+    }, [
+        run,
+        formatAssignments,
+        mutate,
+        t.shift_scheduling.err_1,
+        t.shift_scheduling.success_1,
+        t.shift_scheduling.warning_2,
+    ]);
 
     const debouncedSetMonthValue = useMemo(
         () =>
@@ -306,7 +312,7 @@ export default function ShiftSchedulingPage() {
                     value={selectedWorkPlace}
                     onChange={debouncedSetSelectedWorkPlace}
                     loading={loadingWp}
-                    placeholder="Workplace"
+                    placeholder={t.shift_scheduling.workplace}
                     allowClear
                 />
 
@@ -322,7 +328,19 @@ export default function ShiftSchedulingPage() {
                     value={selectedShiftId}
                     onChange={setSelectedShiftId}
                     loading={loadingShift}
-                    placeholder="Shift"
+                    placeholder={t.shift_scheduling.shift}
+                />
+                <Select
+                    options={units?.map((u) => ({
+                        label: `${u.code} - ${getLocalizedName(u?.name_en, u?.name_zh, u?.name_vn, lang)}`,
+                        value: u.id,
+                    }))}
+                    style={{ width: 190 }}
+                    value={selectedUnitId}
+                    onChange={setSelectedUnitId}
+                    loading={loadingUnits}
+                    placeholder={t.shift_scheduling.unit}
+                    showSearch
                 />
 
                 <InputNumber
@@ -330,7 +348,7 @@ export default function ShiftSchedulingPage() {
                     max={31}
                     value={step}
                     onChange={(value: number | null) => setStep(value ?? 1)}
-                    addonAfter="ngày"
+                    addonAfter={t.shift_scheduling.day}
                     style={{ width: 120 }}
                 />
 
@@ -342,7 +360,7 @@ export default function ShiftSchedulingPage() {
                 />
 
                 <Input.Search
-                    placeholder="Tìm nhân viên…"
+                    placeholder={t.shift_scheduling.search_employee}
                     allowClear
                     style={{ width: 220 }}
                     value={search}
@@ -355,7 +373,7 @@ export default function ShiftSchedulingPage() {
                     onClick={handleClear}
                     icon={<Hand className="size-4" />}
                 >
-                    Huỷ
+                    {t.shift_scheduling.cancel}
                 </Button>
                 <Button
                     disabled={!hasAssign}
@@ -363,17 +381,17 @@ export default function ShiftSchedulingPage() {
                     icon={<Save className="size-4" />}
                     type="primary"
                 >
-                    Lưu
+                    {t.shift_scheduling.save}
                 </Button>
                 <Button
                     icon={<FileExcelOutlined />}
                     onClick={handleExportExcel}
                     disabled={!filteredRows || filteredRows.length === 0}
                 >
-                    Export
+                    {t.shift_scheduling.export}
                 </Button>
             </Space>
-            {isLoading || isLoadingShiftDate || loadingEmployees ? (
+            {isLoading || isLoadingShiftDate || loadingEmployees || loadingUnits ? (
                 <TableSkeleton />
             ) : (
                 <GenericTable<EmployeeRow>
