@@ -124,7 +124,7 @@ export default function ShiftSchedulingPage() {
                 return newAssignments;
             });
         },
-        [selectedShift, selectedShiftId, step, daysInMonth, t],
+        [selectedShift, selectedShiftId, step, daysInMonth, t.shift_scheduling.warning_1],
     );
 
     const handleClear = useCallback(() => {
