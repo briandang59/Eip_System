@@ -256,6 +256,8 @@
         "required_range_date": "Please select a full 2-day range",
         "err_1": "Leave hours must be greater than 0",
         "err_2": "Leave hours exceed one working day",
+        "err_insufficient_hours": "Insufficient remaining hours for type B leave",
+        "err_exceed_remaining": "Requested hours exceed remaining hours",
         "success": "Request submitted successfully",
         "error": "Failed to submit request",
         "start_time": "Start Time",

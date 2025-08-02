@@ -158,6 +158,8 @@ function TakeLeavePage() {
                     mutate={mutate}
                     takeLeaveRecord={selectcedRecordRow[0]}
                     card_number={selectcedRecordRow[0]?.card_number ?? ''}
+                    start={dayjs(dateRange.start).format('YYYY-MM-DD')}
+                    end={dayjs(dateRange.end).format('YYYY-MM-DD')}
                 />
             </Modal>
             <ModalConfirm

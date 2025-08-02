@@ -34,6 +34,10 @@ export const useDayoff = (params?: params) => {
         revalidateOnReconnect: false,
     });
 
+    console.log('useDayoff - API response:', data);
+    console.log('useDayoff - API error:', error);
+    console.log('useDayoff - dayoff data:', data?.data);
+
     return {
         dayoff: data?.data,
         isLoading: !error && !data,

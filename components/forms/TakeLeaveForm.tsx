@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import { dayOffService } from '@/apis/services/dayOff';
 import { TakeLeaveResponseType } from '@/types/response/takeLeave';
 import { useDayoff } from '@/apis/useSwr/dayoff';
+import { DayoffType } from '@/types/response/dayoff';
 
 interface TakeLeaveFormProps {
     card_number?: string;
@@ -24,6 +25,8 @@ interface TakeLeaveFormProps {
     takeLeaveRecord?: TakeLeaveResponseType;
     close: () => void;
     mutate?: () => void;
+    start?: string;
+    end?: string;
 }
 
 interface FormValueProps {
@@ -42,6 +45,8 @@ function TakeLeaveForm({
     close,
     mutate,
     takeLeaveRecord,
+    start,
+    end,
 }: TakeLeaveFormProps) {
     const { t, lang } = useTranslationCustom();
     const schema: yup.ObjectSchema<FormValueProps> = yup
@@ -170,10 +175,8 @@ function TakeLeaveForm({
         return () => debouncedUpdate.cancel();
     }, [debouncedUpdate]);
 
-    // Chỉ tạo các hook khi có card number hợp lệ
     const hasValidCard = card && card.trim();
 
-    // Sử dụng useMemo để tránh tạo lại hook không cần thiết
     const employeeParams = useMemo(() => {
         return hasValidCard ? { card_number: card.toUpperCase() } : undefined;
     }, [hasValidCard, card]);
@@ -184,7 +187,11 @@ function TakeLeaveForm({
         return hasValidCard && employees?.length ? { uuid: employees[0]?.uuid || card } : undefined;
     }, [hasValidCard, employees, card]);
 
-    const { remainHours, isLoading: remainHourLoading } = useRemainHours(remainHoursParams);
+    const {
+        remainHours,
+        isLoading: remainHourLoading,
+        mutate: mutateRemainHours,
+    } = useRemainHours(remainHoursParams);
 
     const dayoffTypeParams = useMemo(() => {
         return hasValidCard && employees?.length
@@ -199,16 +206,16 @@ function TakeLeaveForm({
             return undefined;
         }
 
-        // Tính toán đầu tháng và cuối tháng hiện tại
+        // Tính toán range rộng hơn để bao gồm tất cả records
         const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        const startOfYear = new Date(now.getFullYear(), 0, 1);
+        const endOfYear = new Date(now.getFullYear(), 11, 31);
 
         const params = {
             uuid: employees[0]?.uuid || '',
             work_place_id: employees[0]?.work_place_id || 0,
-            start: startOfMonth.toISOString(),
-            end: endOfMonth.toISOString(),
+            start: startOfYear.toISOString(),
+            end: endOfYear.toISOString(),
         };
 
         return params;
@@ -272,26 +279,102 @@ function TakeLeaveForm({
 
     const onSubmit = async (data: FormValueProps) => {
         if (data && employees) {
+            if (data.hours_B > 0) {
+                const remainingHours = remainHours?.this_year.remain.hours ?? 0;
+                if (remainingHours <= 0) {
+                    toast.error(t.take_leave.err_insufficient_hours);
+                    return;
+                }
+            }
+
             const records = generateDayOffRequests(data, employees[0].uuid);
 
             const LIMIT_HOURS = 10;
-            const dateKey = (ts: string) => ts.split(' ')[0];
+            const dateKey = (ts: string) => {
+                const date = new Date(ts);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const result = `${year}-${month}-${day}`;
+                return result;
+            };
 
-            const totalHoursByDate = records.reduce<Record<string, number>>((acc, rec) => {
-                const key = dateKey(rec.start); // "2025‑07‑11"
-                acc[key] = (acc[key] || 0) + rec.hours;
-                return acc;
-            }, {});
+            if (data.hours_B > 0) {
+                const remainingHours = remainHours?.this_year.remain.hours ?? 0;
 
-            // Kiểm tra ngày nào vượt giới hạn
-            const exceededDates = Object.entries(totalHoursByDate).filter(
-                ([, hours]) => hours > LIMIT_HOURS,
-            );
+                // Check if requested hours exceed remaining hours
+                const totalRequestedHours = records.reduce((total, record) => {
+                    // Check if this is a type B leave request (type_id: 2)
+                    if (record.type_id === 2) {
+                        return total + record.hours;
+                    }
+                    return total;
+                }, 0);
+
+                if (totalRequestedHours > remainingHours) {
+                    toast.error(t.take_leave.err_exceed_remaining);
+                    return;
+                }
+            }
+
+            const totalHoursByDate: Record<string, number> = {};
+
+            console.log('=== DEBUG: Checking existing dayoff records ===');
+            console.log('Dayoff records:', dayoff);
+            console.log('Dayoff records length:', dayoff?.length || 0);
+            console.log('TakeLeaveRecord being edited:', takeLeaveRecord?.id);
+
+            // If no dayoff data, show warning
+            if (!dayoff || dayoff.length === 0) {
+                console.log('WARNING: No dayoff data available for validation');
+            }
+
+            if (dayoff) {
+                dayoff.forEach((existingRecord: DayoffType) => {
+                    if (takeLeaveRecord?.id && existingRecord.id === takeLeaveRecord.id) {
+                        console.log('Skipping record being edited:', existingRecord.id);
+                        return;
+                    }
+
+                    const key = dateKey(existingRecord.start);
+                    const existingHours = existingRecord.hours || 0;
+                    console.log(
+                        `Existing record: ${existingRecord.id}, Date: ${existingRecord.start} -> ${key}, Hours: ${existingHours}`,
+                    );
+
+                    totalHoursByDate[key] = (totalHoursByDate[key] || 0) + existingHours;
+                });
+            }
+
+            console.log('Total hours after existing records:', totalHoursByDate);
+
+            console.log('=== DEBUG: Adding new records ===');
+            records.forEach((rec) => {
+                const key = dateKey(rec.start);
+                console.log(`New record: Date: ${rec.start} -> ${key}, Hours: ${rec.hours}`);
+
+                totalHoursByDate[key] = (totalHoursByDate[key] || 0) + rec.hours;
+            });
+
+            console.log('Final total hours by date:', totalHoursByDate);
+
+            console.log('=== DEBUG: Checking limits ===');
+            const exceededDates = Object.entries(totalHoursByDate).filter(([date, hours]) => {
+                const isExceeded = hours > LIMIT_HOURS;
+                console.log(
+                    `Date ${date}: ${hours}h / ${LIMIT_HOURS}h limit - ${isExceeded ? 'EXCEEDED' : 'OK'}`,
+                );
+                return isExceeded;
+            });
 
             if (exceededDates.length) {
+                console.log('EXCEEDED DATES:', exceededDates);
                 toast.error(t.take_leave.err_2);
                 return;
+            } else {
+                console.log('All dates are within limit');
             }
+
             if (takeLeaveRecord?.id) {
                 const modifyData = {
                     ...records[0],
@@ -304,7 +387,10 @@ function TakeLeaveForm({
                             toast.success(t.take_leave.success);
                             reset();
                             close();
-                            if (mutate) mutate();
+                            if (mutate) {
+                                mutate();
+                                mutateRemainHours();
+                            }
                         }
                     })
                     .catch(() => toast.error(t.take_leave.error));
@@ -316,7 +402,10 @@ function TakeLeaveForm({
                             toast.success(t.take_leave.success);
                             reset();
                             close();
-                            if (mutate) mutate();
+                            if (mutate) {
+                                mutate();
+                                mutateRemainHours();
+                            }
                         }
                     })
                     .catch(() => toast.error(t.take_leave.error));
@@ -429,6 +518,14 @@ function TakeLeaveForm({
                 <h3 className="text-lg font-bold mb-4 border-b border-gray-300 pb-2 text-green-700">
                     {t.take_leave.infor_take_leave}
                 </h3>
+                {(remainHours?.this_year.remain.hours ?? 0) <= 0 && (
+                    <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                        <p className="text-yellow-800 text-sm">
+                            {t.take_leave.err_insufficient_hours}
+                        </p>
+                    </div>
+                )}
+
                 <Form layout="vertical" className="w-full" onFinish={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-4 gap-4">
                         <FormDateRangePicker
@@ -480,10 +577,11 @@ function TakeLeaveForm({
                         <FormSelect
                             control={control}
                             name="hours_B"
-                            label="Giờ nghỉ phép B"
+                            label={`Giờ nghỉ phép B (Còn lại: ${remainHours?.this_year.remain.hours ?? 0}h)`}
                             defaultValue={0}
                             options={hoursOptions}
                             placeholder="Chọn một hoặc nhiều vai trò"
+                            disabled={(remainHours?.this_year.remain.hours ?? 0) <= 0}
                         />
                         <FormSelect
                             control={control}

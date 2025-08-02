@@ -255,6 +255,8 @@
         "required_range_date": "Vui lòng chọn đủ 2 ngày",
         "err_1": "Số giờ nghỉ phải lớn hơn 0",
         "err_2": "Số giờ nghỉ vượt quá 1 ngày công",
+        "err_insufficient_hours": "Không đủ giờ nghỉ phép loại B",
+        "err_exceed_remaining": "Số giờ yêu cầu vượt quá giờ còn lại",
         "success": "Gửi yêu cầu thành công",
         "error": "Gửi yêu cầu thất bại",
         "start_time": "Thời gian bắt đầu",
