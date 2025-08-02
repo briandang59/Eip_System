@@ -48,5 +48,9 @@ export function mergeShiftDates({ employees, shifts, year, month }: Params): Emp
         }
     });
 
-    return Object.values(map);
+    return Object.values(map).sort((a, b) => {
+        const aDate = a['01'] ?? '';
+        const bDate = b['01'] ?? '';
+        return aDate.localeCompare(bDate, undefined, { sensitivity: 'base' });
+    });
 }
