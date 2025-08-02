@@ -16,6 +16,7 @@ import { generateDayOffRequests } from '@/utils/functions/generateDayOffRequest'
 import { toast } from 'sonner';
 import { dayOffService } from '@/apis/services/dayOff';
 import { TakeLeaveResponseType } from '@/types/response/takeLeave';
+import { useDayoff } from '@/apis/useSwr/dayoff';
 
 interface TakeLeaveFormProps {
     card_number?: string;
@@ -169,15 +170,78 @@ function TakeLeaveForm({
         return () => debouncedUpdate.cancel();
     }, [debouncedUpdate]);
 
-    const { employees, isLoading: employeeLoading } = useEmployees({
-        card_number: card.toUpperCase(),
-    });
-    const { remainHours, isLoading: remainHourLoading } = useRemainHours({
-        uuid: (employees && employees[0]?.uuid) || card,
-    });
-    const { dayoffTypes, isLoading: isLoadingDayOffType } = useDayOffType({
-        nation: employees && employees[0]?.nation.name_en,
-    });
+    // Chỉ tạo các hook khi có card number hợp lệ
+    const hasValidCard = card && card.trim();
+
+    // Sử dụng useMemo để tránh tạo lại hook không cần thiết
+    const employeeParams = useMemo(() => {
+        return hasValidCard ? { card_number: card.toUpperCase() } : undefined;
+    }, [hasValidCard, card]);
+
+    const { employees, isLoading: employeeLoading } = useEmployees(employeeParams);
+
+    const remainHoursParams = useMemo(() => {
+        return hasValidCard && employees?.length ? { uuid: employees[0]?.uuid || card } : undefined;
+    }, [hasValidCard, employees, card]);
+
+    const { remainHours, isLoading: remainHourLoading } = useRemainHours(remainHoursParams);
+
+    const dayoffTypeParams = useMemo(() => {
+        return hasValidCard && employees?.length
+            ? { nation: employees[0]?.nation.name_en }
+            : { nation: '' };
+    }, [hasValidCard, employees]);
+
+    const { dayoffTypes, isLoading: isLoadingDayOffType } = useDayOffType(dayoffTypeParams);
+
+    const dayoffParams = useMemo(() => {
+        if (!hasValidCard || !employees?.length) {
+            return undefined;
+        }
+
+        // Tính toán đầu tháng và cuối tháng hiện tại
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+        const params = {
+            uuid: employees[0]?.uuid || '',
+            work_place_id: employees[0]?.work_place_id || 0,
+            start: startOfMonth.toISOString(),
+            end: endOfMonth.toISOString(),
+        };
+
+        return params;
+    }, [hasValidCard, employees]);
+
+    const { dayoff, isLoading: isLoadingDayoff } = useDayoff(dayoffParams);
+
+    if (!hasValidCard) {
+        return (
+            <div>
+                <h1 className="text-2xl font-bold mb-4">{t.take_leave.title}</h1>
+                <div className="flex flex-col gap-4">
+                    <h3 className="text-lg font-bold mb-4 border-b border-gray-300 pb-2 text-green-700">
+                        {t.take_leave.info}
+                    </h3>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div className="col-span-1">
+                            <h4 className="text-[14px] font-medium">{t.take_leave.card_number}</h4>
+                            <div className="w-[150px]">
+                                <Input
+                                    value={card_number || inputValue}
+                                    onChange={handleChange}
+                                    disabled={!!card_number}
+                                    allowClear
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <p className="text-gray-500">Vui lòng nhập card number để xem thông tin</p>
+                </div>
+            </div>
+        );
+    }
 
     const filterDayOffType = dayoffTypes?.filter(
         (item) => item.id !== 1 && item.id !== 2 && item.id !== 3,

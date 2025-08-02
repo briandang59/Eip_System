@@ -45,7 +45,7 @@ const ShrinkageRateChart: React.FC<ShrinkageRateChartProps> = ({ data, categorie
         xaxis: {
             categories,
             title: {
-                text: t.fabric_management_type.analysis.test_date,
+                text: t.fabric_management_type.form.temperature,
             },
         },
         yaxis: {

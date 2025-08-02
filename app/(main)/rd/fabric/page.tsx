@@ -52,8 +52,11 @@ function FabricRd() {
         mutate: mutatefabricManagemnentTypesTests,
     } = useFabricManagementTypesTests({ code: code });
 
-    const { analysisDataFabricTest, isLoading: isLoadingAnalysisDataFabricTest } =
-        useAnalysisDataFabricTest({ code: code });
+    const {
+        analysisDataFabricTest,
+        isLoading: isLoadingAnalysisDataFabricTest,
+        mutate: mutateAnalysisDataFabricTest,
+    } = useAnalysisDataFabricTest({ code: code });
 
     // Use custom hook for fabric test state management
     const { selectedFabricTest, setSelectedFabricTest } = useFabricTestState(
@@ -242,11 +245,10 @@ function FabricRd() {
                             </div>
                             <Button
                                 icon={<ChartArea className="!text-purple-700 size-[14px]" />}
-                                onClick={() => openModal('analysis')}
-                                disabled={
-                                    analysisDataFabricTest?.fabric_test_data.length === 0 ||
-                                    fabricManagemnentTypesTests?.length === 0
-                                }
+                                onClick={() => {
+                                    openModal('analysis');
+                                    mutateAnalysisDataFabricTest();
+                                }}
                             >
                                 {t.fabric_management_type.page.data_analysis}
                             </Button>

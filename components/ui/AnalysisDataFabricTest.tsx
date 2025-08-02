@@ -101,10 +101,6 @@ function AnalysisDataFabricTest({ analysis, isLoading }: AnalysisDataFabricTestP
                 ))}
             </div>
             <ShrinkageRateChart data={testDataSorted} categories={arrayTemp} />
-            <div className="p-4 rounded-[10px] border border-green-700 min-h-[100px]">
-                <h2 className="font-bold">{t.fabric_management_type.analysis.comment}</h2>
-                <p>Comments will be here</p>
-            </div>
         </div>
     );
 }

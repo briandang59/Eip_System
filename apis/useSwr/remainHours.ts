@@ -12,9 +12,11 @@ interface params {
 }
 
 export const useRemainHours = (params?: params) => {
+    // Chỉ gọi API khi có params hợp lệ
+    const shouldFetch = params && params.uuid && params.uuid.trim() !== '';
     const queryString = params ? `?${qs.stringify(params)}` : '';
     const { data, error, mutate } = useSWR<BaseResponse<RemainHoursResponseType>>(
-        `${API_URL}${queryString}`,
+        shouldFetch ? `${API_URL}${queryString}` : null,
         fetcher,
         {
             revalidateOnFocus: false,
