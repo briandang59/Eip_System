@@ -19,12 +19,8 @@ interface filterParams {
 }
 
 export const useEmployees = (params?: params, filterParams?: filterParams) => {
-    // Chỉ gọi API khi có params hợp lệ và card_number có giá trị
-    const shouldFetch =
-        params &&
-        params.card_number &&
-        params.card_number.trim() !== '' &&
-        Object.keys(params).length > 0;
+    // Chỉ gọi API khi có params hợp lệ
+    const shouldFetch = params && Object.keys(params).length > 0;
     const queryString = params ? `?${qs.stringify(params)}` : '';
     const { data, error, mutate } = useSWR<BaseResponse<EmployeeResponseType[]>>(
         shouldFetch ? `${API_URL}${queryString}` : null,

@@ -41,7 +41,9 @@ export default function ShiftSchedulingPage() {
     const [step, setStep] = useState<number>(1);
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 0);
+    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(
+        myInfo?.work_place_id ?? null,
+    );
     const [selectedShiftId, setSelectedShiftId] = useState<number | undefined>(undefined);
     const [assignments, setAssignments] = useState<TempAssignments>({});
     const { isLoading, run } = useLoadingWithDelay({ minDelayMs: 5000, timeoutMs: 10000 });
@@ -65,9 +67,11 @@ export default function ShiftSchedulingPage() {
         mutate,
     } = useShiftsDate({
         ...dateRange,
-        work_place_id: selectedWorkPlace,
+        work_place_id: selectedWorkPlace ?? 0,
     });
-    const { employees } = useEmployees({ place_id: selectedWorkPlace });
+    const { employees, isLoading: loadingEmployees } = useEmployees({
+        place_id: selectedWorkPlace ?? 0,
+    });
 
     const selectedShift = useMemo(
         () => shiftForShiftPage?.find((s) => s.id === selectedShiftId),
@@ -78,12 +82,18 @@ export default function ShiftSchedulingPage() {
         () =>
             mergeShiftDates({
                 employees: employees ?? [],
-                shifts: shiftsDate,
+                shifts: shiftsDate ?? [],
                 year,
                 month,
             }),
         [employees, shiftsDate, year, month],
     );
+
+    // Debug logs
+    console.log('Selected workplace:', selectedWorkPlace);
+    console.log('Employees:', employees);
+    console.log('Shifts date:', shiftsDate);
+    console.log('Merged rows:', mergedRows);
 
     const filteredRows = useMemo(() => {
         if (!search.trim()) return mergedRows;
@@ -267,7 +277,7 @@ export default function ShiftSchedulingPage() {
 
     const debouncedSetSelectedWorkPlace = useMemo(
         () =>
-            debounce((value: number) => {
+            debounce((value: number | null) => {
                 setSelectedWorkPlace(value);
             }, 300),
         [setSelectedWorkPlace],
@@ -297,6 +307,7 @@ export default function ShiftSchedulingPage() {
                     onChange={debouncedSetSelectedWorkPlace}
                     loading={loadingWp}
                     placeholder="Workplace"
+                    allowClear
                 />
 
                 <Select
@@ -362,7 +373,7 @@ export default function ShiftSchedulingPage() {
                     Export
                 </Button>
             </Space>
-            {isLoading || isLoadingShiftDate ? (
+            {isLoading || isLoadingShiftDate || loadingEmployees ? (
                 <TableSkeleton />
             ) : (
                 <GenericTable<EmployeeRow>
