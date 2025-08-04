@@ -31,7 +31,9 @@ export const useManageBulletins = (params?: Params) => {
     );
     const filterData = data?.data?.filter((item) => item.active);
     return {
-        bulletins: filterData,
+        bulletins: filterData?.sort((a, b) =>
+            a.is_pinned === b.is_pinned ? 0 : a.is_pinned ? -1 : 1,
+        ),
         isLoading: !error && !data,
         isError: error,
         mutate,
@@ -79,7 +81,9 @@ export const useManageBulletinsPublic = () => {
         },
     );
     return {
-        bulletinsPublic: data?.data,
+        bulletinsPublic: data?.data?.sort((a, b) =>
+            a.is_pinned === b.is_pinned ? 0 : a.is_pinned ? -1 : 1,
+        ),
         isLoading: !error && !data,
         isError: error,
         mutate,

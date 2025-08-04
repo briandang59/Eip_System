@@ -55,7 +55,7 @@ export const useBulletinsCols = ({
             key: 'is_global',
             width: 200,
             render: (text: boolean) => (
-                <div className="line-clamp-3">{text ? t.bulletins.yes : t.bulletins.no}</div>
+                <div className="line-clamp-3">{text ? t.bulletins.no : t.bulletins.yes}</div>
             ),
         },
         {
