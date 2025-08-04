@@ -2,7 +2,7 @@
 
 import Cookies from 'js-cookie';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://10.1.1.155:5588';
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://10.1.1.155:4430';
 export const AUTH_COOKIE = 'auth_token';
 
 interface FetcherError extends Error {
