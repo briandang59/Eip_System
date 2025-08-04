@@ -273,7 +273,16 @@
         "delete_succcess": "Delete all selected records successed",
         "partial_delete": "Partial deletion successful.",
         "cannot_delete": "records can't delete",
-        "please_enter_card_number": "Please enter card number to view information"
+        "please_enter_card_number": "Please enter card number to view information",
+        "range_date": "Range date",
+        "subtitute": "Substitute",
+        "hours_A": "Hours A",
+        "hours_B": "Hours B",
+        "hours_C": "Hours C",
+        "hours_D": "Hours D",
+        "type": "Leave type",
+        "male": "Male",
+        "female": "Female"
     },
     "role_and_permission": {
         "manage_role": "Manage Role",

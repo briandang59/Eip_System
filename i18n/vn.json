@@ -272,7 +272,16 @@
         "delete_succcess": "Xóa tất cả bản ghi đã chọn thành công",
         "partial_delete": "Xóa một phần thành công",
         "cannot_delete": "bản ghi không thể xóa",
-        "please_enter_card_number": "Vui lòng nhập card number để xem thông tin"
+        "please_enter_card_number": "Vui lòng nhập card number để xem thông tin",
+        "range_date": "Khoảng thời gian",
+        "subtitute": "Thay thế",
+        "male": "Nam",
+        "female": "Nữ",
+        "hours_A": "Giờ A",
+        "hours_B": "Giờ B",
+        "hours_C": "Giờ C",
+        "hours_D": "Giờ D",
+        "type": "Loại nghỉ phép"
     },
     "role_and_permission": {
         "manage_role": "Quản lý vai trò",

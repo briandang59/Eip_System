@@ -415,13 +415,25 @@ function TakeLeaveForm({
                         <div className="col-span-1">
                             <h4 className="text-[14px] font-medium">{t.take_leave.sex}</h4>
                             <p className="text-[14px]">
-                                {card && employees?.[0]?.gender ? 'Male' : 'Female'}
+                                {card && employees?.[0]?.gender
+                                    ? t.take_leave.male
+                                    : t.take_leave.female}
                             </p>
                         </div>
                         <div className="col-span-1">
                             <h4 className="text-[14px] font-medium">{t.take_leave.nation}</h4>
                             <p className="text-[14px]">
-                                {(card && employees?.[0]?.nation.name_en) ?? ''}
+                                {(() => {
+                                    if (card && employees?.[0]?.nation) {
+                                        return getLocalizedName(
+                                            employees[0].nation.name_en,
+                                            employees[0].nation.name_zh,
+                                            employees[0].nation.name_vn,
+                                            lang,
+                                        );
+                                    }
+                                    return '';
+                                })()}
                             </p>
                         </div>
                         <div className="col-span-1">
@@ -434,7 +446,12 @@ function TakeLeaveForm({
                                         employees.length > 0 &&
                                         employees[0].unit
                                     ) {
-                                        return employees[0].unit.name_en;
+                                        return getLocalizedName(
+                                            employees[0].unit.name_en,
+                                            employees[0].unit.name_zh,
+                                            employees[0].unit.name_vn,
+                                            lang,
+                                        );
                                     }
                                     return '';
                                 })()}
@@ -443,7 +460,17 @@ function TakeLeaveForm({
                         <div className="col-span-1">
                             <h4 className="text-[14px] font-medium">{t.take_leave.job_title}</h4>
                             <p className="text-[14px]">
-                                {(card && employees?.[0]?.job_title.name_en) ?? ''}
+                                {(() => {
+                                    if (card && employees?.[0]?.job_title) {
+                                        return getLocalizedName(
+                                            employees[0].job_title.name_en,
+                                            employees[0].job_title.name_zh,
+                                            employees[0].job_title.name_vn,
+                                            lang,
+                                        );
+                                    }
+                                    return '';
+                                })()}
                             </p>
                         </div>
                     </div>
@@ -498,7 +525,7 @@ function TakeLeaveForm({
                         <FormDateRangePicker
                             control={control}
                             name="range_date"
-                            label="Khoảng thời gian"
+                            label={t.take_leave.range_date}
                             required
                             allowClear
                             format="DD/MM/YYYY"
@@ -508,7 +535,7 @@ function TakeLeaveForm({
                             <FormSelect
                                 control={control}
                                 name="type"
-                                label="Loại nghỉ phép"
+                                label={t.take_leave.type}
                                 options={
                                     filterDayOffType?.map((item) => ({
                                         value: item.id,
@@ -520,51 +547,51 @@ function TakeLeaveForm({
                                         )}`,
                                     })) ?? []
                                 }
-                                placeholder="Chọn loại nghỉ phép"
+                                placeholder={t.take_leave.type}
                                 loading={isLoadingDayOffType}
                             />
                         ) : null}
                         <FormSelect
                             control={control}
                             name="subtitute"
-                            label="Thay thế"
+                            label={t.take_leave.subtitute}
                             options={[]}
-                            placeholder="Chọn một hoặc nhiều vai trò"
+                            placeholder={t.take_leave.subtitute}
                         />
                     </div>
                     <div className="grid grid-cols-4 gap-4">
                         <FormSelect
                             control={control}
                             name="hours_A"
-                            label="Giờ nghỉ phép A"
+                            label={t.take_leave.hours_A}
                             defaultValue={0}
                             options={hoursOptions}
-                            placeholder="Chọn một hoặc nhiều vai trò"
+                            placeholder={t.take_leave.hours_A}
                         />
                         <FormSelect
                             control={control}
                             name="hours_B"
-                            label={`Giờ nghỉ phép B (Còn lại: ${remainHours?.this_year.remain.hours ?? 0}h)`}
+                            label={`${t.take_leave.hours_B} (Còn lại: ${remainHours?.this_year.remain.hours ?? 0}h)`}
                             defaultValue={0}
                             options={hoursOptions}
-                            placeholder="Chọn một hoặc nhiều vai trò"
+                            placeholder={t.take_leave.hours_B}
                             disabled={(remainHours?.this_year.remain.hours ?? 0) <= 0}
                         />
                         <FormSelect
                             control={control}
                             name="hours_C"
-                            label="Giờ nghỉ phép C"
+                            label={t.take_leave.hours_C}
                             defaultValue={0}
                             options={hoursOptions}
-                            placeholder="Chọn một hoặc nhiều vai trò"
+                            placeholder={t.take_leave.hours_C}
                         />
                         <FormSelect
                             control={control}
                             name="hours_D"
-                            label="Giờ nghỉ phép D"
+                            label={t.take_leave.hours_D}
                             defaultValue={0}
                             options={hoursOptions}
-                            placeholder="Chọn một hoặc nhiều vai trò"
+                            placeholder={t.take_leave.hours_D}
                         />
                     </div>
                     <Form.Item>

@@ -272,7 +272,16 @@
         "delete_succcess": "成功刪除所有選中的記錄",
         "partial_delete": "部分刪除成功",
         "cannot_delete": "記錄無法刪除",
-        "please_enter_card_number": "請輸入卡號以查看資訊"
+        "please_enter_card_number": "請輸入卡號以查看資訊",
+        "range_date": "日期範圍",
+        "subtitute": "替代",
+        "hours_A": "小時 A",
+        "hours_B": "小時 B",
+        "hours_C": "小時 C",
+        "hours_D": "小時 D",
+        "type": "休假類型",
+        "male": "男",
+        "female": "女"
     },
     "role_and_permission": {
         "manage_role": "管理角色",
