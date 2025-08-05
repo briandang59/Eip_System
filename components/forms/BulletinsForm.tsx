@@ -2,7 +2,7 @@ import { Button, Form } from 'antd';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as yup from 'yup';
-import { FormDatePicker, FormInput, FormSelect, FormTextArea } from '../formsComponent';
+import { FormDatePicker, FormInput, FormSelect } from '../formsComponent';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import DragAndDropUpload from '../common/DragAndDropUpLoad';
