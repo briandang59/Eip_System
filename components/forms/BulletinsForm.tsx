@@ -13,14 +13,18 @@ import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useAttachmentsStore } from '@/stores/useAttachmentsStore';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+const EditorComponent = dynamic(() => import('@/components/common/EditorComponent'), {
+    ssr: false,
+});
+import { OutputData } from '@editorjs/editorjs';
+import dynamic from 'next/dynamic';
+
 const schema = yup
     .object({
         title_vn: yup.string().required(),
         title_en: yup.string().required(),
         title_zh: yup.string().required(),
-        content_vn: yup.string().required(),
-        content_en: yup.string().required(),
-        content_zh: yup.string().required(),
+
         start_date: yup.string().required(),
         end_date: yup.string().required(),
         work_places: yup.array(yup.number()).required(),
@@ -41,6 +45,17 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
     const [files, setFiles] = useState<RcFile[]>([]);
     const { workPlaces, isLoading: isLoadingWorkPlace } = useWorkPlaces();
     const { setAttachments, attachments } = useAttachmentsStore();
+    const [contentZH, setContentZH] = useState<OutputData>({
+        blocks: [],
+    });
+    const [contentEN, setContentEN] = useState<OutputData>({
+        blocks: [],
+    });
+
+    const [contentVN, setContentVN] = useState<OutputData>({
+        blocks: [],
+    });
+
     const {
         control,
         handleSubmit,
@@ -56,9 +71,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 title_vn: bulletin.title_vn,
                 title_en: bulletin.title_en,
                 title_zh: bulletin.title_zh,
-                content_vn: bulletin.content_vn,
-                content_en: bulletin.content_en,
-                content_zh: bulletin.content_zh,
+
                 start_date: bulletin.start_date,
                 end_date: bulletin.end_date,
                 work_places: bulletin.work_places || [],
@@ -73,9 +86,9 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         try {
             const newData = {
                 ...data,
-                content_vn: data.content_vn,
-                content_en: data.content_en,
-                content_zh: data.content_zh,
+                content_vn: JSON.stringify(contentVN),
+                content_en: JSON.stringify(contentEN),
+                content_zh: JSON.stringify(contentZH),
                 is_global: data.is_global === 'true',
                 is_pinned: data.is_pinned === 'true',
                 files: files,
@@ -184,29 +197,26 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     size="large"
                 />
             </div>
-            <FormTextArea
-                control={control}
-                name="content_en"
+            <EditorComponent
+                data={contentEN}
+                onChange={(data) => {
+                    setContentEN(data);
+                }}
                 label={t.bulletins.form.content_en}
-                size="large"
-                required
-                rows={6}
             />
-            <FormTextArea
-                control={control}
-                name="content_zh"
+            <EditorComponent
+                data={contentZH}
+                onChange={(data) => {
+                    setContentZH(data);
+                }}
                 label={t.bulletins.form.content_zh}
-                size="large"
-                required
-                rows={6}
             />
-            <FormTextArea
-                control={control}
-                name="content_vn"
+            <EditorComponent
+                data={contentVN}
+                onChange={(data) => {
+                    setContentVN(data);
+                }}
                 label={t.bulletins.form.content_vn}
-                size="large"
-                required
-                rows={6}
             />
             <DragAndDropUpload setFileListOutside={setFiles} />
             <div className="flex flex-col gap-2">
