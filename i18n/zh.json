@@ -744,6 +744,8 @@
             "end_date": "結束日期",
             "status": "狀態",
             "workplace": "工作地點",
+            "departments": "部門",
+            "target_user": "員工",
             "is_global": "無需登入即可查看",
             "is_not_global": "需登入後查看",
             "global_label": "需要登入才能查看嗎？",

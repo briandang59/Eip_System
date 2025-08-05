@@ -88,6 +88,7 @@ export const useBulletinsCols = ({
             dataIndex: 'actions',
             key: 'actions',
             width: 40,
+            fixed: 'right',
             render: (_, record: BulletinsResponseType) => {
                 return (
                     <div className="flex items-center gap-2">

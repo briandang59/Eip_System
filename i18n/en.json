@@ -745,6 +745,8 @@
             "end_date": "End Date",
             "status": "Status",
             "workplace": "Workplace",
+            "departments": "Departments",
+            "target_user": "Employees",
             "is_global": "Viewable without login",
             "is_not_global": "Login required to view",
             "global_label": "Is login required to view?",

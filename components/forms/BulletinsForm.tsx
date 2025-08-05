@@ -18,16 +18,20 @@ const EditorComponent = dynamic(() => import('@/components/common/EditorComponen
 });
 import { OutputData } from '@editorjs/editorjs';
 import dynamic from 'next/dynamic';
+import { useUnits } from '@/apis/useSwr/units';
+import { useEmployees } from '@/apis/useSwr/employees';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 const schema = yup
     .object({
         title_vn: yup.string().required(),
         title_en: yup.string().required(),
         title_zh: yup.string().required(),
-
         start_date: yup.string().required(),
         end_date: yup.string().required(),
         work_places: yup.array(yup.number()).required(),
+        departments: yup.array(yup.number()).required(),
+        target_employee: yup.array(yup.string()).required(),
         is_global: yup.string().required(),
         is_pinned: yup.string().required(),
     })
@@ -41,7 +45,7 @@ interface BulletinsFormProps {
     mutate: () => void;
 }
 function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
     const [files, setFiles] = useState<RcFile[]>([]);
     const { workPlaces, isLoading: isLoadingWorkPlace } = useWorkPlaces();
     const { setAttachments, attachments } = useAttachmentsStore();
@@ -71,16 +75,25 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 title_vn: bulletin.title_vn,
                 title_en: bulletin.title_en,
                 title_zh: bulletin.title_zh,
-
                 start_date: bulletin.start_date,
                 end_date: bulletin.end_date,
                 work_places: bulletin.work_places || [],
+                departments: bulletin.departments || [],
+                target_employee: bulletin.target_employee || [],
                 is_global: String(bulletin.is_global),
                 is_pinned: String(bulletin.is_pinned),
             });
             setAttachments(bulletin.attachments || []);
         }
     }, [reset, bulletin, setAttachments]);
+
+    // const workplace_id = useWatch({
+    //     name: 'work_places',
+    //     control: control,
+    // });
+
+    const { units, isLoading: isLoadingUnits } = useUnits();
+    const { employees, isLoading: isLoadingEmployees } = useEmployees();
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -164,6 +177,32 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     }))}
                     mode="multiple"
                     loading={isLoadingWorkPlace}
+                    required
+                />
+                <FormSelect
+                    control={control}
+                    name="departments"
+                    label={t.bulletins.form.departments}
+                    size="large"
+                    options={units?.map((item) => ({
+                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
+                        value: item.id,
+                    }))}
+                    mode="multiple"
+                    loading={isLoadingUnits}
+                    required
+                />
+                <FormSelect
+                    control={control}
+                    name="target_employee"
+                    label={t.bulletins.form.target_user}
+                    size="large"
+                    options={employees?.map((item) => ({
+                        label: `${item.card_number} - ${item.fullname}`,
+                        value: item.uuid,
+                    }))}
+                    mode="multiple"
+                    loading={isLoadingEmployees}
                     required
                 />
                 <FormSelect

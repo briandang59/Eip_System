@@ -744,6 +744,8 @@
             "end_date": "Ngày kết thúc",
             "status": "Trạng thái",
             "workplace": "Nơi làm việc",
+            "departments": "Phòng ban",
+            "target_user": "Nhân viên",
             "is_global": "Không cần đăng nhập để xem",
             "is_not_global": "Cần đăng nhập để xem",
             "global_label": "Có cần đăng nhập để xem không?",
