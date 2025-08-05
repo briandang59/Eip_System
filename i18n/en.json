@@ -47,6 +47,11 @@
             "roles_permissions": "Roles and Permissions",
             "tracking_log": "Tracking Log"
         },
+        "iso": {
+            "title": "Factory Inspection",
+            "request_form": "Request Form",
+            "form": "Form"
+        },
         "rd": {
             "title": "Laboratory",
             "fabric_rd": "Fabric Testing"

@@ -1,6 +1,7 @@
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { routes } from '@/utils/constants/common/routes';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, File, Pin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -28,6 +29,12 @@ function BulletinUI({
     };
     const isPinned = record?.is_pinned;
     const { lang, t } = useTranslationCustom();
+    const content = getLocalizedName(
+        record?.content_en,
+        record?.content_zh,
+        record?.content_vn,
+        lang,
+    );
     return (
         <div
             className={`p-4 rounded-[10px] border bg-white border-gray-200 shadow-md h-[200px] flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300 ${width} ${height}`}
@@ -51,7 +58,8 @@ function BulletinUI({
                 </p>
             </div>
             <p className="text-gray-600 line-clamp-4">
-                {getLocalizedName(record?.content_en, record?.content_zh, record?.content_vn, lang)}
+                {/* {renderEditorJsToHtml(JSON.parse(content))} */}
+                {content}
             </p>
             {record?.attachments?.length > 0 && (
                 <div className="flex items-center gap-2">

@@ -47,6 +47,11 @@
             "roles_permissions": "角色和權限",
             "tracking_log": "追蹤日誌"
         },
+        "iso": {
+            "title": "工廠稽核",
+            "request_form": "申請表單",
+            "form": "表單"
+        },
         "rd": {
             "title": "化驗室",
             "fabric_rd": "布種基礎實驗"

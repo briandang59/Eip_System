@@ -63,6 +63,12 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'rd/fabric':
             router.push(routes.rd.fabric);
             break;
+        case 'iso/request-form':
+            router.push(routes.iso.request_form);
+            break;
+        case 'iso/form':
+            router.push(routes.iso.form);
+            break;
         case 'bulletins/manage-bulletins':
             router.push(routes.bulletins.manageBulletins);
             break;

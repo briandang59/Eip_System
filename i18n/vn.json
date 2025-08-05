@@ -47,6 +47,11 @@
             "roles_permissions": "Vai trò và quyền hạn",
             "tracking_log": "Nhật ký theo dõi"
         },
+        "iso": {
+            "title": "Kiểm xưởng",
+            "request_form": "Biểu mẫu yêu cầu",
+            "form": "Biểu mẫu"
+        },
         "rd": {
             "title": "Phòng thí nghiệm",
             "fabric_rd": "Thí nghiệm vải"

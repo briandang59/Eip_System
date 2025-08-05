@@ -30,8 +30,13 @@ export const routes = {
         trackingLog: '/it/tracking-log',
     },
     rd: {
-        root: '/it',
+        root: '/rd',
         fabric: '/rd/fabric',
+    },
+    iso: {
+        root: '/iso',
+        request_form: '/iso/request-form',
+        form: '/iso/form',
     },
     bulletins: {
         root: '/bulletins',

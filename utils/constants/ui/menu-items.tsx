@@ -29,6 +29,8 @@ import {
     LayoutDashboard,
     Captions,
     Newspaper,
+    Clipboard,
+    ScrollText,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -159,6 +161,23 @@ export const useMenuItems = (): MenuItem[] => {
                     t?.sidebar?.it?.tracking_log || 'Tracking Log',
                     'it/tracking-log',
                     <Cloud strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+            ],
+        ),
+        getItem(
+            t?.sidebar?.iso?.title || 'ISO',
+            'iso',
+            <Factory strokeWidth={1.5} className="w-4 h-4" />,
+            [
+                getItem(
+                    t?.sidebar?.iso?.request_form || '',
+                    'iso/request-form',
+                    <ScrollText strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+                getItem(
+                    t?.sidebar?.iso?.form || '',
+                    'iso/form',
+                    <Clipboard strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),
