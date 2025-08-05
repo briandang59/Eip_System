@@ -10,6 +10,12 @@
             "cancel": "取消",
             "export": "導出",
             "refresh": "刷新"
+        },
+        "confirm_modal": {
+            "title": "確認刪除記錄",
+            "content": "您確定要刪除此記錄嗎？此操作無法還原。",
+            "confirmText": "確認",
+            "cancelText": "取消"
         }
     },
     "sidebar": {
@@ -38,7 +44,7 @@
             "print_card": "列印職務卡"
         },
         "factory_inspection": {
-            "title": "工廠檢查",
+            "title": "工廠檢查 (HR)",
             "workday": "工作日",
             "statistical_workday": "工作日統計"
         },
@@ -48,7 +54,7 @@
             "tracking_log": "追蹤日誌"
         },
         "iso": {
-            "title": "工廠稽核",
+            "title": "工廠稽核 (ISO)",
             "request_form": "申請表單",
             "form": "表單"
         },

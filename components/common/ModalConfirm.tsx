@@ -2,6 +2,7 @@
 import { Modal, Button, Space } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
+import { useTranslationCustom } from '@/utils/hooks';
 
 interface ModalConfirmProps {
     isOpen: boolean;
@@ -45,22 +46,28 @@ const useStyle = createStyles(({ css, token }) => ({
         font-size: 24px;
     `,
 }));
-
 function ModalConfirm({
     isOpen,
     toggleModal,
     confirmAndClose,
-    title = 'Xác nhận xoá bản ghi',
-    content = 'Bạn có chắc muốn xoá bản ghi này? Hành động này không thể hoàn tác.',
-    confirmText = 'Xác nhận',
-    cancelText = 'Hủy',
+    title,
+    content,
+    confirmText,
+    cancelText,
     loading = false,
 }: ModalConfirmProps) {
     const { styles } = useStyle();
+    const { t } = useTranslationCustom();
 
+    const mergedTitle = title ?? t.common.confirm_modal.title;
+    const mergedContent = content ?? t.common.confirm_modal.content;
+    const mergedConfirmText = confirmText ?? t.common.confirm_modal.confirmText;
+    const mergedCancelText = cancelText ?? t.common.confirm_modal.cancelText;
     return (
         <Modal
-            title={<div style={{ fontSize: 18, fontWeight: 500, color: '#1F1F1F' }}>{title}</div>}
+            title={
+                <div style={{ fontSize: 18, fontWeight: 500, color: '#1F1F1F' }}>{mergedTitle}</div>
+            }
             open={isOpen}
             onOk={confirmAndClose}
             onCancel={toggleModal}
@@ -68,7 +75,7 @@ function ModalConfirm({
             className={styles.modal}
             footer={[
                 <Button key="cancel" onClick={toggleModal}>
-                    {cancelText}
+                    {mergedCancelText}
                 </Button>,
                 <Button
                     key="confirm"
@@ -77,13 +84,13 @@ function ModalConfirm({
                     onClick={confirmAndClose}
                     loading={loading}
                 >
-                    {confirmText}
+                    {mergedConfirmText}
                 </Button>,
             ]}
         >
             <Space align="start">
                 <ExclamationCircleOutlined className={styles.warningIcon} />
-                <p style={{ margin: 0, lineHeight: '1.5' }}>{content}</p>
+                <p style={{ margin: 0, lineHeight: '1.5' }}>{mergedContent}</p>
             </Space>
         </Modal>
     );

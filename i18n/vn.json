@@ -10,6 +10,12 @@
             "cancel": "Huỷ",
             "export": "Xuất",
             "refresh": "Làm mới"
+        },
+        "confirm_modal": {
+            "title": "Xác nhận xoá bản ghi",
+            "content": "Bạn có chắc muốn xoá bản ghi này? Hành động này không thể hoàn tác.",
+            "confirmText": "Xác nhận",
+            "cancelText": "Hủy"
         }
     },
     "sidebar": {
@@ -38,7 +44,7 @@
             "print_card": "In thẻ"
         },
         "factory_inspection": {
-            "title": "Kiểm tra nhà máy",
+            "title": "Kiểm tra nhà máy (HR)",
             "workday": "Ngày công",
             "statistical_workday": "Thống kê ngày công"
         },
@@ -48,7 +54,7 @@
             "tracking_log": "Nhật ký theo dõi"
         },
         "iso": {
-            "title": "Kiểm xưởng",
+            "title": "Kiểm xưởng (ISO)",
             "request_form": "Biểu mẫu yêu cầu",
             "form": "Biểu mẫu"
         },

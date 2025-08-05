@@ -10,6 +10,12 @@
             "cancel": "Cancel",
             "export": "Export",
             "refresh": "Refresh"
+        },
+        "confirm_modal": {
+            "title": "Confirm Deletion",
+            "content": "Are you sure you want to delete this record? This action cannot be undone.",
+            "confirmText": "Confirm",
+            "cancelText": "Cancel"
         }
     },
     "sidebar": {
@@ -38,7 +44,7 @@
             "print_card": "Print Card"
         },
         "factory_inspection": {
-            "title": "Factory Inspection",
+            "title": "Factory Inspection (HR)",
             "workday": "Workday",
             "statistical_workday": "Statistical Workday"
         },
@@ -48,7 +54,7 @@
             "tracking_log": "Tracking Log"
         },
         "iso": {
-            "title": "Factory Inspection",
+            "title": "Factory Inspection (ISO)",
             "request_form": "Request Form",
             "form": "Form"
         },
