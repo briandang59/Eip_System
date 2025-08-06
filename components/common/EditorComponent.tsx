@@ -42,6 +42,7 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
             tools: {
                 header: {
                     class: Header as any,
+
                     config: {
                         placeholder: 'Nhập tiêu đề...',
                         levels: [1, 2, 3, 4],

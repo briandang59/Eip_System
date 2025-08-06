@@ -11,6 +11,7 @@ interface params {
     unit_id?: number;
     card_number?: string;
     place_id?: number;
+    place_ids?: string;
 }
 interface filterParams {
     status?: number;
@@ -21,14 +22,16 @@ interface filterParams {
 export const useEmployees = (params?: params, filterParams?: filterParams) => {
     // Chỉ gọi API khi có params hợp lệ
     const shouldFetch = params && Object.keys(params).length > 0;
-    const queryString = params ? `?${qs.stringify(params)}` : '';
+    const queryString = params ? `?${qs.stringify(params, { encode: false })}` : '';
+
     const { data, error, mutate } = useSWR<BaseResponse<EmployeeResponseType[]>>(
         shouldFetch ? `${API_URL}${queryString}` : null,
         fetcher,
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
             revalidateOnReconnect: false,
+            revalidateOnMount: true,
+            revalidateIfStale: true,
         },
     );
     const filterData = data?.data?.filter((item) => {

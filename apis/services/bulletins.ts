@@ -20,6 +20,8 @@ export const bulletinsService = {
             formData.append('start_date', data.start_date);
             formData.append('end_date', data.end_date);
             formData.append('work_places', JSON.stringify(data.work_places));
+            formData.append('departments', JSON.stringify(data.departments));
+            formData.append('target_employee', JSON.stringify(data.target_employee));
             formData.append('is_global', String(data.is_global));
             formData.append('is_pinned', String(false));
 
@@ -55,6 +57,10 @@ export const bulletinsService = {
             if (data.end_date !== undefined) formData.append('end_date', data.end_date);
             if (data.work_places !== undefined)
                 formData.append('work_places', JSON.stringify(data.work_places));
+            if (data.work_places !== undefined)
+                formData.append('departments', JSON.stringify(data.departments));
+            if (data.work_places !== undefined)
+                formData.append('target_employee', JSON.stringify(data.target_employee));
             if (data.is_global !== undefined) formData.append('is_global', String(data.is_global));
             if (data.is_pinned !== undefined) formData.append('is_pinned', String(data.is_pinned));
 

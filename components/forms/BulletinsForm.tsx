@@ -1,12 +1,12 @@
 import { Button, Form } from 'antd';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as yup from 'yup';
 import { FormDatePicker, FormInput, FormSelect } from '../formsComponent';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import DragAndDropUpload from '../common/DragAndDropUpLoad';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RcFile } from 'antd/es/upload';
 import { bulletinsService } from '@/apis/services/bulletins';
 import { BulletinsResponseType } from '@/types/response/bulletins';
@@ -60,6 +60,9 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         blocks: [],
     });
 
+    const [searchEmployee, setSearchEmployee] = useState<string>('');
+    const [searchUnit, setSearchUnit] = useState<string>('');
+
     const {
         control,
         handleSubmit,
@@ -87,13 +90,24 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         }
     }, [reset, bulletin, setAttachments]);
 
-    // const workplace_id = useWatch({
-    //     name: 'work_places',
-    //     control: control,
-    // });
+    const workplace_ids =
+        useWatch({
+            name: 'work_places',
+            control,
+        }) || [];
 
-    const { units, isLoading: isLoadingUnits } = useUnits();
-    const { employees, isLoading: isLoadingEmployees } = useEmployees();
+    const stringWorkplaces = useMemo(() => {
+        return workplace_ids?.length ? workplace_ids.join(',') : '0';
+    }, [workplace_ids]);
+
+    const { units, isLoading: isLoadingUnits } = useUnits(
+        { place_ids: stringWorkplaces },
+        { search: searchUnit },
+    );
+    const { employees, isLoading: isLoadingEmployees } = useEmployees({
+        place_ids: stringWorkplaces,
+        card_number: searchEmployee,
+    });
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -107,6 +121,10 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 files: files,
                 work_places: (data.work_places || []).filter(
                     (id): id is number => typeof id === 'number',
+                ),
+                departments: data.departments.filter((d): d is number => typeof d === 'number'),
+                target_employee: data.target_employee.filter(
+                    (id): id is string => typeof id === 'string',
                 ),
             };
             if (bulletin) {
@@ -178,6 +196,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     mode="multiple"
                     loading={isLoadingWorkPlace}
                     required
+                    showSearch
                 />
                 <FormSelect
                     control={control}
@@ -185,12 +204,14 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     label={t.bulletins.form.departments}
                     size="large"
                     options={units?.map((item) => ({
-                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
+                        label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         value: item.id,
                     }))}
                     mode="multiple"
                     loading={isLoadingUnits}
                     required
+                    showSearch
+                    onSearch={(e) => setSearchUnit(e)}
                 />
                 <FormSelect
                     control={control}
@@ -204,6 +225,8 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     mode="multiple"
                     loading={isLoadingEmployees}
                     required
+                    showSearch
+                    onSearch={(e) => setSearchEmployee(e)}
                 />
                 <FormSelect
                     control={control}

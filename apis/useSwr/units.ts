@@ -11,6 +11,7 @@ interface params {
     id?: number;
     classid?: number;
     place_id?: number;
+    place_ids?: string;
 }
 
 interface filterParams {
@@ -18,13 +19,14 @@ interface filterParams {
     category_id?: number;
 }
 export const useUnits = (params?: params, filterParams?: filterParams) => {
-    const queryString = params ? `?${qs.stringify(params)}` : '';
+    const queryString = params ? `?${qs.stringify(params, { encode: false })}` : '';
     const { data, error, mutate } = useSWR<BaseResponse<UnitType[]>>(
         `${API_URL}${queryString}`,
         fetcher,
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
+            revalidateOnMount: true,
+            revalidateIfStale: true,
             revalidateOnReconnect: false,
         },
     );

@@ -10,6 +10,8 @@ export type BulletinsCreateRequestType = {
     start_date: string;
     end_date: string;
     work_places: number[];
+    departments?: number[];
+    target_employee?: string[];
     is_global?: boolean;
     is_pinned?: boolean;
     files?: RcFile[];
@@ -25,6 +27,8 @@ export type BulletinsModifyRequestType = {
     start_date?: string;
     end_date?: string;
     work_places?: number[];
+    departments?: number[];
+    target_employee?: string[];
     is_global?: boolean;
     is_pinned?: boolean;
     files: RcFile[];
