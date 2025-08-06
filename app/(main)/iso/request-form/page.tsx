@@ -4,8 +4,8 @@ import { IsoForm } from '@/types/response/isoForm';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
-import { Input, Modal, Select, Spin } from 'antd';
-import { PenBox } from 'lucide-react';
+import { Input, Modal, Select, Spin, Tabs } from 'antd';
+import { ClipboardCheck, ClipboardList, PenBox } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 
@@ -48,6 +48,52 @@ function RequestForm() {
         return () => handler.cancel();
     }, [searchText]);
 
+    const tabs = [
+        {
+            key: '1',
+            label: t.iso_form.request_form,
+            children: (
+                <>
+                    <div className="grid grid-cols-4 gap-6">
+                        {isLoadingFormTypeList ? (
+                            <div className="col-span-4 flex justify-center items-center">
+                                <Spin />
+                            </div>
+                        ) : fromTypeList && fromTypeList.length > 0 ? (
+                            fromTypeList.map((item) => (
+                                <button
+                                    key={item.id}
+                                    className="p-4 rounded-[10px] border border-gray-300 bg-gray-100 min-h-[200px] flex flex-col gap-4 items-center justify-center cursor-pointer hover:translate-x-0.5 hover:scale-105 duration-300 hover:border-green-700"
+                                    onClick={() => handleOpenModal(item)}
+                                >
+                                    <PenBox />
+                                    <p className="text-[16px] font-medium text-center">
+                                        {getLocalizedName(
+                                            item.name_en,
+                                            item.name_zh,
+                                            item.name_vn,
+                                            lang,
+                                        )}
+                                    </p>
+                                </button>
+                            ))
+                        ) : (
+                            <div className="col-span-4 text-center text-gray-500">
+                                {t.iso_form.no_form_display}
+                            </div>
+                        )}
+                    </div>
+                </>
+            ),
+            icon: <ClipboardList strokeWidth={1.5} />,
+        },
+        {
+            key: '2',
+            label: t.iso_form.form,
+            children: <></>,
+            icon: <ClipboardCheck strokeWidth={1.5} />,
+        },
+    ];
     return (
         <div className="flex flex-col gap-4">
             <div className="flex items-end gap-2">
@@ -67,31 +113,7 @@ function RequestForm() {
                     />
                 </div>
             </div>
-
-            <div className="grid grid-cols-4 gap-6">
-                {isLoadingFormTypeList ? (
-                    <div className="col-span-4 flex justify-center items-center">
-                        <Spin />
-                    </div>
-                ) : fromTypeList && fromTypeList.length > 0 ? (
-                    fromTypeList.map((item) => (
-                        <button
-                            key={item.id}
-                            className="p-4 rounded-[10px] border border-gray-300 bg-gray-100 min-h-[200px] flex flex-col gap-4 items-center justify-center cursor-pointer hover:translate-x-0.5 hover:scale-105 duration-300 hover:border-green-700"
-                            onClick={() => handleOpenModal(item)}
-                        >
-                            <PenBox />
-                            <p className="text-[16px] font-medium text-center">
-                                {getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}
-                            </p>
-                        </button>
-                    ))
-                ) : (
-                    <div className="col-span-4 text-center text-gray-500">
-                        {t.iso_form.no_form_display}
-                    </div>
-                )}
-            </div>
+            <Tabs defaultActiveKey="1" items={tabs} />
 
             <Modal
                 open={isOpenModal}

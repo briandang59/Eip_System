@@ -784,6 +784,8 @@
         "vn": "Việt Nam",
         "zh": "Đài Loan",
         "find": "Tìm biểu mẫu",
-        "no_form_display": "Không có biểu mẫu nào để hiển thị."
+        "no_form_display": "Không có biểu mẫu nào để hiển thị.",
+        "form": "Danh sách biểu mẫu",
+        "request_form": "Biểu mẫu yêu cầu"
     }
 }
