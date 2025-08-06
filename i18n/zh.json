@@ -779,5 +779,11 @@
         "day": "天",
         "search_employee": "搜索員工…",
         "unit": "單位"
+    },
+    "iso_form": {
+        "vn": "越南",
+        "zh": "台灣",
+        "find": "搜尋表單",
+        "no_form_display": "沒有可顯示的表單。"
     }
 }

@@ -780,5 +780,11 @@
         "day": "day",
         "search_employee": "Search employee…",
         "unit": "Unit"
+    },
+    "iso_form": {
+        "vn": "Vietnam",
+        "zh": "Taiwan",
+        "find": "Find form",
+        "no_form_display": "No forms available to display."
     }
 }

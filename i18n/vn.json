@@ -779,5 +779,11 @@
         "day": "ngày",
         "search_employee": "Tìm nhân viên…",
         "unit": "Đơn vị"
+    },
+    "iso_form": {
+        "vn": "Việt Nam",
+        "zh": "Đài Loan",
+        "find": "Tìm biểu mẫu",
+        "no_form_display": "Không có biểu mẫu nào để hiển thị."
     }
 }

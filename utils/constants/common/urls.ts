@@ -96,4 +96,5 @@ export const urls = {
     bulletin: 'bulletin',
     user_preferences: 'user-preferences',
     download: 'download',
+    form: 'form',
 };
