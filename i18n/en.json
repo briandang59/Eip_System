@@ -788,5 +788,14 @@
         "no_form_display": "No forms available to display.",
         "form": "Form List",
         "request_form": "Request Form"
+    },
+    "record_form": {
+        "applicant": "Applicant",
+        "form": "Form",
+        "request_time": "Request time",
+        "status": "Status",
+        "approvers": "Approvers",
+        "location": "Location",
+        "range_date": "Date Range"
     }
 }

@@ -787,5 +787,14 @@
         "no_form_display": "Không có biểu mẫu nào để hiển thị.",
         "form": "Danh sách biểu mẫu",
         "request_form": "Biểu mẫu yêu cầu"
+    },
+    "record_form": {
+        "applicant": "Người nộp",
+        "form": "Biểu mẫu",
+        "request_time": "Thời gian yêu cầu",
+        "status": "Trạng thái",
+        "approvers": "Người phê duyệt",
+        "location": "Địa điểm",
+        "range_date": "Khoảng thời gian"
     }
 }
