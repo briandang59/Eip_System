@@ -30,8 +30,8 @@ const schema = yup
         start_date: yup.string().required(),
         end_date: yup.string().required(),
         work_places: yup.array(yup.number()).required(),
-        departments: yup.array(yup.number()).required(),
-        target_employee: yup.array(yup.string()).required(),
+        departments: yup.array(yup.number()).nullable().default([]),
+        target_employee: yup.array(yup.string()).nullable().default([]),
         is_global: yup.string().required(),
         is_pinned: yup.string().required(),
     })
@@ -86,6 +86,9 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 is_global: String(bulletin.is_global),
                 is_pinned: String(bulletin.is_pinned),
             });
+            setContentEN(JSON.parse(bulletin.content_en));
+            setContentZH(JSON.parse(bulletin.content_zh));
+            setContentVN(JSON.parse(bulletin.content_vn));
             setAttachments(bulletin.attachments || []);
         }
     }, [reset, bulletin, setAttachments]);
@@ -122,8 +125,10 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 work_places: (data.work_places || []).filter(
                     (id): id is number => typeof id === 'number',
                 ),
-                departments: data.departments.filter((d): d is number => typeof d === 'number'),
-                target_employee: data.target_employee.filter(
+                departments: (data.departments ?? []).filter(
+                    (d): d is number => typeof d === 'number',
+                ),
+                target_employee: (data.target_employee ?? []).filter(
                     (id): id is string => typeof id === 'string',
                 ),
             };
@@ -209,7 +214,6 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     }))}
                     mode="multiple"
                     loading={isLoadingUnits}
-                    required
                     showSearch
                     onSearch={(e) => setSearchUnit(e)}
                 />
@@ -224,7 +228,6 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     }))}
                     mode="multiple"
                     loading={isLoadingEmployees}
-                    required
                     showSearch
                     onSearch={(e) => setSearchEmployee(e)}
                 />

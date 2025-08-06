@@ -1,6 +1,7 @@
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { routes } from '@/utils/constants/common/routes';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, File, Pin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -56,10 +57,13 @@ function BulletinUI({
                     {record?.start_date} - {record?.end_date}
                 </p>
             </div>
-            <p className="text-gray-600 line-clamp-4">
-                {/* {renderEditorJsToHtml(JSON.parse(content))} */}
-                {content}
-            </p>
+            {content && (
+                <div
+                    className="text-gray-600 line-clamp-4"
+                    dangerouslySetInnerHTML={renderEditorJsToHtml(JSON.parse(content))}
+                />
+            )}
+
             {record?.attachments?.length > 0 && (
                 <div className="flex items-center gap-2">
                     <File className="size-[14px] !text-green-600" />

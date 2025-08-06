@@ -1,5 +1,6 @@
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Popover, TableColumnsType } from 'antd';
 import { File, Pen, Settings, Trash } from 'lucide-react';
@@ -37,17 +38,24 @@ export const useBulletinsCols = ({
             title: t.bulletins.content,
             key: 'content',
             width: 500,
-            render: (record: BulletinsResponseType) => (
-                <div className="line-clamp-3">
-                    {' '}
-                    {getLocalizedName(
-                        record?.content_en,
-                        record?.content_zh,
-                        record?.content_vn,
-                        lang,
-                    )}
-                </div>
-            ),
+            render: (record: BulletinsResponseType) => {
+                const content = getLocalizedName(
+                    record?.content_en,
+                    record?.content_zh,
+                    record?.content_vn,
+                    lang,
+                );
+                return (
+                    <div className="line-clamp-3">
+                        {content && (
+                            <div
+                                className="line-clamp-3"
+                                dangerouslySetInnerHTML={renderEditorJsToHtml(JSON.parse(content))}
+                            />
+                        )}
+                    </div>
+                );
+            },
         },
         {
             title: t.bulletins.is_global,

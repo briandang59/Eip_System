@@ -2,6 +2,7 @@ import { bulletinsService } from '@/apis/services/bulletins';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { downloadBase64File } from '@/utils/functions/downloadBase64File';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, File } from 'lucide-react';
 import { toast } from 'sonner';
@@ -21,7 +22,12 @@ function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDeta
             toast.error(`${error}`);
         }
     };
-
+    const content = getLocalizedName(
+        bulletinsDetail?.content_en,
+        bulletinsDetail?.content_zh,
+        bulletinsDetail?.content_vn,
+        lang,
+    );
     return (
         <div
             className={`${viewType === 'modal' ? 'min-h-[500px]' : 'shadow-md border-gray-200 min-h-[500px] min-w-[1200px]  border'} flex flex-col justify-between gap-2 mb-4 p-4 rounded-lg bg-white `}
@@ -43,14 +49,9 @@ function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDeta
                         </p>
                     </div>
                 </div>
-                <p className="my-4">
-                    {getLocalizedName(
-                        bulletinsDetail?.content_en ?? '',
-                        bulletinsDetail?.content_zh ?? '',
-                        bulletinsDetail?.content_vn ?? '',
-                        lang,
-                    )}
-                </p>
+                {content && (
+                    <div dangerouslySetInnerHTML={renderEditorJsToHtml(JSON.parse(content))} />
+                )}
             </div>
             <div className="flex flex-col p-2 border-t border-t-gray-200">
                 <h2 className="text-[18px] font-medium">{t.bulletins.attachments}</h2>

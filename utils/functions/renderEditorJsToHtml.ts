@@ -3,6 +3,7 @@ import { OutputData } from '@editorjs/editorjs';
 
 const edjsParser = EditorJsToHtml();
 
-export function renderEditorJsToHtml(data: OutputData): string {
-    return edjsParser.parse(data);
+export function renderEditorJsToHtml(data: OutputData): { __html: string } {
+    const html = edjsParser.parse(data);
+    return { __html: html };
 }
