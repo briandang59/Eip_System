@@ -423,7 +423,7 @@ function EmployeesPage() {
                     onClick={() => hanldeToggleModal('process_multiple_task')}
                     disabled={selectcedRecordRow && selectcedRecordRow?.length === 0}
                 >
-                    {`Process`}
+                    {t.employee.process}
                 </Button>
             </div>
             {selectedState === 7 ? (

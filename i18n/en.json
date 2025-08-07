@@ -245,7 +245,8 @@
         "refresh": "Refresh",
         "view": "View Profile",
         "edit": "Edit Profile",
-        "delete": "Delete Profile"
+        "delete": "Delete Profile",
+        "process": "Process"
     },
     "take_leave": {
         "year": "Year",

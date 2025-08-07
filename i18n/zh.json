@@ -244,7 +244,8 @@
         "refresh": "刷新",
         "view": "查看資料",
         "edit": "編輯資料",
-        "delete": "刪除資料"
+        "delete": "刪除資料",
+        "process": "處理"
     },
     "take_leave": {
         "year": "年",
