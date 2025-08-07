@@ -166,6 +166,7 @@ export const useEmployeeCols = ({
             dataIndex: 'card_number',
             key: 'card_number',
             fixed: 'left',
+            sorter: (a, b) => (a.card_number || '').localeCompare(b.card_number || ''),
         },
         {
             title: t.employee.full_name,
@@ -188,6 +189,7 @@ export const useEmployeeCols = ({
                     {record?.fullname || '-'}
                 </span>
             ),
+            sorter: (a, b) => (a.fullname || '').localeCompare(b.fullname || '') || 0,
         },
         {
             title: t.employee.foreign_name,
@@ -199,6 +201,7 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.fullname_other || '-'}</span>
             ),
+            sorter: (a, b) => a.fullname_other?.localeCompare(b.fullname_other || '') || 0,
         },
         {
             title: t.employee.unit,
@@ -210,6 +213,7 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.unit?.name_en || '-'}</span>
             ),
+            sorter: (a, b) => a.unit?.name_en?.localeCompare(b.unit?.name_en || '') || 0,
         },
         {
             title: t.employee.gender,
@@ -219,6 +223,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.gender ? 'Male' : 'Female'}</span>
             ),
+            sorter: (a, b) =>
+                (a.gender ?? '').toString().localeCompare((b.gender ?? '').toString()),
         },
         {
             title: t.employee.place_of_birth,
@@ -228,6 +234,7 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.place_of_birth || '-'}</span>
             ),
+            sorter: (a, b) => (a.place_of_birth || '').localeCompare(b.place_of_birth || '') || 0,
         },
         {
             title: t.employee.birthday,
@@ -235,6 +242,7 @@ export const useEmployeeCols = ({
             key: 'birthday',
             width: 200,
             render: (_, record: EmployeeResponseType) => <span>{record?.birthday || '-'}</span>,
+            sorter: (a, b) => (a.birthday || '').localeCompare(b.birthday || '') || 0,
         },
         {
             title: t.employee.date_join_company_1,
@@ -244,6 +252,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.join_company_date1 || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.join_company_date1 || '').localeCompare(b.join_company_date1 || '') || 0,
         },
         {
             title: t.employee.date_join_company_2,
@@ -253,6 +263,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.join_company_date2 || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.join_company_date2 || '').localeCompare(b.join_company_date2 || '') || 0,
         },
         {
             title: t.employee.address,
@@ -260,6 +272,7 @@ export const useEmployeeCols = ({
             key: 'address',
             width: 200,
             render: (_, record: EmployeeResponseType) => <span>{record?.address || '-'}</span>,
+            sorter: (a, b) => a.address?.localeCompare(b.address || '') || 0,
         },
         {
             title: t.employee.province_city,
@@ -267,6 +280,7 @@ export const useEmployeeCols = ({
             key: 'province_city',
             width: 200,
             render: (_, record: EmployeeResponseType) => <span>{record?.province || '-'}</span>,
+            sorter: (a, b) => a.province?.localeCompare(b.province || '') || 0,
         },
         {
             title: t.employee.workplace,
@@ -276,6 +290,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.work_place?.name_en || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.work_place?.name_en || '').localeCompare(b.work_place?.name_en || '') || 0,
         },
         {
             title: t.employee.id_card_number,
@@ -294,6 +310,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.id_card_issue_date || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.id_card_issue_date || '').localeCompare(b.id_card_issue_date || '') || 0,
         },
         {
             title: t.employee.id_card_place,
@@ -301,8 +319,10 @@ export const useEmployeeCols = ({
             key: 'id_card_place',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record?.id_card_issue_by || '-'}</span>
+                <span>{record?.id_card_issue_by ? record.id_card_issue_by : '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.id_card_issue_by || '').localeCompare(b.id_card_issue_by || '') || 0,
         },
         {
             title: t.employee.education,
@@ -312,6 +332,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.education?.name_en || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.education?.name_en || '').localeCompare(b.education?.name_en || '') || 0,
         },
         {
             title: t.employee.vietnam_phone,
@@ -321,6 +343,7 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.phone_vietnam || '-'}</span>
             ),
+            sorter: (a, b) => (a.phone_vietnam || '').localeCompare(b.phone_vietnam || '') || 0,
         },
         {
             title: t.employee.nationality,
@@ -330,6 +353,7 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.nation?.name_en || '-'}</span>
             ),
+            sorter: (a, b) => (a.nation?.name_en || '').localeCompare(b.nation?.name_en || '') || 0,
         },
         {
             title: t.employee.marriage,
@@ -339,6 +363,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.marriage_status ? 'Married' : 'Single'}</span>
             ),
+            sorter: (a, b) =>
+                a.marriage_status === b.marriage_status ? 0 : a.marriage_status ? 1 : -1,
         },
         {
             title: t.employee.pregnant_woman,
@@ -348,13 +374,22 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.is_pregnant_woman ? 'Yes' : 'No'}</span>
             ),
+            sorter: (a, b) =>
+                a.is_pregnant_woman === b.is_pregnant_woman ? 0 : a.is_pregnant_woman ? 1 : -1,
         },
         {
             title: t.employee.children,
             dataIndex: 'children',
             key: 'children',
             width: 200,
-            render: (_, record: EmployeeResponseType) => <span>{record?.has_children || '-'}</span>,
+            render: (_, record: EmployeeResponseType) => (
+                <span>{typeof record?.has_children === 'number' ? record.has_children : '-'}</span>
+            ),
+            sorter: (a, b) => {
+                const aVal = typeof a.has_children === 'number' ? a.has_children : -1;
+                const bVal = typeof b.has_children === 'number' ? b.has_children : -1;
+                return aVal - bVal;
+            },
         },
         {
             title: t.employee.date_start_pregnant,
@@ -367,6 +402,11 @@ export const useEmployeeCols = ({
                     return <span>{(pregnancy as any)?.start_date || '-'}</span>;
                 }
                 return <span>{pregnancy || '-'}</span>;
+            },
+            sorter: (a, b) => {
+                const aDate = a.pregnancy?.start_date || '';
+                const bDate = b.pregnancy?.start_date || '';
+                return aDate.localeCompare(bDate);
             },
         },
         {
@@ -381,6 +421,11 @@ export const useEmployeeCols = ({
                 }
                 return <span>{pregnancy || '-'}</span>;
             },
+            sorter: (a, b) => {
+                const aDate = a.pregnancy?.end_date || '';
+                const bDate = b.pregnancy?.end_date || '';
+                return aDate.localeCompare(bDate);
+            },
         },
         {
             title: t.employee.date_start_take_care_child,
@@ -393,6 +438,11 @@ export const useEmployeeCols = ({
                     return <span>{(takeCarePeriod as any)?.start_date || '-'}</span>;
                 }
                 return <span>{takeCarePeriod || '-'}</span>;
+            },
+            sorter: (a, b) => {
+                const aDate = a.take_care_of_child?.start_date || '';
+                const bDate = b.take_care_of_child?.start_date || '';
+                return aDate.localeCompare(bDate);
             },
         },
         {
@@ -407,6 +457,11 @@ export const useEmployeeCols = ({
                 }
                 return <span>{takeCarePeriod || '-'}</span>;
             },
+            sorter: (a, b) => {
+                const aDate = a.take_care_of_child?.end_date || '';
+                const bDate = b.take_care_of_child?.end_date || '';
+                return aDate.localeCompare(bDate);
+            },
         },
         {
             title: t.employee.job_class,
@@ -416,6 +471,7 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.class?.name_en || '-'}</span>
             ),
+            sorter: (a, b) => (a.class?.name_en || '').localeCompare(b.class?.name_en || '') || 0,
         },
         {
             title: t.employee.work_description,
@@ -437,6 +493,23 @@ export const useEmployeeCols = ({
                 }
                 return <span>{typeof workDescription === 'string' ? workDescription : '-'}</span>;
             },
+            sorter: (a, b) => {
+                const aDesc =
+                    a.work_description &&
+                    typeof a.work_description === 'object' &&
+                    'description' in a.work_description
+                        ? (a.work_description as { description?: string }).description || ''
+                        : typeof a.work_description === 'string'
+                          ? a.work_description
+                          : '';
+                const bDesc =
+                    b.work_description &&
+                    typeof b.work_description === 'object' &&
+                    'description' in b.work_description
+                        ? (b.work_description as { description?: string }).description || ''
+                        : b.work_description || '';
+                return aDesc.localeCompare(bDesc);
+            },
         },
         {
             title: t.employee.ethnic,
@@ -444,6 +517,7 @@ export const useEmployeeCols = ({
             key: 'ethnic',
             width: 200,
             render: (_, record: EmployeeResponseType) => <span>{record?.ethnic?.name || '-'}</span>,
+            sorter: (a, b) => (a.ethnic?.name || '').localeCompare(b.ethnic?.name || '') || 0,
         },
         {
             title: t.employee.speak_language,
@@ -461,6 +535,11 @@ export const useEmployeeCols = ({
                 }
                 return <span>-</span>;
             },
+            sorter: (a, b) => {
+                const aLang = a.speak_languages?.languages?.name_en || '';
+                const bLang = b.speak_languages?.languages?.name_en || '';
+                return aLang.localeCompare(bLang);
+            },
         },
         {
             title: t.employee.join_insurance,
@@ -470,6 +549,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.insurance?.join_date || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.insurance?.join_date || '').localeCompare(b.insurance?.join_date || '') || 0,
         },
         {
             title: t.employee.init_deduction_date,
@@ -479,6 +560,10 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.insurance?.initial_deduction_date || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.insurance?.initial_deduction_date || '').localeCompare(
+                    b.insurance?.initial_deduction_date || '',
+                ) || 0,
         },
         {
             title: t.employee.refusal_insurance,
@@ -496,6 +581,23 @@ export const useEmployeeCols = ({
                 }
                 return <span>{typeof refusalInsurance === 'string' ? refusalInsurance : '-'}</span>;
             },
+            sorter: (a, b) => {
+                const aRefusal =
+                    a.refusal_insurance &&
+                    typeof a.refusal_insurance === 'object' &&
+                    'reason' in a.refusal_insurance
+                        ? (a.refusal_insurance as { reason?: string }).reason || ''
+                        : typeof a.refusal_insurance === 'string'
+                          ? a.refusal_insurance
+                          : '';
+                const bRefusal =
+                    b.refusal_insurance &&
+                    typeof b.refusal_insurance === 'object' &&
+                    'reason' in b.refusal_insurance
+                        ? (b.refusal_insurance as { reason?: string }).reason || ''
+                        : b.refusal_insurance || '';
+                return aRefusal.localeCompare(bRefusal);
+            },
         },
         {
             title: t.employee.contract_effect_date,
@@ -505,6 +607,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.contract?.effect_date || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.contract?.effect_date || '').localeCompare(b.contract?.effect_date || '') || 0,
         },
         {
             title: t.employee.contract_expiration_date,
@@ -514,6 +618,8 @@ export const useEmployeeCols = ({
             render: (_, record: EmployeeResponseType) => (
                 <span>{record?.contract?.expir_date || '-'}</span>
             ),
+            sorter: (a, b) =>
+                (a.contract?.expir_date || '').localeCompare(b.contract?.expir_date || '') || 0,
         },
         {
             title: t.employee.old_department,
@@ -521,6 +627,7 @@ export const useEmployeeCols = ({
             key: 'old_department',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.old_factory,
@@ -528,6 +635,7 @@ export const useEmployeeCols = ({
             key: 'old_factory',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.transfer_date,
@@ -535,6 +643,7 @@ export const useEmployeeCols = ({
             key: 'transfer_date',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.new_department,
@@ -542,6 +651,7 @@ export const useEmployeeCols = ({
             key: 'new_department',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.new_factory,
@@ -549,6 +659,7 @@ export const useEmployeeCols = ({
             key: 'new_factory',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.date_of_resignation,
@@ -556,6 +667,7 @@ export const useEmployeeCols = ({
             key: 'date_of_resignation',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.reason_of_resignation,
@@ -563,6 +675,7 @@ export const useEmployeeCols = ({
             key: 'reason_of_resignation',
             width: 200,
             render: () => <span>-</span>,
+            sorter: (a, b) => 0,
         },
         {
             title: t.employee.actions,
