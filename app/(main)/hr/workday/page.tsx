@@ -98,7 +98,11 @@ function Workday() {
     const myInfo = getInfomation();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
-    const { logsByDate } = useLogs({
+    const {
+        logsByDate,
+        isLoading: isLoadingLogs,
+        isError: isErrorLogs,
+    } = useLogs({
         date:
             (selectedAttendance && selectedAttendance?.details[0]?.date) ||
             dayjs().format('YYYY-MM-DD'),
@@ -272,6 +276,8 @@ function Workday() {
                                 full_name={selectedAttendance?.fullname}
                                 logsByDate={logsByDate}
                                 work_place={selectedWorkPlace}
+                                isLoading={isLoadingLogs}
+                                isError={isErrorLogs}
                             />
                         )}
                     </>

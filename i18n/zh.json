@@ -142,10 +142,10 @@
         "action": "操作",
         "total": "總計",
         "edit_clock": "編輯打卡",
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "fullname": "姓名",
-        "shift": "班次",
-        "week": "周",
+        "shift": " 班表",
+        "week": "星期",
         "actions": "操作",
         "user_update": "使用者更新",
         "time_update": "時間更新",
@@ -170,7 +170,7 @@
         "job_titles": "職稱",
         "nationalities": "國籍",
         "national_holidays": "國定假日",
-        "shift_types": "班次",
+        "shift_types": " 班表",
         "languages": "語言",
         "ethnicities": "民族",
         "add": "新增",
@@ -187,7 +187,7 @@
         "start_time": "開始時間",
         "end_time": "結束時間",
         "break_time": "休息時間",
-        "period": "班次",
+        "period": " 班表",
         "location": "地點",
         "tag": "標籤",
         "education": "教育",
@@ -254,7 +254,7 @@
         "leave_hours": "請假時數",
         "title": "請假",
         "info": "員工資訊",
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "full_name": "姓名",
         "sex": "性別",
         "nation": "國籍",
@@ -283,7 +283,7 @@
         "delete_succcess": "成功刪除所有選中的記錄",
         "partial_delete": "部分刪除成功",
         "cannot_delete": "記錄無法刪除",
-        "please_enter_card_number": "請輸入卡號以查看資訊",
+        "please_enter_card_number": "請輸入工卡號以查看資訊",
         "range_date": "日期範圍",
         "subtitute": "替代",
         "hours_A": "小時 A",
@@ -300,7 +300,7 @@
         "account_role": "使用者角色",
         "add": "新增",
         "refresh": "刷新",
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "fullname": "全名",
         "workplace": "工作場所",
         "tag": "標籤",
@@ -309,7 +309,7 @@
         "error": "請求提交失敗"
     },
     "edit_clock": {
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "reason_type": "原因型別",
         "description": "描述",
         "clockin": "工作時間",
@@ -328,18 +328,18 @@
     "overtime": {
         "date": "日期",
         "employee": "員工",
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "department": "部門",
         "work_place": "工作場所",
         "overtime_hours": "加班時間",
         "success": "請求提交成功"
     },
     "overtime_page": {
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "full_name": "姓名"
     },
     "user_information": {
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "gender": "性別",
         "birthday": "生日",
         "nationality": "國籍",
@@ -370,7 +370,7 @@
         "date_join_company2": "加入公司 2 的日期"
     },
     "transfer": {
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "full_name": "姓名",
         "gender": "性別",
         "date_join_company": "入職日期",
@@ -384,7 +384,7 @@
     },
     "record": {
         "event": "事件",
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "date": "日期",
         "workplace": "工作地點",
         "department": "部門",
@@ -416,7 +416,7 @@
         "birthday": "出生日期",
         "place_of_birth": "出生地",
         "work_type": "工作類型",
-        "shift": "工作班次",
+        "shift": "工作 班表",
         "work_place": "工作地點",
         "from_date": "開始日期",
         "end_date": "結束日期",
@@ -493,7 +493,7 @@
         "success": "請求提交成功"
     },
     "assign_shift": {
-        "shift_type": "班次類型",
+        "shift_type": " 班表類型",
         "start_date": "開始日期",
         "end_date": "結束日期",
         "note": "備註"
@@ -520,11 +520,11 @@
     "meeting_form": {
         "meeting_type": "會議類型",
         "date": "日期和時間",
-        "topic": "主題",
-        "content": "內容",
-        "department": "提議部門",
-        "person": "提議人",
-        "joins": "參與者",
+        "topic": "會議主題",
+        "content": "會議內容及議程",
+        "department": "召集部門",
+        "person": "主持人",
+        "joins": "與會者",
         "note": "備註",
         "meeting_information": "會議資訊",
         "meeting_room": "會議室",
@@ -546,7 +546,7 @@
         "export": "匯出"
     },
     "contract": {
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "full_name": "全名",
         "date_join_company1": "加入公司1日期",
         "date_join_company2": "加入公司2日期",
@@ -560,7 +560,7 @@
         "status": "狀態"
     },
     "social_insurance": {
-        "card_number": "卡號",
+        "card_number": "工卡號",
         "full_name": "全名",
         "date_join_company_1": "加入公司1日期",
         "date_join_company_2": "加入公司2日期",
@@ -603,13 +603,13 @@
         "class": "等級"
     },
     "shift_type_form": {
-        "class_name": "班次名称",
+        "class_name": " 班表名称",
         "clockin_time": "上班时间",
         "clockout_time": "下班时间",
         "break_start": "休息开始",
         "break_end": "休息结束",
         "location": "地点",
-        "period": "周期",
+        "period": "星期期",
         "allow_auto_overtime": "允许自动加班"
     },
     "print_card": {
@@ -725,7 +725,7 @@
         "pinned": "已釘選",
         "attachments": "附件",
         "title": "標題",
-        "content": "內容",
+        "content": "會議內容及議程",
         "start_date": "開始日期",
         "end_date": "結束日期",
         "is_pinned": "置頂",
@@ -737,9 +737,9 @@
             "title_vn": "標題（越南語）",
             "title_en": "標題（英文）",
             "title_zh": "標題（中文）",
-            "content_vn": "內容（越南語）",
-            "content_en": "內容（英文）",
-            "content_zh": "內容（中文）",
+            "content_vn": "會議內容及議程（越南語）",
+            "content_en": "會議內容及議程（英文）",
+            "content_zh": "會議內容及議程（中文）",
             "start_date": "開始日期",
             "end_date": "結束日期",
             "status": "狀態",
@@ -765,17 +765,17 @@
         "bulletins_boards": "公告欄"
     },
     "shift_scheduling": {
-        "warning_1": "選擇班次前！",
-        "warning_2": "沒有班次被分配！",
-        "success_1": "班次保存成功",
-        "err_1": "保存班次失敗！",
+        "warning_1": "選擇 班表前！",
+        "warning_2": "沒有 班表被分配！",
+        "success_1": " 班表保存成功",
+        "err_1": "保存 班表失敗！",
         "cancel": "取消",
         "save": "保存",
         "export": "導出",
         "date": "日期",
         "search": "搜索",
         "workplace": "工作地點",
-        "shift": "班次",
+        "shift": " 班表",
         "day": "天",
         "search_employee": "搜索員工…",
         "unit": "單位"

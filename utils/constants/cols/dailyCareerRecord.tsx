@@ -1,12 +1,22 @@
 import { CareerHistoryResponseType } from '@/types/response/dailyCareerRecord';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, TableColumnsType } from 'antd';
 import { Pen } from 'lucide-react';
 
+const renderLocalizedField = (
+    field: { name_en?: string; name_zh?: string; name_vn?: string } | number | null | undefined,
+    lang: string,
+) => {
+    if (!field) return '-';
+    if (typeof field === 'number') return field.toString();
+    return getLocalizedName(field.name_en || '', field.name_zh || '', field.name_vn || '', lang);
+};
+
 export const useDailyCareerRecordCols = (
     setSelectedRecord: (record: CareerHistoryResponseType) => void,
 ): TableColumnsType<CareerHistoryResponseType> => {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
 
     return [
         {
@@ -21,7 +31,9 @@ export const useDailyCareerRecordCols = (
             key: 'career_event',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record?.career_event?.name_en || '-'}</div>
+                <div className="line-clamp-2">
+                    {renderLocalizedField(record?.career_event, lang)}
+                </div>
             ),
         },
         {
@@ -41,7 +53,7 @@ export const useDailyCareerRecordCols = (
             key: 'work_place',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record?.work_place?.name_en || '-'}</div>
+                <div className="line-clamp-2">{renderLocalizedField(record?.work_place, lang)}</div>
             ),
         },
         {
@@ -49,7 +61,9 @@ export const useDailyCareerRecordCols = (
             key: 'service_unit',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record?.service_unit?.name_en || '-'}</div>
+                <div className="line-clamp-2">
+                    {renderLocalizedField(record?.service_unit, lang)}
+                </div>
             ),
         },
         {
@@ -57,14 +71,25 @@ export const useDailyCareerRecordCols = (
             key: 'job_title',
             width: 200,
             render: (_, record) => (
-                <div className="line-clamp-2">{record?.job_title?.name_vn || '-'}</div>
+                <div className="line-clamp-2">{renderLocalizedField(record?.job_title, lang)}</div>
             ),
         },
         {
             title: t.record.resign_reason,
             key: 'reason',
             width: 200,
-            render: (_, record) => <div className="line-clamp-2">{record?.reason || '-'}</div>,
+            render: (_, record) => (
+                <div className="line-clamp-2">
+                    {record?.reason
+                        ? typeof record.reason === 'string'
+                            ? record.reason
+                            : record.reason.name_vn ||
+                              record.reason.name_en ||
+                              record.reason.name_zh ||
+                              '-'
+                        : '-'}
+                </div>
+            ),
         },
         {
             title: t.record.memo,

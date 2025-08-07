@@ -7,7 +7,15 @@
         padding: 4px !important;
     }
 }
-
+.secondary-table {
+    th.ant-table-cell {
+        background: #cf8402 !important;
+        color: white !important;
+    }
+    .ant-table-cell {
+        padding: 4px !important;
+    }
+}
 .shift-table {
     .ant-table-wrapper
         .ant-table.ant-table-bordered

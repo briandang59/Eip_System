@@ -59,19 +59,42 @@ export const PrintLeaveDocument = async (
         const page = pdfDoc.addPage([pageWidth, pageHeight]);
         // ảnh nhân viên
         let employeeImage;
-        if (employee.photo) {
-            try {
-                // If photo is a URL, fetch it
-                const imgResponse = await fetch(employee.photo);
-                const imgBuffer = await imgResponse.arrayBuffer();
-                employeeImage = await pdfDoc.embedJpg(imgBuffer);
-            } catch (error) {
-                // If embedding fails, use default image
+        try {
+            console.log('employee data:', {
+                card_number: employee.card_number,
+                hasPhoto: !!employee.photo,
+                photoType: employee.photo ? typeof employee.photo : 'none',
+                photo: employee.photo,
+            });
+            if (employee.photo) {
+                console.log('employee.photo', employee.photo);
+                // Convert base64 string to ArrayBuffer
+                const base64Data = employee.photo.replace(/^data:image\/[a-z]+;base64,/, '');
+                const binaryString = atob(base64Data);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                try {
+                    employeeImage = await pdfDoc.embedJpg(bytes);
+                } catch (jpgError) {
+                    try {
+                        employeeImage = await pdfDoc.embedPng(bytes);
+                    } catch (pngError) {
+                        console.warn('Failed to embed employee photo as JPG or PNG, using default');
+                        employeeImage = await pdfDoc.embedJpg(avts);
+                    }
+                }
+            } else {
                 employeeImage = await pdfDoc.embedJpg(avts);
             }
-        } else {
-            // Use default image if no photo
-            employeeImage = await pdfDoc.embedJpg(avts);
+        } catch (error) {
+            console.warn('Failed to process photo, using default:', error);
+            try {
+                employeeImage = await pdfDoc.embedJpg(avts);
+            } catch (jpgError) {
+                employeeImage = await pdfDoc.embedPng(avts);
+            }
         }
 
         // Vẽ logo

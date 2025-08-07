@@ -33,7 +33,12 @@ export type CareerHistoryResponseType = {
         code: string;
     } | null;
     created_at: string;
-    reason: string | null;
+    reason: {
+        id: number;
+        name_en: string;
+        name_vn: string;
+        name_zh: string;
+    } | null;
     career_event: {
         id: number;
         name_en: string;

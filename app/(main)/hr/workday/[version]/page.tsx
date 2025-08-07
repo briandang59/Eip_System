@@ -171,6 +171,7 @@ function WorkdayV1() {
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                     size: 'default',
                 }}
+                className="secondary-table"
             />
         </div>
     );

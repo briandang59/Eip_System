@@ -424,10 +424,18 @@ export const useEmployeeCols = ({
             width: 200,
             render: (_, record: EmployeeResponseType) => {
                 const workDescription = record?.work_description;
-                if (workDescription && typeof workDescription === 'object') {
-                    return <span>{JSON.stringify(workDescription)}</span>;
+                if (
+                    workDescription &&
+                    typeof workDescription === 'object' &&
+                    'description' in workDescription
+                ) {
+                    return (
+                        <span>
+                            {(workDescription as { description: string }).description || '-'}
+                        </span>
+                    );
                 }
-                return <span>{workDescription || '-'}</span>;
+                return <span>{typeof workDescription === 'string' ? workDescription : '-'}</span>;
             },
         },
         {
@@ -444,10 +452,14 @@ export const useEmployeeCols = ({
             width: 200,
             render: (_, record: EmployeeResponseType) => {
                 const speakLanguages = record?.speak_languages;
-                if (speakLanguages && typeof speakLanguages === 'object') {
-                    return <span>{speakLanguages?.languages?.name_en || '-'}</span>;
+                if (
+                    speakLanguages &&
+                    typeof speakLanguages === 'object' &&
+                    'languages' in speakLanguages
+                ) {
+                    return <span>{speakLanguages.languages?.name_en || '-'}</span>;
                 }
-                return <span>{speakLanguages || '-'}</span>;
+                return <span>-</span>;
             },
         },
         {
@@ -475,10 +487,14 @@ export const useEmployeeCols = ({
             width: 200,
             render: (_, record: EmployeeResponseType) => {
                 const refusalInsurance = record?.refusal_insurance;
-                if (refusalInsurance && typeof refusalInsurance === 'object') {
-                    return <span>{JSON.stringify(refusalInsurance)}</span>;
+                if (
+                    refusalInsurance &&
+                    typeof refusalInsurance === 'object' &&
+                    'reason' in refusalInsurance
+                ) {
+                    return <span>{(refusalInsurance as { reason: string }).reason || '-'}</span>;
                 }
-                return <span>{refusalInsurance || '-'}</span>;
+                return <span>{typeof refusalInsurance === 'string' ? refusalInsurance : '-'}</span>;
             },
         },
         {
@@ -577,9 +593,9 @@ export const useEmployeeCols = ({
                             >
                                 {t.employee.edit}
                             </Button>
-                            <Button icon={<DeleteOutlined className="!text-red-500" />}>
+                            {/* <Button icon={<DeleteOutlined className="!text-red-500" />}>
                                 {t.employee.delete}
-                            </Button>
+                            </Button> */}
                         </div>
                     }
                 >

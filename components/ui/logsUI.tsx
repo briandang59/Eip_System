@@ -1,4 +1,4 @@
-import { Badge, Button, Collapse, CollapseProps, Modal, Space } from 'antd';
+import { Badge, Button, Collapse, CollapseProps, Modal, Space, Spin } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,6 +13,8 @@ interface LogsUIProps {
     full_name: string;
     logsByDate?: DateLogMap;
     work_place: number;
+    isLoading: boolean;
+    isError: boolean;
 }
 
 export default function LogsUI({
@@ -20,6 +22,8 @@ export default function LogsUI({
     full_name,
     logsByDate = {},
     work_place,
+    isLoading,
+    isError,
 }: LogsUIProps) {
     const { t } = useTranslationCustom();
     const [isModalOpen, setModalOpen] = useState(false);
@@ -30,46 +34,51 @@ export default function LogsUI({
         () =>
             Object.entries(logsByDate)
                 .sort(([a], [b]) => (dayjs(b).isAfter(a) ? 1 : -1))
-                .map(([date, entries]) => ({
-                    key: date,
-                    label: (
-                        <Space>
-                            <ClockCircleOutlined />
-                            {dayjs(date).format('DD/MM/YYYY')}
-                            <Badge
-                                count={entries.length}
-                                style={{ backgroundColor: '#52c41a' }}
-                                offset={[4, -2]}
-                            />
-                        </Space>
-                    ),
-                    children: (
-                        <ul className="space-y-2">
-                            {entries.map((log, idx) => (
-                                <li
-                                    key={idx}
-                                    className="grid grid-cols-[90px_1fr] items-center gap-4 p-2 rounded-lg hover:bg-gray-50"
-                                >
-                                    <span className="text-purple-700 font-medium">
-                                        {log.happenTime}
-                                    </span>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            setSelectedRecord(log);
-                                            setModalOpen(true);
-                                        }}
+                .map(([date, entries]) => {
+                    // Đảm bảo entries là một array
+                    const entriesArray = Array.isArray(entries) ? entries : [];
+
+                    return {
+                        key: date,
+                        label: (
+                            <Space>
+                                <ClockCircleOutlined />
+                                {dayjs(date).format('DD/MM/YYYY')}
+                                <Badge
+                                    count={entriesArray.length}
+                                    style={{ backgroundColor: '#52c41a' }}
+                                    offset={[4, -2]}
+                                />
+                            </Space>
+                        ),
+                        children: (
+                            <ul className="space-y-2">
+                                {entriesArray.map((log, idx) => (
+                                    <li
+                                        key={idx}
+                                        className="grid grid-cols-[90px_1fr] items-center gap-4 p-2 rounded-lg hover:bg-gray-50"
                                     >
-                                        {t.logs.view}
-                                    </Button>
-                                </li>
-                            ))}
-                        </ul>
-                    ),
-                    style: dayjs(date).isSame(dayjs(), 'day')
-                        ? { background: '#f6ffed' }
-                        : undefined,
-                })),
+                                        <span className="text-purple-700 font-medium">
+                                            {log.happenTime}
+                                        </span>
+                                        <Button
+                                            type="link"
+                                            onClick={() => {
+                                                setSelectedRecord(log);
+                                                setModalOpen(true);
+                                            }}
+                                        >
+                                            {t.logs.view}
+                                        </Button>
+                                    </li>
+                                ))}
+                            </ul>
+                        ),
+                        style: dayjs(date).isSame(dayjs(), 'day')
+                            ? { background: '#f6ffed' }
+                            : undefined,
+                    };
+                }),
         [logsByDate, t.logs.view],
     );
     useEffect(() => {
@@ -79,6 +88,9 @@ export default function LogsUI({
             .then(setImageBase64Url)
             .catch((err) => toast.error(String(err)));
     }, [selectedRecord, work_place]);
+
+    if (isLoading) return <Spin />;
+    if (isError) return <p className="italic text-gray-500">Error</p>;
 
     return (
         <div className="flex flex-col gap-4">

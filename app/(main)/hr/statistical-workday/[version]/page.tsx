@@ -23,7 +23,7 @@ function StatisticalWorkdayV1() {
     const myInfo = getInfomation();
     const { t, lang } = useTranslationCustom();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
-    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
+    const selectedWorkPlace = selectedFactoryId ?? myInfo?.work_place_id ?? undefined;
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs().startOf('month'),
         end: dayjs().endOf('month'),
@@ -397,7 +397,7 @@ function StatisticalWorkdayV1() {
             <GenericTable<StatisticalWorkdayType>
                 columns={workdayCols}
                 dataSource={statisticalWorkday || []}
-                rowKey="stt"
+                rowKey={(record) => `${record.card_number}_${record.unit?.id || ''}`}
                 isLoading={isLoadingAttendance}
                 summary={summaryRow}
                 pagination={{
@@ -408,6 +408,7 @@ function StatisticalWorkdayV1() {
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                     size: 'default',
                 }}
+                className="secondary-table"
             />
         </div>
     );

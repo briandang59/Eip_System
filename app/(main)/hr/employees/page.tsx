@@ -52,6 +52,7 @@ function EmployeesPage() {
     const {
         dailyCareerRecord,
         isLoading: isLoadingDaily,
+        isError: isErrorDaily,
         mutate: mutateDailyCareerRecord,
     } = useDailyCareerRecord({
         uuid: selectedUUID,
@@ -172,10 +173,17 @@ function EmployeesPage() {
                                 {selectedRecord?.card_number}
                             </p>
                         </div>
+                        {isErrorDaily && (
+                            <div className="flex items-center gap-2">
+                                <p className="text-red-500">Error</p>
+                            </div>
+                        )}
                         <GenericTable<CareerHistoryResponseType>
                             columns={dailyRecord}
                             dataSource={dailyCareerRecord || []}
-                            rowKey={'stt'}
+                            rowKey={(record) =>
+                                `${record.uuid}-${record.event_date}-${record.event_id}`
+                            }
                             isLoading={isLoadingDaily}
                             pagination={{
                                 defaultPageSize: 30,
@@ -422,7 +430,7 @@ function EmployeesPage() {
                 <GenericTable<TransferEmployeesResponseType>
                     columns={transferCols}
                     dataSource={transferEmployee || []}
-                    rowKey="stt"
+                    rowKey={(record) => `${record.card_number}`}
                     isLoading={isLoadingTransfer}
                     pagination={{
                         defaultPageSize: 30,

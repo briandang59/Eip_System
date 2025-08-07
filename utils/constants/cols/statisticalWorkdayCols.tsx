@@ -6,8 +6,12 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { formatNumber } from '@/utils/functions/formatNumber';
 
 const UnitCell = ({ unit }: { unit: StatisticalWorkdayType['unit'] }) => {
-    const unitName = useChangeLanguage(unit.name_en, unit.name_zh, unit.name_vn);
-    return <div>{unitName}</div>;
+    const unitName = useChangeLanguage(
+        unit?.name_en || '',
+        unit?.name_zh || '',
+        unit?.name_vn || '',
+    );
+    return <div>{unitName || '-'}</div>;
 };
 
 export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkdayType> => {
