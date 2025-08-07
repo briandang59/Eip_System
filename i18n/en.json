@@ -787,7 +787,12 @@
         "find": "Find form",
         "no_form_display": "No forms available to display.",
         "form": "Form List",
-        "request_form": "Request Form"
+        "request_form": "Request Form",
+        "status": "Status",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "all": "All"
     },
     "record_form": {
         "applicant": "Applicant",

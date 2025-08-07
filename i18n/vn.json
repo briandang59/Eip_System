@@ -786,7 +786,12 @@
         "find": "Tìm biểu mẫu",
         "no_form_display": "Không có biểu mẫu nào để hiển thị.",
         "form": "Danh sách biểu mẫu",
-        "request_form": "Biểu mẫu yêu cầu"
+        "request_form": "Biểu mẫu yêu cầu",
+        "status": "Trạng thái",
+        "pending": "Đang chờ",
+        "approved": "Đã phê duyệt",
+        "rejected": "Đã từ chối",
+        "all": "Tất cả"
     },
     "record_form": {
         "applicant": "Người nộp",

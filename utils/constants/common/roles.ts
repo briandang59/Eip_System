@@ -9,4 +9,5 @@ export enum Roles {
     SYSTEM_ADMINISTRATOR = 'system_administrator',
     FABRIC_EXPERIMENT_MANAGER = 'rd_fabric_experiment_manager',
     BULLETINS_BOARD_MANAGER = 'bulletin_board_manager',
+    FORM_MANAGER = 'form_manager',
 }

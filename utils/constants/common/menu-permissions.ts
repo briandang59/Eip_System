@@ -54,13 +54,18 @@ export const menuPermissions: Record<string, Roles[]> = {
 
     iso: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FABRIC_EXPERIMENT_MANAGER],
     'iso/request-form': [
-        Roles.SUPER_USER,
+        Roles.EMPLOYEE,
+        Roles.SYSTEM_ADMINISTRATOR,
         Roles.HR_MANAGER,
         Roles.HR_ASSISTANT,
-        Roles.EMPLOYEE,
+        Roles.PRODUCTIVITY_SUPERVISOR,
+        Roles.MEETING_ROOM_USER,
+        Roles.SUPER_USER,
         Roles.DEPARTMENT_SHIFT_SCHEDULER,
+        Roles.FABRIC_EXPERIMENT_MANAGER,
+        Roles.FORM_MANAGER,
     ],
-    'iso/form': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FABRIC_EXPERIMENT_MANAGER],
+    'iso/form': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.FORM_MANAGER],
 
     bulletins: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR, Roles.BULLETINS_BOARD_MANAGER],
     'bulletins/manage-bulletins': [

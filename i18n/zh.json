@@ -786,7 +786,12 @@
         "find": "搜尋表單",
         "no_form_display": "沒有可顯示的表單。",
         "form": "表單列表",
-        "request_form": "請求表單"
+        "request_form": "請求表單",
+        "status": "狀態",
+        "pending": "待處理",
+        "approved": "已核准",
+        "rejected": "已拒絕",
+        "all": "全部"
     },
     "record_form": {
         "applicant": "申請人",
