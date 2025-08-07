@@ -13,30 +13,18 @@ interface params {
     uuid?: string;
 }
 export const useDayoff = (params?: params) => {
-    console.log('useDayoff - params:', params);
-
     // Chỉ gọi API khi có params hợp lệ
     const shouldFetch =
         params && params.uuid && params.uuid.trim() !== '' && params.work_place_id > 0;
 
-    console.log('useDayoff - shouldFetch:', shouldFetch);
-    console.log('useDayoff - params.uuid:', params?.uuid);
-    console.log('useDayoff - params.work_place_id:', params?.work_place_id);
-
     const query = params ? `?${qs.stringify(params, { encodeValuesOnly: true })}` : '';
     const url = shouldFetch ? `${API_URL}${query}` : null;
-
-    console.log('useDayoff - url:', url);
 
     const { data, error, mutate } = useSWR<BaseResponse<DayoffType[]>>(url, fetcher, {
         revalidateOnFocus: false,
         revalidateIfStale: false,
         revalidateOnReconnect: false,
     });
-
-    console.log('useDayoff - API response:', data);
-    console.log('useDayoff - API error:', error);
-    console.log('useDayoff - dayoff data:', data?.data);
 
     return {
         dayoff: data?.data,

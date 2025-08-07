@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { overtimeService } from '@/apis/services/overtime';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 // Định nghĩa type cho row
 interface OvertimeEmployeeRow {
@@ -30,7 +31,8 @@ function OvertimePage() {
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const { t } = useTranslationCustom();
 
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(null);
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const [search, setSearch] = useState<string>('');
     const [date, setDate] = useState<Dayjs>(dayjs());
     const [selectedUnit, setSelectedUnit] = useState<number | null>(null);
@@ -38,9 +40,9 @@ function OvertimePage() {
 
     useEffect(() => {
         if (myInfo && selectedWorkPlace === null) {
-            setSelectedWorkPlace(myInfo.work_place_id ?? undefined);
+            setSelectedFactoryId(myInfo.work_place_id ?? undefined);
         }
-    }, [myInfo, selectedWorkPlace]);
+    }, [myInfo, selectedWorkPlace, setSelectedFactoryId]);
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace ?? undefined,
     });
@@ -192,7 +194,7 @@ function OvertimePage() {
                     }))}
                     loading={isLoadingWorkPlaces}
                     value={selectedWorkPlace ?? undefined}
-                    onChange={setSelectedWorkPlace}
+                    onChange={setSelectedFactoryId}
                     className="w-[150px]"
                 />
                 <Select

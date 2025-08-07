@@ -2,15 +2,15 @@
 import { useManageBulletins } from '@/apis/useSwr/bulletins';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import BulletinUI from '@/components/ui/BulletinUI';
-import { getInfomation } from '@/utils/functions/getInfomation';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 import { Pagination, Select, Spin } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function Home() {
     const [page, setPage] = useState(1);
     const [pageSize] = useState(10);
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>();
-    const myInfo = getInfomation();
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || 0;
     const { workPlaces, isLoading: isLoadingWorkplaces } = useWorkPlaces();
     const { bulletins, isLoading: isLoadingBulletins } = useManageBulletins({
         pageNum: page,
@@ -18,11 +18,6 @@ function Home() {
         work_places: selectedWorkPlace ? String(selectedWorkPlace) : undefined,
     });
 
-    useEffect(() => {
-        if (myInfo?.work_place_id) {
-            setSelectedWorkPlace(myInfo.work_place_id);
-        }
-    }, [myInfo?.work_place_id]);
     if (isLoadingBulletins) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -40,7 +35,7 @@ function Home() {
                     }))}
                     placeholder="Select Work Place"
                     value={selectedWorkPlace}
-                    onChange={(value) => setSelectedWorkPlace(value)}
+                    onChange={(value) => setSelectedFactoryId(value)}
                     className="w-[150px]"
                     loading={isLoadingWorkplaces}
                 />

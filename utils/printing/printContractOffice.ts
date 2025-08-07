@@ -1872,7 +1872,7 @@ export const PrintContractOffice = async (
         const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
         return pdfDataUri;
     } catch (error) {
-        console.log(error);
+
         return '';
     }
 };

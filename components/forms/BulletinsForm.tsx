@@ -93,11 +93,10 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         }
     }, [reset, bulletin, setAttachments]);
 
-    const workplace_ids =
-        useWatch({
-            name: 'work_places',
-            control,
-        }) || [];
+    const workplace_ids = useWatch({
+        name: 'work_places',
+        control,
+    }) || [];
 
     const stringWorkplaces = useMemo(() => {
         return workplace_ids?.length ? workplace_ids.join(',') : '0';

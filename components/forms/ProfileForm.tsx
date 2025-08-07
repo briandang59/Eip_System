@@ -337,7 +337,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
             if (employee_modify?.card_number) {
                 await employeeService.update(newData);
                 if (uploadedFile && data.card_number) {
-                    console.log('uploadedFile', uploadedFile);
+            
                     await employeeService.upload_image(data.card_number, uploadedFile);
                 }
                 toast.success('Employee updated successfully.');

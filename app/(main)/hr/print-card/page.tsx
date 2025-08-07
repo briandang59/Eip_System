@@ -15,6 +15,7 @@ import { IdCard } from 'lucide-react';
 import { UserInfo } from '@/types/response/auth';
 import { PrintLeaveDocument } from '@/utils/printing/printLeaveDocument';
 import { toast } from 'sonner';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 export default function PrintCardPage() {
     const { lang, t } = useTranslationCustom();
@@ -25,7 +26,8 @@ export default function PrintCardPage() {
         setMyInfo(getInfomation());
     }, []);
 
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(null);
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
@@ -34,10 +36,10 @@ export default function PrintCardPage() {
     const [pdfUrl, setPdfUrl] = useState<string>('');
 
     useEffect(() => {
-        if (myInfo?.work_place?.id) {
-            setSelectedWorkPlace(myInfo.work_place.id);
+        if (myInfo?.work_place_id) {
+            setSelectedFactoryId(myInfo.work_place_id);
         }
-    }, [myInfo]);
+    }, [myInfo, setSelectedFactoryId]);
 
     // Tự động load empty PDF khi vào trang
     useEffect(() => {
@@ -118,7 +120,7 @@ export default function PrintCardPage() {
                         options={workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
                         style={{ width: 150 }}
                         value={selectedWorkPlace}
-                        onChange={setSelectedWorkPlace}
+                        onChange={setSelectedFactoryId}
                         loading={isLoadingWP}
                         placeholder={t.print_card.workplace}
                     />

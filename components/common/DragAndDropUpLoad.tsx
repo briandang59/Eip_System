@@ -20,10 +20,10 @@ const DragAndDropUpload = ({ setFileListOutside }: DragAndDropUploadProps) => {
             return false;
         },
         onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
+    
         },
         onChange(info) {
-            console.log('All selected files (fileList):', info.fileList);
+
         },
     };
 

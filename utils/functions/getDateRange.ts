@@ -44,7 +44,7 @@ export function getDateRange(dateRange: string[]): string[] {
     }
 
     // Debug: Log output
-    console.log('getDateRange output:', result);
+
 
     return result;
 }

@@ -12,6 +12,7 @@ import { FileExcelOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Input, Select } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
@@ -20,7 +21,8 @@ function WorkdayV1() {
     const { units, isLoading: isLoadingUnits } = useUnits();
 
     const myInfo = getInfomation();
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id ?? 2);
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [searchInput, setSearchInput] = useState<string>('');
     const [, setSearchText] = useState<string>('');
@@ -95,7 +97,7 @@ function WorkdayV1() {
                         }))}
                         style={{ width: '150px' }}
                         value={selectedWorkPlace}
-                        onChange={setSelectedWorkPlace}
+                        onChange={setSelectedFactoryId}
                         loading={isLoadingWorkplace}
                     />
                 </div>

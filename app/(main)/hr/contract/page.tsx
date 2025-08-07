@@ -27,6 +27,7 @@ import { PrintContractOffice } from '@/utils/printing/printContractOffice';
 import { IEmployee } from '@/types/printing/IEmployee';
 import { useEffect } from 'react';
 import { PrintContractCleanerSecurity } from '@/utils/printing/printContractCleanerSecurity';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function ContractPage() {
     const { lang, t } = useTranslationCustom();
@@ -36,9 +37,8 @@ function ContractPage() {
     const { employees, isLoading: isLoadingEmployees } = useEmployees();
     const { contractTypeList, isLoading: isLoadingContractTypeList } = useContractTypeList();
     const myInfo = getInfomation();
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | undefined>(
-        myInfo?.work_place_id || undefined,
-    );
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
     const [selectedContentType, setSelectedContentType] = useState<number | undefined>(1);
     const [, setSearchValue] = useState<string>('');
@@ -71,10 +71,7 @@ function ContractPage() {
     }, [selectedEmployee]);
 
     useEffect(() => {
-        console.log(
-            'webviewerUrl changed:',
-            webviewerUrl ? webviewerUrl.substring(0, 50) + '...' : 'empty',
-        );
+        // webviewerUrl changed
     }, [webviewerUrl]);
     const contentTypeOptions = [
         { value: 1, label: t.contract_page.contract_salary },
@@ -169,19 +166,19 @@ function ContractPage() {
             {selectedContentType !== 3 ? (
                 <div className="flex items-end gap-2 flex-wrap mb-4 ">
                     <div className="flex flex-col gap-2">
-                        <span className="text-sm font-bold">{t.contract_page.workplace}</span>
+                        <span className="text-sm font-medium">{t.contract_page.workplace}</span>
                         <Select
                             options={
                                 workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id })) || []
                             }
                             value={selectedWorkPlace}
-                            onChange={setSelectedWorkPlace}
+                            onChange={setSelectedFactoryId}
                             loading={isLoadingWorkPlaces}
                             className="w-[150px]"
                         />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <span className="text-sm font-bold">{t.contract_page.type}</span>
+                        <span className="text-sm font-medium">{t.contract_page.type}</span>
                         <Select
                             options={contentTypeOptions}
                             value={selectedContentType}
@@ -190,7 +187,7 @@ function ContractPage() {
                         />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <span className="text-sm font-bold">{t.contract_page.unit}</span>
+                        <span className="text-sm font-medium">{t.contract_page.unit}</span>
                         <Select
                             options={
                                 units?.map((u) => ({
@@ -226,7 +223,7 @@ function ContractPage() {
                                 workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id })) || []
                             }
                             value={selectedWorkPlace}
-                            onChange={setSelectedWorkPlace}
+                            onChange={setSelectedFactoryId}
                             className="w-[150px]"
                         />
                     </div>

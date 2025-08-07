@@ -16,6 +16,7 @@ import ReinstateForm from '@/components/forms/ReinstateForm';
 import ResignForm from '@/components/forms/ResignForm';
 import TransferForm from '@/components/forms/TransferForm';
 import ProfileUI from '@/components/ui/profileUI';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 import { CareerHistoryResponseType } from '@/types/response/dailyCareerRecord';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { TransferEmployeesResponseType } from '@/types/response/transferEmployees';
@@ -39,7 +40,10 @@ function EmployeesPage() {
     const [selectedState, setSelectedState] = useState<number>();
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number>(myInfo?.work_place_id || 0);
+
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
+
     const [selectedUUID, setSelectedUUID] = useState<string>('');
     const [key, setKey] = useState<string>('');
     const [selectedRecord, setSelectedRecord] = useState<EmployeeResponseType>();
@@ -335,7 +339,7 @@ function EmployeesPage() {
                         placeholder="Select Workplace"
                         className="w-[150px]"
                         loading={isLoadingWorkPlaces}
-                        onChange={(value) => setSelectedWorkPlace(value)}
+                        onChange={(value) => setSelectedFactoryId(value)}
                         value={selectedWorkPlace}
                     />
                 </div>

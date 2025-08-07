@@ -26,6 +26,7 @@ import LogsUI from '@/components/ui/logsUI';
 import { useLogs } from '@/apis/useSwr/logs';
 import Overtime from '@/components/forms/Overtime';
 import { EditedClockTime } from '@/components/ui/editClocktimeUI';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -95,15 +96,14 @@ function Workday() {
     const [isAbnormal, setIsAbnormal] = useState<boolean>(false);
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const myInfo = getInfomation();
-    const [selectWorkPlace, setSelectWorkPlace] = useState<number | null>(
-        myInfo?.work_place?.id || null,
-    );
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const { logsByDate } = useLogs({
         date:
             (selectedAttendance && selectedAttendance?.details[0]?.date) ||
             dayjs().format('YYYY-MM-DD'),
         scope_days: 1,
-        work_place_id: selectWorkPlace && selectWorkPlace,
+        work_place_id: selectedWorkPlace && selectedWorkPlace,
         card_number: selectedAttendance?.card_number,
     });
     useEffect(() => {
@@ -131,10 +131,10 @@ function Workday() {
                     toast.error(`${err}`);
                 });
         }
-    }, [selectedAttendance, selectWorkPlace, key]);
+    }, [selectedAttendance, selectedWorkPlace, key]);
 
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectWorkPlace || undefined,
+        place_id: selectedWorkPlace || undefined,
     });
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs(),
@@ -161,7 +161,7 @@ function Workday() {
         {
             start: dateRange.start.format('YYYY-MM-DD') || '',
             end: dateRange.end.format('YYYY-MM-DD') || '',
-            work_place_id: selectWorkPlace || undefined,
+            work_place_id: selectedWorkPlace || undefined,
         },
         {
             search: searchText,
@@ -213,7 +213,7 @@ function Workday() {
         const startDate = dateRange.start.format('YYYY-MM-DD');
         const endDate = dateRange.end.format('YYYY-MM-DD');
         const workplaceName =
-            workPlaces?.find((wp) => wp.id === selectWorkPlace)?.name_en || 'AllWorkplaces';
+            workPlaces?.find((wp) => wp.id === selectedWorkPlace)?.name_en || 'AllWorkplaces';
         const abnormalText = isAbnormal ? 'Abnormal' : 'Normal';
         const filename = `Workday_${startDate}_to_${endDate}_${workplaceName}_${abnormalText}`;
 
@@ -266,12 +266,12 @@ function Workday() {
             case 'logs':
                 return (
                     <>
-                        {selectedAttendance && selectWorkPlace && (
+                        {selectedAttendance && selectedWorkPlace && (
                             <LogsUI
                                 card_number={selectedAttendance?.card_number}
                                 full_name={selectedAttendance?.fullname}
                                 logsByDate={logsByDate}
-                                work_place={selectWorkPlace}
+                                work_place={selectedWorkPlace}
                             />
                         )}
                     </>
@@ -313,8 +313,8 @@ function Workday() {
                                 value: item.id,
                             }))}
                             style={{ width: '150px' }}
-                            value={selectWorkPlace}
-                            onChange={setSelectWorkPlace}
+                            value={selectedWorkPlace}
+                            onChange={setSelectedFactoryId}
                             loading={isLoadingWorkPlaces}
                         />
                     </div>

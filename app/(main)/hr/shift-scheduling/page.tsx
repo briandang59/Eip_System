@@ -32,6 +32,7 @@ import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useUnits } from '@/apis/useSwr/units';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 interface FormatAssignmentsReturnType {
     create: ShiftCreateRequestType[];
@@ -45,9 +46,8 @@ export default function ShiftSchedulingPage() {
     const [step, setStep] = useState<number>(1);
     const [search, setSearch] = useState<string>('');
     const myInfo = getInfomation();
-    const [selectedWorkPlace, setSelectedWorkPlace] = useState<number | null>(
-        myInfo?.work_place_id ?? null,
-    );
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const [selectedShiftId, setSelectedShiftId] = useState<number | undefined>(undefined);
     const [assignments, setAssignments] = useState<TempAssignments>({});
     const { isLoading, run } = useLoadingWithDelay({ minDelayMs: 5000, timeoutMs: 10000 });
@@ -283,10 +283,10 @@ export default function ShiftSchedulingPage() {
 
     const debouncedSetSelectedWorkPlace = useMemo(
         () =>
-            debounce((value: number | null) => {
-                setSelectedWorkPlace(value);
+            debounce((value: number) => {
+                setSelectedFactoryId(value);
             }, 300),
-        [setSelectedWorkPlace],
+        [setSelectedFactoryId],
     );
 
     const columns = useShiftHrCols({

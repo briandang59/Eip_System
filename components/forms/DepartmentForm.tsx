@@ -50,7 +50,7 @@ function DepartmentForm({ close, categories }: DepartmentFormProps) {
 
     const onSubmit = async (data: FormData) => {
         try {
-            console.log(data);
+    
         } catch (error) {
             toast.error(`${error}`);
         }

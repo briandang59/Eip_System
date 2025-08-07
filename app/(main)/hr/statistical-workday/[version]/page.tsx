@@ -14,6 +14,7 @@ import { FileExcelOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useStatisticalWorkdayExport } from '@/utils/hooks/useExportToExcel';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useFactoryInspectionAttendance } from '@/apis/useSwr/factoryInspectionAttendance';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function StatisticalWorkdayV1() {
     const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
@@ -21,7 +22,8 @@ function StatisticalWorkdayV1() {
     const [selectedMonth, setSelectedMonth] = useState<Dayjs>(dayjs().startOf('month'));
     const myInfo = getInfomation();
     const { t, lang } = useTranslationCustom();
-    const [selectWorkPlace, setSelectWorkPlace] = useState<number>(myInfo?.work_place?.id || 0);
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs().startOf('month'),
         end: dayjs().endOf('month'),
@@ -30,7 +32,7 @@ function StatisticalWorkdayV1() {
     const [search, setSearch] = useState<string>('');
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectWorkPlace || undefined,
+        place_id: selectedWorkPlace || undefined,
     });
 
     // Export hook
@@ -38,7 +40,7 @@ function StatisticalWorkdayV1() {
         workdayCols,
         workPlaces,
         selectedMonth,
-        selectWorkPlace,
+        selectedWorkPlace,
         status,
     );
 
@@ -55,7 +57,7 @@ function StatisticalWorkdayV1() {
         {
             start: dateRange.start.format('YYYY-MM-DD') || '',
             end: dateRange.end.format('YYYY-MM-DD') || '',
-            work_place_id: selectWorkPlace,
+            work_place_id: selectedWorkPlace,
         },
         {
             year: selectedMonth.year(),
@@ -301,7 +303,7 @@ function StatisticalWorkdayV1() {
     };
 
     const onChangeWorkPlace = (value: number) => {
-        setSelectWorkPlace(value);
+        setSelectedFactoryId(value);
     };
     const handleRefresh = () => {
         mutateAttendance();
@@ -327,7 +329,7 @@ function StatisticalWorkdayV1() {
                             value: item.id,
                         }))}
                         style={{ width: '150px' }}
-                        value={selectWorkPlace}
+                        value={selectedWorkPlace}
                         onChange={onChangeWorkPlace}
                         loading={isLoadingWorkPlaces}
                     />

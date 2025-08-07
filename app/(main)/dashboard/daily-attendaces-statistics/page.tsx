@@ -17,6 +17,7 @@ import { useDayoff } from '@/apis/useSwr/dayoff';
 import { ExportHrStatistical } from '@/utils/excels/exportHrStatistical';
 import { useDailyStatisticalAttendanceRangeDate } from '@/apis/useSwr/dailyStatisticalAttendanceRangeDate';
 import { getDateRangeArray } from '@/utils/functions/getDateRangeArray';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 const { RangePicker } = DatePicker;
 
@@ -24,15 +25,16 @@ export default function Home() {
     const { t, lang } = useTranslationCustom();
     const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const myInfo = getInfomation();
-    const [selectedWorkplace, setSelectedWorkplace] = useState<number>(0);
+    const { selectedFactoryId, setSelectedFactoryId, initializeFromUserInfo } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || 0;
     const [rangeDate, setRangeDate] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs().subtract(1, 'day'),
         end: dayjs(),
     });
 
     useEffect(() => {
-        if (myInfo) {
-            setSelectedWorkplace(myInfo.work_place_id);
+        if (myInfo?.work_place_id) {
+            initializeFromUserInfo(myInfo.work_place_id);
         }
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -43,15 +45,15 @@ export default function Home() {
         mutate,
     } = useDailyStatisticalAttendance({
         date: dayjs(rangeDate.start).format('YYYY-MM-DD'),
-        place_id: selectedWorkplace,
+        place_id: selectedWorkPlace,
     });
     const { statisticalRangeDayAttendance } = useDailyStatisticalAttendanceRangeDate({
         start: dayjs(rangeDate.start).format('YYYY-MM-DD'),
         end: dayjs(rangeDate.end).format('YYYY-MM-DD'),
-        place_id: selectedWorkplace,
+        place_id: selectedWorkPlace,
     });
     const { dayoff, isLoading: isLoadingDayoff } = useDayoff({
-        work_place_id: selectedWorkplace,
+        work_place_id: selectedWorkPlace,
         start: dayjs(rangeDate.start).format('YYYY-MM-DD'),
         end: dayjs(rangeDate.end).format('YYYY-MM-DD'),
     });
@@ -83,13 +85,13 @@ export default function Home() {
 
     const handleExport = () => {
         if (statisticalRangeDayAttendance.length > 0) {
-            console.log(statisticalRangeDayAttendance);
+        
             const rangeDateArray = getDateRangeArray(
                 dayjs(rangeDate.start).format('YYYY-MM-DD'),
                 dayjs(rangeDate.end).format('YYYY-MM-DD'),
             );
             ExportHrStatistical(
-                selectedWorkplace,
+                selectedWorkPlace,
                 statisticalRangeDayAttendance,
                 workPlaces || [],
                 rangeDateArray,
@@ -143,8 +145,8 @@ export default function Home() {
                     }))}
                     className="w-[150px]"
                     loading={isLoadingWorkplace}
-                    onChange={setSelectedWorkplace}
-                    value={selectedWorkplace}
+                    onChange={setSelectedFactoryId}
+                    value={selectedWorkPlace}
                 />
                 <RangePicker
                     value={[rangeDate.start, rangeDate.end]}

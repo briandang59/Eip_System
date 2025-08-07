@@ -65,7 +65,7 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
                 })
                 .catch((err) => console.error('Destroy EditorJS failed:', err));
         };
-    }, [editorHolderId, isMounted]);
+    }, [editorHolderId, isMounted, data, onChange]);
 
     return isMounted ? (
         <div className="flex flex-col gap-2">

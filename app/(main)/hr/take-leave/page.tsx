@@ -16,6 +16,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Pen, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function TakeLeavePage() {
     const takeleaveCols = useTakeLeaveCols();
@@ -28,15 +29,14 @@ function TakeLeavePage() {
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const myInfo = getInfomation();
     const { workPlaces, isLoading: workplaceLoading } = useWorkPlaces();
-    const [selectedWorkplace, setSelectedWorkplace] = useState<number | null>(
-        myInfo?.work_place_id ?? null,
-    );
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const {
         takeLeaves,
         isLoading: takeLeaveLoading,
         mutate,
     } = useTakeLeave({
-        work_place_id: selectedWorkplace ?? 0,
+        work_place_id: selectedWorkPlace ?? 0,
         start: dayjs(dateRange.start).format('YYYY-MM-DD'),
         end: dayjs(dateRange.end).format('YYYY-MM-DD'),
     });
@@ -119,13 +119,13 @@ function TakeLeavePage() {
         <ClientOnly>
             <div className="flex items-end gap-2 mb-4">
                 <Select
-                    value={selectedWorkplace}
+                    value={selectedWorkPlace}
                     options={workPlaces?.map((item) => ({
                         label: item.name_vn,
                         value: item.id,
                     }))}
                     onChange={(value) => {
-                        setSelectedWorkplace(value);
+                        setSelectedFactoryId(value);
                     }}
                     className="w-[150px]"
                     loading={workplaceLoading}

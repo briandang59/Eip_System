@@ -38,7 +38,7 @@ export const employeeService = {
             formData.append('file', file);
 
             for (const [key, value] of formData.entries()) {
-                console.log(`${key}:`, value);
+
             }
 
             const response = await fetchAPI.post<BaseResponse<any>>(
@@ -50,7 +50,7 @@ export const employeeService = {
 
             return response.data;
         } catch (error) {
-            console.error('Upload error:', error);
+
             throw error;
         }
     },

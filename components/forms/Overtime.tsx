@@ -19,7 +19,7 @@ interface OvertimeProps {
 }
 function Overtime({ attendance, mutate, close }: OvertimeProps) {
     const { t } = useTranslationCustom();
-    console.log('attendance.card_number', attendance.card_number);
+    
     const { employees } = useEmployees({ card_number: attendance.card_number });
     const overtimeParams = {
         start_time: `${attendance.details[0].date} 00:00:00`,

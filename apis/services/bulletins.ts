@@ -44,7 +44,7 @@ export const bulletinsService = {
         try {
             const url = `/${urls.manage}/${urls.bulletins}/${id}`;
             const formData = new FormData();
-            console.log('Data received in modify:', data);
+    
 
             // Duyệt từng key nếu tồn tại trong data thì append
             if (data.title_vn !== undefined) formData.append('title_vn', data.title_vn);
@@ -72,7 +72,7 @@ export const bulletinsService = {
 
             // Log nội dung FormData
             for (const [key, value] of formData.entries()) {
-                console.log(`FormData - ${key}: ${value}`);
+
             }
 
             const response = await fetchAPI.put<BaseResponse<any>>(url, {
@@ -82,7 +82,7 @@ export const bulletinsService = {
 
             return response.data;
         } catch (error) {
-            console.error('Modify error:', error);
+
             throw error;
         }
     },
@@ -107,7 +107,7 @@ export const bulletinsService = {
             });
             return response.data;
         } catch (error) {
-            console.error('Fetch error:', error);
+
             throw error;
         }
     },

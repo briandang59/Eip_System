@@ -8,17 +8,7 @@ export const PrintCardEmployee = async (
     work_place_id: number,
 ): Promise<string> => {
     try {
-        console.log('PrintCardEmployee called with:', {
-            dataLength: data.length,
-            work_place_id,
-            firstEmployee: data[0]
-                ? {
-                      card_number: data[0].card_number,
-                      hasPhoto: !!data[0].photo,
-                      photoLength: data[0].photo?.length || 0,
-                  }
-                : null,
-        });
+
 
         const pdfDoc = await PDFDocument.create();
         const pageWidth = 595.28;
@@ -98,30 +88,16 @@ export const PrintCardEmployee = async (
                     for (let i = 0; i < binaryString.length; i++) {
                         bytes[i] = binaryString.charCodeAt(i);
                     }
-                    console.log('Successfully converted base64 to bytes, length:', bytes.length);
                     employeeImage = await pdfDoc.embedJpg(bytes);
-                    console.log('Successfully embedded employee image');
                 } else {
-                    console.log(
-                        'No photo for employee:',
-                        employee.card_number,
-                        'using default image',
-                    );
                     // Sử dụng default image nếu không có photo
                     employeeImage = await pdfDoc.embedPng(avts);
                 }
             } catch (error) {
-                console.log('Error embedding employee image for:', employee.card_number, error);
                 // Nếu không thể embed ảnh, sử dụng default image
                 try {
-                    console.log('Trying to use default image for:', employee.card_number);
                     employeeImage = await pdfDoc.embedPng(avts);
                 } catch (defaultError) {
-                    console.log(
-                        'Error embedding default image for:',
-                        employee.card_number,
-                        defaultError,
-                    );
                     employeeImage = null;
                 }
             }
@@ -207,7 +183,7 @@ export const PrintCardEmployee = async (
         const blobUrl = URL.createObjectURL(blob); // Tạo URL từ blob
         return blobUrl;
     } catch (error) {
-        console.log(error);
+
         return '';
     }
 };
