@@ -3,6 +3,7 @@ import { useManageBulletins } from '@/apis/useSwr/bulletins';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import BulletinUI from '@/components/ui/BulletinUI';
 import { useFactoryStore } from '@/stores/useFactoryStore';
+import { getInfomation } from '@/utils/functions/getInfomation';
 import { Pagination, Select, Spin } from 'antd';
 import { useState } from 'react';
 
@@ -10,7 +11,8 @@ function Home() {
     const [page, setPage] = useState(1);
     const [pageSize] = useState(10);
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
-    const selectedWorkPlace = selectedFactoryId || 0;
+    const myInfo = getInfomation();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const { workPlaces, isLoading: isLoadingWorkplaces } = useWorkPlaces();
     const { bulletins, isLoading: isLoadingBulletins } = useManageBulletins({
         pageNum: page,

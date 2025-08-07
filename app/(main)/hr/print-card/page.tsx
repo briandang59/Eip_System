@@ -26,8 +26,7 @@ export default function PrintCardPage() {
         setMyInfo(getInfomation());
     }, []);
 
-    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
-    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
+    const { selectedFactoryId, setSelectedFactoryId, initializeFromUserInfo } = useFactoryStore();
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
@@ -35,11 +34,12 @@ export default function PrintCardPage() {
     const [selectedType, setSelectedType] = useState<number>(1);
     const [pdfUrl, setPdfUrl] = useState<string>('');
 
+    // Khởi tạo factory từ user info khi component mount
     useEffect(() => {
         if (myInfo?.work_place_id) {
-            setSelectedFactoryId(myInfo.work_place_id);
+            initializeFromUserInfo(myInfo.work_place_id);
         }
-    }, [myInfo, setSelectedFactoryId]);
+    }, [myInfo, initializeFromUserInfo]);
 
     // Tự động load empty PDF khi vào trang
     useEffect(() => {
@@ -60,7 +60,7 @@ export default function PrintCardPage() {
     }, [selectedEmployees]);
     const { workPlaces, isLoading: isLoadingWP } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedWorkPlace || undefined,
+        place_id: selectedFactoryId || undefined,
     });
     const { employees, isLoading: isLoadingEmp } = useEmployees({
         card_number: selectedCardNumber,
@@ -68,14 +68,14 @@ export default function PrintCardPage() {
 
     // Sử dụng basicInforEmployee để lấy dữ liệu cơ bản
     const { basicInforEmployee, isLoading: isLoadingBasic } = useBasicInforEmployee({
-        place_id: selectedWorkPlace || 0,
+        place_id: selectedFactoryId || 0,
         card_number_list: selectedEmployees,
         unit_id: selectedUnit,
     });
 
     // Xử lý in thẻ
     const handlePrint = async () => {
-        if (!selectedEmployees.length || !selectedWorkPlace) {
+        if (!selectedEmployees.length || !selectedFactoryId) {
             toast.warning(t.print_card.toast_error_message);
             return;
         }
@@ -89,11 +89,11 @@ export default function PrintCardPage() {
             let pdfBlobUrl: string;
             switch (selectedType) {
                 case 1:
-                    pdfBlobUrl = await PrintCardEmployee(basicInforEmployee, selectedWorkPlace);
+                    pdfBlobUrl = await PrintCardEmployee(basicInforEmployee, selectedFactoryId);
                     setPdfUrl(pdfBlobUrl);
                     break;
                 case 2:
-                    pdfBlobUrl = await PrintLeaveDocument(basicInforEmployee, selectedWorkPlace);
+                    pdfBlobUrl = await PrintLeaveDocument(basicInforEmployee, selectedFactoryId);
                     setPdfUrl(pdfBlobUrl);
                     break;
             }
@@ -119,7 +119,7 @@ export default function PrintCardPage() {
                     <Select
                         options={workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
                         style={{ width: 150 }}
-                        value={selectedWorkPlace}
+                        value={selectedFactoryId}
                         onChange={setSelectedFactoryId}
                         loading={isLoadingWP}
                         placeholder={t.print_card.workplace}
