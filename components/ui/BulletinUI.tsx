@@ -11,6 +11,7 @@ interface BulletinUIProps {
     width?: string;
     height?: string;
     viewType?: 'redirect' | 'modal';
+    type?: 'public' | 'private';
     setSelectedBulletin?: (bulletin: BulletinsResponseType) => void;
 }
 function BulletinUI({
@@ -19,6 +20,7 @@ function BulletinUI({
     height,
     viewType = 'redirect',
     setSelectedBulletin,
+    type = 'private',
 }: BulletinUIProps) {
     const router = useRouter();
     const handleRedirect = () => {
@@ -35,6 +37,31 @@ function BulletinUI({
         record?.content_vn,
         lang,
     );
+
+    if (type === 'public') {
+        return (
+            <div
+                className="p-4 rounded-[10px] border bg-white border-gray-200 shadow-md flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300"
+                onClick={() => handleRedirect()}
+            >
+                <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-[16px] font-medium line-clamp-2 text-ellipsis">
+                        {getLocalizedName(
+                            record?.title_en,
+                            record?.title_zh,
+                            record?.title_vn,
+                            lang,
+                        )}
+                    </h3>
+                    {isPinned ? (
+                        <button className="rounded-full bg-gradient-to-r from-green-500 to-green-700 p-[4px_10px] cursor-pointer flex items-center gap-2 size-[30px]">
+                            <Pin className="min-size-[14px] !text-white" />{' '}
+                        </button>
+                    ) : null}
+                </div>
+            </div>
+        );
+    }
     return (
         <div
             className={`p-4 rounded-[10px] border bg-white border-gray-200 shadow-md h-[200px] flex flex-col gap-2 cursor-pointer hover:border-green-600 duration-300 ${width} ${height}`}

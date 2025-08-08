@@ -42,7 +42,7 @@ function LoginPage() {
                     <h3 className="text-[18px] font-bold">{t.login.bulletins_boards}</h3>
                     <SwitchLanguages />
                 </div>
-                <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto">
+                <div className="grid grid-cols-2 gap-2 max-h-[700px] overflow-y-auto">
                     {!isLoadingBulletinPublic ? (
                         bulletinsPublic &&
                         bulletinsPublic.map((item) => (
@@ -50,6 +50,7 @@ function LoginPage() {
                                 record={item}
                                 key={item.id}
                                 viewType="modal"
+                                type="public"
                                 setSelectedBulletin={handleClickBulletin}
                                 width="w-full"
                             />
