@@ -25,8 +25,9 @@ export const useManageBulletins = (params?: Params) => {
         customFetcher,
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
+            revalidateIfStale: true,
             revalidateOnReconnect: false,
+            revalidateOnMount: true,
         },
     );
     const filterData = data?.data?.filter((item) => item.active);

@@ -17,7 +17,7 @@ function Home() {
     const { bulletins, isLoading: isLoadingBulletins } = useManageBulletins({
         pageNum: page,
         pageSize,
-        work_places: selectedWorkPlace ? String(selectedWorkPlace) : undefined,
+        work_places: selectedWorkPlace ? `[${selectedWorkPlace}]` : undefined,
     });
 
     if (isLoadingBulletins) {
@@ -29,23 +29,25 @@ function Home() {
     }
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex items-end gap-2 mb-4">
-                <Select
-                    options={workPlaces?.map((item) => ({
-                        label: item.name_en,
-                        value: item.id,
-                    }))}
-                    placeholder="Select Work Place"
-                    value={selectedWorkPlace}
-                    onChange={(value) => setSelectedFactoryId(value)}
-                    className="w-[150px]"
-                    loading={isLoadingWorkplaces}
-                />
-                <Pagination
-                    defaultCurrent={page}
-                    onChange={(value) => setPage(value)}
-                    total={pageSize}
-                />
+            <div className="sticky top-[100px] z-[50] bg-white p-2">
+                <div className="flex items-end gap-2 mb-4">
+                    <Select
+                        options={workPlaces?.map((item) => ({
+                            label: item.name_en,
+                            value: item.id,
+                        }))}
+                        placeholder="Select Work Place"
+                        value={selectedWorkPlace}
+                        onChange={(value) => setSelectedFactoryId(value)}
+                        className="w-[150px]"
+                        loading={isLoadingWorkplaces}
+                    />
+                    <Pagination
+                        defaultCurrent={page}
+                        onChange={(value) => setPage(value)}
+                        total={pageSize}
+                    />
+                </div>
             </div>
             <div className="flex items-center justify-center">
                 <div className="flex flex-col gap-4 max-w-4xl mx-auto">
