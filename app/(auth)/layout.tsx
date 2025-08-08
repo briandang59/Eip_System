@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: 'Map sensors',
+    title: 'EIP System',
     icons: {
         icon: '/images/favicon.png',
         shortcut: '/images/favicon.png',
