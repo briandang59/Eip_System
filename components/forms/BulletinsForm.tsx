@@ -13,11 +13,7 @@ import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useAttachmentsStore } from '@/stores/useAttachmentsStore';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-const EditorComponent = dynamic(() => import('@/components/common/EditorComponent'), {
-    ssr: false,
-});
 import { OutputData } from '@editorjs/editorjs';
-import dynamic from 'next/dynamic';
 import { useUnits } from '@/apis/useSwr/units';
 import { useEmployees } from '@/apis/useSwr/employees';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';

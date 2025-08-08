@@ -1,7 +1,10 @@
 import { useTranslationCustom } from '@/utils/hooks';
-import EditorComponent from '../common/EditorComponent';
 import { OutputData } from '@editorjs/editorjs';
+import dynamic from 'next/dynamic';
 
+const EditorComponent = dynamic(() => import('@/components/common/EditorComponent'), {
+    ssr: false,
+});
 interface EditorBulletinSectionProps {
     contentEN: OutputData;
     contentZH: OutputData;
