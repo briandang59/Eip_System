@@ -755,7 +755,8 @@
             "submit": "Gửi",
             "cancel": "Hủy",
             "success": "Gửi yêu cầu thành công",
-            "error": "Gửi yêu cầu thất bại"
+            "error": "Gửi yêu cầu thất bại",
+            "next": "Tiếp tục"
         }
     },
     "login": {

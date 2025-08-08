@@ -756,7 +756,8 @@
             "submit": "Submit",
             "cancel": "Cancel",
             "success": "Request submitted successfully",
-            "error": "Request submission failed"
+            "error": "Request submission failed",
+            "next": "Next"
         }
     },
     "login": {

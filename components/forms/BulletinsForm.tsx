@@ -21,6 +21,7 @@ import dynamic from 'next/dynamic';
 import { useUnits } from '@/apis/useSwr/units';
 import { useEmployees } from '@/apis/useSwr/employees';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import EditorBulletinSection from '../skeletons/EditorBulletinsSection';
 
 const schema = yup
     .object({
@@ -49,6 +50,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
     const [files, setFiles] = useState<RcFile[]>([]);
     const { workPlaces, isLoading: isLoadingWorkPlace } = useWorkPlaces();
     const { setAttachments, attachments } = useAttachmentsStore();
+    const [step, setStep] = useState<number>(1);
     const [contentZH, setContentZH] = useState<OutputData>({
         blocks: [],
     });
@@ -93,10 +95,11 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         }
     }, [reset, bulletin, setAttachments]);
 
-    const workplace_ids = useWatch({
-        name: 'work_places',
-        control,
-    }) || [];
+    const workplace_ids =
+        useWatch({
+            name: 'work_places',
+            control,
+        }) || [];
 
     const stringWorkplaces = useMemo(() => {
         return workplace_ids?.length ? workplace_ids.join(',') : '0';
@@ -163,156 +166,157 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
             layout="vertical"
             onFinish={handleSubmit(onSubmit)}
         >
-            <FormInput
-                control={control}
-                name="title_en"
-                label={t.bulletins.form.title_en}
-                size="large"
-                error={errors.title_en?.message}
-                required
-            />
-            <FormInput
-                control={control}
-                name="title_zh"
-                label={t.bulletins.form.title_zh}
-                size="large"
-                error={errors.title_zh?.message}
-                required
-            />
-            <FormInput
-                control={control}
-                name="title_vn"
-                label={t.bulletins.form.title_vn}
-                size="large"
-                error={errors.title_vn?.message}
-                required
-            />
-            <div className="grid grid-cols-3 gap-2">
-                <FormSelect
-                    control={control}
-                    name="work_places"
-                    label={t.bulletins.form.workplace}
-                    size="large"
-                    options={workPlaces?.map((item) => ({
-                        label: item.name_en,
-                        value: item.id,
-                    }))}
-                    mode="multiple"
-                    loading={isLoadingWorkPlace}
-                    required
-                    showSearch
-                />
-                <FormSelect
-                    control={control}
-                    name="departments"
-                    label={t.bulletins.form.departments}
-                    size="large"
-                    options={units?.map((item) => ({
-                        label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
-                        value: item.id,
-                    }))}
-                    mode="multiple"
-                    loading={isLoadingUnits}
-                    showSearch
-                    onSearch={(e) => setSearchUnit(e)}
-                />
-                <FormSelect
-                    control={control}
-                    name="target_employee"
-                    label={t.bulletins.form.target_user}
-                    size="large"
-                    options={employees?.map((item) => ({
-                        label: `${item.card_number} - ${item.fullname}`,
-                        value: item.uuid,
-                    }))}
-                    mode="multiple"
-                    loading={isLoadingEmployees}
-                    showSearch
-                    onSearch={(e) => setSearchEmployee(e)}
-                />
-                <FormSelect
-                    control={control}
-                    name="is_global"
-                    label={t.bulletins.form.global_label}
-                    size="large"
-                    options={isGlobalOptions}
-                    required
-                />
-                <FormSelect
-                    control={control}
-                    name="is_pinned"
-                    label={t.bulletins.is_pinned}
-                    size="large"
-                    options={isPinnedOptions}
-                    required
-                />
-                <FormDatePicker
-                    control={control}
-                    name="start_date"
-                    label={t.bulletins.form.start_date}
-                    required
-                    size="large"
-                />
-                <FormDatePicker
-                    control={control}
-                    name="end_date"
-                    label={t.bulletins.form.end_date}
-                    required
-                    size="large"
-                />
-            </div>
-            <EditorComponent
-                data={contentEN}
-                onChange={(data) => {
-                    setContentEN(data);
-                }}
-                label={t.bulletins.form.content_en}
-            />
-            <EditorComponent
-                data={contentZH}
-                onChange={(data) => {
-                    setContentZH(data);
-                }}
-                label={t.bulletins.form.content_zh}
-            />
-            <EditorComponent
-                data={contentVN}
-                onChange={(data) => {
-                    setContentVN(data);
-                }}
-                label={t.bulletins.form.content_vn}
-            />
-            <DragAndDropUpload setFileListOutside={setFiles} />
-            <div className="flex flex-col gap-2">
-                {attachments.length > 0 && (
+            {step === 1 && (
+                <div className="flex flex-col gap-2">
+                    <FormInput
+                        control={control}
+                        name="title_en"
+                        label={t.bulletins.form.title_en}
+                        size="large"
+                        error={errors.title_en?.message}
+                        required
+                    />
+                    <FormInput
+                        control={control}
+                        name="title_zh"
+                        label={t.bulletins.form.title_zh}
+                        size="large"
+                        error={errors.title_zh?.message}
+                        required
+                    />
+                    <FormInput
+                        control={control}
+                        name="title_vn"
+                        label={t.bulletins.form.title_vn}
+                        size="large"
+                        error={errors.title_vn?.message}
+                        required
+                    />
+                    <div className="grid grid-cols-3 gap-2">
+                        <FormSelect
+                            control={control}
+                            name="work_places"
+                            label={t.bulletins.form.workplace}
+                            size="large"
+                            options={workPlaces?.map((item) => ({
+                                label: item.name_en,
+                                value: item.id,
+                            }))}
+                            mode="multiple"
+                            loading={isLoadingWorkPlace}
+                            required
+                            showSearch
+                        />
+                        <FormSelect
+                            control={control}
+                            name="departments"
+                            label={t.bulletins.form.departments}
+                            size="large"
+                            options={units?.map((item) => ({
+                                label: `${item.code} - ${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
+                                value: item.id,
+                            }))}
+                            mode="multiple"
+                            loading={isLoadingUnits}
+                            showSearch
+                            onSearch={(e) => setSearchUnit(e)}
+                        />
+                        <FormSelect
+                            control={control}
+                            name="target_employee"
+                            label={t.bulletins.form.target_user}
+                            size="large"
+                            options={employees?.map((item) => ({
+                                label: `${item.card_number} - ${item.fullname}`,
+                                value: item.uuid,
+                            }))}
+                            mode="multiple"
+                            loading={isLoadingEmployees}
+                            showSearch
+                            onSearch={(e) => setSearchEmployee(e)}
+                        />
+                        <FormSelect
+                            control={control}
+                            name="is_global"
+                            label={t.bulletins.form.global_label}
+                            size="large"
+                            options={isGlobalOptions}
+                            required
+                        />
+                        <FormSelect
+                            control={control}
+                            name="is_pinned"
+                            label={t.bulletins.is_pinned}
+                            size="large"
+                            options={isPinnedOptions}
+                            required
+                        />
+                        <FormDatePicker
+                            control={control}
+                            name="start_date"
+                            label={t.bulletins.form.start_date}
+                            required
+                            size="large"
+                        />
+                        <FormDatePicker
+                            control={control}
+                            name="end_date"
+                            label={t.bulletins.form.end_date}
+                            required
+                            size="large"
+                        />
+                    </div>
+
+                    <DragAndDropUpload setFileListOutside={setFiles} />
                     <div className="flex flex-col gap-2">
-                        <p className="text-sm font-semibold">{t.bulletins.attachments}</p>
-                        <div className="flex flex-wrap gap-2">
-                            {attachments.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex items-center gap-2 bg-gray-100 p-2 rounded"
-                                >
-                                    <span>{item.file_name}</span>
-                                    <Button type="link">{t.bulletins.form.cancel}</Button>
+                        {attachments.length > 0 && (
+                            <div className="flex flex-col gap-2">
+                                <p className="text-sm font-semibold">{t.bulletins.attachments}</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {attachments.map((item) => (
+                                        <div
+                                            key={item.id}
+                                            className="flex items-center gap-2 bg-gray-100 p-2 rounded"
+                                        >
+                                            <span>{item.file_name}</span>
+                                            <Button type="link">{t.bulletins.form.cancel}</Button>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        )}
                     </div>
-                )}
-            </div>
-            <div className="col-span-2">
-                <Form.Item>
-                    <div className="flex justify-end gap-2">
-                        <Button onClick={close} htmlType="button">
-                            {t.department_form.cancel}
-                        </Button>
-                        <Button type="primary" htmlType="submit">
-                            {t.department_form.submit}
+                    <div className="flex items-center justify-end">
+                        <Button type="primary" onClick={() => setStep(2)}>
+                            {t.bulletins.form.next}
                         </Button>
                     </div>
-                </Form.Item>
-            </div>
+                </div>
+            )}
+            {step === 2 && (
+                <div className="flex flex-col gap-2">
+                    <EditorBulletinSection
+                        contentEN={contentEN}
+                        contentZH={contentZH}
+                        contentVN={contentVN}
+                        setContentEN={setContentEN}
+                        setContentZH={setContentZH}
+                        setContentVN={setContentVN}
+                    />
+                    <div className="col-span-2">
+                        <Form.Item>
+                            <div className="flex justify-end gap-2">
+                                <Button onClick={close} htmlType="button">
+                                    {t.department_form.cancel}
+                                </Button>
+                                <Button type="primary" htmlType="submit">
+                                    {t.department_form.submit}
+                                </Button>
+                            </div>
+                        </Form.Item>
+                    </div>
+                </div>
+            )}
         </Form>
     );
 }
