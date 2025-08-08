@@ -56,21 +56,23 @@ function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDeta
                     />
                 )}
             </div>
-            <div className="flex flex-col p-2 border-t border-t-gray-200">
-                <h2 className="text-[18px] font-medium">{t.bulletins.attachments}</h2>
-                <div className="flex items-center gap-2 mt-4">
-                    {bulletinsDetail?.attachments?.map((item) => (
-                        <button
-                            key={item.id}
-                            className="flex items-center w-fit gap-2 border border-green-700 p-4 rounded-lg cursor-pointer hover:bg-green-100"
-                            onClick={() => handleDownload(item.file_name)}
-                        >
-                            <File className="!text-green-700" />
-                            <p className="text-green-700">{item.file_name}</p>
-                        </button>
-                    ))}
+            {bulletinsDetail.attachments.length > 0 && (
+                <div className="flex flex-col p-2 border-t border-t-gray-200">
+                    <h2 className="text-[18px] font-medium">{t.bulletins.attachments}</h2>
+                    <div className="flex items-center gap-2 mt-4">
+                        {bulletinsDetail?.attachments?.map((item) => (
+                            <button
+                                key={item.id}
+                                className="flex items-center w-fit gap-2 border border-green-700 p-4 rounded-lg cursor-pointer hover:bg-green-100"
+                                onClick={() => handleDownload(item.file_name)}
+                            >
+                                <File className="!text-green-700" />
+                                <p className="text-green-700">{item.file_name}</p>
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
