@@ -20,6 +20,13 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import EditorBulletinSection from '../skeletons/EditorBulletinSection';
 import dayjs from 'dayjs';
 
+// Extend Window interface to include our custom property
+declare global {
+    interface Window {
+        forceSaveBulletinContent?: () => void;
+    }
+}
+
 const schema = yup
     .object({
         title_vn: yup.string().required(),
@@ -186,6 +193,18 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
 
     const onSubmit = async (data: FormData) => {
         try {
+            // Force save all pending content before submission
+            if (typeof window !== 'undefined' && window.forceSaveBulletinContent) {
+                console.log('Force saving all content before submission...');
+                window.forceSaveBulletinContent();
+            }
+
+            console.log('Content before submission:', {
+                contentEN: contentEN,
+                contentZH: contentZH,
+                contentVN: contentVN,
+            });
+
             const newData = {
                 ...data,
                 content_vn: JSON.stringify(contentVN),
@@ -206,6 +225,9 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 start_date: dayjs(data.date_range?.[0]).format('YYYY-MM-DD') || '',
                 end_date: dayjs(data.date_range?.[1]).format('YYYY-MM-DD') || '',
             };
+
+            console.log('Submitting data:', newData);
+
             if (bulletin) {
                 const modifydBulletin = {
                     ...newData,

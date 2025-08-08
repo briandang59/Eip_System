@@ -1,7 +1,7 @@
 import { useTranslationCustom } from '@/utils/hooks';
 import { OutputData } from '@editorjs/editorjs';
 import dynamic from 'next/dynamic';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 
 const EditorComponent = dynamic(() => import('@/components/common/EditorComponent'), {
@@ -42,9 +42,80 @@ function EditorBulletinSection({
     const timeoutRefZH = useRef<NodeJS.Timeout | null>(null);
     const timeoutRefVN = useRef<NodeJS.Timeout | null>(null);
 
+    // Refs to store current editor data
+    const currentDataEN = useRef<OutputData>(contentEN);
+    const currentDataZH = useRef<OutputData>(contentZH);
+    const currentDataVN = useRef<OutputData>(contentVN);
+
+    // Force save all pending content
+    const forceSaveAll = useCallback(() => {
+        // Clear all timeouts
+        if (timeoutRefEN.current) {
+            clearTimeout(timeoutRefEN.current);
+            timeoutRefEN.current = null;
+        }
+        if (timeoutRefZH.current) {
+            clearTimeout(timeoutRefZH.current);
+            timeoutRefZH.current = null;
+        }
+        if (timeoutRefVN.current) {
+            clearTimeout(timeoutRefVN.current);
+            timeoutRefVN.current = null;
+        }
+
+        // Save current data immediately
+        if (!isSameOutputData(currentDataEN.current, lastContentEN)) {
+            setContentEN(currentDataEN.current);
+            setLastContentEN(currentDataEN.current);
+        }
+        if (!isSameOutputData(currentDataZH.current, lastContentZH)) {
+            setContentZH(currentDataZH.current);
+            setLastContentZH(currentDataZH.current);
+        }
+        if (!isSameOutputData(currentDataVN.current, lastContentVN)) {
+            setContentVN(currentDataVN.current);
+            setLastContentVN(currentDataVN.current);
+        }
+    }, [setContentEN, setContentZH, setContentVN, lastContentEN, lastContentZH, lastContentVN]);
+
+    // Force save specific content
+    const forceSaveEN = useCallback(() => {
+        if (timeoutRefEN.current) {
+            clearTimeout(timeoutRefEN.current);
+            timeoutRefEN.current = null;
+        }
+        if (!isSameOutputData(currentDataEN.current, lastContentEN)) {
+            setContentEN(currentDataEN.current);
+            setLastContentEN(currentDataEN.current);
+        }
+    }, [setContentEN, lastContentEN]);
+
+    const forceSaveZH = useCallback(() => {
+        if (timeoutRefZH.current) {
+            clearTimeout(timeoutRefZH.current);
+            timeoutRefZH.current = null;
+        }
+        if (!isSameOutputData(currentDataZH.current, lastContentZH)) {
+            setContentZH(currentDataZH.current);
+            setLastContentZH(currentDataZH.current);
+        }
+    }, [setContentZH, lastContentZH]);
+
+    const forceSaveVN = useCallback(() => {
+        if (timeoutRefVN.current) {
+            clearTimeout(timeoutRefVN.current);
+            timeoutRefVN.current = null;
+        }
+        if (!isSameOutputData(currentDataVN.current, lastContentVN)) {
+            setContentVN(currentDataVN.current);
+            setLastContentVN(currentDataVN.current);
+        }
+    }, [setContentVN, lastContentVN]);
+
     // Debounced handlers with cursor position preservation
     const handleContentENChange = useCallback(
         (data: OutputData) => {
+            currentDataEN.current = data;
             // Only update if content actually changed
             if (!isSameOutputData(data, lastContentEN)) {
                 if (timeoutRefEN.current) {
@@ -53,7 +124,7 @@ function EditorBulletinSection({
                 timeoutRefEN.current = setTimeout(() => {
                     setContentEN(data);
                     setLastContentEN(data);
-                }, 10000);
+                }, 500); // Reduced from 10000ms to 500ms
             }
         },
         [setContentEN, lastContentEN],
@@ -61,6 +132,7 @@ function EditorBulletinSection({
 
     const handleContentZHChange = useCallback(
         (data: OutputData) => {
+            currentDataZH.current = data;
             // Only update if content actually changed
             if (!isSameOutputData(data, lastContentZH)) {
                 if (timeoutRefZH.current) {
@@ -69,7 +141,7 @@ function EditorBulletinSection({
                 timeoutRefZH.current = setTimeout(() => {
                     setContentZH(data);
                     setLastContentZH(data);
-                }, 10000);
+                }, 500); // Reduced from 10000ms to 500ms
             }
         },
         [setContentZH, lastContentZH],
@@ -77,6 +149,7 @@ function EditorBulletinSection({
 
     const handleContentVNChange = useCallback(
         (data: OutputData) => {
+            currentDataVN.current = data;
             // Only update if content actually changed
             if (!isSameOutputData(data, lastContentVN)) {
                 if (timeoutRefVN.current) {
@@ -85,10 +158,45 @@ function EditorBulletinSection({
                 timeoutRefVN.current = setTimeout(() => {
                     setContentVN(data);
                     setLastContentVN(data);
-                }, 10000);
+                }, 500); // Reduced from 10000ms to 500ms
             }
         },
         [setContentVN, lastContentVN],
+    );
+
+    // Update refs when props change
+    useEffect(() => {
+        currentDataEN.current = contentEN;
+        currentDataZH.current = contentZH;
+        currentDataVN.current = contentVN;
+    }, [contentEN, contentZH, contentVN]);
+
+    // Expose forceSaveAll to parent component
+    useEffect(() => {
+        // @ts-ignore - Adding to window for parent access
+        window.forceSaveBulletinContent = forceSaveAll;
+
+        return () => {
+            // @ts-ignore
+            delete window.forceSaveBulletinContent;
+        };
+    }, [forceSaveAll]);
+
+    // Handle tab change to force save current content
+    const handleTabChange = useCallback(
+        (activeKey: string) => {
+            // Force save content of the tab that was just left
+            if (activeKey === 'zh') {
+                forceSaveEN();
+            } else if (activeKey === 'vn') {
+                forceSaveEN();
+                forceSaveZH();
+            } else if (activeKey === 'en') {
+                forceSaveZH();
+                forceSaveVN();
+            }
+        },
+        [forceSaveEN, forceSaveZH, forceSaveVN],
     );
 
     const tabItems = [
@@ -138,6 +246,7 @@ function EditorBulletinSection({
                 className="w-full"
                 type="card"
                 size="large"
+                onChange={handleTabChange}
             />
         </div>
     );
