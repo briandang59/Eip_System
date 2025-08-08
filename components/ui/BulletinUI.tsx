@@ -1,7 +1,7 @@
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { routes } from '@/utils/constants/common/routes';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
-import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
+import { renderEditorJsContent } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, File, Pin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -59,8 +59,8 @@ function BulletinUI({
             </div>
             {content && (
                 <div
-                    className="text-gray-600 line-clamp-4"
-                    dangerouslySetInnerHTML={renderEditorJsToHtml(JSON.parse(content))}
+                    className="text-gray-600 line-clamp-4 editor-content"
+                    dangerouslySetInnerHTML={renderEditorJsContent(JSON.parse(content))}
                 />
             )}
 

@@ -23,12 +23,14 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
         return holder || `editorjs-${Math.random().toString(36).substring(2, 9)}`;
     }, [holder]);
 
+    // Đánh dấu component đã mounted
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
+    // Khởi tạo EditorJS chỉ 1 lần
     useEffect(() => {
-        if (!isMounted) return;
+        if (!isMounted || editorRef.current) return;
 
         const editor = new EditorJS({
             holder: editorHolderId,
@@ -65,7 +67,16 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
                 })
                 .catch((err) => console.error('Destroy EditorJS failed:', err));
         };
-    }, [editorHolderId, isMounted, data, onChange]);
+    }, [isMounted, editorHolderId]);
+
+    // Cập nhật nội dung khi props.data thay đổi
+    useEffect(() => {
+        if (editorRef.current && data) {
+            editorRef.current.isReady
+                .then(() => editorRef.current?.render(data))
+                .catch((err) => console.error('Render data failed:', err));
+        }
+    }, [data]);
 
     return isMounted ? (
         <div className="flex flex-col gap-2">

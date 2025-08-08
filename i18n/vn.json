@@ -756,7 +756,10 @@
             "cancel": "Hủy",
             "success": "Gửi yêu cầu thành công",
             "error": "Gửi yêu cầu thất bại",
-            "next": "Tiếp tục"
+            "next": "Tiếp tục",
+            "previous": "Trước",
+            "date": "Ngày",
+            "date_range": "Ngày"
         }
     },
     "login": {

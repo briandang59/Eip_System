@@ -2,7 +2,7 @@ import { Button, Form } from 'antd';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as yup from 'yup';
-import { FormDatePicker, FormInput, FormSelect } from '../formsComponent';
+import { FormDatePicker, FormDateRangePicker, FormInput, FormSelect } from '../formsComponent';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import DragAndDropUpload from '../common/DragAndDropUpLoad';
@@ -17,15 +17,15 @@ import { OutputData } from '@editorjs/editorjs';
 import { useUnits } from '@/apis/useSwr/units';
 import { useEmployees } from '@/apis/useSwr/employees';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
-import EditorBulletinSection from '../skeletons/EditorBulletinsSection';
+import EditorBulletinSection from '../skeletons/EditorBulletinSection';
+import dayjs from 'dayjs';
 
 const schema = yup
     .object({
         title_vn: yup.string().required(),
         title_en: yup.string().required(),
         title_zh: yup.string().required(),
-        start_date: yup.string().required(),
-        end_date: yup.string().required(),
+        date_range: yup.array().of(yup.string()).length(2).required(),
         work_places: yup.array(yup.number()).required(),
         departments: yup.array(yup.number()).nullable().default([]),
         target_employee: yup.array(yup.string()).nullable().default([]),
@@ -41,6 +41,20 @@ interface BulletinsFormProps {
     bulletin?: BulletinsResponseType;
     mutate: () => void;
 }
+
+// Helper function to check if content has meaningful data
+const hasContent = (content: OutputData): boolean => {
+    return (
+        content?.blocks?.some(
+            (block) =>
+                block.data?.text?.trim() ||
+                block.data?.items?.some((item: any) => item?.trim()) ||
+                block.data?.caption?.trim() ||
+                block.data?.text?.trim(),
+        ) || false
+    );
+};
+
 function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
     const { t, lang } = useTranslationCustom();
     const [files, setFiles] = useState<RcFile[]>([]);
@@ -65,19 +79,24 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         control,
         handleSubmit,
         reset,
-        formState: { errors },
+        formState: { errors, isValid },
+        watch,
     } = useForm<FormData>({
         resolver: yupResolver(schema),
+        mode: 'onChange',
     });
+
+    // Watch form values for validation
+    const watchedValues = watch();
 
     useEffect(() => {
         if (bulletin) {
+            // Edit mode - fill with existing data
             reset({
                 title_vn: bulletin.title_vn,
                 title_en: bulletin.title_en,
                 title_zh: bulletin.title_zh,
-                start_date: bulletin.start_date,
-                end_date: bulletin.end_date,
+                date_range: [bulletin.start_date, bulletin.end_date],
                 work_places: bulletin.work_places || [],
                 departments: bulletin.departments || [],
                 target_employee: bulletin.target_employee || [],
@@ -88,6 +107,25 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
             setContentZH(JSON.parse(bulletin.content_zh));
             setContentVN(JSON.parse(bulletin.content_vn));
             setAttachments(bulletin.attachments || []);
+        } else {
+            // Create mode - reset everything to empty
+            reset({
+                title_vn: '',
+                title_en: '',
+                title_zh: '',
+                date_range: [],
+                work_places: [],
+                departments: [],
+                target_employee: [],
+                is_global: '',
+                is_pinned: '',
+            });
+            setContentEN({ blocks: [] });
+            setContentZH({ blocks: [] });
+            setContentVN({ blocks: [] });
+            setAttachments([]);
+            setFiles([]);
+            setStep(1);
         }
     }, [reset, bulletin, setAttachments]);
 
@@ -110,6 +148,42 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         card_number: searchEmployee,
     });
 
+    // Check if step 1 is complete
+    const isStep1Complete = useMemo(() => {
+        const requiredFields = [
+            'title_vn',
+            'title_en',
+            'title_zh',
+            'date_range',
+            'work_places',
+            'is_global',
+            'is_pinned',
+        ];
+
+        const hasAllRequiredFields = requiredFields.every((field) => {
+            const value = watchedValues[field as keyof FormData];
+            if (Array.isArray(value)) {
+                return value.length > 0;
+            }
+            return value && value.toString().trim() !== '';
+        });
+
+        return hasAllRequiredFields && isValid;
+    }, [watchedValues, isValid]);
+
+    // Check if step 2 is complete
+    const isStep2Complete = useMemo(() => {
+        return hasContent(contentEN) || hasContent(contentZH) || hasContent(contentVN);
+    }, [contentEN, contentZH, contentVN]);
+
+    const handleNextStep = () => {
+        if (!isStep1Complete) {
+            toast.error('Please complete all required fields in step 1');
+            return;
+        }
+        setStep(2);
+    };
+
     const onSubmit = async (data: FormData) => {
         try {
             const newData = {
@@ -129,6 +203,8 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 target_employee: (data.target_employee ?? []).filter(
                     (id): id is string => typeof id === 'string',
                 ),
+                start_date: dayjs(data.date_range?.[0]).format('YYYY-MM-DD') || '',
+                end_date: dayjs(data.date_range?.[1]).format('YYYY-MM-DD') || '',
             };
             if (bulletin) {
                 const modifydBulletin = {
@@ -140,7 +216,25 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 await bulletinsService.add(newData);
             }
             toast.success(t.bulletins.form.success);
-            reset();
+
+            // Reset everything after successful submission
+            reset({
+                title_vn: '',
+                title_en: '',
+                title_zh: '',
+                date_range: [],
+                work_places: [],
+                departments: [],
+                target_employee: [],
+                is_global: '',
+                is_pinned: '',
+            });
+            setContentEN({ blocks: [] });
+            setContentZH({ blocks: [] });
+            setContentVN({ blocks: [] });
+            setAttachments([]);
+            setFiles([]);
+            setStep(1);
             close();
             mutate();
         } catch (error) {
@@ -247,17 +341,10 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                             options={isPinnedOptions}
                             required
                         />
-                        <FormDatePicker
+                        <FormDateRangePicker
                             control={control}
-                            name="start_date"
-                            label={t.bulletins.form.start_date}
-                            required
-                            size="large"
-                        />
-                        <FormDatePicker
-                            control={control}
-                            name="end_date"
-                            label={t.bulletins.form.end_date}
+                            name="date_range"
+                            label={t.bulletins.form.date_range}
                             required
                             size="large"
                         />
@@ -283,7 +370,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                         )}
                     </div>
                     <div className="flex items-center justify-end">
-                        <Button type="primary" onClick={() => setStep(2)}>
+                        <Button type="primary" onClick={handleNextStep} disabled={!isStep1Complete}>
                             {t.bulletins.form.next}
                         </Button>
                     </div>
@@ -302,11 +389,20 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                     <div className="col-span-2">
                         <Form.Item>
                             <div className="flex justify-end gap-2">
-                                <Button onClick={close} htmlType="button">
-                                    {t.department_form.cancel}
+                                <Button
+                                    onClick={() => {
+                                        setStep(1);
+                                    }}
+                                    htmlType="button"
+                                >
+                                    {t.bulletins.form.previous}
                                 </Button>
-                                <Button type="primary" htmlType="submit">
-                                    {t.department_form.submit}
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    disabled={!isStep2Complete}
+                                >
+                                    {t.bulletins.form.submit}
                                 </Button>
                             </div>
                         </Form.Item>

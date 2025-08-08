@@ -1,6 +1,6 @@
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
-import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
+import { renderEditorJsContent } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Popover, TableColumnsType } from 'antd';
 import { File, Pen, Settings, Trash } from 'lucide-react';
@@ -49,8 +49,8 @@ export const useBulletinsCols = ({
                     <div className="line-clamp-3">
                         {content && (
                             <div
-                                className="line-clamp-3"
-                                dangerouslySetInnerHTML={renderEditorJsToHtml(JSON.parse(content))}
+                                className="line-clamp-3 editor-content"
+                                dangerouslySetInnerHTML={renderEditorJsContent(JSON.parse(content))}
                             />
                         )}
                     </div>
@@ -84,8 +84,12 @@ export const useBulletinsCols = ({
                     {Array.isArray(record?.attachments) &&
                         record.attachments.map((item, index) => (
                             <div key={index} className="flex items-center gap-2">
-                                <File className="size-[14px] !text-blue-500" />
-                                <p className="text-blue-500">{item.file_name}</p>
+                                <div className="w-[20px] flex items-center justify-center">
+                                    <File className="size-[14px] !text-blue-500" />
+                                </div>
+                                <p className="text-blue-500 line-clamp-1 text-sm">
+                                    {item.file_name}
+                                </p>
                             </div>
                         ))}
                 </div>

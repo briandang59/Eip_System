@@ -2,7 +2,7 @@ import { bulletinsService } from '@/apis/services/bulletins';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { downloadBase64File } from '@/utils/functions/downloadBase64File';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
-import { renderEditorJsToHtml } from '@/utils/functions/renderEditorJsToHtml';
+import { renderEditorJsContent } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Calendar, File } from 'lucide-react';
 import { toast } from 'sonner';
@@ -50,7 +50,10 @@ function BulletinsDetailUI({ bulletinsDetail, viewType = 'page' }: BulletinsDeta
                     </div>
                 </div>
                 {content && (
-                    <div dangerouslySetInnerHTML={renderEditorJsToHtml(JSON.parse(content))} />
+                    <div
+                        className="editor-content"
+                        dangerouslySetInnerHTML={renderEditorJsContent(JSON.parse(content))}
+                    />
                 )}
             </div>
             <div className="flex flex-col p-2 border-t border-t-gray-200">

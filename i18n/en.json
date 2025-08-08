@@ -579,7 +579,8 @@
         "class_name": "Class name",
         "category": "Category",
         "submit": "Submit",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "previous": "Previous"
     },
     "dormitory_form": {
         "note": "Note",
@@ -757,7 +758,10 @@
             "cancel": "Cancel",
             "success": "Request submitted successfully",
             "error": "Request submission failed",
-            "next": "Next"
+            "next": "Next",
+            "previous": "Previous",
+            "date": "Date",
+            "date_range": "Date Range"
         }
     },
     "login": {
