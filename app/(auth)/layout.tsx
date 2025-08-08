@@ -17,28 +17,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: {
-        template: '%s | EIP System',
-        default: 'EIP System',
-    },
-    description: 'Enterprise Information Portal System',
+    title: 'Map sensors',
     icons: {
-        icon: [{ url: '/assets/svgs/logo.svg', type: 'image/svg+xml' }],
-        shortcut: [{ url: '/assets/svgs/logo.svg', type: 'image/svg+xml' }],
-        apple: [{ url: '/assets/svgs/logo.svg', type: 'image/svg+xml' }],
-        other: [
-            {
-                rel: 'mask-icon',
-                url: '/assets/svgs/logo.svg',
-            },
-        ],
+        icon: '/images/favicon.png',
+        shortcut: '/images/favicon.png',
+        apple: '/images/favicon.png',
     },
-    manifest: '/manifest.json',
-    applicationName: 'EIP System',
-    keywords: ['EIP', 'Portal', 'Enterprise'],
-    authors: [{ name: 'Your Company Name' }],
 };
-
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
