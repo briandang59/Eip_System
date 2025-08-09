@@ -1,13 +1,16 @@
 'use client';
-import { useManageBulletins } from '@/apis/useSwr/bulletins';
+import { useManageBulletins, useManageBulletinsSelf } from '@/apis/useSwr/bulletins';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import BulletinUI from '@/components/ui/BulletinUI';
 import { useFactoryStore } from '@/stores/useFactoryStore';
+import { useTranslationCustom } from '@/utils/hooks';
 import { getInfomation } from '@/utils/functions/getInfomation';
-import { Pagination, Select, Spin } from 'antd';
+import { Pagination, Select, Spin, Tabs } from 'antd';
 import { useState } from 'react';
+import { Newspaper, User } from 'lucide-react';
 
 function Home() {
+    const { t } = useTranslationCustom();
     const [page, setPage] = useState(1);
     const [pageSize] = useState(10);
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
@@ -19,18 +22,54 @@ function Home() {
         pageSize,
         work_places: selectedWorkPlace ? `[${selectedWorkPlace}]` : undefined,
     });
-
-    if (isLoadingBulletins) {
+    const { bulletinsSelf, isLoading: isLoadingBulletinsSelf } = useManageBulletinsSelf(
+        myInfo?.card_number || '',
+    );
+    if (isLoadingBulletins || isLoadingBulletinsSelf) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <Spin />
             </div>
         );
     }
+    const tabs = [
+        {
+            key: '1',
+            label: t.bulletins.general,
+            children: (
+                <>
+                    <div className="flex items-center justify-center">
+                        <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+                            {bulletins?.map((item) => (
+                                <BulletinUI key={item.id} record={item} />
+                            ))}
+                        </div>
+                    </div>
+                </>
+            ),
+            icon: <Newspaper strokeWidth={1.5} />,
+        },
+        {
+            key: '2',
+            label: t.bulletins.self,
+            children: (
+                <>
+                    <div className="flex items-center justify-center">
+                        <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+                            {bulletinsSelf?.map((item) => (
+                                <BulletinUI key={item.id} record={item} />
+                            ))}
+                        </div>
+                    </div>
+                </>
+            ),
+            icon: <User strokeWidth={1.5} />,
+        },
+    ];
     return (
         <div className="flex flex-col gap-4">
             <div className="sticky top-[100px] z-[50] bg-white p-2">
-                <div className="flex items-end gap-2 mb-4">
+                <div className="flex items-end gap-2">
                     <Select
                         options={workPlaces?.map((item) => ({
                             label: item.name_en,
@@ -49,13 +88,7 @@ function Home() {
                     />
                 </div>
             </div>
-            <div className="flex items-center justify-center">
-                <div className="flex flex-col gap-4 max-w-4xl mx-auto">
-                    {bulletins?.map((item) => (
-                        <BulletinUI key={item.id} record={item} />
-                    ))}
-                </div>
-            </div>
+            <Tabs defaultActiveKey="1" items={tabs} centered />
         </div>
     );
 }

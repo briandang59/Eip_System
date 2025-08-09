@@ -185,7 +185,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
 
     const handleNextStep = () => {
         if (!isStep1Complete) {
-            toast.error('Please complete all required fields in step 1');
+            toast.error(t.bulletins.form.error_step_1);
             return;
         }
         setStep(2);
@@ -195,15 +195,8 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         try {
             // Force save all pending content before submission
             if (typeof window !== 'undefined' && window.forceSaveBulletinContent) {
-                console.log('Force saving all content before submission...');
                 window.forceSaveBulletinContent();
             }
-
-            console.log('Content before submission:', {
-                contentEN: contentEN,
-                contentZH: contentZH,
-                contentVN: contentVN,
-            });
 
             const newData = {
                 ...data,
@@ -225,8 +218,6 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 start_date: dayjs(data.date_range?.[0]).format('YYYY-MM-DD') || '',
                 end_date: dayjs(data.date_range?.[1]).format('YYYY-MM-DD') || '',
             };
-
-            console.log('Submitting data:', newData);
 
             if (bulletin) {
                 const modifydBulletin = {
@@ -340,7 +331,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                             size="large"
                             options={employees?.map((item) => ({
                                 label: `${item.card_number} - ${item.fullname}`,
-                                value: item.uuid,
+                                value: item.card_number,
                             }))}
                             mode="multiple"
                             loading={isLoadingEmployees}

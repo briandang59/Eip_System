@@ -8,12 +8,14 @@ import BulletinsForm from '@/components/forms/BulletinsForm';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useBulletinsCols } from '@/utils/constants/cols/bulletinsCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
+import { useTranslationCustom } from '@/utils/hooks';
 import { Button, Modal, Select } from 'antd';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 function ManageBulletins() {
+    const { t } = useTranslationCustom();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const [selectedBulletin, setSelectedBulletin] = useState<BulletinsResponseType>();
@@ -66,7 +68,7 @@ function ManageBulletins() {
                 await bulletinsService.remove(selectedBulletin.id);
                 closeModalConfirm();
                 mutateBulletins();
-                toast.success('Bulletin deleted successfully');
+                toast.success(t.bulletins.form.delete_success);
             }
         } catch (error) {
             toast.error(`${error}`);
@@ -93,7 +95,7 @@ function ManageBulletins() {
                     onClick={() => openModal()}
                     icon={<Plus className="!text-green-700 size-[14px]" />}
                 >
-                    Add
+                    {t.bulletins.form.add}
                 </Button>
             </div>
             <GenericTable<BulletinsResponseType>
@@ -111,7 +113,7 @@ function ManageBulletins() {
                 }}
             />
             <Modal
-                title="Add Bulletin"
+                title={key === 'create' ? t.bulletins.form.add : t.bulletins.form.edit}
                 open={isOpenModal}
                 onCancel={closeModal}
                 footer={null}

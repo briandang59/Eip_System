@@ -12,8 +12,22 @@ export type BulletinsResponseType = {
     start_date: string;
     end_date: string;
     work_places: number[];
-    departments: number[];
-    target_employee: string[];
+    departments_details: {
+        id: number;
+        name_en: string;
+        name_zh: string;
+        name_vn: string;
+        code: string;
+    }[];
+    target_employee_details: {
+        card_number: string;
+        fullname: string;
+        fullname_other: string;
+        gender: boolean;
+        work_place_id: number;
+        active: boolean;
+        uuid: string;
+    }[];
     is_global: boolean;
     is_pinned: boolean;
     attachments: AttachmentsResponseType[];

@@ -759,8 +759,14 @@
             "next": "Tiếp tục",
             "previous": "Trước",
             "date": "Ngày",
-            "date_range": "Ngày"
-        }
+            "date_range": "Ngày",
+            "delete_success": "Xóa bảng tin thành công",
+            "add": "Thêm",
+            "edit": "Chỉnh sửa",
+            "error_step_1": "Vui lòng hoàn thành tất cả các trường bắt buộc trong bước 1"
+        },
+        "general": "Bảng tin chung",
+        "self": "Bảng tin cá nhân"
     },
     "login": {
         "account_login": "Đăng nhập tài khoản",

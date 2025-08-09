@@ -761,8 +761,14 @@
             "next": "Next",
             "previous": "Previous",
             "date": "Date",
-            "date_range": "Date Range"
-        }
+            "date_range": "Date Range",
+            "delete_success": "Bulletin deleted successfully",
+            "add": "Add",
+            "edit": "Edit",
+            "error_step_1": "Please complete all required fields in step 1"
+        },
+        "general": "General bulletin",
+        "self": "Self bulletin"
     },
     "login": {
         "account_login": "Account Login",
