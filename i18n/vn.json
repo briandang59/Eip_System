@@ -11,7 +11,10 @@
             "export": "Xuất",
             "refresh": "Làm mới",
             "successed": "Gửi yêu cầu thành công",
-            "failed": "Gửi yêu cầu thất bại"
+            "failed": "Gửi yêu cầu thất bại",
+            "edit": "Sửa",
+            "delete": "Xoá",
+            "view": "Xem"
         },
         "confirm_modal": {
             "title": "Xác nhận xoá bản ghi",

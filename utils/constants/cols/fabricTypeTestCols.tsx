@@ -179,13 +179,13 @@ export const useFabricTypeTestCols = ({
                                     icon={<Pen className="size-[14px] !text-blue-700" />}
                                     onClick={() => open('modify_fabric_test', undefined, record)}
                                 >
-                                    Edit
+                                    {t.common.forms.edit}
                                 </Button>
                                 <Button
                                     icon={<Trash className="size-[14px] !text-red-700" />}
                                     onClick={() => openModalConfirm('delete_fabric_test', record)}
                                 >
-                                    Remove
+                                    {t.common.forms.delete}
                                 </Button>
                             </div>
                         }

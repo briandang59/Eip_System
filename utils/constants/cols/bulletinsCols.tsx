@@ -112,13 +112,13 @@ export const useBulletinsCols = ({
                                         icon={<Pen className="size-4 !text-blue-700" />}
                                         onClick={() => openModalForm(record)}
                                     >
-                                        Edit
+                                        {t.common.forms.edit}
                                     </Button>
                                     <Button
                                         icon={<Trash className="size-4 !text-red-700" />}
                                         onClick={() => openModalConfirm(record)}
                                     >
-                                        Delete
+                                        {t.common.forms.delete}
                                     </Button>
                                 </div>
                             }

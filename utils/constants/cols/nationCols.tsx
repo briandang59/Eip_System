@@ -69,13 +69,13 @@ export const useNationCols = ({ open }: params): TableColumnsType<NationResponse
                                     icon={<Pen className="size-[14px] !text-blue-700" />}
                                     onClick={() => open('modify', record)}
                                 >
-                                    Edit
+                                    {t.common.forms.edit}
                                 </Button>
                                 <Button
                                     icon={<Trash className="size-[14px] !text-red-700" />}
                                     onClick={() => open('delete', record)}
                                 >
-                                    Remove
+                                    {t.common.forms.delete}
                                 </Button>
                             </div>
                         }

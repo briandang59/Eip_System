@@ -11,7 +11,10 @@
             "export": "Export",
             "refresh": "Refresh",
             "successed": "Sent request successfully",
-            "failed": "Failed to send request"
+            "failed": "Failed to send request",
+            "edit": "Edit",
+            "delete": "Delete",
+            "view": "View"
         },
         "confirm_modal": {
             "title": "Confirm Deletion",

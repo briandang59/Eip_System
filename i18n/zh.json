@@ -11,7 +11,10 @@
             "export": "導出",
             "refresh": "刷新",
             "successed": "請求提交成功",
-            "failed": "請求提交失敗"
+            "failed": "請求提交失敗",
+            "edit": "編輯",
+            "delete": "刪除",
+            "view": "查看"
         },
         "confirm_modal": {
             "title": "確認刪除記錄",
