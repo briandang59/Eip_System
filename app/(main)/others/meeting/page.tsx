@@ -76,7 +76,7 @@ function Meeting() {
     const handleRemoveBooking = async (id: number) => {
         try {
             await bookingService.remove({ active: false, id });
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             bookingMutate();
         } catch (error) {
             toast.error(`${error}`);

@@ -49,7 +49,7 @@ function Languages() {
         try {
             if (selectedRecord) await languageService.delete(selectedRecord?.id);
             mutate();
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
         } catch (error) {
             toast.error(`${error}`);
         }

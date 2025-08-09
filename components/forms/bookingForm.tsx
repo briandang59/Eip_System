@@ -215,7 +215,7 @@ function BookingForm({
             } else {
                 await bookingService.add(newData);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             close();
         } catch (error) {

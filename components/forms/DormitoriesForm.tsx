@@ -67,10 +67,10 @@ function DormitoriesForm({ close, mutate, record }: DormitoriesFormProps) {
                     id: record?.id,
                 };
                 await dormitoryService.modify(modifyData);
-                toast.success('successed');
+                toast.success(`${t.common.forms.successed}`);
             } else {
                 await dormitoryService.add(data);
-                toast.success('successed');
+                toast.success(`${t.common.forms.successed}`);
             }
 
             mutate();

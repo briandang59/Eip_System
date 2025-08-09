@@ -101,7 +101,7 @@ function ShifTypeForm({ close, mutate, record }: ShifTypeFormProps) {
             } else {
                 await shiftListTypeService.add(submitData);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             close();
             reset();

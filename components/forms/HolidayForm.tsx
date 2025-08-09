@@ -75,7 +75,7 @@ function HolidayForm({ record, close, mutate }: HolidayFormProps) {
             } else {
                 await holidayService.add(submitData);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();

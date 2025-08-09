@@ -42,7 +42,7 @@ function Educations() {
     const handleDelete = async () => {
         try {
             if (selectedRecord) await educationService.delete(selectedRecord?.id);
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
         } catch (error) {
             toast.error(`${error}`);
         }

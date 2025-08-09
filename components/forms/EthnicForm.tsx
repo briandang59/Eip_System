@@ -54,7 +54,7 @@ function EthnicForm({ record, close, mutate }: EthnicFormProps) {
             } else {
                 await ethnicService.add(data);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();

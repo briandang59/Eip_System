@@ -9,13 +9,23 @@
             "submit": "Xác nhận",
             "cancel": "Huỷ",
             "export": "Xuất",
-            "refresh": "Làm mới"
+            "refresh": "Làm mới",
+            "successed": "Gửi yêu cầu thành công",
+            "failed": "Gửi yêu cầu thất bại"
         },
         "confirm_modal": {
             "title": "Xác nhận xoá bản ghi",
             "content": "Bạn có chắc muốn xoá bản ghi này? Hành động này không thể hoàn tác.",
             "confirmText": "Xác nhận",
             "cancelText": "Hủy"
+        },
+        "cols": {
+            "toggle_permission": "Quyền hạn",
+            "edit_role": "Sửa vai trò",
+            "delete_role": "Xoá vai trò",
+            "add_permission": "Thêm quyền hạn",
+            "edit_permission": "Sửa quyền hạn",
+            "delete_permission": "Xoá quyền hạn"
         }
     },
     "sidebar": {

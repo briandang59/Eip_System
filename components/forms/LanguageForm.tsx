@@ -55,7 +55,7 @@ function LanguageForm({ record, close, mutate }: LanguageFormProps) {
             } else {
                 await languageService.add(data);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();

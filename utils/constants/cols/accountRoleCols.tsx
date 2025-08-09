@@ -63,8 +63,8 @@ export const useAccountRoleCols = ({
                             trigger="click"
                             content={
                                 <div className="flex flex-col gap-2">
-                                    <button
-                                        className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300"
+                                    <Button
+                                        icon={<Shield className="size-4 !text-green-700" />}
                                         onClick={() => {
                                             toggleModal(
                                                 'account_role',
@@ -72,17 +72,24 @@ export const useAccountRoleCols = ({
                                             );
                                         }}
                                     >
-                                        <Shield className="size-4 !text-green-700" />
-                                        Add permission
-                                    </button>
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
-                                        <Pen className="size-4 !text-blue-700" />
-                                        Edit role
-                                    </button>
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
-                                        <Trash className="size-4 !text-red-700" />
-                                        Delete role
-                                    </button>
+                                        {t.common.cols.add_permission}
+                                    </Button>
+                                    <Button
+                                        icon={<Pen className="size-4 !text-blue-700" />}
+                                        onClick={() => {
+                                            toggleModal('edit_role', record.employee.card_number);
+                                        }}
+                                    >
+                                        {t.common.cols.edit_role}
+                                    </Button>
+                                    <Button
+                                        icon={<Trash className="size-4 !text-red-700" />}
+                                        onClick={() => {
+                                            toggleModal('delete_role', record.employee.card_number);
+                                        }}
+                                    >
+                                        {t.common.cols.delete_role}
+                                    </Button>
                                 </div>
                             }
                         >

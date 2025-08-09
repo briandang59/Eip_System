@@ -56,7 +56,7 @@ function EducationForm({ record, close, mutate }: EducationFormProps) {
             } else {
                 await educationService.add(data);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();

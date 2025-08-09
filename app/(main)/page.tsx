@@ -85,6 +85,7 @@ function Home() {
                         defaultCurrent={page}
                         onChange={(value) => setPage(value)}
                         total={pageSize}
+                        simple
                     />
                 </div>
             </div>

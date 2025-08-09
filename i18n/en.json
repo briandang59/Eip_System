@@ -9,13 +9,23 @@
             "submit": "Submit",
             "cancel": "Cancel",
             "export": "Export",
-            "refresh": "Refresh"
+            "refresh": "Refresh",
+            "successed": "Sent request successfully",
+            "failed": "Failed to send request"
         },
         "confirm_modal": {
             "title": "Confirm Deletion",
             "content": "Are you sure you want to delete this record? This action cannot be undone.",
             "confirmText": "Confirm",
             "cancelText": "Cancel"
+        },
+        "cols": {
+            "toggle_permission": "Toggle Permission",
+            "edit_role": "Edit Role",
+            "delete_role": "Delete Role",
+            "add_permission": "Add Permission",
+            "edit_permission": "Edit Permission",
+            "delete_permission": "Delete Permission"
         }
     },
     "sidebar": {

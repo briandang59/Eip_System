@@ -59,7 +59,7 @@ function NationForm({ record, close, mutate }: NationFormProps) {
             } else {
                 await nationService.add(data);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();

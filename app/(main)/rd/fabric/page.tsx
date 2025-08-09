@@ -81,7 +81,7 @@ function FabricRd() {
                     if (!selectedFabric) return;
                     if (selectedFabric.data_source !== 'ttri') {
                         await fabricManagementTypeServices.remove(selectedFabric?.fabric_code);
-                        toast.success('successed');
+                        toast.success(`${t.common.forms.successed}`);
                         mutateFabricManagementType();
                         closeModalConfirm();
                     }
@@ -89,7 +89,7 @@ function FabricRd() {
                 case 'delete_fabric_test':
                     if (!selectedFabricTest) return;
                     await fabricManagementTypeTestServices.remove(selectedFabricTest?.id);
-                    toast.success('successed');
+                    toast.success(`${t.common.forms.successed}`);
                     // Force revalidate the data
                     await mutatefabricManagemnentTypesTests();
                     closeModalConfirm();

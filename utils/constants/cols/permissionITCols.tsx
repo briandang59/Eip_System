@@ -58,18 +58,12 @@ export const usePermissionCols = (): TableColumnsType<PermisisonITResponse> => {
                             trigger="click"
                             content={
                                 <div className="flex flex-col gap-2">
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
-                                        <Shield className="size-4 !text-green-700" />
-                                        Add permission
-                                    </button>
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
-                                        <Pen className="size-4 !text-blue-700" />
-                                        Edit role
-                                    </button>
-                                    <button className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-[10px] duration-300">
-                                        <Trash className="size-4 !text-red-700" />
-                                        Delete role
-                                    </button>
+                                    <Button icon={<Pen className="size-4 !text-blue-700" />}>
+                                        {t.common.cols.edit_permission}
+                                    </Button>
+                                    <Button icon={<Trash className="size-4 !text-red-700" />}>
+                                        {t.common.cols.delete_permission}
+                                    </Button>
                                 </div>
                             }
                         >

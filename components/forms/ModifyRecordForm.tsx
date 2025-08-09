@@ -56,7 +56,7 @@ export function ModifyRecordForm({ record, close, mutate }: ModifyRecordFormProp
             if (record) {
                 await employeeRecordService.modify(submitData, record.id);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();

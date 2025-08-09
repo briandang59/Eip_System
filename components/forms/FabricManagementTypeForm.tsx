@@ -78,7 +78,7 @@ function FabricManagementTypeForm({
             } else {
                 await fabricManagementTypeServices.add(data);
             }
-            toast.success('successed');
+            toast.success(`${t.common.forms.successed}`);
             mutate();
             reset();
             close();
