@@ -18,6 +18,7 @@ import { dayOffService } from '@/apis/services/dayOff';
 import { TakeLeaveResponseType } from '@/types/response/takeLeave';
 import { useDayoff } from '@/apis/useSwr/dayoff';
 import { DayoffType } from '@/types/response/dayoff';
+import { BVE, LIMIT_HOURS_BV, LIMIT_HOURS_NV, LT_BVE } from '@/utils/constants/vairables';
 
 interface TakeLeaveFormProps {
     card_number?: string;
@@ -250,7 +251,7 @@ function TakeLeaveForm({
         (item) => item.id !== 1 && item.id !== 2 && item.id !== 3,
     );
 
-    const hoursOptions = [
+    const hoursOptionsNV = [
         {
             value: 0,
             label: '0',
@@ -259,13 +260,21 @@ function TakeLeaveForm({
             value: 4,
             label: '4',
         },
-        {
-            value: 5,
-            label: '5',
-        },
+
         {
             value: 8,
             label: '8',
+        },
+    ];
+
+    const hoursOptionsBVE = [
+        {
+            value: 0,
+            label: '0',
+        },
+        {
+            value: 5,
+            label: '5',
         },
         {
             value: 10,
@@ -273,6 +282,10 @@ function TakeLeaveForm({
         },
     ];
 
+    const hoursOptions =
+        employees?.[0]?.unit?.code === LT_BVE || employees?.[0]?.unit?.code === BVE
+            ? hoursOptionsBVE
+            : hoursOptionsNV;
     const onSubmit = async (data: FormValueProps) => {
         if (data && employees) {
             if (data.hours_B > 0) {
@@ -285,7 +298,6 @@ function TakeLeaveForm({
 
             const records = generateDayOffRequests(data, employees[0].uuid);
 
-            const LIMIT_HOURS = 10;
             const dateKey = (ts: string) => {
                 const date = new Date(ts);
                 const year = date.getFullYear();
@@ -333,8 +345,14 @@ function TakeLeaveForm({
 
                 totalHoursByDate[key] = (totalHoursByDate[key] || 0) + rec.hours;
             });
+            let hoursLimit = 0;
+            if (employees?.[0]?.unit?.code === LT_BVE || employees?.[0]?.unit?.code === BVE) {
+                hoursLimit = LIMIT_HOURS_BV;
+            } else {
+                hoursLimit = LIMIT_HOURS_NV;
+            }
             const exceededDates = Object.entries(totalHoursByDate).filter(([, hours]) => {
-                return hours > LIMIT_HOURS;
+                return hours > hoursLimit;
             });
 
             if (exceededDates.length) {

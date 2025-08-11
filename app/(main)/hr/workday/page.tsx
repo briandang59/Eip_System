@@ -27,6 +27,8 @@ import { useLogs } from '@/apis/useSwr/logs';
 import Overtime from '@/components/forms/Overtime';
 import { EditedClockTime } from '@/components/ui/editClocktimeUI';
 import { useFactoryStore } from '@/stores/useFactoryStore';
+import { useTakeLeave } from '@/apis/useSwr/takeLeave';
+import { TakeLeaveResponseType } from '@/types/response/takeLeave';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -36,6 +38,10 @@ function Workday() {
     const [selectedCardNumber, setSelectedCardNumber] = useState<string>('');
     const [selectedAttendance, setSelectedAttendance] = useState<AttendanceV2Type | null>(null);
     const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
+    // Thêm state để lưu record đang edit
+    const [selectedTakeLeaveRecord, setSelectedTakeLeaveRecord] = useState<
+        TakeLeaveResponseType | undefined
+    >(undefined);
 
     const handleOpenModalByKey = (key: string) => {
         switch (key) {
@@ -80,6 +86,7 @@ function Workday() {
     };
     const handleCloseModal = () => {
         setIsOpenModal(false);
+        setSelectedTakeLeaveRecord(undefined);
     };
     const handleSelectedCardNumber = (uuid: string) => {
         setSelectedCardNumber(uuid);
@@ -140,10 +147,25 @@ function Workday() {
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace || undefined,
     });
+
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs(),
         end: dayjs(),
     });
+
+    // Thêm mutate function cho take leave
+    const { mutate: mutateTakeLeave } = useTakeLeave({
+        work_place_id: selectedWorkPlace || 0,
+        start: dateRange.start.format('YYYY-MM-DD'),
+        end: dateRange.end.format('YYYY-MM-DD'),
+    });
+
+    // Thêm useEffect để mutate take leave khi dateRange thay đổi
+    useEffect(() => {
+        if (mutateTakeLeave) {
+            mutateTakeLeave();
+        }
+    }, [dateRange, selectedWorkPlace, mutateTakeLeave]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [searchText, setSearchText] = useState<string>('');
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
@@ -231,6 +253,8 @@ function Workday() {
                         card_number={selectedCardNumber}
                         isOpen={isOpenModal}
                         close={handleCloseModal}
+                        mutate={mutateTakeLeave}
+                        takeLeaveRecord={selectedTakeLeaveRecord}
                     />
                 );
             case 'image_scan_t1':

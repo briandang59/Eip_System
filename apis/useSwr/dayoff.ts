@@ -22,7 +22,8 @@ export const useDayoff = (params?: params) => {
 
     const { data, error, mutate } = useSWR<BaseResponse<DayoffType[]>>(url, fetcher, {
         revalidateOnFocus: false,
-        revalidateIfStale: false,
+        revalidateIfStale: true,
+        revalidateOnMount: true,
         revalidateOnReconnect: false,
     });
 
