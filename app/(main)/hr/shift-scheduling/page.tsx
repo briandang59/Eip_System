@@ -57,7 +57,7 @@ export default function ShiftSchedulingPage() {
     const daysInMonth = monthValue.daysInMonth();
     const [selectedUnitId, setSelectedUnitId] = useState<number | undefined>(126);
     const { shiftForShiftPage, isLoading: loadingShift } = useShifts();
-    const { workPlaces, isLoading: loadingWp } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: loadingWp } = useWorkPlaces();
     const dateRange = useMemo(
         () => ({
             range_date_start: `${year}-${month.toString().padStart(2, '0')}-01`,
@@ -307,7 +307,7 @@ export default function ShiftSchedulingPage() {
         <ClientOnly>
             <Space className="mb-4" wrap>
                 <Select
-                    options={workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
+                    options={filterWorkPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
                     style={{ width: 160 }}
                     value={selectedWorkPlace}
                     onChange={debouncedSetSelectedWorkPlace}

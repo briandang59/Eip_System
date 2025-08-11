@@ -5,6 +5,8 @@ import { fetcher } from '../fetcher';
 import { urls } from '@/utils/constants/common/urls';
 import { BaseResponse } from '@/types/response/baseResponse';
 import { WorkPlaceResponse } from '@/types/response/workplace';
+import { deriveAllowedWorkplaceIds } from '@/utils/functions/allowedWorkplaces';
+import { useRolesFromLocalStorage } from '@/utils/hooks/useRolesFromLocalStorage';
 
 const API_URL = `/${urls.cache}/${urls.work_place}`;
 
@@ -18,10 +20,22 @@ export const useWorkPlaces = () => {
             revalidateOnReconnect: false,
         },
     );
-    const filteredWorkPlaces = data?.data?.filter((item) => item.id !== 1 && item.id !== 6);
+    const { roles } = useRolesFromLocalStorage('roles');
+
+    const allowedIds = deriveAllowedWorkplaceIds(roles, 'union');
+
+    const workPlaces = (data?.data ?? []).filter((workplace) => {
+        const isAllowed = allowedIds.includes(workplace.id);
+        return isAllowed;
+    });
+
+    const uniqueWorkPlaces = workPlaces.filter(
+        (workplace, index, self) => index === self.findIndex((w) => w.id === workplace.id),
+    );
 
     return {
-        workPlaces: filteredWorkPlaces,
+        workPlaces: data?.data || [],
+        filterWorkPlaces: uniqueWorkPlaces,
         isLoading: !error && !data,
         isError: error,
         mutate,

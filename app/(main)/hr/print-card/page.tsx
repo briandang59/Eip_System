@@ -58,7 +58,7 @@ export default function PrintCardPage() {
             setPdfUrl(pdfPath);
         }
     }, [selectedEmployees]);
-    const { workPlaces, isLoading: isLoadingWP } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWP } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedFactoryId || undefined,
     });
@@ -117,7 +117,10 @@ export default function PrintCardPage() {
                 <div className="flex flex-col gap-2">
                     <span className="text-sm font-medium">{t.print_card.workplace}</span>
                     <Select
-                        options={workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
+                        options={filterWorkPlaces?.map((wp) => ({
+                            label: wp.name_en,
+                            value: wp.id,
+                        }))}
                         style={{ width: 150 }}
                         value={selectedFactoryId}
                         onChange={setSelectedFactoryId}

@@ -17,7 +17,7 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function StatisticalWorkday() {
-    const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const workdayCols = useStatisticalWorkdayCols();
     const [selectedMonth, setSelectedMonth] = useState<Dayjs>(dayjs().startOf('month'));
     const myInfo = getInfomation();
@@ -38,7 +38,7 @@ function StatisticalWorkday() {
     // Export hook
     const { exportDataOnly } = useStatisticalWorkdayExport(
         workdayCols,
-        workPlaces,
+        filterWorkPlaces,
         selectedMonth,
         selectedWorkPlace,
         status,
@@ -324,7 +324,7 @@ function StatisticalWorkday() {
                 <div className="flex flex-col gap-2">
                     <span className="text-sm font-medium">{t.workday.work_place}</span>
                     <Select
-                        options={workPlaces?.map((item) => ({
+                        options={filterWorkPlaces?.map((item) => ({
                             label: item.name_en,
                             value: item.id,
                         }))}

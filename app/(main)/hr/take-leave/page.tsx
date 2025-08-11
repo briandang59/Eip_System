@@ -28,7 +28,7 @@ function TakeLeavePage() {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const myInfo = getInfomation();
-    const { workPlaces, isLoading: workplaceLoading } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: workplaceLoading } = useWorkPlaces();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const {
@@ -120,7 +120,7 @@ function TakeLeavePage() {
             <div className="flex items-end gap-2 mb-4">
                 <Select
                     value={selectedWorkPlace}
-                    options={workPlaces?.map((item) => ({
+                    options={filterWorkPlaces?.map((item) => ({
                         label: item.name_vn,
                         value: item.id,
                     }))}

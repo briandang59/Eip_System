@@ -28,7 +28,7 @@ interface OvertimeEmployeeRow {
 
 function OvertimePage() {
     const myInfo = getInfomation();
-    const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const { t } = useTranslationCustom();
 
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
@@ -188,7 +188,7 @@ function OvertimePage() {
         <div className="flex flex-col gap-2">
             <div className="flex items-end gap-2">
                 <Select
-                    options={workPlaces?.map((item) => ({
+                    options={filterWorkPlaces?.map((item) => ({
                         label: item.name_en,
                         value: item.id,
                     }))}

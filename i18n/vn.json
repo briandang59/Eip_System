@@ -1,5 +1,9 @@
 {
     "common": {
+        "yes": "Có",
+        "no": "Không",
+        "male": "Nam",
+        "female": "Nữ",
         "languages": {
             "english": "Tiếng Anh",
             "vietnamese": "Tiếng Việt",

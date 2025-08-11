@@ -16,7 +16,7 @@ function Home() {
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const myInfo = getInfomation();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
-    const { workPlaces, isLoading: isLoadingWorkplaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkplaces } = useWorkPlaces();
     const { bulletins, isLoading: isLoadingBulletins } = useManageBulletins({
         pageNum: page,
         pageSize,
@@ -71,7 +71,7 @@ function Home() {
             <div className="sticky top-[100px] z-[50] bg-white p-2">
                 <div className="flex items-end gap-2">
                     <Select
-                        options={workPlaces?.map((item) => ({
+                        options={filterWorkPlaces?.map((item) => ({
                             label: item.name_en,
                             value: item.id,
                         }))}

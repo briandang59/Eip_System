@@ -1,5 +1,4 @@
 export const formatTimeHHmm = (iso: string | null | undefined): string => {
-    // Kiểm tra null/undefined trước
     if (!iso) return '';
 
     const date = new Date(iso);

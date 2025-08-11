@@ -101,7 +101,7 @@ function Workday() {
     });
 
     const [isAbnormal, setIsAbnormal] = useState<boolean>(false);
-    const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const myInfo = getInfomation();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
@@ -239,7 +239,7 @@ function Workday() {
         const startDate = dateRange.start.format('YYYY-MM-DD');
         const endDate = dateRange.end.format('YYYY-MM-DD');
         const workplaceName =
-            workPlaces?.find((wp) => wp.id === selectedWorkPlace)?.name_en || 'AllWorkplaces';
+            filterWorkPlaces?.find((wp) => wp.id === selectedWorkPlace)?.name_en || 'AllWorkplaces';
         const abnormalText = isAbnormal ? 'Abnormal' : 'Normal';
         const filename = `Workday_${startDate}_to_${endDate}_${workplaceName}_${abnormalText}`;
 
@@ -338,7 +338,7 @@ function Workday() {
                     <div className="flex flex-col gap-2">
                         <span className="text-sm font-medium">{t.workday.work_place}</span>
                         <Select
-                            options={workPlaces?.map((item) => ({
+                            options={filterWorkPlaces?.map((item) => ({
                                 label: item.name_en,
                                 value: item.id,
                             }))}

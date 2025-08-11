@@ -2,12 +2,11 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { FormSelect, FormTextArea, FormDatePicker } from '../formsComponent';
 import { useTranslationCustom } from '@/utils/hooks';
 import { ShiftType } from '@/types/response/shiftType';
+import { EmployeeClassResponseType } from '@/types/response/employeeClass';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface WorkInformationFormProps {
     control: any;
     errors: any;
-    unitTypes: any[];
-    isLoadingUnitType: boolean;
     workPlaces: any[];
     isLoadingWorkplace: boolean;
     units: any[];
@@ -19,12 +18,12 @@ interface WorkInformationFormProps {
     shifts: ShiftType[];
     isLoadingShifts: boolean;
     t: any;
+    employeeClass: EmployeeClassResponseType[];
+    isLoadingEmployeeClass: boolean;
 }
 
 function WorkInformationForm({
     control,
-    unitTypes,
-    isLoadingUnitType,
     workPlaces,
     isLoadingWorkplace,
     units,
@@ -36,6 +35,8 @@ function WorkInformationForm({
     shifts,
     isLoadingShifts,
     t,
+    employeeClass,
+    isLoadingEmployeeClass,
 }: WorkInformationFormProps) {
     const { lang } = useTranslationCustom();
     return (
@@ -48,12 +49,12 @@ function WorkInformationForm({
                     size="large"
                     placeholder="Select a work type"
                     options={
-                        unitTypes?.map((item) => ({
+                        employeeClass?.map((item) => ({
                             value: item.id,
                             label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
-                    loading={isLoadingUnitType}
+                    loading={isLoadingEmployeeClass}
                 />
                 <FormSelect
                     control={control}

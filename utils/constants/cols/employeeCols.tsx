@@ -221,7 +221,7 @@ export const useEmployeeCols = ({
             key: 'gender',
             width: 100,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record?.gender ? 'Male' : 'Female'}</span>
+                <span>{record?.gender ? t.common.male : t.common.female}</span>
             ),
             sorter: (a, b) =>
                 (a.gender ?? '').toString().localeCompare((b.gender ?? '').toString()),
@@ -361,7 +361,7 @@ export const useEmployeeCols = ({
             key: 'marriage',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record?.marriage_status ? 'Married' : 'Single'}</span>
+                <span>{record?.marriage_status ? t.common.yes : t.common.no}</span>
             ),
             sorter: (a, b) =>
                 a.marriage_status === b.marriage_status ? 0 : a.marriage_status ? 1 : -1,
@@ -372,7 +372,7 @@ export const useEmployeeCols = ({
             key: 'pregnant_woman',
             width: 200,
             render: (_, record: EmployeeResponseType) => (
-                <span>{record?.is_pregnant_woman ? 'Yes' : 'No'}</span>
+                <span>{record?.is_pregnant_woman ? t.common.yes : t.common.no}</span>
             ),
             sorter: (a, b) =>
                 a.is_pregnant_woman === b.is_pregnant_woman ? 0 : a.is_pregnant_woman ? 1 : -1,

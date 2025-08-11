@@ -105,8 +105,9 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                 title_zh: bulletin.title_zh,
                 date_range: [bulletin.start_date, bulletin.end_date],
                 work_places: bulletin.work_places || [],
-                departments: bulletin.departments || [],
-                target_employee: bulletin.target_employee || [],
+                departments: bulletin.departments_details?.map((item) => item.id) || [],
+                target_employee:
+                    bulletin.target_employee_details?.map((item) => item.card_number) || [],
                 is_global: String(bulletin.is_global),
                 is_pinned: String(bulletin.is_pinned),
             });

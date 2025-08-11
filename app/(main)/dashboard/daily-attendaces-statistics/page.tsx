@@ -23,7 +23,7 @@ const { RangePicker } = DatePicker;
 
 export default function Home() {
     const { t, lang } = useTranslationCustom();
-    const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const myInfo = getInfomation();
     const { selectedFactoryId, setSelectedFactoryId, initializeFromUserInfo } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || 0;
@@ -85,7 +85,6 @@ export default function Home() {
 
     const handleExport = () => {
         if (statisticalRangeDayAttendance.length > 0) {
-        
             const rangeDateArray = getDateRangeArray(
                 dayjs(rangeDate.start).format('YYYY-MM-DD'),
                 dayjs(rangeDate.end).format('YYYY-MM-DD'),
@@ -93,7 +92,7 @@ export default function Home() {
             ExportHrStatistical(
                 selectedWorkPlace,
                 statisticalRangeDayAttendance,
-                workPlaces || [],
+                filterWorkPlaces || [],
                 rangeDateArray,
             );
         }
@@ -139,7 +138,7 @@ export default function Home() {
         <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
                 <Select
-                    options={workPlaces?.map((item) => ({
+                    options={filterWorkPlaces?.map((item) => ({
                         value: item.id,
                         label: item.name_en,
                     }))}

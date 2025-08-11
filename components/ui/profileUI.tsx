@@ -15,6 +15,7 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useMemberDataPhoto } from '@/apis/useSwr/photo';
 import Image from 'next/image';
 import { Spin } from 'antd';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 interface ProfileUIProps {
     employee?: EmployeeResponseType;
@@ -66,7 +67,7 @@ function Section({
 }
 
 export default function ProfileUI({ employee }: ProfileUIProps) {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
 
     const { photos, isLoading } = useMemberDataPhoto({
         card_number: employee?.card_number ?? '',
@@ -78,14 +79,18 @@ export default function ProfileUI({ employee }: ProfileUIProps) {
         {
             icon: UserIcon,
             label: t.user_information.gender,
-            value: employee.gender ? 'Male' : 'Female',
+            value: employee.gender ? t.common.male : t.common.female,
         },
         { icon: Calendar, label: t.user_information.birthday, value: employee.birthday },
-        { icon: Flag, label: t.user_information.nationality, value: employee.nation?.name_en },
+        {
+            icon: Flag,
+            label: t.user_information.nationality,
+            value: `${getLocalizedName(employee.nation?.name_en, employee.nation?.name_zh, employee.nation?.name_vn, lang)}`,
+        },
         {
             icon: GraduationCap,
             label: t.user_information.education,
-            value: employee.education?.name_en,
+            value: `${getLocalizedName(employee.education?.name_en, employee.education?.name_zh, employee.education?.name_vn, lang)}`,
         },
     ];
 
@@ -95,23 +100,51 @@ export default function ProfileUI({ employee }: ProfileUIProps) {
         { label: t.user_information.id_card_number, value: employee.id_card_number },
         { label: t.user_information.place_of_birth, value: employee.place_of_birth },
         { label: t.user_information.ethnic, value: employee.ethnic?.name },
-        { label: t.user_information.marriage, value: employee.marriage_status ? 'Yes' : 'No' },
-        { label: t.user_information.pregnant_woman, value: employee.pregnancy ? 'Yes' : 'No' },
+        {
+            label: t.user_information.marriage,
+            value: employee.marriage_status ? t.common.yes : t.common.no,
+        },
+        {
+            label: t.user_information.pregnant_woman,
+            value: employee.pregnancy ? t.common.yes : t.common.no,
+        },
         {
             label: t.user_information.children,
-            value: employee.is_taking_care_children ? 'Yes' : 'No',
+            value: employee.is_taking_care_children ? t.common.yes : t.common.no,
         },
     ];
 
     const jobRows = [
-        { label: t.user_information.job_class, value: employee.job_title?.name_en },
-        { label: t.user_information.workplace, value: employee.work_place?.name_en },
-        { label: t.user_information.job_title, value: employee.job_title?.name_en },
-        { label: t.user_information.unit, value: employee.unit?.name_en },
+        {
+            label: t.user_information.job_class,
+            value: `${getLocalizedName(employee.job_title?.name_en, employee.job_title?.name_zh, employee.job_title?.name_vn, lang)}`,
+        },
+        {
+            label: t.user_information.workplace,
+            value: `${getLocalizedName(employee.work_place?.name_en, employee.work_place?.name_zh, employee.work_place?.name_vn, lang)}`,
+        },
+        {
+            label: t.user_information.job_title,
+            value: `${getLocalizedName(employee.job_title?.name_en, employee.job_title?.name_zh, employee.job_title?.name_vn, lang)}`,
+        },
+        {
+            label: t.user_information.unit,
+            value: getLocalizedName(
+                employee.unit?.name_en ?? '',
+                employee.unit?.name_zh ?? '',
+                employee.unit?.name_vn ?? '',
+                lang,
+            ),
+        },
         { label: t.user_information.work_description, value: employee.work_description },
         {
             label: t.user_information.languages,
-            value: employee.speak_languages?.languages?.name_vn,
+            value: getLocalizedName(
+                employee.speak_languages?.languages?.name_en ?? '',
+                employee.speak_languages?.languages?.name_zh ?? '',
+                employee.speak_languages?.languages?.name_vn ?? '',
+                lang,
+            ),
         },
     ];
 

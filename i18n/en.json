@@ -1,5 +1,9 @@
 {
     "common": {
+        "yes": "Yes",
+        "no": "No",
+        "male": "Male",
+        "female": "Female",
         "languages": {
             "english": "English",
             "vietnamese": "Vietnamese",

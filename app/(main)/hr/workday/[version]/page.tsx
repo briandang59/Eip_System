@@ -17,7 +17,7 @@ import { useFactoryStore } from '@/stores/useFactoryStore';
 function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
     const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols();
-    const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits();
 
     const myInfo = getInfomation();
@@ -91,7 +91,7 @@ function WorkdayV1() {
                 <div className="flex flex-col gap-2">
                     <span className="text-sm font-medium">{t.workday.work_place}</span>
                     <Select
-                        options={workPlaces?.map((item) => ({
+                        options={filterWorkPlaces?.map((item) => ({
                             label: item.name_en,
                             value: item.id,
                         }))}

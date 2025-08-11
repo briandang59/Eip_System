@@ -34,7 +34,7 @@ import { useEffect, useState } from 'react';
 
 function EmployeesPage() {
     const { t, lang } = useTranslationCustom();
-    const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const { employeeState, isLoading: isLoadingEmployeeState } = useEmployeeState();
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
     const [selectedState, setSelectedState] = useState<number>();
@@ -340,7 +340,7 @@ function EmployeesPage() {
                 <div className="flex flex-col gap-2">
                     <p className="text-sm font-medium">{t.employee.workplace}</p>
                     <Select
-                        options={workPlaces?.map((workPlace) => ({
+                        options={filterWorkPlaces?.map((workPlace) => ({
                             label: workPlace.name_en,
                             value: workPlace.id,
                         }))}

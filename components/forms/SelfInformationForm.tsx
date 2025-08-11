@@ -76,6 +76,7 @@ function SelfInformationForm({
                         { value: 'not_marriaged', label: t.profile_form.no },
                         { value: 'marriaged', label: t.profile_form.yes },
                     ]}
+                    required
                 />
                 <FormInput
                     control={control}

@@ -8,7 +8,6 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { useUnits } from '@/apis/useSwr/units';
 import { useLanguages } from '@/apis/useSwr/languages';
 import { useShifts } from '@/apis/useSwr/shift';
-import { useUnitType } from '@/apis/useSwr/unitType';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useJobTitle } from '@/apis/useSwr/jobTitle';
 import { useVisaType } from '@/apis/useSwr/visaType';
@@ -33,6 +32,7 @@ import { CreateEmployeeRequest } from '@/types/requests/profileEmployee';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { RcFile } from 'antd/es/upload';
 import { useContractTypeList } from '@/apis/useSwr/contractTypeList';
+import { useEmployeeClass } from '@/apis/useSwr/employeeClass';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface ProfileFormProps {
     employee_modify?: EmployeeResponseType;
@@ -195,7 +195,6 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
     const { units, isLoading: isLoadingUnit } = useUnits({ place_id: place_id });
     const { languages, isLoading: isLoadingLanguage } = useLanguages();
     const { shifts, isLoading: isLoadingShifts } = useShifts();
-    const { unitTypes, isLoading: isLoadingUnitType } = useUnitType();
     const { jobTitles, isLoading: isLoadingJobtitle } = useJobTitle();
     const { visaTypes, isLoading: isLoadingVisaType } = useVisaType();
     const { provinces, isLoading: isLoadingProvinces } = useProvinces();
@@ -203,6 +202,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
     const { wards, isLoading: isLoadingWards } = useWards({ district: district_id });
     const { ethnics, isLoading: isLoadingEthnics } = useEthnics();
     const { contractTypeList, isLoading: isLoadingContracts } = useContractTypeList();
+    const { employeeClasses, isLoading: isLoadingEmployeeClass } = useEmployeeClass();
     useEffect(() => {
         if (checkCardNumber?.data) {
             toast.error(checkCardNumber.message);
@@ -239,7 +239,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
                 is_pregnant_woman: data.pregnancy === 'yes' ? true : false,
                 is_taking_care_children: data.has_child === 'yes' ? true : false,
                 has_children: toNull(data.number_of_children),
-                class_id: toNull(data.job_title),
+                class_id: toNull(data.type_of_work),
                 join_company_date1: toNull(data.join_company_date1),
                 join_company_date2: toNull(data.join_company_date2),
                 vn_address: {
@@ -422,8 +422,6 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
                 <WorkInformationForm
                     control={control}
                     errors={errors}
-                    unitTypes={unitTypes || []}
-                    isLoadingUnitType={isLoadingUnitType}
                     workPlaces={workPlaces || []}
                     isLoadingWorkplace={isLoadingWorkplace}
                     units={units || []}
@@ -434,6 +432,8 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
                     isLoadingLanguage={isLoadingLanguage}
                     shifts={shifts || []}
                     isLoadingShifts={isLoadingShifts}
+                    employeeClass={employeeClasses || []}
+                    isLoadingEmployeeClass={isLoadingEmployeeClass}
                     t={t}
                 />
             ),

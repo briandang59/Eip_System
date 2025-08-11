@@ -32,7 +32,7 @@ import { useFactoryStore } from '@/stores/useFactoryStore';
 function ContractPage() {
     const { lang, t } = useTranslationCustom();
     const socialInsurance = useContractCols();
-    const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits();
     const { employees, isLoading: isLoadingEmployees } = useEmployees();
     const { contractTypeList, isLoading: isLoadingContractTypeList } = useContractTypeList();
@@ -169,7 +169,10 @@ function ContractPage() {
                         <span className="text-sm font-medium">{t.contract_page.workplace}</span>
                         <Select
                             options={
-                                workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id })) || []
+                                filterWorkPlaces?.map((wp) => ({
+                                    label: wp.name_en,
+                                    value: wp.id,
+                                })) || []
                             }
                             value={selectedWorkPlace}
                             onChange={setSelectedFactoryId}
@@ -220,7 +223,10 @@ function ContractPage() {
                         <span className="text-sm font-bold">{t.contract_page.workplace}</span>
                         <Select
                             options={
-                                workPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id })) || []
+                                filterWorkPlaces?.map((wp) => ({
+                                    label: wp.name_en,
+                                    value: wp.id,
+                                })) || []
                             }
                             value={selectedWorkPlace}
                             onChange={setSelectedFactoryId}
