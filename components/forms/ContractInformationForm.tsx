@@ -1,19 +1,23 @@
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { FormDatePicker, FormSelect } from '../formsComponent';
+import { ContractTypeListResponseType } from '@/types/response/contractTypeList';
+import { useTranslationCustom } from '@/utils/hooks';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface ContractInformationFormProps {
     control: any;
     errors: any;
-    shifts: any[];
-    isLoadingShifts: boolean;
+    contractTypeList: ContractTypeListResponseType[];
+    isLoadingContractTypeList: boolean;
     t: any;
 }
 
 function ContractInformationForm({
     control,
-    shifts,
-    isLoadingShifts,
+    contractTypeList,
+    isLoadingContractTypeList,
     t,
 }: ContractInformationFormProps) {
+    const { lang } = useTranslationCustom();
     return (
         <div className="grid grid-cols-2 gap-2">
             <FormDatePicker
@@ -52,12 +56,12 @@ function ContractInformationForm({
                 size="large"
                 placeholder="Select a contract type"
                 options={
-                    shifts?.map((item) => ({
+                    contractTypeList?.map((item) => ({
                         value: item.id,
-                        label: item.tag,
+                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                     })) || []
                 }
-                loading={isLoadingShifts}
+                loading={isLoadingContractTypeList}
             />
         </div>
     );

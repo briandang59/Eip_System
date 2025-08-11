@@ -32,6 +32,7 @@ import { DistrictsResponseType } from '@/types/response/districts';
 import { CreateEmployeeRequest } from '@/types/requests/profileEmployee';
 import { EmployeeResponseType } from '@/types/response/employees';
 import { RcFile } from 'antd/es/upload';
+import { useContractTypeList } from '@/apis/useSwr/contractTypeList';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface ProfileFormProps {
     employee_modify?: EmployeeResponseType;
@@ -201,6 +202,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
     const { districts, isLoading: isLoadingDistricts } = useDistricts({ province: provinces_id });
     const { wards, isLoading: isLoadingWards } = useWards({ district: district_id });
     const { ethnics, isLoading: isLoadingEthnics } = useEthnics();
+    const { contractTypeList, isLoading: isLoadingContracts } = useContractTypeList();
     useEffect(() => {
         if (checkCardNumber?.data) {
             toast.error(checkCardNumber.message);
@@ -337,7 +339,6 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
             if (employee_modify?.card_number) {
                 await employeeService.update(newData);
                 if (uploadedFile && data.card_number) {
-            
                     await employeeService.upload_image(data.card_number, uploadedFile);
                 }
                 toast.success('Employee updated successfully.');
@@ -431,7 +432,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
                     isLoadingJobtitle={isLoadingJobtitle}
                     languages={languages || []}
                     isLoadingLanguage={isLoadingLanguage}
-                    shifts={shifts}
+                    shifts={shifts || []}
                     isLoadingShifts={isLoadingShifts}
                     t={t}
                 />
@@ -444,8 +445,8 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
                 <ContractInformationForm
                     control={control}
                     errors={errors}
-                    shifts={shifts}
-                    isLoadingShifts={isLoadingShifts}
+                    contractTypeList={contractTypeList || []}
+                    isLoadingContractTypeList={isLoadingContracts}
                     t={t}
                 />
             ),

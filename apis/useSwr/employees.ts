@@ -51,7 +51,7 @@ export const useEmployees = (params?: params, filterParams?: filterParams) => {
         return matchesSearch && matchesState;
     });
 
-    const activeEmployees = filterData?.filter((item) => item.active);
+    const activeEmployees = filterData?.filter((item) => item.active === true);
 
     return {
         employees: filterData,

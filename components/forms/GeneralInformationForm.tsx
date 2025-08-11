@@ -5,6 +5,8 @@ import { Control } from 'react-hook-form';
 import type { RcFile } from 'antd/es/upload';
 import CustomImageUpload from '../ui/CustomImageUpload';
 import { useMemberDataPhoto } from '@/apis/useSwr/photo';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
+import { useTranslationCustom } from '@/utils/hooks';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface GeneralInformationFormProps {
     control: Control<any>;
@@ -28,6 +30,7 @@ function GeneralInformationForm({
     onUploadSuccess,
     employee_modify, // thêm prop này để truyền card_number
 }: GeneralInformationFormProps & { employee_modify?: { card_number?: string } }) {
+    const { lang } = useTranslationCustom();
     // Lấy ảnh từ API nếu có card_number
     const card_number = employee_modify?.card_number || '';
     const { photos } = useMemberDataPhoto({ card_number });
@@ -74,7 +77,7 @@ function GeneralInformationForm({
                     options={
                         nations?.map((item: NationResponseType) => ({
                             value: item.id,
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingNations}
@@ -88,7 +91,7 @@ function GeneralInformationForm({
                     options={
                         educations?.map((item: EducationResponseType) => ({
                             value: item.id,
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingEducations}

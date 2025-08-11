@@ -25,20 +25,38 @@ export default function FormDatePicker<T extends FieldValues>({
         <Controller
             control={control}
             name={name}
-            render={({ field: { value, onChange, ...field }, fieldState: { error } }) => (
-                <FormField label={label} required={required} error={error}>
-                    <DatePicker
-                        {...field}
-                        {...props}
-                        value={value ? dayjs(value) : null}
-                        onChange={(date) => onChange(date ? date.format('YYYY-MM-DD') : '')}
-                        showTime={showTime ? { format: 'HH:mm:ss' } : undefined}
-                        format={showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'}
-                        status={error ? 'error' : ''}
-                        className="w-full"
-                    />
-                </FormField>
-            )}
+            render={({ field: { value, onChange, ...field }, fieldState: { error } }) => {
+                // Đảm bảo parse đúng thời gian
+                let parsedValue = null;
+                if (value) {
+                    if (showTime) {
+                        parsedValue = dayjs(value, 'YYYY-MM-DD HH:mm:ss');
+                    } else {
+                        parsedValue = dayjs(value, 'YYYY-MM-DD');
+                    }
+                }
+
+                return (
+                    <FormField label={label} required={required} error={error}>
+                        <DatePicker
+                            {...field}
+                            {...props}
+                            value={parsedValue}
+                            onChange={(date) => {
+                                if (showTime) {
+                                    onChange(date ? date.format('YYYY-MM-DD HH:mm:ss') : '');
+                                } else {
+                                    onChange(date ? date.format('YYYY-MM-DD') : '');
+                                }
+                            }}
+                            showTime={showTime ? { format: 'HH:mm:ss' } : undefined}
+                            format={showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD'}
+                            status={error ? 'error' : ''}
+                            className="w-full"
+                        />
+                    </FormField>
+                );
+            }}
         />
     );
 }

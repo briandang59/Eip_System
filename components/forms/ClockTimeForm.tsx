@@ -63,20 +63,86 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
             detail.shift.start_time,
             detail.shift.end_time,
         );
+
+        // Đảm bảo thời gian được format đúng
+        let clockinTime: string = '';
+        let clockoutTime: string = '';
+
+        if (detail?.attendance?.[0]?.T1?.time) {
+            // Nếu có thời gian T1, sử dụng nó
+            const t1DateTime = dayjs(detail.attendance[0].T1.time);
+            clockinTime = t1DateTime.isValid() ? t1DateTime.format('YYYY-MM-DD HH:mm:ss') : '';
+        }
+
+        if (!clockinTime) {
+            // Tạo thời gian mặc định từ shift
+            const shiftStartDateTime = dayjs(
+                `${startDate} ${detail.shift.start_time}`,
+                'YYYY-MM-DD HH:mm',
+            );
+            clockinTime = shiftStartDateTime.isValid()
+                ? shiftStartDateTime.format('YYYY-MM-DD HH:mm:ss')
+                : '';
+        }
+
+        if (detail?.attendance?.[0]?.T2?.time) {
+            // Nếu có thời gian T2, sử dụng nó
+            const t2DateTime = dayjs(detail.attendance[0].T2.time);
+            clockoutTime = t2DateTime.isValid() ? t2DateTime.format('YYYY-MM-DD HH:mm:ss') : '';
+        }
+
+        if (!clockoutTime) {
+            // Tạo thời gian mặc định từ shift
+            const shiftEndDateTime = dayjs(
+                `${endDate} ${detail.shift.end_time}`,
+                'YYYY-MM-DD HH:mm',
+            );
+            clockoutTime = shiftEndDateTime.isValid()
+                ? shiftEndDateTime.format('YYYY-MM-DD HH:mm:ss')
+                : '';
+        }
+
+        // Đảm bảo thời gian không bị mất bằng cách parse lại và format
+        if (clockinTime) {
+            const parsedClockin = dayjs(clockinTime, 'YYYY-MM-DD HH:mm:ss');
+            if (parsedClockin.isValid()) {
+                clockinTime = parsedClockin.format('YYYY-MM-DD HH:mm:ss');
+            }
+        }
+
+        if (clockoutTime) {
+            const parsedClockout = dayjs(clockoutTime, 'YYYY-MM-DD HH:mm:ss');
+            if (parsedClockout.isValid()) {
+                clockoutTime = parsedClockout.format('YYYY-MM-DD HH:mm:ss');
+            }
+        }
+
+        console.log('Debug time values:', {
+            originalT1: detail?.attendance?.[0]?.T1?.time,
+            originalT2: detail?.attendance?.[0]?.T2?.time,
+            shiftStart: detail.shift.start_time,
+            shiftEnd: detail.shift.end_time,
+            startDate,
+            endDate,
+            clockinTime,
+            clockoutTime,
+        });
+
+        console.log('Final time values:', {
+            clockinTime,
+            clockoutTime,
+            parsedClockin: dayjs(clockinTime, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss'),
+            parsedClockout: dayjs(clockoutTime, 'YYYY-MM-DD HH:mm:ss').format(
+                'YYYY-MM-DD HH:mm:ss',
+            ),
+        });
+
         reset({
             card_number: attendance.card_number,
             reason_id: 1,
             reason_text: '',
-            clockin: detail?.attendance?.[0]?.T1?.time
-                ? dayjs(detail.attendance[0].T1.time).format('YYYY-MM-DD HH:mm:ss')
-                : dayjs(`${startDate} ${detail.shift.start_time}`, 'YYYY-MM-DD HH:mm').format(
-                      'YYYY-MM-DD HH:mm:ss',
-                  ),
-            clockout: detail?.attendance?.[0]?.T2?.time
-                ? dayjs(detail.attendance[0].T2.time).format('YYYY-MM-DD HH:mm:ss')
-                : dayjs(`${endDate} ${detail.shift.end_time}`, 'YYYY-MM-DD HH:mm').format(
-                      'YYYY-MM-DD HH:mm:ss',
-                  ),
+            clockin: clockinTime,
+            clockout: clockoutTime,
         });
     }, [attendance?.card_number, reset, attendance]);
 

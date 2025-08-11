@@ -1,4 +1,7 @@
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { FormSelect, FormTextArea, FormDatePicker } from '../formsComponent';
+import { useTranslationCustom } from '@/utils/hooks';
+import { ShiftType } from '@/types/response/shiftType';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface WorkInformationFormProps {
     control: any;
@@ -13,7 +16,7 @@ interface WorkInformationFormProps {
     isLoadingJobtitle: boolean;
     languages: any[];
     isLoadingLanguage: boolean;
-    shifts: any[];
+    shifts: ShiftType[];
     isLoadingShifts: boolean;
     t: any;
 }
@@ -34,6 +37,7 @@ function WorkInformationForm({
     isLoadingShifts,
     t,
 }: WorkInformationFormProps) {
+    const { lang } = useTranslationCustom();
     return (
         <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-2">
@@ -46,7 +50,7 @@ function WorkInformationForm({
                     options={
                         unitTypes?.map((item) => ({
                             value: item.id,
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingUnitType}
@@ -61,7 +65,7 @@ function WorkInformationForm({
                     options={
                         workPlaces?.map((item) => ({
                             value: item.id,
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingWorkplace}
@@ -76,7 +80,7 @@ function WorkInformationForm({
                     options={
                         units?.map((item) => ({
                             value: item.id,
-                            label: item.name_en ?? item.name_vn ?? item.name_zh,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingUnit}
@@ -90,7 +94,7 @@ function WorkInformationForm({
                     options={
                         jobTitles?.map((item) => ({
                             value: item.id,
-                            label: item.name_en ?? item.name_vn ?? item.name_zh,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingJobtitle}
@@ -106,7 +110,7 @@ function WorkInformationForm({
                     options={
                         languages?.map((item) => ({
                             value: item.id,
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         })) || []
                     }
                     loading={isLoadingLanguage}
@@ -122,7 +126,7 @@ function WorkInformationForm({
                     options={
                         shifts?.map((item) => ({
                             value: item.id,
-                            label: item.tag,
+                            label: `${item.tag} (${item.start_time} - ${item.end_time})`,
                         })) || []
                     }
                     loading={isLoadingShifts}
