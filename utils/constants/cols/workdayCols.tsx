@@ -168,7 +168,7 @@ export const useWorkdayCols = ({
                         >
                             {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : <></>}
                             <span className="font-medium text-red-600">
-                                {formatTimeHHmm(time1)}
+                                {time1 ? formatTimeHHmm(time1) : '-'}
                             </span>
                         </button>
                     );
@@ -183,7 +183,7 @@ export const useWorkdayCols = ({
                         >
                             {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : <></>}
                             <span className="font-medium text-purple-600">
-                                {formatTimeHHmm(time1)}
+                                {time1 ? formatTimeHHmm(time1) : '-'}
                             </span>
                         </button>
                     );
@@ -243,7 +243,7 @@ export const useWorkdayCols = ({
                             >
                                 {face_t2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
                                 <span className="font-medium text-purple-600">
-                                    {formatTimeHHmm(time2)}
+                                    {time2 ? formatTimeHHmm(time2) : '-'}
                                 </span>
                             </button>
                             {isUpdated && (

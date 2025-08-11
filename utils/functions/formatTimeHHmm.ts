@@ -1,4 +1,7 @@
-export const formatTimeHHmm = (iso: string): string => {
+export const formatTimeHHmm = (iso: string | null | undefined): string => {
+    // Kiểm tra null/undefined trước
+    if (!iso) return '';
+
     const date = new Date(iso);
 
     if (Number.isNaN(date.getTime())) return '';

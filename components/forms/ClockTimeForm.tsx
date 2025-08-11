@@ -117,26 +117,6 @@ function ClockTimeForm({ attendance, mutate, close }: Params) {
             }
         }
 
-        console.log('Debug time values:', {
-            originalT1: detail?.attendance?.[0]?.T1?.time,
-            originalT2: detail?.attendance?.[0]?.T2?.time,
-            shiftStart: detail.shift.start_time,
-            shiftEnd: detail.shift.end_time,
-            startDate,
-            endDate,
-            clockinTime,
-            clockoutTime,
-        });
-
-        console.log('Final time values:', {
-            clockinTime,
-            clockoutTime,
-            parsedClockin: dayjs(clockinTime, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss'),
-            parsedClockout: dayjs(clockoutTime, 'YYYY-MM-DD HH:mm:ss').format(
-                'YYYY-MM-DD HH:mm:ss',
-            ),
-        });
-
         reset({
             card_number: attendance.card_number,
             reason_id: 1,

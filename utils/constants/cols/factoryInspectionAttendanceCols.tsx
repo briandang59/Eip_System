@@ -136,11 +136,10 @@ export const useFactoryInspectionAttendanceCols =
                         b?.details[0]?.workday?.T1?.time,
                     );
                 },
-                render: (_: unknown, record: FactoryInspectionAttendance) => (
-                    <p className="font-medium text-purple-600 text-center">
-                        {formatTimeHHmm(record?.details[0]?.workday?.T1?.time)}
-                    </p>
-                ),
+                render: (_: unknown, record: FactoryInspectionAttendance) => {
+                    const time = formatTimeHHmm(record?.details[0]?.workday?.T1?.time);
+                    return <p className="font-medium text-purple-600 text-center">{time || '-'}</p>;
+                },
             },
             {
                 title: 'T2',
@@ -158,11 +157,10 @@ export const useFactoryInspectionAttendanceCols =
 
                     return t1 - t2;
                 },
-                render: (_: unknown, record: FactoryInspectionAttendance) => (
-                    <p className="font-medium text-purple-600 text-center">
-                        {formatTimeHHmm(record?.details[0]?.workday?.T2?.time)}
-                    </p>
-                ),
+                render: (_: unknown, record: FactoryInspectionAttendance) => {
+                    const time = formatTimeHHmm(record?.details[0]?.workday?.T2?.time);
+                    return <p className="font-medium text-purple-600 text-center">{time || '-'}</p>;
+                },
             },
 
             {
