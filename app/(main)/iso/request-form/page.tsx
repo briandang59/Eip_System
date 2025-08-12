@@ -6,8 +6,9 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
 import { Input, Modal, Select, Spin } from 'antd';
 import { PenBox } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
+import { sendTokenToChild, setupTokenRequestHandler } from '@/utils/functions/sendTokenToChild';
 
 function RequestForm() {
     const { t, lang } = useTranslationCustom();
@@ -18,12 +19,17 @@ function RequestForm() {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [, setKey] = useState<string>('');
     const myInfo = getInfomation();
-
+    const iframeRef = useRef<HTMLIFrameElement>(null);
     const { fromTypeList, isLoading: isLoadingFormTypeList } = useFormTypeList({
         locations: selectedLocations,
         search: debouncedSearch,
     });
 
+    // Bật listener 1 lần để trả token khi child yêu cầu
+    useEffect(() => {
+        const cleanup = setupTokenRequestHandler();
+        return cleanup;
+    }, []);
     const handleOpenModal = (form: IsoForm, key?: string) => {
         if (key) setKey(key);
         setSelectedIsoForm(form);
@@ -105,10 +111,16 @@ function RequestForm() {
             >
                 {selectedIsoForm && (
                     <iframe
+                        id="child-iframe"
+                        ref={iframeRef}
                         src={`http://10.2.1.159:8085/form/${selectedLocations}/${selectedIsoForm.tag}?employee_uuid=${myInfo?.uuid}`}
                         width="100%"
                         height="700"
                         className="border-none"
+                        onLoad={() => {
+                            console.log('Parent: iframe loaded');
+                            sendTokenToChild(iframeRef.current?.contentWindow ?? undefined);
+                        }}
                     />
                 )}
             </Modal>

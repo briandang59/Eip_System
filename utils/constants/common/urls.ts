@@ -97,4 +97,5 @@ export const urls = {
     user_preferences: 'user-preferences',
     download: 'download',
     form: 'form',
+    form_request_statuses: 'form_request_statuses',
 };
