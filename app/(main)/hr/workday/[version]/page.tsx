@@ -18,11 +18,14 @@ function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
     const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols();
     const { filterWorkPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
-    const { units, isLoading: isLoadingUnits } = useUnits();
-
     const myInfo = getInfomation();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
-    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
+
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id;
+    const { units, isLoading: isLoadingUnits } = useUnits({
+        place_id: selectedWorkPlace,
+    });
+
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [searchInput, setSearchInput] = useState<string>('');
     const [, setSearchText] = useState<string>('');
@@ -34,11 +37,17 @@ function WorkdayV1() {
         factoryInspectionAttendance,
         isLoading: isLoadingFactoryInspectionAttendance,
         mutate,
-    } = useFactoryInspectionAttendance({
-        work_place_id: selectedWorkPlace,
-        start: dayjs(dateRange.start).format('YYYY-MM-DD'),
-        end: dayjs(dateRange.end).format('YYYY-MM-DD'),
-    });
+    } = useFactoryInspectionAttendance(
+        {
+            work_place_id: selectedWorkPlace || 0,
+            start: dayjs(dateRange.start).format('YYYY-MM-DD'),
+            end: dayjs(dateRange.end).format('YYYY-MM-DD'),
+        },
+        {
+            search: searchInput,
+            unit_id: selectedUnit,
+        },
+    );
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(e.target.value);
     };

@@ -23,7 +23,7 @@ function StatisticalWorkdayV1() {
     const myInfo = getInfomation();
     const { t, lang } = useTranslationCustom();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
-    const selectedWorkPlace = selectedFactoryId ?? myInfo?.work_place_id ?? undefined;
+    const selectedWorkPlace = selectedFactoryId ?? myInfo?.work_place_id;
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs().startOf('month'),
         end: dayjs().endOf('month'),
@@ -31,8 +31,9 @@ function StatisticalWorkdayV1() {
     const [status, setStatus] = useState<string>('all');
     const [search, setSearch] = useState<string>('');
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
+    console.log(selectedWorkPlace);
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedWorkPlace || undefined,
+        place_id: selectedWorkPlace,
     });
 
     // Export hook
