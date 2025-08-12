@@ -31,7 +31,6 @@ function StatisticalWorkdayV1() {
     const [status, setStatus] = useState<string>('all');
     const [search, setSearch] = useState<string>('');
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
-    console.log(selectedWorkPlace);
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace,
     });

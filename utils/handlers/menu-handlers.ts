@@ -72,6 +72,7 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'bulletins/manage-bulletins':
             router.push(routes.bulletins.manageBulletins);
             break;
+
         case 'others/meeting':
             router.push(routes.others.meeting);
             break;

@@ -3,7 +3,8 @@ import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { renderEditorJsContent } from '@/utils/functions/renderEditorJsToHtml';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Popover, TableColumnsType } from 'antd';
-import { File, Pen, Settings, Trash } from 'lucide-react';
+import { File, Pen, Settings, Trash, Eye } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface params {
     openModalConfirm: (selectedBulletin: BulletinsResponseType) => void;
@@ -14,6 +15,7 @@ export const useBulletinsCols = ({
     openModalForm,
 }: params): TableColumnsType<BulletinsResponseType> => {
     const { t, lang } = useTranslationCustom();
+    const router = useRouter();
 
     return [
         {
@@ -108,6 +110,12 @@ export const useBulletinsCols = ({
                             trigger="click"
                             content={
                                 <div className="flex flex-col gap-2">
+                                    <Button
+                                        icon={<Eye className="size-4 !text-blue-700" />}
+                                        onClick={() => router.push(`/bulletins/${record.id}`)}
+                                    >
+                                        {t.common.forms.view}
+                                    </Button>
                                     <Button
                                         icon={<Pen className="size-4 !text-blue-700" />}
                                         onClick={() => openModalForm(record)}

@@ -119,6 +119,7 @@ export const calculateFactoryInspectionStatisticalWorkday = (
                 name_zh: '',
                 name_vn: '',
             },
+            active: employeeAttendance[0]?.active || false,
             total_GC,
             total_NLE,
             total_150,

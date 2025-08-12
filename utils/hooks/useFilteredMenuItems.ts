@@ -49,6 +49,28 @@ export const useFilteredMenuItems = () => {
         // Always allow logout
         if (key === 'logout') return true;
 
+        // Handle dynamic routes like bulletins/[uuid]
+        if (key.includes('[') && key.includes(']')) {
+            // Check if any role has permission for this dynamic route pattern
+            return Object.keys(menuPermissions).some(permissionKey => {
+                if (permissionKey.includes('[') && permissionKey.includes(']')) {
+                    // Convert dynamic route pattern to regex for matching
+                    const pattern = permissionKey
+                        .replace(/\[.*?\]/g, '[^/]+')
+                        .replace(/\//g, '\\/');
+                    const regex = new RegExp(`^${pattern}$`);
+                    if (regex.test(key)) {
+                        // Check if user has any of the required roles for this permission
+                        const requiredRoles = menuPermissions[permissionKey];
+                        return userRoles.some((roleTag) =>
+                            requiredRoles.some((role) => role.toLowerCase() === roleTag.toLowerCase())
+                        );
+                    }
+                }
+                return false;
+            });
+        }
+
         if (!menuPermissions[key]) return false;
         return userRoles.some((roleTag) =>
             menuPermissions[key].some((role) => role.toLowerCase() === roleTag.toLowerCase()),

@@ -73,6 +73,8 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.SYSTEM_ADMINISTRATOR,
         Roles.BULLETINS_BOARD_MANAGER,
     ],
+    // Allow all roles to access bulletin detail pages
+    'bulletins/[uuid]': Object.values(Roles),
 
     // Others
     others: [Roles.SUPER_USER, Roles.MEETING_ROOM_USER],

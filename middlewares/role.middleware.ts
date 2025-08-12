@@ -44,7 +44,18 @@ export function roleMiddleware(request: NextRequest) {
     } else {
         // Try prefix match - find the longest matching route
         const matchingRoutes = Object.entries(menuPermissions)
-            .filter(([route]) => normalizedPath.startsWith(route))
+            .filter(([route]) => {
+                // Handle dynamic routes like bulletins/[uuid]
+                if (route.includes('[') && route.includes(']')) {
+                    // Convert dynamic route pattern to regex
+                    const pattern = route
+                        .replace(/\[.*?\]/g, '[^/]+') // Replace [uuid] with [^/]+
+                        .replace(/\//g, '\\/'); // Escape forward slashes
+                    const regex = new RegExp(`^${pattern}$`);
+                    return regex.test(normalizedPath);
+                }
+                return normalizedPath.startsWith(route);
+            })
             .sort(([a], [b]) => b.length - a.length); // Sort by length, longest first
 
         if (matchingRoutes.length > 0) {
