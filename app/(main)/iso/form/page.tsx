@@ -2,11 +2,13 @@
 import { useFromRecord } from '@/apis/useSwr/formRecord';
 import { useFormTypeList } from '@/apis/useSwr/formTypeList';
 import { GenericTable } from '@/components/common/GenericTable';
+import { IsoForm } from '@/types/response/isoForm';
 import { RecordFormResponse } from '@/types/response/recordForm';
 import { useRecordFormCols } from '@/utils/constants/cols/formRecordCols';
+import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
-import { DatePicker, Input, Select } from 'antd';
+import { DatePicker, Input, Modal, Select } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -19,7 +21,12 @@ function Form() {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [selectedLocations, setSelectedLocations] = useState<string>('Vietnam');
     const [selectedStatus, setSelectedStatus] = useState<string>('');
-    const recordFormCols = useRecordFormCols();
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [selectedIsoForm, setSelectedIsoForm] = useState<RecordFormResponse | null>(null);
+    const [selectedTypeForm, setSelectedTypeForm] = useState<IsoForm | null>(null);
+    const [key, setKey] = useState<string | null>(null);
+    const myInfo = getInfomation();
+    const [url, setUrl] = useState<string>('');
     // Debounce search
 
     const locations = [
@@ -41,6 +48,13 @@ function Form() {
         handler();
         return () => handler.cancel();
     }, [searchText]);
+
+    // Cập nhật URL khi selectedTypeForm thay đổi
+    useEffect(() => {
+        if (selectedIsoForm && selectedTypeForm && key) {
+            setUrl(generateUrl(selectedIsoForm, key));
+        }
+    }, [selectedTypeForm, selectedIsoForm, key, selectedLocations]);
 
     const [rangeDate, setRangeDate] = useState<{ start_date: Dayjs; end_date: Dayjs }>({
         start_date: dayjs().month(0).date(1),
@@ -71,6 +85,44 @@ function Form() {
             });
         }
     };
+
+    const handleCloseModal = () => {
+        setIsOpenModal(false);
+        setSelectedIsoForm(null);
+        setKey(null);
+    };
+
+    const handleOpenModal = (form: RecordFormResponse, key?: string) => {
+        setIsOpenModal(true);
+        setSelectedIsoForm(form);
+        const exists = fromTypeList.find((item) => item.id === form.type_id);
+        setSelectedTypeForm(exists || null);
+        setKey(key || null);
+
+        if (exists) {
+            setUrl(generateUrl(form, key, exists));
+        }
+    };
+
+    const generateUrl = (form: RecordFormResponse, key?: string, typeForm?: IsoForm) => {
+        const targetTypeForm = typeForm || selectedTypeForm;
+
+        if (!targetTypeForm) return '';
+
+        switch (key) {
+            case 'view':
+                return `http://10.2.1.159:8085/form/${selectedLocations}/${targetTypeForm?.tag}?id=${form?._id}`;
+            case 'modify':
+                return `http://10.2.1.159:8085/form/${selectedLocations}/${targetTypeForm?.tag}?id=${form?._id}&isEdit=true`;
+            default:
+                return `http://10.2.1.159:8085/form/${selectedLocations}/${targetTypeForm?.tag}?employee_uuid=${myInfo?.uuid}&isEdit=true&uuid=${form._id}`;
+        }
+    };
+
+    const recordFormCols = useRecordFormCols({
+        openModal: handleOpenModal,
+    });
+
     return (
         <div className="flex flex-col gap-4">
             <div className="flex items-end gap-2">
@@ -138,6 +190,18 @@ function Form() {
                     size: 'default',
                 }}
             />
+
+            <Modal
+                open={isOpenModal}
+                onCancel={handleCloseModal}
+                footer={null}
+                centered
+                width={1200}
+            >
+                {selectedIsoForm && selectedTypeForm && (
+                    <iframe src={url} width="100%" height="700" className="border-none" />
+                )}
+            </Modal>
         </div>
     );
 }

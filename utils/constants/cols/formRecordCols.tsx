@@ -1,10 +1,14 @@
+import { IsoForm } from '@/types/response/isoForm';
 import { RecordFormResponse } from '@/types/response/recordForm';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Popover, TableColumnsType, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { Eye, Pen, Settings, Trash } from 'lucide-react';
 
-export const useRecordFormCols = (): TableColumnsType<RecordFormResponse> => {
+interface params {
+    openModal: (form: RecordFormResponse, key?: string) => void;
+}
+export const useRecordFormCols = ({ openModal }: params): TableColumnsType<RecordFormResponse> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -73,22 +77,19 @@ export const useRecordFormCols = (): TableColumnsType<RecordFormResponse> => {
                             <div className="flex flex-col gap-2">
                                 <Button
                                     icon={<Eye className="size-[14px] !text-green-700" />}
-                                    // onClick={() => open('modify', record)}
+                                    onClick={() => openModal(record, 'view')}
                                 >
                                     {t.common.forms.view}
                                 </Button>
                                 <Button
                                     icon={<Pen className="size-[14px] !text-blue-700" />}
-                                    // onClick={() => open('modify', record)}
+                                    onClick={() => openModal(record, 'modify')}
                                 >
                                     {t.common.forms.edit}
                                 </Button>
-                                <Button
-                                    icon={<Trash className="size-[14px] !text-red-700" />}
-                                    // onClick={() => open('delete', record)}
-                                >
+                                {/* <Button icon={<Trash className="size-[14px] !text-red-700" />}>
                                     {t.common.forms.delete}
-                                </Button>
+                                </Button> */}
                             </div>
                         }
                     >
