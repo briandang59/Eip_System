@@ -338,6 +338,42 @@ export const useFactoryInspectionAttendanceCols =
                 },
             },
             {
+                title: 'VS',
+                dataIndex: 'VS',
+                key: 'VS',
+                width: 50,
+                sorter: (a, b) => {
+                    return a?.details[0]?.workday?.VS - b?.details[0]?.workday?.VS;
+                },
+                render: (_, record) => {
+                    return (
+                        <div className="text-nowrap text-center font-medium">
+                            {record?.details[0]?.workday?.VS > 0
+                                ? record?.details[0]?.workday?.VS
+                                : '-'}
+                        </div>
+                    );
+                },
+            },
+            {
+                title: 'GDem',
+                dataIndex: 'GDem',
+                key: 'GDem',
+                width: 70,
+                sorter: (a, b) => {
+                    return a?.details[0]?.workday?.GDem - b?.details[0]?.workday?.GDem;
+                },
+                render: (_, record) => {
+                    return (
+                        <div className="text-nowrap text-center font-medium">
+                            {record?.details[0]?.workday?.GDem > 0
+                                ? record?.details[0]?.workday?.GDem
+                                : '-'}
+                        </div>
+                    );
+                },
+            },
+            {
                 title: 'G200',
                 dataIndex: 'G200',
                 key: 'G200',
