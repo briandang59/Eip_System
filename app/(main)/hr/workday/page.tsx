@@ -29,6 +29,7 @@ import { EditedClockTime } from '@/components/ui/editClocktimeUI';
 import { useFactoryStore } from '@/stores/useFactoryStore';
 import { useTakeLeave } from '@/apis/useSwr/takeLeave';
 import { TakeLeaveResponseType } from '@/types/response/takeLeave';
+import { routes } from '@/utils/constants/common/routes';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -79,6 +80,11 @@ function Workday() {
                 setKey('edited_clock_time');
                 setIsOpenModal(true);
                 setWidthModal(700);
+                break;
+            case 'shift_scheduling':
+                setKey('shift_scheduling');
+                setIsOpenModal(true);
+                setWidthModal(1400);
                 break;
             default:
                 break;
@@ -325,6 +331,18 @@ function Workday() {
                             <EditedClockTime selectedAttendance={selectedAttendance} />
                         )}
                     </>
+                );
+            case 'shift_scheduling':
+                return (
+                    <div className="h-[500px]">
+                        {selectedAttendance && (
+                            <iframe
+                                src={`http://localhost:8000/${routes.hr.shiftScheduling}?card_number=${selectedAttendance?.card_number}&unit_id=${selectedAttendance.unit.id}`}
+                                width="100%"
+                                height="100%"
+                            />
+                        )}
+                    </div>
                 );
             default:
                 return null;

@@ -101,7 +101,18 @@ export const useWorkdayCols = ({
             render: (_, record) => {
                 return (
                     <div className="flex items-center gap-2">
-                        <Calendar strokeWidth={1.5} className="w-4 h-4 text-purple-500 font-bold" />
+                        <button
+                            onClick={() => {
+                                handleOpenModalByKey('shift_scheduling');
+                                handleSelectedAttendance(record);
+                            }}
+                            className="cursor-pointer"
+                        >
+                            <Calendar
+                                strokeWidth={1.5}
+                                className="w-4 h-4 text-purple-500 font-bold"
+                            />
+                        </button>
                         <span className="text-blue-500 font-medium text-sm">
                             {record?.details[0]?.shift?.tag ?? ''}
                         </span>
