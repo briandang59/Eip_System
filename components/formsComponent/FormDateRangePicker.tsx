@@ -30,7 +30,11 @@ export default function FormDateRangePicker<T extends FieldValues>({
                     <RangePicker
                         {...field}
                         {...props}
-                        value={value ? [dayjs(value[0]), dayjs(value[1])] : null}
+                        value={
+                            value && Array.isArray(value) && value.length === 2
+                                ? [dayjs(value[0]), dayjs(value[1])]
+                                : null
+                        }
                         onChange={(dates) => {
                             if (dates) {
                                 const formattedDates = [
@@ -45,6 +49,8 @@ export default function FormDateRangePicker<T extends FieldValues>({
                         }}
                         status={error ? 'error' : ''}
                         className="w-full"
+                        placeholder={['Start Date', 'End Date']}
+                        allowClear={true}
                     />
                 </FormField>
             )}
