@@ -74,11 +74,11 @@ export default function ShiftSchedulingPage() {
         work_place_id: selectedWorkPlace ?? 0,
     });
     const { activeEmployees, isLoading: loadingEmployees } = useEmployees({
-        place_id: selectedWorkPlace ?? 0,
+        place_id: selectedWorkPlace.toString() ?? 0,
         unit_id: selectedUnitId ?? 0,
     });
     const { units, isLoading: loadingUnits } = useUnits({
-        place_id: selectedWorkPlace ?? 0,
+        place_id: selectedWorkPlace.toString() ?? 0,
     });
     const selectedShift = useMemo(
         () => shiftForShiftPage?.find((s) => s.id === selectedShiftId),

@@ -192,7 +192,7 @@ function ProfileForm({ employee_modify, mutate, close }: ProfileFormProps) {
     const { nations, isLoading: isLoadingNations } = useNations();
     const { educations, isLoading: isLoadingEducations } = useEducations();
     const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
-    const { units, isLoading: isLoadingUnit } = useUnits({ place_id: place_id });
+    const { units, isLoading: isLoadingUnit } = useUnits({ place_id: place_id.toString() });
     const { languages, isLoading: isLoadingLanguage } = useLanguages();
     const { shifts, isLoading: isLoadingShifts } = useShifts();
     const { jobTitles, isLoading: isLoadingJobtitle } = useJobTitle();

@@ -44,10 +44,10 @@ function OvertimePage() {
         }
     }, [myInfo, selectedWorkPlace, setSelectedFactoryId]);
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedWorkPlace ?? undefined,
+        place_id: selectedWorkPlace.toString() ?? undefined,
     });
     const { employees, isLoading: isLoadingEmployees } = useEmployees({
-        place_id: selectedWorkPlace ?? undefined,
+        place_id: selectedWorkPlace.toString() ?? undefined,
         unit_id: selectedUnit ?? undefined,
     });
 

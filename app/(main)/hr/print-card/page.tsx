@@ -60,7 +60,7 @@ export default function PrintCardPage() {
     }, [selectedEmployees]);
     const { filterWorkPlaces, isLoading: isLoadingWP } = useWorkPlaces();
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedFactoryId || undefined,
+        place_id: selectedFactoryId.toString() || undefined,
     });
     const { employees, isLoading: isLoadingEmp } = useEmployees({
         card_number: selectedCardNumber,

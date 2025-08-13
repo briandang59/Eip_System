@@ -90,7 +90,7 @@ function EmployeesPage() {
         mutate: mutateEmployee,
     } = useEmployees(
         {
-            place_id: selectedWorkPlace,
+            place_id: selectedWorkPlace.toString(),
             unit_id: selectedUnit,
         },
         {
@@ -105,7 +105,7 @@ function EmployeesPage() {
         units,
         isLoading: isLoadingUnits,
         mutate: mutateTransfer,
-    } = useUnits({ place_id: selectedWorkPlace });
+    } = useUnits({ place_id: selectedWorkPlace.toString() });
 
     const employeeCols = useEmployeeCols({
         state: selectedState,

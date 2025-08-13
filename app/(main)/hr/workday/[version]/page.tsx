@@ -23,7 +23,7 @@ function WorkdayV1() {
 
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id;
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedWorkPlace,
+        place_id: selectedWorkPlace?.toString(),
     });
 
     const [selectedUnit, setSelectedUnit] = useState<number>();

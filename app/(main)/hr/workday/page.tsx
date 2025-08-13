@@ -145,7 +145,7 @@ function Workday() {
     }, [selectedAttendance, selectedWorkPlace, key]);
 
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedWorkPlace || undefined,
+        place_id: selectedWorkPlace.toString() || undefined,
     });
 
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({

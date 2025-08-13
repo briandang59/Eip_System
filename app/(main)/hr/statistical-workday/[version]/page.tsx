@@ -32,7 +32,7 @@ function StatisticalWorkdayV1() {
     const [search, setSearch] = useState<string>('');
     const [selectedUnit, setSelectedUnit] = useState<number | undefined>(undefined);
     const { units, isLoading: isLoadingUnits } = useUnits({
-        place_id: selectedWorkPlace,
+        place_id: selectedWorkPlace.toString(),
     });
 
     // Export hook
