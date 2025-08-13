@@ -17,6 +17,7 @@ import { overtimeService } from '@/apis/services/overtime';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { useFactoryStore } from '@/stores/useFactoryStore';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 // Định nghĩa type cho row
 interface OvertimeEmployeeRow {
@@ -29,7 +30,7 @@ interface OvertimeEmployeeRow {
 function OvertimePage() {
     const myInfo = getInfomation();
     const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
 
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
@@ -189,7 +190,7 @@ function OvertimePage() {
             <div className="flex items-end gap-2">
                 <Select
                     options={filterWorkPlaces?.map((item) => ({
-                        label: item.name_en,
+                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         value: item.id,
                     }))}
                     loading={isLoadingWorkPlaces}

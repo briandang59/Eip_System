@@ -9,6 +9,7 @@ import TakeLeaveForm from '@/components/forms/TakeLeaveForm';
 import { TakeLeaveResponseType } from '@/types/response/takeLeave';
 import { useTakeLeaveCols } from '@/utils/constants/cols/takeleaveCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Modal, Select } from 'antd';
@@ -20,7 +21,7 @@ import { useFactoryStore } from '@/stores/useFactoryStore';
 
 function TakeLeavePage() {
     const takeleaveCols = useTakeLeaveCols();
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
     const [dateRange, setDateRange] = useState<{ start: Dayjs; end: Dayjs }>({
         start: dayjs().startOf('month'),
         end: dayjs().endOf('month'),
@@ -121,7 +122,7 @@ function TakeLeavePage() {
                 <Select
                     value={selectedWorkPlace}
                     options={filterWorkPlaces?.map((item) => ({
-                        label: item.name_vn,
+                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         value: item.id,
                     }))}
                     onChange={(value) => {

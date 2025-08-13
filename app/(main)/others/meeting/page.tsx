@@ -7,6 +7,7 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ModalConfirm from '@/components/common/ModalConfirm';
 import BookingForm from '@/components/forms/bookingForm';
 import { MeetingBookingDetailResponseType } from '@/types/response/meeting';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Calendar, DatePicker, DatePickerProps, Modal, Select, Spin } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
@@ -15,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 function Meeting() {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
     const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const { meetingRooms } = useMeetingRoom();
     const { meetingTypes } = useMeetingType();
@@ -151,7 +152,7 @@ function Meeting() {
                     <div className="grid grid-cols-2 gap-2">
                         <Select
                             options={workPlaces?.map((item) => ({
-                                label: item.name_en,
+                                label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                                 value: item.id,
                             }))}
                             loading={isLoadingWorkplace}

@@ -327,7 +327,10 @@ export default function ShiftScheduling() {
         <ClientOnly>
             <Space className="mb-4" wrap>
                 <Select
-                    options={filterWorkPlaces?.map((wp) => ({ label: wp.name_en, value: wp.id }))}
+                    options={filterWorkPlaces?.map((wp) => ({
+                        label: `${getLocalizedName(wp.name_en, wp.name_zh, wp.name_vn, lang)}`,
+                        value: wp.id,
+                    }))}
                     style={{ width: 160 }}
                     value={selectedWorkPlace}
                     onChange={debouncedSetSelectedWorkPlace}

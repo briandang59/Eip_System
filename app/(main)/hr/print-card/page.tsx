@@ -118,7 +118,7 @@ export default function PrintCardPage() {
                     <span className="text-sm font-medium">{t.print_card.workplace}</span>
                     <Select
                         options={filterWorkPlaces?.map((wp) => ({
-                            label: wp.name_en,
+                            label: `${getLocalizedName(wp.name_en, wp.name_zh, wp.name_vn, lang)}`,
                             value: wp.id,
                         }))}
                         style={{ width: 150 }}

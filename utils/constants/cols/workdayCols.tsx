@@ -635,7 +635,7 @@ export const useWorkdayCols = ({
             },
         },
         {
-            title: t.workday.actions,
+            title: '',
             key: 'operation',
             fixed: 'right',
             width: 50,

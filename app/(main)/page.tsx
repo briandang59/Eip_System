@@ -8,9 +8,10 @@ import { getInfomation } from '@/utils/functions/getInfomation';
 import { Pagination, Select, Spin, Tabs } from 'antd';
 import { useState } from 'react';
 import { Newspaper, User } from 'lucide-react';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 
 function Home() {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
     const [page, setPage] = useState(1);
     const [pageSize] = useState(10);
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
@@ -72,7 +73,7 @@ function Home() {
                 <div className="flex items-end gap-2">
                     <Select
                         options={filterWorkPlaces?.map((item) => ({
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                             value: item.id,
                         }))}
                         placeholder="Select Work Place"

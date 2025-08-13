@@ -8,6 +8,7 @@ import BulletinsForm from '@/components/forms/BulletinsForm';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useBulletinsCols } from '@/utils/constants/cols/bulletinsCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
+import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
 import { Button, Modal, Select } from 'antd';
 import { Plus } from 'lucide-react';
@@ -15,7 +16,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 function ManageBulletins() {
-    const { t } = useTranslationCustom();
+    const { t, lang } = useTranslationCustom();
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const [selectedBulletin, setSelectedBulletin] = useState<BulletinsResponseType>();
@@ -82,7 +83,7 @@ function ManageBulletins() {
                 <Select
                     className="w-[300px]"
                     options={workPlaces?.map((item) => ({
-                        label: item.name_en,
+                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                         value: item.id,
                     }))}
                     mode="multiple"

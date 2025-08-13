@@ -341,7 +341,7 @@ function EmployeesPage() {
                     <p className="text-sm font-medium">{t.employee.workplace}</p>
                     <Select
                         options={filterWorkPlaces?.map((workPlace) => ({
-                            label: workPlace.name_en,
+                            label: `${getLocalizedName(workPlace.name_en, workPlace.name_zh, workPlace.name_vn, lang)}`,
                             value: workPlace.id,
                         }))}
                         placeholder="Select Workplace"

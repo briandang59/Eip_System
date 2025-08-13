@@ -101,7 +101,7 @@ function WorkdayV1() {
                     <span className="text-sm font-medium">{t.workday.work_place}</span>
                     <Select
                         options={filterWorkPlaces?.map((item) => ({
-                            label: item.name_en,
+                            label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                             value: item.id,
                         }))}
                         style={{ width: '150px' }}

@@ -140,7 +140,7 @@ export default function Home() {
                 <Select
                     options={filterWorkPlaces?.map((item) => ({
                         value: item.id,
-                        label: item.name_en,
+                        label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                     }))}
                     className="w-[150px]"
                     loading={isLoadingWorkplace}

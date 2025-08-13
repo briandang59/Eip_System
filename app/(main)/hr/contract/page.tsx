@@ -170,7 +170,7 @@ function ContractPage() {
                         <Select
                             options={
                                 filterWorkPlaces?.map((wp) => ({
-                                    label: wp.name_en,
+                                    label: `${getLocalizedName(wp.name_en, wp.name_zh, wp.name_vn, lang)}`,
                                     value: wp.id,
                                 })) || []
                             }
@@ -224,7 +224,7 @@ function ContractPage() {
                         <Select
                             options={
                                 filterWorkPlaces?.map((wp) => ({
-                                    label: wp.name_en,
+                                    label: `${getLocalizedName(wp.name_en, wp.name_zh, wp.name_vn, lang)}`,
                                     value: wp.id,
                                 })) || []
                             }
