@@ -54,8 +54,9 @@ export const useManageBulletinsDetails = (id: string) => {
         customFetcher,
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
+            revalidateIfStale: true,
             revalidateOnReconnect: false,
+            revalidateOnMount: true,
         },
     );
     return {
@@ -78,8 +79,9 @@ export const useManageBulletinsPublic = () => {
         customFetcher,
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
+            revalidateIfStale: true,
             revalidateOnReconnect: false,
+            revalidateOnMount: true,
         },
     );
     return {
