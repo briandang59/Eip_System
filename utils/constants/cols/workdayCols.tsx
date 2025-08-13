@@ -434,6 +434,26 @@ export const useWorkdayCols = ({
             },
         },
         {
+            title: 'C',
+            dataIndex: 'C',
+            key: 'C',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.C - b?.details[0]?.workday?.leave_hours.C
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.C > 0
+                            ? record?.details[0]?.workday?.leave_hours.C
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
             title: 'DT',
             dataIndex: 'DT',
             key: 'DT',
