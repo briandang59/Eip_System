@@ -19,16 +19,21 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
     const editorRef = useRef<EditorJS | null>(null);
     const [isMounted, setIsMounted] = useState(false);
 
-    const editorHolderId = useMemo(() => {
-        return holder || `editorjs-${Math.random().toString(36).substring(2, 9)}`;
-    }, [holder]);
+    // lưu lại lần data cuối cùng MÀ CHÍNH editor phát ra (để không render ngược lại)
+    const lastEmittedRef = useRef<OutputData | null>(null);
 
-    // Đánh dấu component đã mounted
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    // so sánh blocks nhanh
+    const sameBlocks = (a?: OutputData | null, b?: OutputData | null) =>
+        JSON.stringify(a?.blocks ?? []) === JSON.stringify(b?.blocks ?? []);
 
-    // Khởi tạo EditorJS chỉ 1 lần
+    const editorHolderId = useMemo(
+        () => holder || `editorjs-${Math.random().toString(36).substring(2, 9)}`,
+        [holder],
+    );
+
+    useEffect(() => setIsMounted(true), []);
+
+    // Khởi tạo EditorJS 1 lần
     useEffect(() => {
         if (!isMounted || editorRef.current) return;
 
@@ -38,23 +43,47 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
             autofocus: true,
             data: data || { blocks: [] },
             tools: {
-                header: Header as unknown as any,
-                list: List as unknown as any,
-                paragraph: Paragraph as unknown as any,
-                delimiter: Delimiter as unknown as any,
-                quote: Quote as unknown as any,
+                header: {
+                    class: Header as any,
+                    inlineToolbar: true,
+                    config: {
+                        levels: [1, 2, 3, 4, 5, 6],
+                        defaultLevel: 2,
+                    },
+                    shortcut: 'CMD+SHIFT+H',
+                },
+
+                list: {
+                    class: List as any,
+                    inlineToolbar: true,
+                },
+                paragraph: {
+                    class: Paragraph as any,
+                    inlineToolbar: true,
+                },
+                delimiter: Delimiter as any,
+                quote: {
+                    class: Quote as any,
+                    inlineToolbar: true,
+                },
             },
+
             onReady: () => {
                 editorRef.current = editor;
             },
             onChange: async () => {
-                if (onChange && editorRef.current) {
-                    try {
-                        const outputData = await editorRef.current.save();
-                        onChange(outputData);
-                    } catch (err) {
-                        console.error('Lỗi khi lưu dữ liệu EditorJS:', err);
-                    }
+                if (!onChange || !editorRef.current) return;
+                try {
+                    const outputData = await editorRef.current.save();
+
+                    // Nếu blocks giống lần trước thì bỏ qua
+                    if (sameBlocks(outputData, lastEmittedRef.current)) return;
+
+                    // Emit lên cha + ghi nhớ để tránh render lại chính nó
+                    onChange(outputData);
+                    lastEmittedRef.current = outputData;
+                } catch (err) {
+                    console.error('Lỗi khi lưu dữ liệu EditorJS:', err);
                 }
             },
         });
@@ -69,13 +98,23 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
         };
     }, [isMounted, editorHolderId]);
 
-    // Cập nhật nội dung khi props.data thay đổi
+    // Nhận data từ parent: CHỈ render khi khác lastEmittedRef/current content
     useEffect(() => {
-        if (editorRef.current && data) {
-            editorRef.current.isReady
-                .then(() => editorRef.current?.render(data))
-                .catch((err) => console.error('Render data failed:', err));
-        }
+        const run = async () => {
+            if (!editorRef.current) return;
+            if (!data) return;
+
+            // nếu data đến từ chính editor vừa emit ra thì bỏ qua
+            if (sameBlocks(data, lastEmittedRef.current)) return;
+
+            // có thể so sánh thêm với content hiện tại để chắc chắn:
+            const current = await editorRef.current.save();
+            if (sameBlocks(current, data)) return;
+
+            await editorRef.current.render(data);
+        };
+
+        run().catch((err) => console.error('Render data failed:', err));
     }, [data]);
 
     return isMounted ? (
@@ -83,7 +122,7 @@ export default function EditorComponent({ data, onChange, holder, label }: Edito
             {label && <p className="text-[16px] font-medium">{label}</p>}
             <div
                 id={editorHolderId}
-                className="border border-[#ccc] rounded min-h-[300px] prose max-w-none max-h-[300px] overflow-y-auto !p-6"
+                className="editorjs-holder border border-[#ccc] rounded min-h-[300px] max-h-[300px] overflow-y-auto !p-6"
             />
         </div>
     ) : null;

@@ -4,7 +4,7 @@
     .editor-paragraph {
         line-height: 1.6;
         margin-bottom: 1rem;
-        
+
         &:last-child {
             margin-bottom: 0;
         }
@@ -64,7 +64,7 @@
         list-style-type: decimal;
         margin-left: 1.5rem;
         margin-bottom: 1rem;
-        
+
         li {
             margin-bottom: 0.5rem;
             line-height: 1.6;
@@ -76,7 +76,7 @@
         list-style-type: disc;
         margin-left: 1.5rem;
         margin-bottom: 1rem;
-        
+
         li {
             margin-bottom: 0.5rem;
             line-height: 1.6;
@@ -93,14 +93,14 @@
         margin-bottom: 1rem;
         background-color: #eff6ff;
         border-radius: 0.25rem;
-        
+
         p {
             color: #374151;
             font-style: italic;
             font-weight: 500;
             margin: 0;
         }
-        
+
         cite {
             font-size: 0.875rem;
             color: #6b7280;
@@ -120,24 +120,24 @@
     // Checklist styling
     .editor-checklist {
         margin-bottom: 1rem;
-        
+
         li {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
-            
-            input[type="checkbox"] {
+
+            input[type='checkbox'] {
                 margin: 0;
                 width: 1rem;
                 height: 1rem;
                 accent-color: #3b82f6;
             }
-            
+
             span {
                 line-height: 1.6;
                 color: #374151;
-                
+
                 &.line-through {
                     text-decoration: line-through;
                     color: #6b7280;
@@ -150,14 +150,16 @@
     .editor-image {
         margin: 1.5rem 0;
         text-align: center;
-        
+
         img {
             max-width: 100%;
             height: auto;
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        
+
         figcaption {
             text-align: center;
             font-size: 0.875rem;
@@ -182,15 +184,15 @@
         .editor-header-1 {
             font-size: 1.875rem;
         }
-        
+
         .editor-header-2 {
             font-size: 1.5rem;
         }
-        
+
         .editor-header-3 {
             font-size: 1.25rem;
         }
-        
+
         .editor-list-ordered,
         .editor-list-unordered {
             margin-left: 1rem;
@@ -204,7 +206,7 @@
         .editor-paragraph {
             color: #e5e7eb;
         }
-        
+
         .editor-header-1,
         .editor-header-2,
         .editor-header-3,
@@ -213,21 +215,21 @@
         .editor-header-6 {
             color: #f9fafb;
         }
-        
+
         .editor-list-ordered li,
         .editor-list-unordered li {
             color: #d1d5db;
         }
-        
+
         .editor-quote {
             background-color: #1f2937;
             border-left-color: #60a5fa;
-            
+
             p {
                 color: #d1d5db;
             }
         }
-        
+
         .editor-checklist li span {
             color: #d1d5db;
         }

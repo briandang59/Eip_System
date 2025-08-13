@@ -4,12 +4,11 @@
 .ce-block__content {
     margin-left: 40px;
     margin-right: 40px;
-    .ce_header {
-        font-weight: 700;
-        font-size: 20px;
-    }
 }
-
+.ce-header {
+    font-weight: 700 !important;
+    font-size: 20px !important;
+}
 .ce-toolbar.ce-toolbar--opened .ce-toolbar__content {
     max-width: 825px !important;
 }

@@ -243,7 +243,8 @@ function EditorBulletinSection({
             <Tabs
                 defaultActiveKey="en"
                 items={tabItems}
-                className="w-full"
+                destroyInactiveTabPane={false}
+                animated={false}
                 type="card"
                 size="large"
                 onChange={handleTabChange}
