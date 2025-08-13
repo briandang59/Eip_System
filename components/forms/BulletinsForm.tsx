@@ -88,6 +88,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         reset,
         formState: { errors, isValid },
         watch,
+        setValue,
     } = useForm<FormData>({
         resolver: yupResolver(schema),
         mode: 'onChange',
@@ -148,14 +149,29 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
     }, [workplace_ids]);
 
     const { units, isLoading: isLoadingUnits } = useUnits(
-        { place_ids: stringWorkplaces },
+        { place_id: stringWorkplaces },
         { search: searchUnit },
     );
+    const unit_ids =
+        useWatch({
+            name: 'departments',
+            control,
+        }) || [];
     const { employees, isLoading: isLoadingEmployees } = useEmployees({
-        place_ids: stringWorkplaces,
+        place_id: stringWorkplaces,
         card_number: searchEmployee,
+        unit_id: unit_ids?.[0],
     });
 
+    useEffect(() => {
+        if (workplace_ids.length === 0) {
+            setValue('departments', []);
+            setValue('target_employee', []);
+        }
+        if (unit_ids.length === 0) {
+            setValue('target_employee', []);
+        }
+    }, [workplace_ids.length, unit_ids.length]);
     // Check if step 1 is complete
     const isStep1Complete = useMemo(() => {
         const requiredFields = [
@@ -323,6 +339,11 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                             mode="multiple"
                             loading={isLoadingUnits}
                             showSearch
+                            filterOption={(input, option) => {
+                                if (!option?.label) return false;
+                                const label = String(option.label);
+                                return label.toLowerCase().includes(input.toLowerCase());
+                            }}
                             onSearch={(e) => setSearchUnit(e)}
                         />
                         <FormSelect
@@ -337,6 +358,11 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                             mode="multiple"
                             loading={isLoadingEmployees}
                             showSearch
+                            filterOption={(input, option) => {
+                                if (!option?.label) return false;
+                                const label = String(option.label);
+                                return label.toLowerCase().includes(input.toLowerCase());
+                            }}
                             onSearch={(e) => setSearchEmployee(e)}
                         />
                         <FormSelect

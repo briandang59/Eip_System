@@ -10,8 +10,7 @@ const API_URL = `/${urls.employee}`;
 interface params {
     unit_id?: number;
     card_number?: string;
-    place_id?: number;
-    place_ids?: string;
+    place_id?: string;
 }
 interface filterParams {
     status?: number;

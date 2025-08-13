@@ -10,8 +10,7 @@ const API_URL = `/${urls.cache}/${urls.dept_unit}`;
 interface params {
     id?: number;
     classid?: number;
-    place_id?: number;
-    place_ids?: string;
+    place_id?: string;
 }
 
 interface filterParams {
@@ -32,6 +31,7 @@ export const useUnits = (params?: params, filterParams?: filterParams) => {
     );
     const filterData = data?.data?.filter((unit) => {
         // Filter by search term
+        console.log('filterParams?.search', filterParams?.search);
         if (filterParams?.search) {
             const searchTerm = filterParams.search.toLowerCase();
             const matchesSearch =
