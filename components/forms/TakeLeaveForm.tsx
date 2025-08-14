@@ -27,10 +27,11 @@ interface TakeLeaveFormProps {
     close: () => void;
     mutate?: () => void;
     existingDayoffRecords?: TakeLeaveResponseType[];
+    work_place_id: number;
 }
 
 interface FormValueProps {
-    type: number;
+    type?: number;
     range_date: string[];
     subtitute?: string;
     hours_A: number;
@@ -45,6 +46,7 @@ function TakeLeaveForm({
     close,
     mutate,
     takeLeaveRecord,
+    work_place_id,
 }: TakeLeaveFormProps) {
     const { t, lang } = useTranslationCustom();
     const schema: yup.ObjectSchema<FormValueProps> = yup
@@ -54,14 +56,21 @@ function TakeLeaveForm({
                 .of(yup.string().required())
                 .length(2, t.take_leave.required_range_date)
                 .required(),
-            type: yup.number().required(),
-            subtitute: yup.string().optional(),
             hours_A: yup.number().required().min(0),
             hours_B: yup.number().required().min(0),
             hours_C: yup.number().required().min(0),
             hours_D: yup.number().required().min(0),
+            subtitute: yup.string().optional(),
+
+            type: yup.number().when('hours_D', ([hours_D], schema) => {
+                if (hours_D > 0) {
+                    return schema.required(t.take_leave.err_required_leave_type);
+                }
+                return schema.notRequired();
+            }),
         })
         .required();
+
     const { control, handleSubmit, reset, setValue } = useForm<FormValueProps>({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -179,7 +188,13 @@ function TakeLeaveForm({
         return hasValidCard ? { card_number: card.toUpperCase() } : undefined;
     }, [hasValidCard, card]);
 
-    const { employees, isLoading: employeeLoading } = useEmployees(employeeParams);
+    const { employees, isLoading: employeeLoading } = useEmployees({
+        place_id: work_place_id.toString(),
+        ...employeeParams,
+    });
+    const { activeOriginData, isLoading: employeeLoadingOrigin } = useEmployees({
+        place_id: work_place_id.toString(),
+    });
 
     const remainHoursParams = useMemo(() => {
         return hasValidCard && employees?.length ? { uuid: employees[0]?.uuid || card } : undefined;
@@ -357,6 +372,11 @@ function TakeLeaveForm({
 
             if (exceededDates.length) {
                 toast.error(t.take_leave.err_2);
+                return;
+            }
+
+            if (hours_D_watch > 0 && !data.type) {
+                toast.error(t.take_leave.err_required_leave_type);
                 return;
             }
 
@@ -567,14 +587,25 @@ function TakeLeaveForm({
                                 }
                                 placeholder={t.take_leave.type}
                                 loading={isLoadingDayOffType}
+                                required
                             />
                         ) : null}
                         <FormSelect
                             control={control}
                             name="subtitute"
                             label={t.take_leave.subtitute}
-                            options={[]}
+                            options={activeOriginData?.map((item) => ({
+                                value: item.uuid,
+                                label: `${item.card_number} - ${item.fullname}`,
+                            }))}
+                            loading={employeeLoadingOrigin}
                             placeholder={t.take_leave.subtitute}
+                            showSearch
+                            filterOption={(input, option) =>
+                                (option?.label as string)
+                                    ?.toLowerCase()
+                                    .includes(input.toLowerCase())
+                            }
                         />
                     </div>
                     <div className="grid grid-cols-4 gap-4">

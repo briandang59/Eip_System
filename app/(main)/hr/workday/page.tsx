@@ -261,6 +261,7 @@ function Workday() {
                         close={handleCloseModal}
                         mutate={mutateTakeLeave}
                         takeLeaveRecord={selectedTakeLeaveRecord}
+                        work_place_id={selectedWorkPlace}
                     />
                 );
             case 'image_scan_t1':

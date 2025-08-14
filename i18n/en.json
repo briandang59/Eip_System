@@ -313,7 +313,8 @@
         "hours_D": "Hours DB",
         "type": "Leave type",
         "male": "Male",
-        "female": "Female"
+        "female": "Female",
+        "err_required_leave_type": "Please select leave type"
     },
     "role_and_permission": {
         "manage_role": "Manage Role",

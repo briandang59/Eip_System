@@ -5,7 +5,7 @@ type ShiftKey = 'A' | 'B' | 'C' | 'D';
 
 interface InputType {
     range_date: string[];
-    type: number;
+    type?: number;
     hours_A: number;
     hours_B: number;
     hours_C: number;
@@ -14,7 +14,7 @@ interface InputType {
 
 interface DayoffRequestType {
     uuid: string;
-    type_id: number;
+    type_id?: number;
     start: string;
     end: string;
     hours: number;
@@ -31,7 +31,7 @@ export function generateDayOffRequests(input: InputType, uuid: string): DayoffRe
         A: { hours: input.hours_A, time: ['08:00:00', '17:00:00'], type_id: 1 },
         B: { hours: input.hours_B, time: ['08:00:00', '17:00:00'], type_id: 2 },
         C: { hours: input.hours_C, time: ['08:00:00', '17:00:00'], type_id: 3 },
-        D: { hours: input.hours_D, time: ['08:00:00', '17:00:00'], type_id: input.type },
+        D: { hours: input.hours_D, time: ['08:00:00', '17:00:00'], type_id: input.type ?? 0 },
     };
 
     const result: DayoffRequestType[] = [];

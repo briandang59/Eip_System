@@ -177,6 +177,7 @@ function TakeLeavePage() {
                     mutate={mutate}
                     takeLeaveRecord={selectcedRecordRow[0]}
                     card_number={selectcedRecordRow[0]?.card_number ?? ''}
+                    work_place_id={selectedWorkPlace}
                 />
             </Modal>
             <ModalConfirm

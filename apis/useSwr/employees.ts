@@ -52,9 +52,11 @@ export const useEmployees = (params?: params, filterParams?: filterParams) => {
 
     const activeEmployees = filterData?.filter((item) => item.active === true);
 
+    const activeOriginData = data?.data?.filter((item) => item.active === true);
     return {
         employees: filterData,
         activeEmployees,
+        activeOriginData,
         isLoading: !error && !data,
         isError: error,
         mutate,

@@ -311,7 +311,8 @@
         "hours_D": "小時 DB",
         "type": "休假類型",
         "male": "男",
-        "female": "女"
+        "female": "女",
+        "err_required_leave_type": "請選擇休假類型"
     },
     "role_and_permission": {
         "manage_role": "管理角色",

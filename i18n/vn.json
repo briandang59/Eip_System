@@ -305,13 +305,14 @@
         "please_enter_card_number": "Vui lòng nhập card number để xem thông tin",
         "range_date": "Khoảng thời gian",
         "subtitute": "Thay thế",
-        "male": "Nam",
-        "female": "Nữ",
         "hours_A": "Giờ A",
         "hours_B": "Giờ B",
         "hours_C": "Giờ C",
         "hours_D": "Giờ DB",
-        "type": "Loại nghỉ phép"
+        "type": "Loại nghỉ phép",
+        "male": "Nam",
+        "female": "Nữ",
+        "err_required_leave_type": "Vui lòng chọn loại nghỉ phép"
     },
     "role_and_permission": {
         "manage_role": "Quản lý vai trò",
