@@ -18,7 +18,10 @@ interface params {
     leave_id?: number;
 }
 
-export const useTakeLeave = (params?: params) => {
+interface filterParams {
+    search?: string;
+}
+export const useTakeLeave = (params?: params, filterParams?: filterParams) => {
     const queryString = params ? `?${qs.stringify(params)}` : '';
     const { data, error, mutate } = useSWR<BaseResponse<TakeLeaveResponseType[]>>(
         `${API_URL}${queryString}`,
@@ -30,9 +33,21 @@ export const useTakeLeave = (params?: params) => {
             revalidateOnMount: true,
         },
     );
-
+    const filterData = data?.data?.filter((item) => {
+        const matchesSearch =
+            !filterParams?.search ||
+            [item.applicant.fullname, item.applicant.fullname_other, item.applicant.card_number]
+                .filter(Boolean)
+                .some((field) =>
+                    (field ?? '')
+                        .trim()
+                        .toLowerCase()
+                        .includes(filterParams?.search?.toLowerCase() ?? ''),
+                );
+        return matchesSearch;
+    });
     return {
-        takeLeaves: data?.data,
+        takeLeaves: filterData,
         isLoading: !error && !data,
         isError: error,
         mutate,

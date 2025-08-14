@@ -312,7 +312,8 @@
         "type": "Loại nghỉ phép",
         "male": "Nam",
         "female": "Nữ",
-        "err_required_leave_type": "Vui lòng chọn loại nghỉ phép"
+        "err_required_leave_type": "Vui lòng chọn loại nghỉ phép",
+        "search_placeholder": "Tìm kiếm"
     },
     "role_and_permission": {
         "manage_role": "Quản lý vai trò",

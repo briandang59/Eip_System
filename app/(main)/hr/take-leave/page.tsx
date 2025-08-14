@@ -12,7 +12,7 @@ import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { PlusOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Modal, Select } from 'antd';
+import { Button, DatePicker, Input, Modal, Select } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { Pen, Trash } from 'lucide-react';
 import { useState } from 'react';
@@ -32,15 +32,21 @@ function TakeLeavePage() {
     const { filterWorkPlaces, isLoading: workplaceLoading } = useWorkPlaces();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
+    const [searchValue, setSearchValue] = useState('');
     const {
         takeLeaves,
         isLoading: takeLeaveLoading,
         mutate,
-    } = useTakeLeave({
-        work_place_id: selectedWorkPlace ?? 0,
-        start: dayjs(dateRange.start).format('YYYY-MM-DD'),
-        end: dayjs(dateRange.end).format('YYYY-MM-DD'),
-    });
+    } = useTakeLeave(
+        {
+            work_place_id: selectedWorkPlace ?? 0,
+            start: dayjs(dateRange.start).format('YYYY-MM-DD'),
+            end: dayjs(dateRange.end).format('YYYY-MM-DD'),
+        },
+        {
+            search: searchValue,
+        },
+    );
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [selectcedRecordRow, setSelectedRecordRow] = useState<TakeLeaveResponseType[]>([]);
     const onSelectChange = (
@@ -116,6 +122,9 @@ function TakeLeavePage() {
             });
         }
     };
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+    };
     return (
         <ClientOnly>
             <div className="flex items-end gap-2 mb-4">
@@ -138,6 +147,14 @@ function TakeLeavePage() {
                     onChange={onChangeDateRange}
                     allowClear={false}
                 />
+                <Input.Search
+                    placeholder={t.take_leave.search_placeholder}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    onSearch={handleSearch}
+                    style={{ width: '250px' }}
+                />
+
                 <Button icon={<PlusOutlined className="!text-green-800" />} onClick={handleAdd}>
                     {t.take_leave.add}
                 </Button>

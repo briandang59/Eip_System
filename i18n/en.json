@@ -314,7 +314,8 @@
         "type": "Leave type",
         "male": "Male",
         "female": "Female",
-        "err_required_leave_type": "Please select leave type"
+        "err_required_leave_type": "Please select leave type",
+        "search_placeholder": "Search"
     },
     "role_and_permission": {
         "manage_role": "Manage Role",
