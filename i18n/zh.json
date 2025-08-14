@@ -63,7 +63,8 @@
         "factory_inspection": {
             "title": "工廠檢查 (HR)",
             "workday": "工作日",
-            "statistical_workday": "工作日統計"
+            "statistical_workday": "工作日統計",
+            "reports": "報告"
         },
         "it": {
             "title": "系統管理",
@@ -828,5 +829,13 @@
         "approvers": "審核人",
         "location": "地點",
         "range_date": "時間範圍"
+    },
+    "reports": {
+        "unit": "單位",
+        "work_place": "工作地點",
+        "select_unit": "選擇單位",
+        "select_work_place": "選擇工作地點",
+        "search": "搜索",
+        "print": "打印"
     }
 }

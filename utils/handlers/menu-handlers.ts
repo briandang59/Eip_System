@@ -54,6 +54,9 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'hr/statistical-workday/v1':
             router.push(routes.hr.statisticalWorkdayV1);
             break;
+        case 'hr/reports':
+            router.push(routes.hr.reports);
+            break;
         case 'it/roles-and-permissions':
             router.push(routes.it.rolesAndPermissions);
             break;

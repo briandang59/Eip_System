@@ -31,7 +31,6 @@ export const useUnits = (params?: params, filterParams?: filterParams) => {
     );
     const filterData = data?.data?.filter((unit) => {
         // Filter by search term
-        console.log('filterParams?.search', filterParams?.search);
         if (filterParams?.search) {
             const searchTerm = filterParams.search.toLowerCase();
             const matchesSearch =

@@ -31,6 +31,7 @@ import {
     Newspaper,
     Clipboard,
     ScrollText,
+    FileChartColumn,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -144,6 +145,11 @@ export const useMenuItems = (): MenuItem[] => {
                     t?.sidebar?.factory_inspection?.statistical_workday || 'Statistical Workday',
                     'hr/statistical-workday/v1',
                     <ChartPie strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+                getItem(
+                    t?.sidebar?.factory_inspection?.reports || 'Reports',
+                    'hr/reports',
+                    <FileChartColumn strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),

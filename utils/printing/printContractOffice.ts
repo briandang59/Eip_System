@@ -3,7 +3,6 @@ import { COLOR_BLUE, loadFont, loadFontBold } from './basePdf';
 import dayjs from 'dayjs';
 import { ContractType } from '@/types/printing/contractType';
 import { IEmployee } from '@/types/printing/IEmployee';
-import { useEmployeeSalaryAllowances } from '@/apis/useSwr/employeeSalaryAllowance';
 import { useFindAddress } from '../hooks/useFindAddress';
 import { SalaryAllowance } from '@/types/response/salaryAllowance';
 
@@ -1872,7 +1871,6 @@ export const PrintContractOffice = async (
         const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
         return pdfDataUri;
     } catch (error) {
-
         return '';
     }
 };

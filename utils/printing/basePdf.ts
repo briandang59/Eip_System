@@ -50,6 +50,7 @@ const logos = {
     jyulong: images.jyulong.src,
     longtriumph: images.longtriumph.src,
     default_image_user: images.default_image_user.src,
+    logo_report: images.logo_report.src,
 };
 const COLOR_BLUE = rgb(0, 0, 0.9);
 

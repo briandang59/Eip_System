@@ -63,7 +63,8 @@
         "factory_inspection": {
             "title": "Kiểm tra nhà máy (HR)",
             "workday": "Ngày công",
-            "statistical_workday": "Thống kê ngày công"
+            "statistical_workday": "Thống kê ngày công",
+            "reports": "Báo cáo"
         },
         "it": {
             "title": "CNTT",
@@ -829,5 +830,13 @@
         "approvers": "Người phê duyệt",
         "location": "Địa điểm",
         "range_date": "Khoảng thời gian"
+    },
+    "reports": {
+        "unit": "Đơn vị",
+        "work_place": "Nơi làm việc",
+        "select_unit": "Chọn đơn vị",
+        "select_work_place": "Chọn nơi làm việc",
+        "search": "Tìm kiếm",
+        "print": "In"
     }
 }

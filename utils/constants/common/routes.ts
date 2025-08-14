@@ -20,6 +20,7 @@ export const routes = {
         printCard: '/hr/print-card',
         workdayV1: '/hr/workday/v1',
         statisticalWorkdayV1: '/hr/statistical-workday/v1',
+        reports: '/hr/reports',
     },
     factoryInspection: {
         root: '/factory-inspection',

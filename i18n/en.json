@@ -63,7 +63,8 @@
         "factory_inspection": {
             "title": "Factory Inspection (HR)",
             "workday": "Workday",
-            "statistical_workday": "Statistical Workday"
+            "statistical_workday": "Statistical Workday",
+            "reports": "Reports"
         },
         "it": {
             "title": "IT",
@@ -92,6 +93,7 @@
         },
         "logout": "Logout"
     },
+
     "form": {
         "login": {
             "account": "Account",
@@ -831,5 +833,13 @@
         "approvers": "Approvers",
         "location": "Location",
         "range_date": "Date Range"
+    },
+    "reports": {
+        "unit": "Unit",
+        "work_place": "Work Place",
+        "select_unit": "Select Unit",
+        "select_work_place": "Select Work Place",
+        "search": "Search",
+        "print": "Print"
     }
 }

@@ -40,7 +40,7 @@ export const menuPermissions: Record<string, Roles[]> = {
     factoryInspection: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/workday/v1': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/statistical-workday/v1': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
-
+    'hr/reports': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     // IT Section
     it: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
     'it/roles-and-permissions': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
