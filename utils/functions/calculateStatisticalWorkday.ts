@@ -5,7 +5,8 @@ import { calculateSGC } from './calculateSGC';
 import { calculateAllH } from './calculateAllH';
 import { calculateMonthH } from './calculateMonthH';
 import { checkSunday } from './checkSunday';
-import { calculateCcan } from './calculateCCAN';
+import { calculateCcan, calculateCCAN_BVE } from './calculateCCAN';
+import { BVE, LT_BVE } from '../constants/vairables';
 
 export const calculateStatisticalWorkday = (
     attendance: AttendanceV2Type[],
@@ -54,6 +55,7 @@ export const calculateStatisticalWorkday = (
             if (item.details.length > 0) {
                 const details = item.details[0];
                 const check_sunday = checkSunday(details?.date);
+
                 const result = calculateDTVS(
                     details?.workday.DT || 0,
                     details?.workday.VS || 0,
@@ -100,15 +102,15 @@ export const calculateStatisticalWorkday = (
             }
         });
 
-        // total_CCAN = calculateCcanV2(total_SGC > 0 ? total_SGC : 0, total_MonthH);
-        total_CCAN = calculateCcan(
-            total_SGC > 0 ? total_SGC : 0,
-            total_KP,
-            total_A,
-            total_C,
-            undefined,
-            total_MonthH,
-        );
+        if (
+            employeeAttendance[0]?.unit.code === LT_BVE ||
+            employeeAttendance[0]?.unit.code === BVE
+        ) {
+            total_CCAN = calculateCCAN_BVE(total_KP, total_A, total_C);
+        } else {
+            total_CCAN = calculateCcan(total_SGC > 0 ? total_SGC : 0, total_KP, total_A, total_C);
+        }
+
         return {
             card_number: employeeAttendance[0]?.card_number || '',
             fullname: employeeAttendance[0]?.fullname || '',
