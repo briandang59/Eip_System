@@ -41,7 +41,7 @@ const Print = (
                 height: height ?? 50,
                 borderColor: rgb(0, 0, 0),
                 borderWidth: 0.5,
-                color: fillColor, // fill màu
+                color: fillColor,
             });
     }
 };
@@ -62,6 +62,7 @@ export const PrintWorkdayReport = async ({
 
         const fontVN = await loadFont(pdfDoc);
         const fontCN = await loadFontChinese(pdfDoc);
+        const fontBold = await loadFontBold(pdfDoc);
 
         const logoBytes = await fetch(logos.logo_report).then((res) => res.arrayBuffer());
         const logoImage = await pdfDoc.embedPng(logoBytes);
@@ -149,51 +150,79 @@ export const PrintWorkdayReport = async ({
             'Mt-Cnho',
             'Ghi chú',
         ];
-        const fontBold = await loadFontBold(pdfDoc);
 
-        data.forEach((employee) => {
-            const page = pdfDoc.addPage([pageWidth, pageHeight]);
-            const { height } = page.getSize();
+        let page: PDFPage | null = null;
 
-            // Header công ty
-            Print(5, height - 38, page, 'image', '', 0, fontVN, rgb(0, 0, 0), 30, 30, logoImage);
-            Print(
-                40,
-                height - 20,
-                page,
-                'text',
-                'CÔNG TY TNHH CÔNG NGHIỆP DỆT HUGE - BAMBOO',
-                7,
-                fontVN,
-            );
-            Print(
-                40,
-                height - 30,
-                page,
-                'text',
-                'KCN MP , P Mỹ Phước , TX Bến Cát , T Bình Dương',
-                6,
-                fontVN,
-            );
-            Print(300, height - 30, page, 'text', 'Chi tiết chấm công tháng ', 7, fontVN);
-            Print(370, height - 30, page, 'text', '考勤表', 7, fontCN);
-            Print(400, height - 30, page, 'text', monthAndYear, 6, fontVN);
+        for (let i = 0; i < data.length; i++) {
+            const employee = data[i];
+            const isFirstOnPage = i % 2 === 0;
 
-            // Thông tin nhân viên
-            Print(7, height - 60, page, 'text', employee.card_number, 6, fontVN);
-            Print(40, height - 60, page, 'text', employee.fullname, 6, fontVN);
-            Print(200, height - 60, page, 'text', employee.unit, 6, fontVN);
-            Print(280, height - 60, page, 'text', employee.unit_name, 6, fontVN);
-            Print(340, height - 60, page, 'text', employee.employee_class, 6, fontVN);
+            if (isFirstOnPage) {
+                page = pdfDoc.addPage([pageWidth, pageHeight]);
 
-            // Header cột màu xanh chữ trắng
-            const headerY = height - 75;
+                // Logo và thông tin công ty chỉ in ở trang đầu tiên
+                if (i === 0) {
+                    Print(
+                        5,
+                        pageHeight - 38,
+                        page,
+                        'image',
+                        '',
+                        0,
+                        fontVN,
+                        rgb(0, 0, 0),
+                        30,
+                        30,
+                        logoImage,
+                    );
+                    Print(
+                        40,
+                        pageHeight - 20,
+                        page,
+                        'text',
+                        'CÔNG TY TNHH CÔNG NGHIỆP DỆT HUGE - BAMBOO',
+                        7,
+                        fontVN,
+                    );
+                    Print(
+                        40,
+                        pageHeight - 30,
+                        page,
+                        'text',
+                        'KCN MP , P Mỹ Phước , TX Bến Cát , T Bình Dương',
+                        6,
+                        fontVN,
+                    );
+                    Print(
+                        300,
+                        pageHeight - 30,
+                        page,
+                        'text',
+                        'Chi tiết chấm công tháng ',
+                        7,
+                        fontVN,
+                    );
+                    Print(370, pageHeight - 30, page, 'text', '考勤表', 7, fontCN);
+                    Print(400, pageHeight - 30, page, 'text', monthAndYear, 6, fontVN);
+                }
+            }
+
+            const offsetY = isFirstOnPage ? 0 : 420;
+            const startY = pageHeight - 75 - offsetY;
+
+            Print(7, startY, page!, 'text', employee.card_number, 6, fontVN);
+            Print(40, startY, page!, 'text', employee.fullname, 6, fontVN);
+            Print(200, startY, page!, 'text', employee.unit, 6, fontVN);
+            Print(280, startY, page!, 'text', employee.unit_name, 6, fontVN);
+            Print(340, startY, page!, 'text', employee.employee_class, 6, fontVN);
+
+            const headerY = startY - 15;
             columnHeaders.forEach((header, idx) => {
                 const [x, w] = columns[idx];
                 Print(
                     x,
                     headerY,
-                    page,
+                    page!,
                     'rectangle',
                     '',
                     0,
@@ -204,27 +233,26 @@ export const PrintWorkdayReport = async ({
                     undefined,
                     rgb(0, 102 / 255, 204 / 255),
                 );
-                Print(x + 2, headerY + 2, page, 'text', header, 6, fontBold, rgb(1, 1, 1)); // chữ trắng
+                Print(x + 2, headerY + 2, page!, 'text', header, 6, fontBold, rgb(1, 1, 1));
             });
 
-            // Vẽ dữ liệu
             const rows = 31;
-            const startY = headerY - 10;
+            const bodyStartY = headerY - 10;
             for (let row = 0; row < rows; row++) {
-                const y = startY - row * 10;
+                const y = bodyStartY - row * 10;
                 columns.forEach(([x, w], colIdx) => {
-                    Print(x, y, page, 'rectangle', '', 0, undefined, undefined, w, 10);
+                    Print(x, y, page!, 'rectangle', '', 0, undefined, undefined, w, 10);
                     const detail = employee.details[row];
                     if (detail) {
                         const value = String(detail[columnFields[colIdx]] ?? '');
                         if (value) {
-                            Print(x + 2, y + 2, page, 'text', value, 5, fontVN);
+                            Print(x + 2, y + 2, page!, 'text', value, 5, fontVN);
                         }
                     }
                 });
             }
 
-            // Tính Total
+            const totalY = bodyStartY - rows * 10;
             const total: Record<string, number> = {};
             columnFields.forEach((field) => {
                 total[field as string] = employee.details.reduce((sum, d) => {
@@ -233,13 +261,11 @@ export const PrintWorkdayReport = async ({
                 }, 0);
             });
 
-            // In dòng total (màu xám nhạt)
-            const totalY = startY - rows * 10;
             columns.forEach(([x, w], colIdx) => {
                 Print(
                     x,
                     totalY,
-                    page,
+                    page!,
                     'rectangle',
                     '',
                     0,
@@ -251,15 +277,15 @@ export const PrintWorkdayReport = async ({
                     rgb(0.9, 0.9, 0.9),
                 );
                 if (colIdx === 0) {
-                    Print(x + 2, totalY + 2, page, 'text', 'Total', 5, fontVN);
+                    Print(x + 2, totalY + 2, page!, 'text', 'Total', 5, fontVN);
                 } else {
                     const val = total[columnFields[colIdx] as string];
                     if (val) {
-                        Print(x + 2, totalY + 2, page, 'text', String(val), 5, fontVN);
+                        Print(x + 2, totalY + 2, page!, 'text', String(val), 5, fontVN);
                     }
                 }
             });
-        });
+        }
 
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });

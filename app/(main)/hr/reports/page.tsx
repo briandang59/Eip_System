@@ -136,7 +136,11 @@ function Reports() {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-                <Button onClick={handlePrint} icon={<FilePdfOutlined />}>
+                <Button
+                    onClick={handlePrint}
+                    icon={<FilePdfOutlined />}
+                    loading={isLoadingAttendance}
+                >
                     {t?.reports?.print || 'Print'}
                 </Button>
             </div>
