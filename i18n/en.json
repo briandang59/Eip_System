@@ -840,6 +840,7 @@
         "select_unit": "Select Unit",
         "select_work_place": "Select Work Place",
         "search": "Search",
-        "print": "Print"
+        "print": "Print",
+        "no_data_to_print": "No data to print"
     }
 }

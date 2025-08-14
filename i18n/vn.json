@@ -837,6 +837,7 @@
         "select_unit": "Chọn đơn vị",
         "select_work_place": "Chọn nơi làm việc",
         "search": "Tìm kiếm",
-        "print": "In"
+        "print": "In",
+        "no_data_to_print": "Không có dữ liệu để in"
     }
 }

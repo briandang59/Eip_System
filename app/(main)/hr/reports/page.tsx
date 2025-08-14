@@ -56,7 +56,7 @@ function Reports() {
             }
 
             if (attendance.length === 0) {
-                toast.error('No data to print');
+                toast.error(t?.reports?.no_data_to_print || 'No data to print');
                 setLoading(false);
                 return;
             }
@@ -85,7 +85,7 @@ function Reports() {
         }
     };
 
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+    const onChange: DatePickerProps['onChange'] = (date) => {
         if (date) {
             setRangeDate({
                 start: dayjs(date).startOf('month').format('YYYY-MM-DD'),

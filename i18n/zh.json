@@ -836,6 +836,7 @@
         "select_unit": "選擇單位",
         "select_work_place": "選擇工作地點",
         "search": "搜索",
-        "print": "打印"
+        "print": "打印",
+        "no_data_to_print": "沒有數據打印"
     }
 }
