@@ -75,7 +75,11 @@ export const useDataReport = ({ attendance }: IDataReport): DataReportType[] => 
             TcCĐ: detail.shift?.is_night_shift ? detail.workday?.G200 || detail.workday?.G210 : 0,
             Đtr: detail.workday?.DT || 0,
             Vs: detail.workday?.VS || 0,
-            'Mt-Cnho': item.pregnancy?.start_date || item.has_children?.start_date || '',
+            'Mt-Cnho': item.pregnancy?.start_date
+                ? 'MT'
+                : item.has_children?.start_date
+                  ? 'CN'
+                  : '',
             note: '',
         }));
 
