@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { Color, PDFDocument, PDFPage, PDFFont, PDFImage, rgb } from 'pdf-lib';
 import { loadFont, loadFontBold, loadFontChinese, logos } from './basePdf';
 import { DataReportType } from '../hooks/useDataReport';
