@@ -18,7 +18,7 @@ import { toast } from 'sonner';
 function Reports() {
     const { lang, t } = useTranslationCustom();
     const myInfo = getInfomation();
-    const { workPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
     const [selectedUnit, setSelectedUnit] = useState<number | null>(null);
     const [search, setSearch] = useState<string>('');
     const [pdfUrl, setPdfUrl] = useState<string>('');
@@ -52,7 +52,7 @@ function Reports() {
                 (attendance.length === 0 || isLoadingAttendance) &&
                 Date.now() - start < maxWaitTime
             ) {
-                await new Promise((resolve) => setTimeout(resolve, 100)); // đợi 100ms
+                await new Promise((resolve) => setTimeout(resolve, 100));
             }
 
             if (attendance.length === 0) {
@@ -98,7 +98,7 @@ function Reports() {
             <div className="flex items-end gap-2">
                 <Select
                     value={selectedWorkPlace}
-                    options={workPlaces?.map((workPlace) => ({
+                    options={filterWorkPlaces?.map((workPlace) => ({
                         label: `${getLocalizedName(workPlace.name_en, workPlace.name_zh, workPlace.name_vn, lang)}`,
                         value: workPlace.id,
                     }))}
