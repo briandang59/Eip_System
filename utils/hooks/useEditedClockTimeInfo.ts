@@ -1,7 +1,7 @@
 import { AttendanceV2Type, TimeUpdate } from '@/types/response/attendance';
 import { isTimeUpdate } from '../functions/isTimeUpdate';
 import { useChangeLanguage } from './useChangeLanguage';
-
+import dayjs from 'dayjs';
 export function useEditedClockTimeInfo(att: AttendanceV2Type | undefined) {
     const T1 = att?.details?.[0]?.workday?.T1;
     const T2 = att?.details?.[0]?.workday?.T2;
@@ -10,14 +10,14 @@ export function useEditedClockTimeInfo(att: AttendanceV2Type | undefined) {
         up2 = '';
     let reasonObj: TimeUpdate['reason'] | null = null;
 
-    if (isTimeUpdate(T1)) up1 = T1.update_time;
+    if (isTimeUpdate(T1)) up1 = dayjs(T1.time).format('YYYY-MM-DD HH:mm:ss');
     if (isTimeUpdate(T2)) {
-        up2 = T2.update_time;
+        up2 = dayjs(T2.time).format('YYYY-MM-DD HH:mm:ss');
         reasonObj = T2.reason ?? null;
     }
 
-    const [d1, t1] = up1.split(' ') ?? ['', ''];
-    const [d2, t2] = up2.split(' ') ?? ['', ''];
+    const [d1, t1] = up1?.split(' ') ?? ['', ''];
+    const [d2, t2] = up2?.split(' ') ?? ['', ''];
 
     const reasonText = useChangeLanguage(
         reasonObj?.reason_en ?? '',
