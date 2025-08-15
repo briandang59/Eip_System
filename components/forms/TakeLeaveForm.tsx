@@ -389,7 +389,6 @@ function TakeLeaveForm({
                     .then((res) => {
                         if (res) {
                             toast.success(t.take_leave.success);
-                            console.log(res);
                             reset();
                             close();
                             if (mutate) {
