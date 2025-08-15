@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { getDateRange } from './getDateRange';
 
-type ShiftKey = 'A' | 'B' | 'C' | 'D';
+type ShiftKey = 'A' | 'B' | 'C' | 'DB' | 'CV';
 
 interface InputType {
     range_date: string[];
@@ -9,7 +9,8 @@ interface InputType {
     hours_A: number;
     hours_B: number;
     hours_C: number;
-    hours_D: number;
+    hours_DB: number;
+    hours_CV: number;
 }
 
 interface DayoffRequestType {
@@ -28,10 +29,11 @@ export function generateDayOffRequests(input: InputType, uuid: string): DayoffRe
     const dateList = getDateRange(input.range_date);
 
     const shiftMap: Record<ShiftKey, { hours: number; time: [string, string]; type_id: number }> = {
-        A: { hours: input.hours_A, time: ['08:00:00', '17:00:00'], type_id: 1 },
-        B: { hours: input.hours_B, time: ['08:00:00', '17:00:00'], type_id: 2 },
-        C: { hours: input.hours_C, time: ['08:00:00', '17:00:00'], type_id: 3 },
-        D: { hours: input.hours_D, time: ['08:00:00', '17:00:00'], type_id: input.type ?? 0 },
+        A: { hours: input.hours_A, time: ['08:00:00', '17:30:00'], type_id: 1 },
+        B: { hours: input.hours_B, time: ['08:00:00', '17:30:00'], type_id: 2 },
+        C: { hours: input.hours_C, time: ['08:00:00', '17:30:00'], type_id: 3 },
+        DB: { hours: input.hours_DB, time: ['08:00:00', '17:30:00'], type_id: 4 },
+        CV: { hours: input.hours_CV, time: ['08:00:00', '17:30:00'], type_id: 8 },
     };
 
     const result: DayoffRequestType[] = [];
@@ -40,7 +42,7 @@ export function generateDayOffRequests(input: InputType, uuid: string): DayoffRe
         // Sử dụng dayjs để lấy year một cách nhất quán
         const year = dayjs(date).year();
 
-        for (const shift of ['A', 'B', 'C', 'D'] as ShiftKey[]) {
+        for (const shift of ['A', 'B', 'C', 'DB', 'CV'] as ShiftKey[]) {
             const { hours, time, type_id } = shiftMap[shift];
             if (hours > 0) {
                 const [startTime, endTime] = time;

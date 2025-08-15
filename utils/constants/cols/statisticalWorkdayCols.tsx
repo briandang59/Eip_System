@@ -211,16 +211,25 @@ export const useStatisticalWorkdayCols = (): TableColumnsType<StatisticalWorkday
             sorter: (a, b) => a.total_C - b.total_C,
         },
         {
-            title: 'D',
-            dataIndex: 'total_D',
-            key: 'total_D',
+            title: 'DB',
+            dataIndex: 'total_DB',
+            key: 'total_DB',
             width: 50,
             render: (_, record) => {
-                return <div>{record.total_D > 0 ? record.total_D : '-'}</div>;
+                return <div>{record.total_DB > 0 ? record.total_DB : '-'}</div>;
             },
-            sorter: (a, b) => a.total_D - b.total_D,
+            sorter: (a, b) => a.total_DB - b.total_DB,
         },
-
+        {
+            title: 'CV',
+            dataIndex: 'total_CV',
+            key: 'total_CV',
+            width: 50,
+            render: (_, record) => {
+                return <div>{record.total_CV > 0 ? record.total_CV : '-'}</div>;
+            },
+            sorter: (a, b) => a.total_CV - b.total_CV,
+        },
         {
             title: 'DT',
             dataIndex: 'total_DT',

@@ -37,7 +37,7 @@ export const calculateStatisticalWorkday = (
         let total_B = 0;
         let total_KP = 0;
         let total_C = 0;
-        let total_D = 0;
+        let total_DB = 0;
         let total_CV = 0;
         let total_DT = 0;
         let total_VS = 0;
@@ -73,7 +73,7 @@ export const calculateStatisticalWorkday = (
                 total_B += details?.workday.leave_hours.B || 0;
                 total_KP += result.kp_time || 0;
                 total_C += details?.workday.leave_hours.C || 0;
-                total_D += details?.workday.leave_hours.D || 0;
+                total_DB += details?.workday.leave_hours.DB || 0;
                 total_CV += details?.workday.leave_hours.A || 0;
                 total_G200 += details?.workday.G200 || 0;
                 total_G210 += details?.workday.G210 || 0;
@@ -132,7 +132,7 @@ export const calculateStatisticalWorkday = (
             total_B,
             total_KP,
             total_C,
-            total_D,
+            total_DB,
             total_CV,
             total_DT,
             total_VS,

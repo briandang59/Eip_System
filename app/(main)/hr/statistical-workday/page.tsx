@@ -83,7 +83,7 @@ function StatisticalWorkday() {
                 totals.total_B += record.total_B || 0;
                 totals.total_KP += record.total_KP || 0;
                 totals.total_C += record.total_C || 0;
-                totals.total_D += record.total_D || 0;
+                totals.total_DB += record.total_DB || 0;
                 totals.total_CV += record.total_CV || 0;
                 totals.total_DT += record.total_DT || 0;
                 totals.total_VS += record.total_VS || 0;
@@ -110,7 +110,7 @@ function StatisticalWorkday() {
                 total_B: 0,
                 total_KP: 0,
                 total_C: 0,
-                total_D: 0,
+                total_DB: 0,
                 total_CV: 0,
                 total_DT: 0,
                 total_VS: 0,
@@ -212,7 +212,7 @@ function StatisticalWorkday() {
                     {/* D */}
                     <Table.Summary.Cell index={15} align="center">
                         <div className="font-bold text-blue-600">
-                            {currentTotals.total_D > 0 ? currentTotals.total_D : '-'}
+                            {currentTotals.total_DB > 0 ? currentTotals.total_DB : '-'}
                         </div>
                     </Table.Summary.Cell>
                     {/* DT */}

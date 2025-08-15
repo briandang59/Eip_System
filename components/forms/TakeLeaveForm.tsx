@@ -37,7 +37,8 @@ interface FormValueProps {
     hours_A: number;
     hours_B: number;
     hours_C: number;
-    hours_D: number;
+    hours_DB: number;
+    hours_CV: number;
 }
 
 function TakeLeaveForm({
@@ -59,11 +60,12 @@ function TakeLeaveForm({
             hours_A: yup.number().required().min(0),
             hours_B: yup.number().required().min(0),
             hours_C: yup.number().required().min(0),
-            hours_D: yup.number().required().min(0),
+            hours_DB: yup.number().required().min(0),
+            hours_CV: yup.number().required().min(0),
             subtitute: yup.string().optional(),
 
-            type: yup.number().when('hours_D', ([hours_D], schema) => {
-                if (hours_D > 0) {
+            type: yup.number().when('hours_DB', ([hours_DB], schema) => {
+                if (hours_DB > 0) {
                     return schema.required(t.take_leave.err_required_leave_type);
                 }
                 return schema.notRequired();
@@ -79,7 +81,8 @@ function TakeLeaveForm({
             hours_A: 0,
             hours_B: 0,
             hours_C: 0,
-            hours_D: 0,
+            hours_DB: 0,
+            hours_CV: 0,
         },
     });
 
@@ -99,7 +102,8 @@ function TakeLeaveForm({
             hours_A: 0,
             hours_B: 0,
             hours_C: 0,
-            hours_D: 0,
+            hours_DB: 0,
+            hours_CV: 0,
             type: 0,
         };
 
@@ -122,7 +126,7 @@ function TakeLeaveForm({
             case 'I':
                 return {
                     ...defaultValues,
-                    hours_D: hours,
+                    hours_DB: hours,
                     type: hours > 0 ? takeLeaveRecord.leave_type.id : undefined,
                 };
             default:
@@ -142,12 +146,13 @@ function TakeLeaveForm({
                 hours_A: 0,
                 hours_B: 0,
                 hours_C: 0,
-                hours_D: 0,
+                hours_DB: 0,
+                hours_CV: 0,
                 type: 0,
             });
         }
     }, [takeLeaveRecord, reset]);
-    const hours_D_watch = useWatch({ control, name: 'hours_D' });
+
     useEffect(() => {
         if (card_number) {
             setInputValue(card_number);
@@ -163,7 +168,8 @@ function TakeLeaveForm({
             setValue('hours_A', 0);
             setValue('hours_B', 0);
             setValue('hours_C', 0);
-            setValue('hours_D', 0);
+            setValue('hours_DB', 0);
+            setValue('hours_CV', 0);
             setValue('type', 0);
             setValue('subtitute', undefined);
         }
@@ -375,11 +381,6 @@ function TakeLeaveForm({
                 return;
             }
 
-            if (hours_D_watch > 0 && !data.type) {
-                toast.error(t.take_leave.err_required_leave_type);
-                return;
-            }
-
             if (takeLeaveRecord?.id) {
                 const modifyData = {
                     ...records[0],
@@ -569,27 +570,7 @@ function TakeLeaveForm({
                             format="DD/MM/YYYY"
                             className="col-span-1"
                         />
-                        {hours_D_watch > 0 ? (
-                            <FormSelect
-                                control={control}
-                                name="type"
-                                label={t.take_leave.type}
-                                options={
-                                    filterDayOffType?.map((item) => ({
-                                        value: item.id,
-                                        label: `${item.code} - ${getLocalizedName(
-                                            item.name_en,
-                                            item.name_zh,
-                                            item.name_vn,
-                                            lang,
-                                        )}`,
-                                    })) ?? []
-                                }
-                                placeholder={t.take_leave.type}
-                                loading={isLoadingDayOffType}
-                                required
-                            />
-                        ) : null}
+
                         <FormSelect
                             control={control}
                             name="subtitute"
@@ -608,7 +589,7 @@ function TakeLeaveForm({
                             }
                         />
                     </div>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-5 gap-4">
                         <FormSelect
                             control={control}
                             name="hours_A"
@@ -636,11 +617,19 @@ function TakeLeaveForm({
                         />
                         <FormSelect
                             control={control}
-                            name="hours_D"
-                            label={t.take_leave.hours_D}
+                            name="hours_DB"
+                            label={t.take_leave.hours_Db}
                             defaultValue={0}
                             options={hoursOptions}
-                            placeholder={t.take_leave.hours_D}
+                            placeholder={t.take_leave.hours_Db}
+                        />
+                        <FormSelect
+                            control={control}
+                            name="hours_CV"
+                            label={t.take_leave.hours_cv}
+                            defaultValue={0}
+                            options={hoursOptions}
+                            placeholder={t.take_leave.hours_cv}
                         />
                     </div>
                     <Form.Item>

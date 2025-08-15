@@ -114,11 +114,8 @@ export type AttendanceV2Type = {
                     B: number;
                     C: number;
                     D: number;
-                    E: number;
-                    F: number;
-                    G: number;
-                    H: number;
-                    I: number;
+                    DB: number;
+                    CV: number;
                 };
                 KP: number;
                 T1: TimeNormal | TimeUpdate;
@@ -170,7 +167,7 @@ export type StatisticalWorkdayType = {
     total_B: number;
     total_KP: number;
     total_C: number;
-    total_D: number;
+    total_DB: number;
     total_CV: number;
     total_DT: number;
     total_VS: number;
