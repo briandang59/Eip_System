@@ -5,12 +5,11 @@ import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Form, Input, Spin } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { FormDateRangePicker, FormSelect } from '../formsComponent';
-import { useDayOffType } from '@/apis/useSwr/dayoffType';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { generateDayOffRequests } from '@/utils/functions/generateDayOffRequest';
 import { toast } from 'sonner';
@@ -118,12 +117,8 @@ function TakeLeaveForm({
                 return { ...defaultValues, hours_B: hours };
             case 'C':
                 return { ...defaultValues, hours_C: hours };
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
+            case 'DB':
+            case 'CV':
                 return {
                     ...defaultValues,
                     hours_DB: hours,
@@ -212,14 +207,6 @@ function TakeLeaveForm({
         mutate: mutateRemainHours,
     } = useRemainHours(remainHoursParams);
 
-    const dayoffTypeParams = useMemo(() => {
-        return hasValidCard && employees?.length
-            ? { nation: employees[0]?.nation.name_en }
-            : { nation: '' };
-    }, [hasValidCard, employees]);
-
-    const { dayoffTypes, isLoading: isLoadingDayOffType } = useDayOffType(dayoffTypeParams);
-
     const dayoffParams = useMemo(() => {
         if (!hasValidCard || !employees?.length) {
             return undefined;
@@ -267,10 +254,6 @@ function TakeLeaveForm({
             </div>
         );
     }
-
-    const filterDayOffType = dayoffTypes?.filter(
-        (item) => item.id !== 1 && item.id !== 2 && item.id !== 3,
-    );
 
     const hoursOptionsNV = [
         {
@@ -399,13 +382,14 @@ function TakeLeaveForm({
                             }
                         }
                     })
-                    .catch(() => toast.error(t.take_leave.error));
+                    .catch((err) => toast.error(`${err}`));
             } else {
                 await dayOffService
                     .add(records)
                     .then((res) => {
                         if (res) {
                             toast.success(t.take_leave.success);
+                            console.log(res);
                             reset();
                             close();
                             if (mutate) {
@@ -414,7 +398,7 @@ function TakeLeaveForm({
                             }
                         }
                     })
-                    .catch(() => toast.error(t.take_leave.error));
+                    .catch((err) => toast.error(`${err}`));
             }
         }
     };

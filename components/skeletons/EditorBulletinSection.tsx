@@ -177,7 +177,7 @@ function EditorBulletinSection({
         window.forceSaveBulletinContent = forceSaveAll;
 
         return () => {
-            // @ts-ignore
+            // @ts-expect-erro
             delete window.forceSaveBulletinContent;
         };
     }, [forceSaveAll]);

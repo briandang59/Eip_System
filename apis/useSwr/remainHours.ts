@@ -20,8 +20,9 @@ export const useRemainHours = (params?: params) => {
         fetcher,
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
+            revalidateIfStale: true,
             revalidateOnReconnect: false,
+            revalidateOnMount: true,
         },
     );
 
