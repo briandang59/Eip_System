@@ -454,6 +454,46 @@ export const useWorkdayCols = ({
             },
         },
         {
+            title: 'DB',
+            dataIndex: 'DB',
+            key: 'DB',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.DB - b?.details[0]?.workday?.leave_hours.DB
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.DB > 0
+                            ? record?.details[0]?.workday?.leave_hours.DB
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'CV',
+            dataIndex: 'CV',
+            key: 'CV',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.CV - b?.details[0]?.workday?.leave_hours.CV
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.CV > 0
+                            ? record?.details[0]?.workday?.leave_hours.CV
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
             title: 'DT',
             dataIndex: 'DT',
             key: 'DT',
