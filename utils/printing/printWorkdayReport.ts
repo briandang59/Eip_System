@@ -287,8 +287,12 @@ export const PrintWorkdayReport = async ({
             });
         }
 
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const pdfBytes = await pdfDoc.save(); // Uint8Array
+        const ab = (pdfBytes.buffer as ArrayBuffer).slice(
+            pdfBytes.byteOffset,
+            pdfBytes.byteOffset + pdfBytes.byteLength,
+        );
+        const blob = new Blob([ab], { type: 'application/pdf' });
         return URL.createObjectURL(blob);
     } catch (error) {
         console.error('Error creating PDF:', error);

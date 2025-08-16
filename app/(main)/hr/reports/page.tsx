@@ -4,7 +4,7 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { PdfViewer } from '@/components/common/PdfViewer';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { FilePdfOutlined } from '@ant-design/icons';
+import { FileExcelOutlined, FilePdfOutlined } from '@ant-design/icons';
 import { Button, DatePicker, DatePickerProps, Input, Select, Spin } from 'antd';
 import { useState } from 'react';
 import { PrintWorkdayReport } from '@/utils/printing/printWorkdayReport';
@@ -14,6 +14,7 @@ import { useDataReport } from '@/utils/hooks/useDataReport';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { useFactoryStore } from '@/stores/useFactoryStore';
 import { toast } from 'sonner';
+import { exportWorkdayReportToExcel } from '@/utils/functions/exportWorkdayReportToExcel';
 
 function Reports() {
     const { lang, t } = useTranslationCustom();
@@ -93,6 +94,10 @@ function Reports() {
             });
         }
     };
+    const handleExportExcel = () => {
+        const data = useDataReport({ attendance });
+        exportWorkdayReportToExcel(data, dayjs(rangeDate.start).format('YYYY-MM'));
+    };
     return (
         <div className="flex flex-col gap-2">
             <div className="flex items-end gap-2">
@@ -142,6 +147,13 @@ function Reports() {
                     loading={isLoadingAttendance}
                 >
                     {t?.reports?.print || 'Print'}
+                </Button>
+                <Button
+                    onClick={handleExportExcel}
+                    icon={<FileExcelOutlined />}
+                    loading={isLoadingAttendance}
+                >
+                    Export
                 </Button>
             </div>
             <div className="bg-gray-100 rounded-2xl p-2">
