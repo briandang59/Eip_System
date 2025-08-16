@@ -21,6 +21,7 @@ export const routes = {
         workdayV1: '/hr/workday/v1',
         statisticalWorkdayV1: '/hr/statistical-workday/v1',
         reports: '/hr/reports',
+        reportsV1: '/hr/reports/v1',
     },
     factoryInspection: {
         root: '/factory-inspection',

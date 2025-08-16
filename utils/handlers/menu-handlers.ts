@@ -57,6 +57,9 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'hr/reports':
             router.push(routes.hr.reports);
             break;
+        case 'hr/reports/v1':
+            router.push(routes.hr.reportsV1);
+            break;
         case 'it/roles-and-permissions':
             router.push(routes.it.rolesAndPermissions);
             break;

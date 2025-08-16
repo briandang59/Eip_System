@@ -129,6 +129,11 @@ export const useMenuItems = (): MenuItem[] => {
                     'hr/print-card',
                     <Printer strokeWidth={1.5} className="w-4 h-4" />,
                 ),
+                getItem(
+                    t?.sidebar?.factory_inspection?.reports || 'Reports',
+                    'hr/reports',
+                    <FileChartColumn strokeWidth={1.5} className="w-4 h-4" />,
+                ),
             ],
         ),
         getItem(
@@ -148,7 +153,7 @@ export const useMenuItems = (): MenuItem[] => {
                 ),
                 getItem(
                     t?.sidebar?.factory_inspection?.reports || 'Reports',
-                    'hr/reports',
+                    'hr/reports/v1',
                     <FileChartColumn strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],

@@ -8,16 +8,15 @@ import { FileExcelOutlined, FilePdfOutlined } from '@ant-design/icons';
 import { Button, DatePicker, DatePickerProps, Input, Select, Spin } from 'antd';
 import { useState } from 'react';
 import { PrintWorkdayReport } from '@/utils/printing/printWorkdayReport';
-import { useAttendanceV2 } from '@/apis/useSwr/attendance';
 import dayjs from 'dayjs';
-import { useDataReport } from '@/utils/hooks/useDataReport';
+import { useDataReportV1 } from '@/utils/hooks/useDataReport';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { useFactoryStore } from '@/stores/useFactoryStore';
 import { toast } from 'sonner';
 import { exportWorkdayReportToExcel } from '@/utils/functions/exportWorkdayReportToExcel';
 import { useFactoryInspectionAttendance } from '@/apis/useSwr/factoryInspectionAttendance';
 
-function Reports() {
+function ReportsV1() {
     const { lang, t } = useTranslationCustom();
     const myInfo = getInfomation();
     const { filterWorkPlaces, isLoading: isLoadingWorkPlaces } = useWorkPlaces();
@@ -34,12 +33,14 @@ function Reports() {
     });
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
-    const { attendance, isLoading: isLoadingAttendance } = useAttendanceV2({
-        unit_id: selectedUnit || undefined,
-        work_place_id: selectedWorkPlace || undefined,
-        start: rangeDate.start,
-        end: rangeDate.end,
-    });
+
+    const { factoryInspectionAttendance, isLoading: isLoadingFactoryAttendance } =
+        useFactoryInspectionAttendance({
+            unit_id: selectedUnit || undefined,
+            work_place_id: selectedFactoryId,
+            start: rangeDate.start,
+            end: rangeDate.end,
+        });
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace.toString(),
     });
@@ -51,19 +52,19 @@ function Reports() {
             const maxWaitTime = 5000;
             const start = Date.now();
             while (
-                (attendance.length === 0 || isLoadingAttendance) &&
+                (factoryInspectionAttendance.length === 0 || isLoadingFactoryAttendance) &&
                 Date.now() - start < maxWaitTime
             ) {
                 await new Promise((resolve) => setTimeout(resolve, 100));
             }
 
-            if (attendance.length === 0) {
+            if (factoryInspectionAttendance.length === 0) {
                 toast.error(t?.reports?.no_data_to_print || 'No data to print');
                 setLoading(false);
                 return;
             }
 
-            const data = useDataReport({ attendance });
+            const data = useDataReportV1({ attendance: factoryInspectionAttendance });
             const dataFiltered = data.filter(
                 (item) =>
                     item.fullname.toLowerCase().includes(search.toLowerCase()) ||
@@ -96,7 +97,7 @@ function Reports() {
         }
     };
     const handleExportExcel = () => {
-        const data = useDataReport({ attendance });
+        const data = useDataReportV1({ attendance: factoryInspectionAttendance });
         exportWorkdayReportToExcel(data, dayjs(rangeDate.start).format('YYYY-MM'));
     };
     return (
@@ -145,14 +146,14 @@ function Reports() {
                 <Button
                     onClick={handlePrint}
                     icon={<FilePdfOutlined />}
-                    loading={isLoadingAttendance}
+                    loading={isLoadingFactoryAttendance}
                 >
                     {t?.reports?.print || 'Print'}
                 </Button>
                 <Button
                     onClick={handleExportExcel}
                     icon={<FileExcelOutlined />}
-                    loading={isLoadingAttendance}
+                    loading={isLoadingFactoryAttendance}
                 >
                     Export
                 </Button>
@@ -170,4 +171,4 @@ function Reports() {
     );
 }
 
-export default Reports;
+export default ReportsV1;

@@ -35,12 +35,13 @@ export const menuPermissions: Record<string, Roles[]> = {
     'hr/statistical-workday': [Roles.SUPER_USER, Roles.HR_MANAGER],
     'hr/utils': [Roles.SUPER_USER, Roles.HR_MANAGER],
     'hr/print-card': [Roles.SUPER_USER, Roles.HR_MANAGER],
+    'hr/reports': [Roles.SUPER_USER, Roles.HR_MANAGER],
 
     // Factory Inspection
     factoryInspection: [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/workday/v1': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     'hr/statistical-workday/v1': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
-    'hr/reports': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
+    'hr/reports/v1': [Roles.SUPER_USER, Roles.HR_MANAGER, Roles.HR_ASSISTANT],
     // IT Section
     it: [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
     'it/roles-and-permissions': [Roles.SUPER_USER, Roles.SYSTEM_ADMINISTRATOR],
