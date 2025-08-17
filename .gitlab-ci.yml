@@ -14,7 +14,7 @@ deploy:
     rules:
         - if: '$CI_COMMIT_BRANCH == "dev"'
     tags:
-        - docker-prod
+        - eip-ui-v2(dev)
     script:
         - echo "now deploying"
         - cd $CI_PROJECT_DIR
@@ -25,7 +25,7 @@ deploy:
 notify_failure:
     stage: notify
     tags:
-        - docker-prod
+        - eip-ui-v2(dev)
     rules:
         - if: '$CI_COMMIT_BRANCH == "dev"'
     script:
@@ -43,7 +43,7 @@ notify_failure:
 notify_success:
     stage: notify
     tags:
-        - docker
+        - eip-ui-v2(dev)
     script:
         - echo "Deployment success! Sending notification..."
         - |
