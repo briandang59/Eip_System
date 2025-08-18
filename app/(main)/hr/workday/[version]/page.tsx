@@ -9,14 +9,14 @@ import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { FileExcelOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Input, Select } from 'antd';
+import { Button, DatePicker, Input, Modal, Select } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useFactoryStore } from '@/stores/useFactoryStore';
+import EditAttendanceForm from '@/components/forms/EditAttendanceForm';
 
 function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
-    const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols();
     const { filterWorkPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const myInfo = getInfomation();
     const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
@@ -25,6 +25,9 @@ function WorkdayV1() {
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace?.toString(),
     });
+
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState<FactoryInspectionAttendance | null>(null);
 
     const [selectedUnit, setSelectedUnit] = useState<number>();
     const [searchInput, setSearchInput] = useState<string>('');
@@ -70,6 +73,18 @@ function WorkdayV1() {
     const handleRefresh = () => {
         mutate();
     };
+
+    const showModal = (record: FactoryInspectionAttendance) => {
+        setIsOpenModal(true);
+        setSelectedRecord(record);
+    };
+    const closeModal = () => {
+        setSelectedRecord(null);
+        setIsOpenModal(false);
+        mutate();
+    };
+    const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols({ open: showModal });
+
     // const { exportWithoutSummary } = useExportToExcel(workdayCols, 'Workday', 'Workday Data');
 
     // const handleExportExcel = () => {
@@ -171,7 +186,6 @@ function WorkdayV1() {
                 dataSource={factoryInspectionAttendance || []}
                 rowKey="stt"
                 isLoading={isLoadingFactoryInspectionAttendance}
-                // summary={() => summaryWorkdayRow(attendance, t)}
                 pagination={{
                     defaultPageSize: 30,
                     pageSizeOptions: ['30', '50'],
@@ -182,6 +196,11 @@ function WorkdayV1() {
                 }}
                 className="secondary-table"
             />
+            <Modal open={isOpenModal} onCancel={closeModal} centered width={1000} footer={null}>
+                {selectedRecord !== null && (
+                    <EditAttendanceForm record={selectedRecord} close={closeModal} />
+                )}
+            </Modal>
         </div>
     );
 }

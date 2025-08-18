@@ -1,0 +1,26 @@
+export type FactoryInspectionWorkdayEditRequest = {
+    card_number: string;
+    work_place_id: number;
+    date: string;
+    shift?: string;
+    DT?: number | null;
+    VS?: number | null;
+    G200?: number | null;
+    G210?: number | null;
+    GC?: number | null;
+    Gdem?: number | null;
+    KP?: number | null;
+    T1?: string | null;
+    T2?: string | null;
+    Tcom?: number | null;
+    A?: number | null;
+    B?: number | null;
+    C?: number | null;
+    DB?: number | null;
+    CV?: number | null;
+    NLE?: number | null;
+    C150?: number | null;
+    C200?: number | null;
+    C300?: number | null;
+    C390?: number | null;
+};

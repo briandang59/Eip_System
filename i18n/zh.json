@@ -841,5 +841,16 @@
         "search": "搜索",
         "print": "打印",
         "no_data_to_print": "沒有數據打印"
+    },
+    "edit_attendance_factory_inspection": {
+        "card_number": "卡號",
+        "workplace": "工作地點",
+        "date": "日期",
+        "shift": "班別",
+        "shift_and_time": "班別與時間",
+        "attendance_hours": "出勤時數",
+        "overtime_hours": "加班時數",
+        "leave_hours": "請假時數",
+        "fullname": "全名"
     }
 }

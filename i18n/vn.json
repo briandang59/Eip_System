@@ -842,5 +842,16 @@
         "search": "Tìm kiếm",
         "print": "In",
         "no_data_to_print": "Không có dữ liệu để in"
+    },
+    "edit_attendance_factory_inspection": {
+        "card_number": "Số thẻ",
+        "workplace": "Nơi làm việc",
+        "date": "Ngày",
+        "shift": "Ca làm",
+        "shift_and_time": "Ca làm và Thời gian",
+        "attendance_hours": "Giờ chấm công",
+        "overtime_hours": "Giờ tăng ca",
+        "leave_hours": "Giờ nghỉ phép",
+        "fullname": "Họ tên"
     }
 }

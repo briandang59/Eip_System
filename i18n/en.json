@@ -845,5 +845,16 @@
         "search": "Search",
         "print": "Print",
         "no_data_to_print": "No data to print"
+    },
+    "edit_attendance_factory_inspection": {
+        "card_number": "Card Number",
+        "workplace": "Workplace",
+        "date": "Date",
+        "shift": "Shift",
+        "shift_and_time": "Shift and Time",
+        "attendance_hours": "Attendance hours",
+        "overtime_hours": "Overtime hours",
+        "leave_hours": "Leave Hours",
+        "fullname": "Full Name"
     }
 }
