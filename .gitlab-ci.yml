@@ -3,24 +3,65 @@ stages:
     - notify
     - cleanup
 
+variables:
+    BLUE_CONTAINER: 'eip-ui-blue'
+    GREEN_CONTAINER: 'eip-ui-green'
+    PORT: '3000'
+    IMAGE_TAG: 'eip-ui:${CI_COMMIT_SHORT_SHA}'
+
 deploy:
     stage: deploy
     rules:
-        - if: '$CI_COMMIT_BRANCH == "main"'
+        - if: '$CI_COMMIT_BRANCH == "dev"'
     tags:
-        - docker-prod
+        - eip-ui-v2(dev)
     script:
-        - echo "開始零停機部署, now deploying..."
+        - echo "now deploying"
         - cd $CI_PROJECT_DIR
-        - chmod +x deploy.sh
-        - ./deploy.sh
-        - echo "零停機部署完成, deploy job's done"
+        - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_DEV_API_URL" >> .env 
+        - sudo docker compose down
+        - sudo docker compose up -d --build
+        - echo "deploy job's done"
+
+notify_failure:
+    stage: notify
+    tags:
+        - eip-ui-v2(dev)
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "dev"'
+    script:
+        - echo "Deployment failed! Sending notification..."
+        - |
+            curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
+            -H "Content-Type: application/json" \
+            -d '{
+              "card_number": "T24065", 
+              "message": "eip-ui-v2(dev) deploy failed!"
+            }'
+    when: on_failure
+    allow_failure: true
+
+notify_success:
+    stage: notify
+    tags:
+        - eip-ui-v2(dev)
+    script:
+        - echo "Deployment success! Sending notification..."
+        - |
+            curl -X POST http://10.5.10.152:5678/webhook/notify/message/line/toPerson \
+            -H "Content-Type: application/json" \
+            -d '{
+              "card_number": "T24065",
+              "message": "eip-ui-v2(dev) deploy success!"
+            }'
+    when: on_success
+    allow_failure: true
 
 # 自動清理 Docker Image
 cleanup:
     stage: cleanup
     tags:
-        - docker-prod
+        - docker
     script:
         - echo "Now cleanup Docker images"
         - sudo docker container prune -f
