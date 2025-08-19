@@ -30,6 +30,7 @@ import { useFactoryStore } from '@/stores/useFactoryStore';
 import { useTakeLeave } from '@/apis/useSwr/takeLeave';
 import { TakeLeaveResponseType } from '@/types/response/takeLeave';
 import { routes } from '@/utils/constants/common/routes';
+import variables from '@/utils/constants/common/variables';
 
 function Workday() {
     const { t, lang } = useTranslationCustom();
@@ -338,7 +339,7 @@ function Workday() {
                     <div className="h-[500px]">
                         {selectedAttendance && (
                             <iframe
-                                src={`http://localhost:8000/${routes.hr.shiftScheduling}?card_number=${selectedAttendance?.card_number}&unit_id=${selectedAttendance.unit.id}`}
+                                src={`${variables.EIP_V2_HOST}/${routes.hr.shiftScheduling}?card_number=${selectedAttendance?.card_number}&unit_id=${selectedAttendance.unit.id}`}
                                 width="100%"
                                 height="100%"
                             />

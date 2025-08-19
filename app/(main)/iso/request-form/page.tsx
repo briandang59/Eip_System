@@ -9,6 +9,7 @@ import { PenBox } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { sendTokenToChild, setupTokenRequestHandler } from '@/utils/functions/sendTokenToChild';
+import variables from '@/utils/constants/common/variables';
 
 function RequestForm() {
     const { t, lang } = useTranslationCustom();
@@ -113,7 +114,7 @@ function RequestForm() {
                     <iframe
                         id="child-iframe"
                         ref={iframeRef}
-                        src={`http://localhost:3000/form/${selectedLocations}/${selectedIsoForm.tag}?employee_uuid=${myInfo?.uuid}&form_type_id=${selectedIsoForm.id}`}
+                        src={`${variables.ISO_FORM_HOST}/form/${selectedLocations}/${selectedIsoForm.tag}?employee_uuid=${myInfo?.uuid}&form_type_id=${selectedIsoForm.id}`}
                         width="100%"
                         height="700"
                         className="border-none"
