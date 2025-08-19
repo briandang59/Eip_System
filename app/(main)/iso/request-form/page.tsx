@@ -113,7 +113,7 @@ function RequestForm() {
                     <iframe
                         id="child-iframe"
                         ref={iframeRef}
-                        src={`http://10.2.1.159:8085/form/${selectedLocations}/${selectedIsoForm.tag}?employee_uuid=${myInfo?.uuid}`}
+                        src={`http://localhost:3000/form/${selectedLocations}/${selectedIsoForm.tag}?employee_uuid=${myInfo?.uuid}&form_type_id=${selectedIsoForm.id}`}
                         width="100%"
                         height="700"
                         className="border-none"

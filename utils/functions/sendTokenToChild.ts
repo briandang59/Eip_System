@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie';
+import variables from '../constants/common/variables';
 
-const CHILD_ORIGIN = 'http://10.2.1.159:8085';
+// const CHILD_ORIGIN = 'http://10.2.1.159:8085';
+const CHILD_ORIGIN = `${variables.ISO_FORM_HOST}`;
 
 export const sendTokenToChild = (targetWin?: Window | null) => {
     const token = Cookies.get('auth_token') ?? '';

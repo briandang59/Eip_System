@@ -5,6 +5,7 @@ import { GenericTable } from '@/components/common/GenericTable';
 import { IsoForm } from '@/types/response/isoForm';
 import { RecordFormResponse } from '@/types/response/recordForm';
 import { useRecordFormCols } from '@/utils/constants/cols/formRecordCols';
+import variables from '@/utils/constants/common/variables';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
@@ -109,13 +110,15 @@ function Form() {
 
         if (!targetTypeForm) return '';
 
+        const baseUrl = `${variables.ISO_FORM_HOST}/form/${selectedLocations}/${targetTypeForm?.tag}`;
+
         switch (key) {
             case 'view':
-                return `http://10.2.1.159:8085/form/${selectedLocations}/${targetTypeForm?.tag}?id=${form?._id}`;
+                return `${baseUrl}?id=${form?._id}`;
             case 'modify':
-                return `http://10.2.1.159:8085/form/${selectedLocations}/${targetTypeForm?.tag}?id=${form?._id}&isEdit=true`;
+                return `${baseUrl}?id=${form?._id}&isEdit=true`;
             default:
-                return `http://10.2.1.159:8085/form/${selectedLocations}/${targetTypeForm?.tag}?employee_uuid=${myInfo?.uuid}&isEdit=true&uuid=${form._id}`;
+                return `${baseUrl}?employee_uuid=${myInfo?.uuid}&isEdit=true&uuid=${form._id}`;
         }
     };
 
