@@ -19,8 +19,9 @@ export type FactoryInspectionWorkdayEditRequest = {
     DB?: number | null;
     CV?: number | null;
     NLE?: number | null;
-    C150?: number | null;
-    C200?: number | null;
-    C300?: number | null;
-    C390?: number | null;
+    c150?: number | null;
+    c200?: number | null;
+    c300?: number | null;
+    c390?: number | null;
+    c400?: number | null;
 };

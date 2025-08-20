@@ -45,10 +45,11 @@ function EditAttendanceForm({ record, close }: EditAttendanceFormProps) {
             DB: yup.number().nullable().default(0),
             CV: yup.number().nullable().default(0),
             NLE: yup.number().nullable().default(0),
-            C150: yup.number().nullable().default(0),
-            C200: yup.number().nullable().default(0),
-            C300: yup.number().nullable().default(0),
-            C390: yup.number().nullable().default(0),
+            c150: yup.number().nullable().default(0),
+            c200: yup.number().nullable().default(0),
+            c300: yup.number().nullable().default(0),
+            c390: yup.number().nullable().default(0),
+            c400: yup.number().nullable().default(0),
         })
         .required();
     type FormData = yup.InferType<typeof schema>;
@@ -68,9 +69,11 @@ function EditAttendanceForm({ record, close }: EditAttendanceFormProps) {
                 T2: dayjs(detail.workday.T2.time).format('HH:mm') ?? '',
                 GC: detail.workday.GC ?? 0,
                 NLE: detail.workday.nle ?? 0,
-                C150: detail.workday.overtime.c150 ?? 0,
-                C200: detail.workday.overtime.c200 ?? 0,
-                C300: detail.workday.overtime.c300 ?? 0,
+                c150: detail.workday.overtime.c150 ?? 0,
+                c200: detail.workday.overtime.c200 ?? 0,
+                c300: detail.workday.overtime.c300 ?? 0,
+                c390: detail.workday.overtime.c390 ?? 0,
+                c400: detail.workday.overtime.c400 ?? 0,
                 A: detail.workday.leave_hours.A ?? 0,
                 B: detail.workday.leave_hours.B ?? 0,
                 C: detail.workday.leave_hours.C ?? 0,
@@ -88,7 +91,6 @@ function EditAttendanceForm({ record, close }: EditAttendanceFormProps) {
     }, [record]);
     const onSubmit = async (data: FormData) => {
         try {
-            console.log('data', data);
             const payload: FactoryInspectionWorkdayEditRequest = {
                 ...data,
                 DT: data.DT ?? undefined,
@@ -105,10 +107,11 @@ function EditAttendanceForm({ record, close }: EditAttendanceFormProps) {
                 DB: data.DB ?? undefined,
                 CV: data.CV ?? undefined,
                 NLE: data.NLE ?? undefined,
-                C150: data.C150 ?? undefined,
-                C200: data.C200 ?? undefined,
-                C300: data.C300 ?? undefined,
-                C390: data.C390 ?? undefined,
+                c150: data.c150 ?? undefined,
+                c200: data.c200 ?? undefined,
+                c300: data.c300 ?? undefined,
+                c390: data.c390 ?? undefined,
+                c400: data.c400 ?? undefined,
             };
             await factoryInspectionWorkdayService.modify(payload).then(() => {
                 close();
@@ -198,10 +201,12 @@ function EditAttendanceForm({ record, close }: EditAttendanceFormProps) {
             <p className="text-[18px] font-bold text-green-700">
                 {t.edit_attendance_factory_inspection.overtime_hours}
             </p>
-            <div className="grid grid-cols-6 gap-4">
-                <FormInput control={control} name="C150" label={'150'} size="large" type="number" />
-                <FormInput control={control} name="C200" label={'200'} size="large" type="number" />
-                <FormInput control={control} name="C300" label={'300'} size="large" type="number" />
+            <div className="grid grid-cols-8 gap-4">
+                <FormInput control={control} name="c150" label={'150'} size="large" type="number" />
+                <FormInput control={control} name="c200" label={'200'} size="large" type="number" />
+                <FormInput control={control} name="c300" label={'300'} size="large" type="number" />
+                <FormInput control={control} name="c390" label={'390'} size="large" type="number" />
+                <FormInput control={control} name="c400" label={'400'} size="large" type="number" />
                 <FormInput
                     control={control}
                     name="Gdem"

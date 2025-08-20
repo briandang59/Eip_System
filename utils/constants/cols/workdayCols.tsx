@@ -376,6 +376,46 @@ export const useWorkdayCols = ({
             },
         },
         {
+            title: '390',
+            dataIndex: '390',
+            key: '390',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c390 - b?.details[0]?.workday?.overtime?.c390
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c390 > 0
+                            ? record?.details[0]?.workday?.overtime?.c390
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: '400',
+            dataIndex: '400',
+            key: '400',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c400 - b?.details[0]?.workday?.overtime?.c400
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c400 > 0
+                            ? record?.details[0]?.workday?.overtime?.c400
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
             title: 'A',
             dataIndex: 'A',
             key: 'A',
