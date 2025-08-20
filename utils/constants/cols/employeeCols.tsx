@@ -1,6 +1,6 @@
 import { EmployeeResponseType } from '@/types/response/employees';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { DeleteOutlined, EditOutlined, EyeFilled } from '@ant-design/icons';
+import { EditOutlined, EyeFilled } from '@ant-design/icons';
 import { Button, Popover, TableColumnsType } from 'antd';
 import { Folder, Settings } from 'lucide-react';
 
