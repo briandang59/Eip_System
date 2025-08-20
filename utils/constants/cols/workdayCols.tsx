@@ -217,16 +217,36 @@ export const useWorkdayCols = ({
                     ? dayjs(b.details[0].workday.T2.time, 'YYYY-MM-DD HH:mm:ss').valueOf()
                     : 0;
 
-                return t1 - t2; // giờ là number nên TS không lỗi
+                return t1 - t2;
             },
             render: (_, record: AttendanceV2Type) => {
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t2 = record?.details[0]?.attendance[0]?.T2.face_photo;
+
                 let isUpdated = false;
                 if (isTimeUpdate(record.details[0].workday.T2))
                     isUpdated = record?.details[0]?.workday?.T2?.user_update;
 
+                // ✅ Trường hợp chỉ có T2 (không có T1)
+                if (!time1 && time2) {
+                    return (
+                        <button
+                            className="text-nowrap flex items-center gap-2 cursor-pointer"
+                            onClick={() => {
+                                handleSelectedAttendance(record);
+                                handleOpenModalByKey('image_scan_t2');
+                            }}
+                        >
+                            {face_t2 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
+                            <span className="font-medium text-green-600">
+                                {formatTimeHHmm(time2)}
+                            </span>
+                        </button>
+                    );
+                }
+
+                // ✅ Trường hợp có T1 nhưng chưa có T2
                 if (time1 && !time2) {
                     return (
                         <button
@@ -242,7 +262,10 @@ export const useWorkdayCols = ({
                             </span>
                         </button>
                     );
-                } else if (time1 && time2) {
+                }
+
+                // ✅ Trường hợp có cả T1 và T2
+                if (time1 && time2) {
                     return (
                         <div className="flex justify-between gap-2">
                             <button
