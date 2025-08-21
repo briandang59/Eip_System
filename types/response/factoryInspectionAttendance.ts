@@ -104,8 +104,15 @@ interface LeaveHours {
 }
 
 interface Shift {
-    tag: string; // Ví dụ: "C22"
-    start_time: string; // Ví dụ: "09:00"
-    end_time: string; // Ví dụ: "17:00"
-    color_code: string; // Mã màu hex (ví dụ: "6CE698")
+    tag: string;
+    start_time: string;
+    end_time: string;
+    color_code: string;
+    is_night_shift: {
+        tag: string;
+        start_time: string;
+        end_time: string;
+        color_code: string;
+        is_night_shift: boolean;
+    };
 }

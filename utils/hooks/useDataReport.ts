@@ -68,8 +68,10 @@ export const useDataReport = ({ attendance }: IDataReport): DataReportType[] => 
             PN: detail.workday?.leave_hours?.B || 0,
             ĐP: detail.workday?.leave_hours?.DB || 0,
             Chờv: detail.workday?.leave_hours?.CV || 0,
-            Gđ: detail.shift?.is_night_shift ? detail.workday?.GC : 0,
-            TcCĐ: detail.shift?.is_night_shift ? detail.workday?.G200 || detail.workday?.G210 : 0,
+            Gđ: detail.shift?.is_night_shift.is_night_shift ? detail.workday?.GC : 0,
+            TcCĐ: detail.shift?.is_night_shift.is_night_shift
+                ? detail.workday?.G200 || detail.workday?.G210
+                : 0,
             Đtr: detail.workday?.DT || 0,
             Vs: detail.workday?.VS || 0,
             'Mt-Cnho': item.pregnancy?.start_date
@@ -126,8 +128,10 @@ export const useDataReportV1 = ({ attendance }: IDataReportV1): DataReportType[]
             PN: detail.workday?.leave_hours?.B || 0,
             ĐP: detail.workday?.leave_hours?.DB || 0,
             Chờv: detail.workday?.leave_hours?.CV || 0,
-            Gđ: detail.workday?.GC || 0,
-            TcCĐ: detail.workday?.G200 || detail.workday?.G210 || 0,
+            Gđ: detail.shift?.is_night_shift.is_night_shift ? detail.workday?.GC : 0,
+            TcCĐ: detail.shift?.is_night_shift.is_night_shift
+                ? detail.workday?.G200 || detail.workday?.G210
+                : 0,
             Đtr: detail.workday?.DT || 0,
             Vs: detail.workday?.VS || 0,
             'Mt-Cnho': item.pregnancy?.start_date

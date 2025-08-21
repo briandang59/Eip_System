@@ -123,24 +123,17 @@ export type AttendanceV2Type = {
             };
             holiday: null;
             shift: {
-                id: number;
                 tag: string;
                 start_time: string;
                 end_time: string;
-                break_time: BreakTime | null;
-                description: string | null;
-                location: string;
-                active: boolean;
-                color_code: null | string;
-                weekend: any;
-                order: number;
-                hours: string;
-                dinner_hours: number;
-                period_id: number;
-                allow_auto_overtime: boolean;
-                break_hours: string;
-                standard_hours: string;
-                is_night_shift: boolean;
+                color_code: string;
+                is_night_shift: {
+                    tag: string;
+                    start_time: string;
+                    end_time: string;
+                    color_code: string;
+                    is_night_shift: boolean;
+                };
             } | null;
         },
     ];
