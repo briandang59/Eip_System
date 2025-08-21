@@ -14,6 +14,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useFactoryStore } from '@/stores/useFactoryStore';
 import EditAttendanceForm from '@/components/forms/EditAttendanceForm';
+import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 
 function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
@@ -85,23 +86,29 @@ function WorkdayV1() {
     };
     const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols({ open: showModal });
 
-    // const { exportWithoutSummary } = useExportToExcel(workdayCols, 'Workday', 'Workday Data');
+    const data: FactoryInspectionAttendance[] = factoryInspectionAttendance || [];
 
-    // const handleExportExcel = () => {
-    //     if (!data || data.length === 0) {
-    //         console.warn('No data to export');
-    //         return;
-    //     }
+    const { exportWithoutSummary } = useExportToExcel(
+        factoryInspectionAttendanceCols,
+        'FactoryInspectionAttendance',
+        'InspectionAttendance',
+    );
 
-    //     const startDate = dateRange.start.format('YYYY-MM-DD');
-    //     const endDate = dateRange.end.format('YYYY-MM-DD');
-    //     const workplaceName =
-    //         workPlaces?.find((wp) => wp.id === selectWorkPlace)?.name_en || 'AllWorkplaces';
-    //     const abnormalText = isAbnormal ? 'Abnormal' : 'Normal';
-    //     const filename = `Workday_${startDate}_to_${endDate}_${workplaceName}_${abnormalText}`;
+    const handleExportExcel = () => {
+        if (!data || data.length === 0) {
+            console.warn('No data to export');
+            return;
+        }
 
-    //     exportWithoutSummary(data, filename);
-    // };
+        const startDate = dateRange.start.format('YYYY-MM-DD');
+        const endDate = dateRange.end.format('YYYY-MM-DD');
+        const workplaceName =
+            filterWorkPlaces?.find((wp) => wp.id === selectedWorkPlace)?.name_en || 'AllWorkplaces';
+        const filename = `FactoryInspection_${startDate}_to_${endDate}_${workplaceName}`;
+
+        exportWithoutSummary(data, filename);
+    };
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setSearchText(searchInput);
@@ -168,8 +175,8 @@ function WorkdayV1() {
                 </div>
                 <Button
                     icon={<FileExcelOutlined className="!text-green-600" />}
-                    // onClick={handleExportExcel}
-                    // disabled={!data || data.length === 0}
+                    onClick={handleExportExcel}
+                    disabled={!data || data.length === 0}
                 >
                     {t.workday.export}
                 </Button>

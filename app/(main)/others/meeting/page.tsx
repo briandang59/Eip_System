@@ -6,7 +6,9 @@ import { useMeetingType } from '@/apis/useSwr/meetingType';
 import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import ModalConfirm from '@/components/common/ModalConfirm';
 import BookingForm from '@/components/forms/bookingForm';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 import { MeetingBookingDetailResponseType } from '@/types/response/meeting';
+import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
 import { Button, Calendar, DatePicker, DatePickerProps, Modal, Select, Spin } from 'antd';
@@ -17,16 +19,17 @@ import { toast } from 'sonner';
 
 function Meeting() {
     const { t, lang } = useTranslationCustom();
-    const { workPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
+    const { filterWorkPlaces, isLoading: isLoadingWorkplace } = useWorkPlaces();
     const { meetingRooms } = useMeetingRoom();
     const { meetingTypes } = useMeetingType();
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const [selectedWorkplace, setSelectedWorkplace] = useState<number | undefined>(undefined);
     const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const [selectedBookingId, setSelectedBookingId] = useState<number>();
     const [selectedRecord, setSelectedRecord] = useState<MeetingBookingDetailResponseType>();
-
+    const myInfo = getInfomation();
+    const { selectedFactoryId, setSelectedFactoryId } = useFactoryStore();
+    const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
     const {
         bookings,
         originData,
@@ -35,14 +38,14 @@ function Meeting() {
     } = useBookings({
         date: selectedDate,
         meetingRooms: meetingRooms,
-        factory_id: selectedWorkplace,
+        factory_id: selectedWorkPlace,
     });
 
     useEffect(() => {
-        if (workPlaces && workPlaces.length > 0 && selectedWorkplace === undefined) {
-            setSelectedWorkplace(workPlaces[0].id);
+        if (filterWorkPlaces && filterWorkPlaces.length > 0 && selectedWorkPlace === undefined) {
+            setSelectedFactoryId(filterWorkPlaces[0].id);
         }
-    }, [workPlaces, selectedWorkplace]);
+    }, [filterWorkPlaces, selectedWorkPlace]);
 
     // Thay thế toggleModal và handleSelectedRecord bằng openModal/closeModal
     const openModal = (record?: MeetingBookingDetailResponseType) => {
@@ -103,12 +106,12 @@ function Meeting() {
             const isSameDate =
                 dayjs(item.date_book).format('YYYY-MM-DD') === current.format('YYYY-MM-DD');
             const hasMatchingFactory =
-                selectedWorkplace && meetingRooms
+                selectedWorkPlace && meetingRooms
                     ? item.book_meeting?.some((booking) =>
                           booking.book_meeting_room?.some((roomBooking) =>
                               meetingRooms.some(
                                   (room) =>
-                                      room.work_place_id === selectedWorkplace &&
+                                      room.work_place_id === selectedWorkPlace &&
                                       room.id === roomBooking.meeting_room_id,
                               ),
                           ),
@@ -151,13 +154,13 @@ function Meeting() {
                     <h2 className="text-[20px] font-bold">{t.meeting_form.meeting_information}</h2>
                     <div className="grid grid-cols-2 gap-2">
                         <Select
-                            options={workPlaces?.map((item) => ({
+                            options={filterWorkPlaces?.map((item) => ({
                                 label: `${getLocalizedName(item.name_en, item.name_zh, item.name_vn, lang)}`,
                                 value: item.id,
                             }))}
                             loading={isLoadingWorkplace}
-                            value={selectedWorkplace}
-                            onChange={setSelectedWorkplace}
+                            value={selectedWorkPlace}
+                            onChange={setSelectedFactoryId}
                             size="large"
                         />
                         <DatePicker
@@ -226,11 +229,11 @@ function Meeting() {
                 footer={null}
                 destroyOnClose
             >
-                {meetingRooms && meetingTypes && workPlaces && (
+                {meetingRooms && meetingTypes && filterWorkPlaces && (
                     <BookingForm
                         meetingRooms={meetingRooms}
                         meetingTypes={meetingTypes}
-                        workplaces={workPlaces}
+                        workplaces={filterWorkPlaces}
                         close={closeModal}
                         date={selectedDate}
                         record={selectedRecord}

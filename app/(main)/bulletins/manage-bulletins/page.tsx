@@ -5,6 +5,7 @@ import { useWorkPlaces } from '@/apis/useSwr/work-places';
 import { GenericTable } from '@/components/common/GenericTable';
 import ModalConfirm from '@/components/common/ModalConfirm';
 import BulletinsForm from '@/components/forms/BulletinsForm';
+import { useFactoryStore } from '@/stores/useFactoryStore';
 import { BulletinsResponseType } from '@/types/response/bulletins';
 import { useBulletinsCols } from '@/utils/constants/cols/bulletinsCols';
 import { getInfomation } from '@/utils/functions/getInfomation';
@@ -30,12 +31,16 @@ function ManageBulletins() {
         isLoading: isLoadingBulletins,
         mutate: mutateBulletins,
     } = useManageBulletins({ work_places: `[${selectedWorkPlace.join(',')}]` });
-
+    const { selectedFactoryId } = useFactoryStore();
     useEffect(() => {
-        if (myInfor?.work_place_id) {
-            setSelectedWorkPlace([myInfor.work_place_id]);
+        if (selectedWorkPlace.length === 0) {
+            const defaultWorkPlace = selectedFactoryId || myInfor?.work_place_id;
+            if (defaultWorkPlace) {
+                setSelectedWorkPlace([defaultWorkPlace]);
+            }
         }
-    }, [myInfor]);
+    }, [myInfor, selectedFactoryId, selectedWorkPlace]);
+
     const openModal = (bulletin?: BulletinsResponseType) => {
         setIsOpenModal(true);
         setKey('create');
@@ -87,11 +92,13 @@ function ManageBulletins() {
                         value: item.id,
                     }))}
                     mode="multiple"
+                    value={selectedWorkPlace}
                     onChange={handleWorkPlaceChange}
                     loading={isLoadingWorkplace}
                     placeholder="Select Work Places"
                     allowClear
                 />
+
                 <Button
                     onClick={() => openModal()}
                     icon={<Plus className="!text-green-700 size-[14px]" />}

@@ -25,7 +25,7 @@ export const useWorkPlaces = () => {
     const allowedIds = deriveAllowedWorkplaceIds(roles, 'union');
 
     const workPlaces = (data?.data ?? []).filter((workplace) => {
-        const isAllowed = allowedIds.includes(workplace.id);
+        const isAllowed = allowedIds.includes(workplace.id) && workplace.active;
         return isAllowed;
     });
 
@@ -33,8 +33,10 @@ export const useWorkPlaces = () => {
         (workplace, index, self) => index === self.findIndex((w) => w.id === workplace.id),
     );
 
+    const activeFactory = data?.data.filter((wp) => wp.active);
+
     return {
-        workPlaces: data?.data || [],
+        workPlaces: activeFactory || [],
         filterWorkPlaces: uniqueWorkPlaces,
         isLoading: !error && !data,
         isError: error,
