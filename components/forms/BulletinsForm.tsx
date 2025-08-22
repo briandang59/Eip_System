@@ -157,7 +157,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
             name: 'departments',
             control,
         }) || [];
-    const { employees, isLoading: isLoadingEmployees } = useEmployees({
+    const { activeEmployees, isLoading: isLoadingEmployees } = useEmployees({
         place_id: stringWorkplaces,
         card_number: searchEmployee,
         unit_id: unit_ids?.[0],
@@ -280,6 +280,13 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
         { label: t.bulletins.yes, value: 'true' },
         { label: t.bulletins.no, value: 'false' },
     ];
+    useEffect(() => {
+        if (unit_ids.length > 0) {
+            setValue('is_global', 'false');
+        } else if (!bulletin) {
+            setValue('is_global', '');
+        }
+    }, [unit_ids, setValue, bulletin]);
     return (
         <Form
             className="flex flex-col gap-2 space-y-2"
@@ -351,7 +358,7 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                             name="target_employee"
                             label={t.bulletins.form.target_user}
                             size="large"
-                            options={employees?.map((item) => ({
+                            options={activeEmployees?.map((item) => ({
                                 label: `${item.card_number} - ${item.fullname}`,
                                 value: item.card_number,
                             }))}
@@ -370,8 +377,13 @@ function BulletinsForm({ close, bulletin, mutate }: BulletinsFormProps) {
                             name="is_global"
                             label={t.bulletins.form.global_label}
                             size="large"
-                            options={isGlobalOptions}
+                            options={
+                                unit_ids.length > 0
+                                    ? isGlobalOptions.filter((option) => option.value === 'false')
+                                    : isGlobalOptions
+                            }
                             required
+                            disabled={unit_ids.length > 0}
                         />
                         <FormSelect
                             control={control}
