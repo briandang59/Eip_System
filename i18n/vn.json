@@ -4,6 +4,8 @@
         "no": "Không",
         "male": "Nam",
         "female": "Nữ",
+        "disable": "Vô hiệu hóa",
+        "enable": "Cho phép",
         "languages": {
             "english": "Tiếng Anh",
             "vietnamese": "Tiếng Việt",
@@ -88,7 +90,8 @@
             "title": "Cài đặt",
             "user_information": "Thông tin người dùng",
             "account_role": "Vai trò tài khoản",
-            "change_password": "Đổi mật khẩu"
+            "change_password": "Đổi mật khẩu",
+            "system_mode": "Chế độ hệ thống"
         },
         "logout": "Đăng xuất"
     },

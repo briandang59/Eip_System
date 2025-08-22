@@ -53,6 +53,7 @@ export const routes = {
         userInformation: '/settings/user-information',
         accountRole: '/settings/account-role',
         changePassword: '/settings/change-password',
+        systemMode: '/settings/system-mode',
     },
     logout: '/login',
 };

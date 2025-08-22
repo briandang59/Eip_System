@@ -32,6 +32,7 @@ import {
     Clipboard,
     ScrollText,
     FileChartColumn,
+    MonitorCog,
 } from 'lucide-react';
 import type { MenuProps } from 'antd';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
@@ -247,6 +248,11 @@ export const useMenuItems = (): MenuItem[] => {
                     t?.sidebar?.settings?.change_password || 'Change Password',
                     'settings/change-password',
                     <Lock strokeWidth={1.5} className="w-4 h-4" />,
+                ),
+                getItem(
+                    t?.sidebar?.settings?.system_mode || 'System Mode',
+                    'settings/system-mode',
+                    <MonitorCog strokeWidth={1.5} className="w-4 h-4" />,
                 ),
             ],
         ),

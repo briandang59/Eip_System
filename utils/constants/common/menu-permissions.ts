@@ -122,6 +122,7 @@ export const menuPermissions: Record<string, Roles[]> = {
         Roles.SUPER_USER,
         Roles.DEPARTMENT_SHIFT_SCHEDULER,
     ],
+    'settings/system-mode': [Roles.EMPLOYEE, Roles.SYSTEM_ADMINISTRATOR, Roles.HR_MANAGER],
 
     // Logout (available for all)
     logout: Object.values(Roles),

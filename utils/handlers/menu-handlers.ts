@@ -91,6 +91,9 @@ export const handleMenuClick = (key: string, router: AppRouterInstance) => {
         case 'settings/change-password':
             router.push(routes.settings.changePassword);
             break;
+        case 'settings/system-mode':
+            router.push(routes.settings.systemMode);
+            break;
         case 'logout':
             handleLogout();
             break;

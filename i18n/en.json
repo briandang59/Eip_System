@@ -4,6 +4,8 @@
         "no": "No",
         "male": "Male",
         "female": "Female",
+        "disable": "Disable",
+        "enable": "Enable",
         "languages": {
             "english": "English",
             "vietnamese": "Vietnamese",
@@ -89,7 +91,8 @@
             "title": "Settings",
             "user_information": "User Information",
             "account_role": "Account Role",
-            "change_password": "Change Password"
+            "change_password": "Change Password",
+            "system_mode": "System Mode"
         },
         "logout": "Logout"
     },

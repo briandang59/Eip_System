@@ -98,4 +98,6 @@ export const urls = {
     download: 'download',
     form: 'form',
     form_request_statuses: 'form_request_statuses',
+    all: 'all',
+    change: 'change',
 };

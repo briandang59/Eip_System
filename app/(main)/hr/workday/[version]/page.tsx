@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useFactoryStore } from '@/stores/useFactoryStore';
 import EditAttendanceForm from '@/components/forms/EditAttendanceForm';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
+import { useSystemMode } from '@/apis/useSwr/systemMode';
 
 function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
@@ -26,6 +27,7 @@ function WorkdayV1() {
     const { units, isLoading: isLoadingUnits } = useUnits({
         place_id: selectedWorkPlace?.toString(),
     });
+    const { systemModes, isLoading: isLoadingSystemMode } = useSystemMode();
 
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState<FactoryInspectionAttendance | null>(null);
@@ -84,7 +86,11 @@ function WorkdayV1() {
         setIsOpenModal(false);
         mutate();
     };
-    const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols({ open: showModal });
+    const factoryInspectionAttendanceCols = useFactoryInspectionAttendanceCols({
+        open: showModal,
+        selectedFactoryId: selectedWorkPlace,
+        systemModes,
+    });
 
     const data: FactoryInspectionAttendance[] = factoryInspectionAttendance || [];
 
