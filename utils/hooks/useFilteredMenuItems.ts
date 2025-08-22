@@ -52,7 +52,7 @@ export const useFilteredMenuItems = () => {
         // Handle dynamic routes like bulletins/[uuid]
         if (key.includes('[') && key.includes(']')) {
             // Check if any role has permission for this dynamic route pattern
-            return Object.keys(menuPermissions).some(permissionKey => {
+            return Object.keys(menuPermissions).some((permissionKey) => {
                 if (permissionKey.includes('[') && permissionKey.includes(']')) {
                     // Convert dynamic route pattern to regex for matching
                     const pattern = permissionKey
@@ -63,7 +63,9 @@ export const useFilteredMenuItems = () => {
                         // Check if user has any of the required roles for this permission
                         const requiredRoles = menuPermissions[permissionKey];
                         return userRoles.some((roleTag) =>
-                            requiredRoles.some((role) => role.toLowerCase() === roleTag.toLowerCase())
+                            requiredRoles.some(
+                                (role) => role.toLowerCase() === roleTag.toLowerCase(),
+                            ),
                         );
                     }
                 }
@@ -109,6 +111,14 @@ export const useFilteredMenuItems = () => {
                                     ...child,
                                     key: 'hr/statistical-workday/v1',
                                     label: 'Statistical Workday',
+                                };
+                            }
+
+                            if (child.key === 'hr/reports') {
+                                return {
+                                    ...child,
+                                    key: 'hr/reports/v1',
+                                    label: 'Reports',
                                 };
                             }
                             return child;
