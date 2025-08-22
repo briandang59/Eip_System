@@ -91,7 +91,7 @@
             "user_information": "用戶資訊",
             "account_role": "帳戶角色",
             "change_password": "更改密碼",
-            "system_mode": "系統模式"
+            "system_mode": "驗廠模式"
         },
         "logout": "登出"
     },

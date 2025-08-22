@@ -447,6 +447,7 @@ function EmployeesPage() {
                     dataSource={employees || []}
                     rowKey="uuid"
                     isLoading={isLoadingEmployees}
+                    scroll={{ x: 'max-content' }}
                     pagination={{
                         defaultPageSize: 30,
                         pageSizeOptions: ['30', '50'],
