@@ -790,7 +790,8 @@
             "error_step_1": "Vui lòng hoàn thành tất cả các trường bắt buộc trong bước 1"
         },
         "general": "Bảng tin chung",
-        "self": "Bảng tin cá nhân"
+        "self": "Bảng tin cá nhân",
+        "department": "Bộ phận"
     },
     "login": {
         "account_login": "Đăng nhập tài khoản",

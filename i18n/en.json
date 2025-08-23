@@ -793,7 +793,8 @@
             "error_step_1": "Please complete all required fields in step 1"
         },
         "general": "General bulletin",
-        "self": "Self bulletin"
+        "self": "Self bulletin",
+        "department": "Department"
     },
     "login": {
         "account_login": "Account Login",

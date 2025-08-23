@@ -10,6 +10,8 @@ interface Params {
     pageSize?: number;
     work_places?: string;
     card_number?: string;
+    departments?: string;
+    cardNumber?: string;
 }
 
 export const useManageBulletins = (params?: Params) => {

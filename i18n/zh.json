@@ -789,6 +789,7 @@
             "error_step_1": "請完成所有必填欄位"
         },
         "general": "公告",
+        "department": "召集部門",
         "self": "個人公告"
     },
     "login": {
