@@ -167,6 +167,9 @@ export const useWorkdayCols = ({
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t1 = record?.details[0]?.workday?.T1?.face_photo;
+                const leave_hours = record?.details[0]?.workday?.leave_hours?.B > 0;
+
+                if (leave_hours) return null;
 
                 if (time1 && !time2) {
                     return (
@@ -177,7 +180,7 @@ export const useWorkdayCols = ({
                                 handleOpenModalByKey('image_scan_t1');
                             }}
                         >
-                            {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : <></>}
+                            {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
                             <span className="font-medium text-red-600">
                                 {time1 ? formatTimeHHmm(time1) : '-'}
                             </span>
@@ -192,7 +195,7 @@ export const useWorkdayCols = ({
                                 handleOpenModalByKey('image_scan_t1');
                             }}
                         >
-                            {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : <></>}
+                            {face_t1 ? <Eye className="w-4 h-4 text-blue-600" /> : null}
                             <span className="font-medium text-purple-600">
                                 {time1 ? formatTimeHHmm(time1) : '-'}
                             </span>
@@ -223,12 +226,14 @@ export const useWorkdayCols = ({
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t2 = record?.details[0]?.attendance[0]?.T2.face_photo;
+                const leave_hours = record?.details[0]?.workday?.leave_hours?.B > 0;
+
+                if (leave_hours) return null;
 
                 let isUpdated = false;
                 if (isTimeUpdate(record.details[0].workday.T2))
                     isUpdated = record?.details[0]?.workday?.T2?.user_update;
 
-                // ✅ Trường hợp chỉ có T2 (không có T1)
                 if (!time1 && time2) {
                     return (
                         <button
@@ -246,7 +251,6 @@ export const useWorkdayCols = ({
                     );
                 }
 
-                // ✅ Trường hợp có T1 nhưng chưa có T2
                 if (time1 && !time2) {
                     return (
                         <button
@@ -264,7 +268,6 @@ export const useWorkdayCols = ({
                     );
                 }
 
-                // ✅ Trường hợp có cả T1 và T2
                 if (time1 && time2) {
                     return (
                         <div className="flex justify-between gap-2">
