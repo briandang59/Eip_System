@@ -117,7 +117,402 @@ export const useFactoryInspectionAttendanceCols = ({
                 <div className="text-nowrap">{getDayOfWeek(record?.details[0]?.date)}</div>
             ),
         },
-        // ... (các cột T1, T2, GC, NLE, overtime, leave_hours ... giữ nguyên như code gốc của bạn)
+        {
+            title: 'T1',
+            dataIndex: 't1',
+            key: 't1',
+            width: 70,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.T1?.time?.localeCompare(
+                    b?.details[0]?.workday?.T1?.time,
+                );
+            },
+            render: (_: unknown, record: FactoryInspectionAttendance) => {
+                const time = formatTimeHHmm(record?.details[0]?.workday?.T1?.time);
+                return <p className="font-medium text-purple-600 text-center">{time || '-'}</p>;
+            },
+        },
+        {
+            title: 'T2',
+            dataIndex: 't2',
+            key: 't2',
+            width: 70,
+            sorter: (a, b) => {
+                const t1 = a?.details?.[0]?.workday?.T2?.time
+                    ? dayjs(a.details[0].workday.T2.time, 'YYYY-MM-DD HH:mm:ss').valueOf()
+                    : 0;
+
+                const t2 = b?.details?.[0]?.workday?.T2?.time
+                    ? dayjs(b.details[0].workday.T2.time, 'YYYY-MM-DD HH:mm:ss').valueOf()
+                    : 0;
+
+                return t1 - t2;
+            },
+            render: (_: unknown, record: FactoryInspectionAttendance) => {
+                const time = formatTimeHHmm(record?.details[0]?.workday?.T2?.time);
+                return <p className="font-medium text-purple-600 text-center">{time || '-'}</p>;
+            },
+        },
+
+        {
+            title: 'GC',
+            dataIndex: 'GC',
+            key: 'GC',
+            width: 50,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.GC - b?.details[0]?.workday?.GC;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.GC > 0
+                            ? record?.details[0]?.workday?.GC
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'NLE',
+            dataIndex: 'NLE',
+            key: 'NLE',
+            width: 50,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.nle - b?.details[0]?.workday?.nle;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.nle > 0
+                            ? record?.details[0]?.workday?.nle
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: '150',
+            dataIndex: '150',
+            key: '150',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c150 - b?.details[0]?.workday?.overtime?.c150
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c150 > 0
+                            ? record?.details[0]?.workday?.overtime?.c150
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: '200',
+            dataIndex: '200',
+            key: '200',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c200 - b?.details[0]?.workday?.overtime?.c200
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c200 > 0
+                            ? record?.details[0]?.workday?.overtime?.c200
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: '300',
+            dataIndex: '300',
+            key: '300',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c300 - b?.details[0]?.workday?.overtime?.c300
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c300 > 0
+                            ? record?.details[0]?.workday?.overtime?.c300
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: '390',
+            dataIndex: '390',
+            key: '390',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c390 - b?.details[0]?.workday?.overtime?.c390
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c390 > 0
+                            ? record?.details[0]?.workday?.overtime?.c390
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: '400',
+            dataIndex: '400',
+            key: '400',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.overtime?.c400 - b?.details[0]?.workday?.overtime?.c400
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.overtime?.c400 > 0
+                            ? record?.details[0]?.workday?.overtime?.c400
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'A',
+            dataIndex: 'A',
+            key: 'A',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.A - b?.details[0]?.workday?.leave_hours.A
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.A > 0
+                            ? record?.details[0]?.workday?.leave_hours.A
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'KP',
+            dataIndex: 'KP',
+            key: 'KP',
+            width: 50,
+            render: (_: unknown, record: FactoryInspectionAttendance, _index: number) => {
+                return (
+                    <p>
+                        {record?.details[0]?.workday?.KP === 0
+                            ? '-'
+                            : record?.details[0]?.workday?.KP}
+                    </p>
+                );
+            },
+        },
+        {
+            title: 'B',
+            dataIndex: 'B',
+            key: 'B',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.B - b?.details[0]?.workday?.leave_hours.B
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.B > 0
+                            ? record?.details[0]?.workday?.leave_hours.B
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'C',
+            dataIndex: 'C',
+            key: 'C',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.C - b?.details[0]?.workday?.leave_hours.C
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.C > 0
+                            ? record?.details[0]?.workday?.leave_hours.C
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'DB',
+            dataIndex: 'DB',
+            key: 'DB',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.DB - b?.details[0]?.workday?.leave_hours.DB
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.DB > 0
+                            ? record?.details[0]?.workday?.leave_hours.DB
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'CV',
+            dataIndex: 'CV',
+            key: 'CV',
+            width: 50,
+            sorter: (a, b) => {
+                return (
+                    a?.details[0]?.workday?.leave_hours.CV - b?.details[0]?.workday?.leave_hours.CV
+                );
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.leave_hours.CV > 0
+                            ? record?.details[0]?.workday?.leave_hours.CV
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'DT',
+            dataIndex: 'DT',
+            key: 'DT',
+            width: 50,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.DT - b?.details[0]?.workday?.DT;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.DT > 0
+                            ? record?.details[0]?.workday?.DT
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'VS',
+            dataIndex: 'VS',
+            key: 'VS',
+            width: 50,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.VS - b?.details[0]?.workday?.VS;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.VS > 0
+                            ? record?.details[0]?.workday?.VS
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'GDem',
+            dataIndex: 'GDem',
+            key: 'GDem',
+            width: 70,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.GDem - b?.details[0]?.workday?.GDem;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.GDem > 0
+                            ? record?.details[0]?.workday?.GDem
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'G200',
+            dataIndex: 'G200',
+            key: 'G200',
+            width: 60,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.G200 - b?.details[0]?.workday?.G200;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center text-green-500 font-medium">
+                        {record?.details[0]?.workday?.G200 > 0
+                            ? record?.details[0]?.workday?.G200
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'G210',
+            dataIndex: 'G210',
+            key: 'G210',
+            width: 60,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.G210 - b?.details[0]?.workday?.G210;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center text-blue-500 font-medium">
+                        {record?.details[0]?.workday?.G210 > 0
+                            ? record?.details[0]?.workday?.G210
+                            : '-'}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Tcom',
+            dataIndex: 'Tcom',
+            key: 'Tcom',
+            width: 70,
+            sorter: (a, b) => {
+                return a?.details[0]?.workday?.Tcom - b?.details[0]?.workday?.Tcom;
+            },
+            render: (_, record) => {
+                return (
+                    <div className="text-nowrap text-center font-medium">
+                        {record?.details[0]?.workday?.Tcom > 0
+                            ? formatNumber(record?.details[0]?.workday?.Tcom)
+                            : '-'}
+                    </div>
+                );
+            },
+        },
         {
             title: 'CTMTCN',
             dataIndex: 'CTMTCN',
