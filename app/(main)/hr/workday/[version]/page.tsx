@@ -16,6 +16,7 @@ import { useFactoryStore } from '@/stores/useFactoryStore';
 import EditAttendanceForm from '@/components/forms/EditAttendanceForm';
 import { useExportToExcel } from '@/utils/hooks/useExportToExcel';
 import { useSystemMode } from '@/apis/useSwr/systemMode';
+import { summaryFactoryInspectionRow } from '@/utils/constants/totalRows/summaryFactoryInspectionRow';
 
 function WorkdayV1() {
     const { t, lang } = useTranslationCustom();
@@ -199,6 +200,7 @@ function WorkdayV1() {
                 dataSource={factoryInspectionAttendance || []}
                 rowKey="stt"
                 isLoading={isLoadingFactoryInspectionAttendance}
+                summary={() => summaryFactoryInspectionRow(factoryInspectionAttendance || [], t)} // 👈 thêm dòng này
                 pagination={{
                     defaultPageSize: 30,
                     pageSizeOptions: ['30', '50'],
@@ -209,6 +211,7 @@ function WorkdayV1() {
                 }}
                 className="secondary-table"
             />
+
             <Modal open={isOpenModal} onCancel={closeModal} centered width={1000} footer={null}>
                 {selectedRecord !== null && (
                     <EditAttendanceForm record={selectedRecord} close={closeModal} />
