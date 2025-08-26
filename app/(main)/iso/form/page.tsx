@@ -88,9 +88,11 @@ function Form() {
             switch (key) {
                 case 'approve': {
                     await formApprovalService.approve(record?.id, approvedPayload);
+                    break;
                 }
                 case 'dismiss': {
                     await formApprovalService.approve(record?.id, dismissPayload);
+                    break;
                 }
             }
             toast.success(t.common.forms.successed);
