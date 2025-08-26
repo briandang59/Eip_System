@@ -20,7 +20,9 @@
             "failed": "Failed to send request",
             "edit": "Edit",
             "delete": "Delete",
-            "view": "View"
+            "view": "View",
+            "accept": "Accept",
+            "dismiss": "Dismiss"
         },
         "confirm_modal": {
             "title": "Confirm Deletion",

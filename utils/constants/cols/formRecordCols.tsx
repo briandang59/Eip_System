@@ -1,14 +1,15 @@
-import { IsoForm } from '@/types/response/isoForm';
-import { RecordFormResponse } from '@/types/response/recordForm';
+import { FormApprovalResponse } from '@/types/response/formRequest';
 import { useTranslationCustom } from '@/utils/hooks/useTranslationCustom';
-import { Button, Popover, TableColumnsType, Tag } from 'antd';
-import dayjs from 'dayjs';
-import { Eye, Pen, Settings, Trash } from 'lucide-react';
+import { Button, TableColumnsType, Tag } from 'antd';
+import { CheckCheck, X } from 'lucide-react';
 
-interface params {
-    openModal: (form: RecordFormResponse, key?: string) => void;
+interface Params {
+    handleApprove: (key: string, record: FormApprovalResponse) => void;
 }
-export const useRecordFormCols = ({ openModal }: params): TableColumnsType<RecordFormResponse> => {
+
+export const useRecordFormCols = ({
+    handleApprove,
+}: Params): TableColumnsType<FormApprovalResponse> => {
     const { t } = useTranslationCustom();
 
     return [
@@ -25,8 +26,8 @@ export const useRecordFormCols = ({ openModal }: params): TableColumnsType<Recor
             dataIndex: 'applicant',
             key: 'applicant',
             width: 200,
-            render: (_, record: RecordFormResponse) => (
-                <div className="line-clamp-2">{record?.applicant?.fullname ?? '-'}</div>
+            render: (_, record: FormApprovalResponse) => (
+                <div className="line-clamp-2">{record?.request?.applicant.fullname ?? '-'}</div>
             ),
         },
         {
@@ -34,67 +35,42 @@ export const useRecordFormCols = ({ openModal }: params): TableColumnsType<Recor
             dataIndex: 'form',
             key: 'form',
             width: 200,
-            render: (_, record: RecordFormResponse) => (
-                <div className="line-clamp-2">{record?.type_name ?? '-'}</div>
+            render: (_, record: FormApprovalResponse) => (
+                <div className="line-clamp-2">{record?.request.form_type_id ?? '-'}</div>
             ),
         },
-        {
-            title: t.record_form.request_time,
-            dataIndex: 'request_time',
-            key: 'request_time',
-            width: 200,
-            render: (_, record: RecordFormResponse) => (
-                <div className="line-clamp-2">
-                    {dayjs(record?.createdAt).format('YYYY/MM/DD') ?? '-'}
-                </div>
-            ),
-        },
+
         {
             title: t.record_form.status,
             dataIndex: 'status',
             key: 'status',
             width: 100,
-            render: (_, record: RecordFormResponse) => (
-                <Tag color="orange">{record?.status?.name ?? '-'}</Tag>
+            render: (_, record: FormApprovalResponse) => (
+                <Tag color="orange">{record?.request?.status_name ?? '-'}</Tag>
             ),
         },
-        {
-            title: t.record_form.approvers,
-            dataIndex: 'approvers',
-            key: 'approvers',
-            width: 100,
-        },
+
         {
             title: t.utils.actions,
             dataIndex: 'action',
             key: 'action',
             width: 50,
-            render: (_, record: RecordFormResponse) => (
-                <div>
-                    <Popover
-                        trigger={'click'}
-                        content={
-                            <div className="flex flex-col gap-2">
-                                <Button
-                                    icon={<Eye className="size-[14px] !text-green-700" />}
-                                    onClick={() => openModal(record, 'view')}
-                                >
-                                    {t.common.forms.view}
-                                </Button>
-                                <Button
-                                    icon={<Pen className="size-[14px] !text-blue-700" />}
-                                    onClick={() => openModal(record, 'modify')}
-                                >
-                                    {t.common.forms.edit}
-                                </Button>
-                                {/* <Button icon={<Trash className="size-[14px] !text-red-700" />}>
-                                    {t.common.forms.delete}
-                                </Button> */}
-                            </div>
-                        }
+            render: (_, record: FormApprovalResponse) => (
+                <div className="flex items-center gap-2">
+                    <Button
+                        icon={<CheckCheck className="size-[14px] !text-green-700" />}
+                        className="!text-green-700"
+                        onClick={() => handleApprove('approve', record)}
                     >
-                        <Button icon={<Settings className="size-[14px] !text-green-700" />} />
-                    </Popover>
+                        {t.common.forms.accept}
+                    </Button>
+                    <Button
+                        icon={<X className="size-[14px] !text-red-700" />}
+                        className="!text-red-700"
+                        onClick={() => handleApprove('dismiss', record)}
+                    >
+                        {t.common.forms.dismiss}
+                    </Button>
                 </div>
             ),
             fixed: 'right',

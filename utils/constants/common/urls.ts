@@ -100,4 +100,7 @@ export const urls = {
     form_request_statuses: 'form_request_statuses',
     all: 'all',
     change: 'change',
+    from_request: 'from_request',
+    form_approval: 'form_approval',
+    pending: 'pending',
 };

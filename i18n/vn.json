@@ -20,7 +20,9 @@
             "failed": "Gửi yêu cầu thất bại",
             "edit": "Sửa",
             "delete": "Xoá",
-            "view": "Xem"
+            "view": "Xem",
+            "accept": "Chấp nhận",
+            "dismiss": "Từ chối"
         },
         "confirm_modal": {
             "title": "Xác nhận xoá bản ghi",

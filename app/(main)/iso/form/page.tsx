@@ -1,18 +1,18 @@
 'use client';
-import { useFromRecord } from '@/apis/useSwr/formRecord';
+import { formApprovalService } from '@/apis/services/formApproval';
+import { useFormApproval } from '@/apis/useSwr/formApproval';
 import { useFormTypeList } from '@/apis/useSwr/formTypeList';
 import { GenericTable } from '@/components/common/GenericTable';
-import { IsoForm } from '@/types/response/isoForm';
-import { RecordFormResponse } from '@/types/response/recordForm';
+import { FormApprovalResponse } from '@/types/response/formRequest';
 import { useRecordFormCols } from '@/utils/constants/cols/formRecordCols';
-import variables from '@/utils/constants/common/variables';
 import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
-import { DatePicker, Input, Modal, Select } from 'antd';
+import { DatePicker, Input, Select } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 const { RangePicker } = DatePicker;
 
 function Form() {
@@ -22,12 +22,8 @@ function Form() {
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [selectedLocations, setSelectedLocations] = useState<string>('Vietnam');
     const [selectedStatus, setSelectedStatus] = useState<string>('');
-    const [isOpenModal, setIsOpenModal] = useState(false);
-    const [selectedIsoForm, setSelectedIsoForm] = useState<RecordFormResponse | null>(null);
-    const [selectedTypeForm, setSelectedTypeForm] = useState<IsoForm | null>(null);
-    const [key, setKey] = useState<string | null>(null);
+
     const myInfo = getInfomation();
-    const [url, setUrl] = useState<string>('');
     // Debounce search
 
     const locations = [
@@ -51,28 +47,17 @@ function Form() {
     }, [searchText]);
 
     // Cập nhật URL khi selectedTypeForm thay đổi
-    useEffect(() => {
-        if (selectedIsoForm && selectedTypeForm && key) {
-            setUrl(generateUrl(selectedIsoForm, key));
-        }
-    }, [selectedTypeForm, selectedIsoForm, key, selectedLocations]);
+
+    const { formApprovals, isLoading: isLoadingFormApproval } = useFormApproval(
+        {},
+        myInfo?.card_number ?? '',
+    );
 
     const [rangeDate, setRangeDate] = useState<{ start_date: Dayjs; end_date: Dayjs }>({
         start_date: dayjs().month(0).date(1),
         end_date: dayjs().month(11).date(31),
     });
-    const { formRecords, isLoading: isLoadingFormRecord } = useFromRecord(
-        {
-            start_date: rangeDate.start_date.format('YYYY-MM-DD'),
-            end_date: rangeDate.end_date.format('YYYY-MM-DD'),
-        },
-        {
-            locations: selectedLocations,
-            search: debouncedSearch,
-            status: selectedStatus,
-            type: selectedFormType,
-        },
-    );
+
     const { fromTypeList, isLoading: isLoadingFormTypeList } = useFormTypeList({
         locations: selectedLocations,
         search: debouncedSearch,
@@ -87,44 +72,34 @@ function Form() {
         }
     };
 
-    const handleCloseModal = () => {
-        setIsOpenModal(false);
-        setSelectedIsoForm(null);
-        setKey(null);
-    };
-
-    const handleOpenModal = (form: RecordFormResponse, key?: string) => {
-        setIsOpenModal(true);
-        setSelectedIsoForm(form);
-        const exists = fromTypeList.find((item) => item.id === form.type_id);
-        setSelectedTypeForm(exists || null);
-        setKey(key || null);
-
-        if (exists) {
-            setUrl(generateUrl(form, key, exists));
+    const handleApprove = async (key: string, record: FormApprovalResponse) => {
+        try {
+            if (!myInfo) return;
+            const approvedPayload = {
+                status: 4,
+                comment: 'Đồng ý cho nghỉ phép',
+                approverCardNumber: myInfo?.card_number,
+            };
+            const dismissPayload = {
+                status: 2,
+                comment: 'Không đồng ý cho nghỉ phép',
+                approverCardNumber: myInfo?.card_number,
+            };
+            switch (key) {
+                case 'approve': {
+                    await formApprovalService.approve(record?.id, approvedPayload);
+                }
+                case 'dismiss': {
+                    await formApprovalService.approve(record?.id, dismissPayload);
+                }
+            }
+            toast.success(t.common.forms.successed);
+        } catch (error) {
+            toast.error(`${error}`);
         }
     };
 
-    const generateUrl = (form: RecordFormResponse, key?: string, typeForm?: IsoForm) => {
-        const targetTypeForm = typeForm || selectedTypeForm;
-
-        if (!targetTypeForm) return '';
-
-        const baseUrl = `${variables.ISO_FORM_HOST}/form/${selectedLocations}/${targetTypeForm?.tag}`;
-
-        switch (key) {
-            case 'view':
-                return `${baseUrl}?id=${form?._id}`;
-            case 'modify':
-                return `${baseUrl}?id=${form?._id}&isEdit=true`;
-            default:
-                return `${baseUrl}?employee_uuid=${myInfo?.uuid}&isEdit=true&uuid=${form._id}`;
-        }
-    };
-
-    const recordFormCols = useRecordFormCols({
-        openModal: handleOpenModal,
-    });
+    const recordFormCols = useRecordFormCols({ handleApprove });
 
     return (
         <div className="flex flex-col gap-4">
@@ -179,11 +154,11 @@ function Form() {
                     />
                 </div>
             </div>
-            <GenericTable<RecordFormResponse>
+            <GenericTable<FormApprovalResponse>
                 columns={recordFormCols}
-                dataSource={formRecords || []}
+                dataSource={formApprovals || []}
                 rowKey="_id"
-                isLoading={isLoadingFormRecord}
+                isLoading={isLoadingFormApproval}
                 pagination={{
                     defaultPageSize: 30,
                     pageSizeOptions: ['30', '50'],
@@ -193,18 +168,6 @@ function Form() {
                     size: 'default',
                 }}
             />
-
-            <Modal
-                open={isOpenModal}
-                onCancel={handleCloseModal}
-                footer={null}
-                centered
-                width={1200}
-            >
-                {selectedIsoForm && selectedTypeForm && (
-                    <iframe src={url} width="100%" height="700" className="border-none" />
-                )}
-            </Modal>
         </div>
     );
 }

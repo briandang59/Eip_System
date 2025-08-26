@@ -20,7 +20,9 @@
             "failed": "請求提交失敗",
             "edit": "編輯",
             "delete": "刪除",
-            "view": "查看"
+            "view": "查看",
+            "accept": "接受",
+            "dismiss": "駁回"
         },
         "confirm_modal": {
             "title": "確認刪除記錄",
