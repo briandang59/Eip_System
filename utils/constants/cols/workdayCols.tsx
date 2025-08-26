@@ -167,7 +167,7 @@ export const useWorkdayCols = ({
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t1 = record?.details[0]?.workday?.T1?.face_photo;
-                const leave_hours = record?.details[0]?.workday?.leave_hours?.B > 8;
+                const leave_hours = record?.details[0]?.workday?.leave_hours?.B >= 8;
 
                 if (leave_hours) return null;
 
@@ -226,7 +226,7 @@ export const useWorkdayCols = ({
                 const time1 = record?.details[0]?.workday?.T1?.time;
                 const time2 = record?.details[0]?.workday?.T2?.time;
                 const face_t2 = record?.details[0]?.attendance[0]?.T2.face_photo;
-                const leave_hours = record?.details[0]?.workday?.leave_hours?.B > 8;
+                const leave_hours = record?.details[0]?.workday?.leave_hours?.B >= 8;
 
                 if (leave_hours) return null;
 
