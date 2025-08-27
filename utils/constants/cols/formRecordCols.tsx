@@ -30,15 +30,15 @@ export const useRecordFormCols = ({
                 <div className="line-clamp-2">{record?.request?.applicant.fullname ?? '-'}</div>
             ),
         },
-        {
-            title: t.record_form.form,
-            dataIndex: 'form',
-            key: 'form',
-            width: 200,
-            render: (_, record: FormApprovalResponse) => (
-                <div className="line-clamp-2">{record?.request.form_type_id ?? '-'}</div>
-            ),
-        },
+        // {
+        //     title: t.record_form.form,
+        //     dataIndex: 'form',
+        //     key: 'form',
+        //     width: 200,
+        //     render: (_, record: FormApprovalResponse) => (
+        //         <div className="line-clamp-2">{record?.request.form_type_id ?? '-'}</div>
+        //     ),
+        // },
 
         {
             title: t.record_form.status,
