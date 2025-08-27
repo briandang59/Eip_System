@@ -15,16 +15,26 @@ function Home() {
     const { selectedFactoryId } = useFactoryStore();
     const myInfo = getInfomation();
     const selectedWorkPlace = selectedFactoryId || myInfo?.work_place_id || 0;
-    const { bulletins, isLoading: isLoadingBulletins } = useManageBulletins({
-        pageNum: page,
-        pageSize,
-        work_places: selectedWorkPlace ? `[${selectedWorkPlace}]` : undefined,
-        cardNumber: myInfo?.card_number,
-    });
+    const { bulletins: bulletinsGeneral, isLoading: isLoadingBulletinGeneral } = useManageBulletins(
+        {
+            pageNum: page,
+            pageSize,
+            work_places: selectedWorkPlace ? `[${selectedWorkPlace}]` : undefined,
+        },
+    );
+
+    const { bulletins: bulletinsDepartment, isLoading: isLoadingBulletinDepartment } =
+        useManageBulletins({
+            pageNum: page,
+            pageSize,
+            work_places: selectedWorkPlace ? `[${selectedWorkPlace}]` : undefined,
+            cardNumber: myInfo?.card_number, // ✅ chỉ tab2 dùng
+        });
+
     const { bulletinsSelf, isLoading: isLoadingBulletinsSelf } = useManageBulletinsSelf(
         myInfo?.card_number || '',
     );
-    if (isLoadingBulletins || isLoadingBulletinsSelf) {
+    if (isLoadingBulletinGeneral || isLoadingBulletinDepartment || isLoadingBulletinsSelf) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <Spin />
@@ -39,7 +49,7 @@ function Home() {
                 <>
                     <div className="flex items-center justify-center">
                         <div className="flex flex-col gap-4 max-w-4xl mx-auto">
-                            {bulletins?.map((item) => (
+                            {bulletinsGeneral?.map((item) => (
                                 <BulletinUI key={item.id} record={item} />
                             ))}
                         </div>
@@ -55,7 +65,7 @@ function Home() {
                 <>
                     <div className="flex items-center justify-center">
                         <div className="flex flex-col gap-4 max-w-4xl mx-auto">
-                            {bulletins?.map((item) => (
+                            {bulletinsDepartment?.map((item) => (
                                 <BulletinUI key={item.id} record={item} />
                             ))}
                         </div>
