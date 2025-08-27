@@ -1,18 +1,18 @@
 'use client';
-import { formApprovalService } from '@/apis/services/formApproval';
-import { useFormApproval } from '@/apis/useSwr/formApproval';
+// import { formApprovalService } from '@/apis/services/formApproval';
+// import { useFormApproval } from '@/apis/useSwr/formApproval';
 import { useFormTypeList } from '@/apis/useSwr/formTypeList';
-import { GenericTable } from '@/components/common/GenericTable';
-import { FormApprovalResponse } from '@/types/response/formRequest';
-import { useRecordFormCols } from '@/utils/constants/cols/formRecordCols';
-import { getInfomation } from '@/utils/functions/getInfomation';
+// import { GenericTable } from '@/components/common/GenericTable';
+// import { FormApprovalResponse } from '@/types/response/formRequest';
+// import { useRecordFormCols } from '@/utils/constants/cols/formRecordCols';
+// import { getInfomation } from '@/utils/functions/getInfomation';
 import { getLocalizedName } from '@/utils/functions/getLocalizedName';
 import { useTranslationCustom } from '@/utils/hooks';
 import { DatePicker, Input, Select } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
 const { RangePicker } = DatePicker;
 
 function Form() {
@@ -23,7 +23,7 @@ function Form() {
     const [selectedLocations, setSelectedLocations] = useState<string>('Vietnam');
     const [selectedStatus, setSelectedStatus] = useState<string>('');
 
-    const myInfo = getInfomation();
+    // const myInfo = getInfomation();
     // Debounce search
 
     const locations = [
@@ -48,10 +48,10 @@ function Form() {
 
     // Cập nhật URL khi selectedTypeForm thay đổi
 
-    const { formApprovals, isLoading: isLoadingFormApproval } = useFormApproval(
-        {},
-        myInfo?.card_number ?? '',
-    );
+    // const { formApprovals, isLoading: isLoadingFormApproval } = useFormApproval(
+    //     {},
+    //     myInfo?.card_number ?? '',
+    // );
 
     const [rangeDate, setRangeDate] = useState<{ start_date: Dayjs; end_date: Dayjs }>({
         start_date: dayjs().month(0).date(1),
@@ -72,36 +72,36 @@ function Form() {
         }
     };
 
-    const handleApprove = async (key: string, record: FormApprovalResponse) => {
-        try {
-            if (!myInfo) return;
-            const approvedPayload = {
-                status: 4,
-                comment: 'Đồng ý cho nghỉ phép',
-                approverCardNumber: myInfo?.card_number,
-            };
-            const dismissPayload = {
-                status: 2,
-                comment: 'Không đồng ý cho nghỉ phép',
-                approverCardNumber: myInfo?.card_number,
-            };
-            switch (key) {
-                case 'approve': {
-                    await formApprovalService.approve(record?.id, approvedPayload);
-                    break;
-                }
-                case 'dismiss': {
-                    await formApprovalService.approve(record?.id, dismissPayload);
-                    break;
-                }
-            }
-            toast.success(t.common.forms.successed);
-        } catch (error) {
-            toast.error(`${error}`);
-        }
-    };
+    // const handleApprove = async (key: string, record: FormApprovalResponse) => {
+    //     try {
+    //         if (!myInfo) return;
+    //         const approvedPayload = {
+    //             status: 4,
+    //             comment: 'Đồng ý cho nghỉ phép',
+    //             approverCardNumber: myInfo?.card_number,
+    //         };
+    //         const dismissPayload = {
+    //             status: 2,
+    //             comment: 'Không đồng ý cho nghỉ phép',
+    //             approverCardNumber: myInfo?.card_number,
+    //         };
+    //         switch (key) {
+    //             case 'approve': {
+    //                 await formApprovalService.approve(record?.id, approvedPayload);
+    //                 break;
+    //             }
+    //             case 'dismiss': {
+    //                 await formApprovalService.approve(record?.id, dismissPayload);
+    //                 break;
+    //             }
+    //         }
+    //         toast.success(t.common.forms.successed);
+    //     } catch (error) {
+    //         toast.error(`${error}`);
+    //     }
+    // };
 
-    const recordFormCols = useRecordFormCols({ handleApprove });
+    // const recordFormCols = useRecordFormCols({ handleApprove });
 
     return (
         <div className="flex flex-col gap-4">
@@ -156,7 +156,7 @@ function Form() {
                     />
                 </div>
             </div>
-            <GenericTable<FormApprovalResponse>
+            {/* <GenericTable<FormApprovalResponse>
                 columns={recordFormCols}
                 dataSource={formApprovals || []}
                 rowKey="_id"
@@ -169,7 +169,7 @@ function Form() {
                     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                     size: 'default',
                 }}
-            />
+            /> */}
         </div>
     );
 }
